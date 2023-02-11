@@ -1,0 +1,110 @@
+<template lang='pug'>
+.app-wrapper
+    el-container
+        el-aside(width='200px')
+            //- el-scrollbar
+            el-menu(router)
+                el-menu-item(:route='{ name: "dashboard" }' index='dashboard')
+                    el-icon
+                        HomeFilled
+                    div Главная
+
+                el-menu-item(
+                    v-for='route of routes'
+                    :route='{ name: route.name }'
+                    :index='route.name'
+                )
+                    el-icon(v-if='route.meta.icon')
+                        component(:is='route.meta.icon')
+                    div {{ route.meta.title }}
+
+        el-container
+            el-header
+                .flex.justify-between.w-full
+                    //- left side
+                    div
+
+                    //- right side
+                    el-dropdown(
+                        trigger='click'
+                    )
+                        .flex.space-x-2.items-center
+                            el-avatar(shape='square' size='small')
+                            .text-gray-400 {{ user.name }}
+
+                        template(#dropdown)
+                            el-dropdown-menu
+                                el-dropdown-item
+                                    el-popconfirm(
+                                        title='Завершить сеанс?'
+                                        @confirm='logout'
+                                        width='200'
+                                    )
+                                        template(#reference)
+                                            span Выйти
+            el-main(class='!pr-1')
+                RouterTabs
+                el-scrollbar.pr-4
+                    router-view(v-slot='{ Component }')
+                        transition(name='fade-transform' mode='out-in')
+                            keep-alive(:include='cachedViews')
+                                component(:is='Component')
+            //- el-footer Footer
+</template>
+
+<script>
+import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
+
+import { useTabsStore } from '../store/modules/tabs';
+import usePage from '../utils/usePage';
+
+export default {
+    name: 'BaseLayout',
+    setup() {
+        const { cachedViews } = useTabsStore();
+
+        const logout = () => window.location.href = '/logout';
+
+        const router = useRouter();
+        const routes = reactive([]);
+
+        for (const route of router.getRoutes()) {
+            if (route.meta?.isReference) {
+                routes.push(route);
+            }
+        }
+
+        const { user } = usePage();
+
+        return {
+            cachedViews,
+            routes,
+            user,
+            logout
+        };
+    }
+};
+</script>
+
+<style lang='postcss'>
+.app-wrapper {
+    @apply w-full h-full;
+
+    .el-container {
+        @apply h-full;
+    }
+}
+
+.el-header {
+    @apply shadow flex items-center;
+}
+
+.el-menu {
+    @apply h-full;
+}
+
+.el-main {
+    @apply relative w-full overflow-hidden;
+}
+</style>

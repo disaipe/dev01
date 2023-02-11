@@ -1,0 +1,7 @@
+{
+    "presets": ["@babel/preset-env"],
+    "include": ["./resources/js/**"],
+    "plugins": [
+        "@babel/plugin-proposal-class-properties"
+    ]
+}

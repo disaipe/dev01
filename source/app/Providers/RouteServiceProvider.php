@@ -1,0 +1,88 @@
+<?php
+
+namespace App\Providers;
+
+use App\Core\Reference\ReferenceManager;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Route;
+
+class RouteServiceProvider extends ServiceProvider
+{
+    /**
+     * The path to the "home" route for your application.
+     *
+     * Typically, users are redirected here after authentication.
+     *
+     * @var string
+     */
+    public const HOME = '/home';
+
+    public function register()
+    {
+        parent::register();
+
+        $this->app->singleton('references', fn () => new ReferenceManager());
+
+        $this->routes(function () {
+            Route::middleware('api')
+                ->prefix('api')
+                ->group(base_path('routes/api.php'));
+
+            Route::middleware('web')
+                ->group(base_path('routes/web.php'));
+
+            Route::middleware('web')
+                ->prefix('api/web')
+                ->group(base_path('routes/ajax.php'));
+        });
+
+        Route::macro('reference', function (string $referenceClass) {
+            /** @var ReferenceManager $references */
+            $references = app('references');
+            $references->register($referenceClass);
+        });
+
+        Route::macro('references', function () {
+            /** @var ReferenceManager $references */
+            $references = app('references');
+
+            foreach ($references->getReferences() as $reference) {
+                $prefix = $reference->getPrefix();
+                $controller = $reference->controller();
+
+                Route::prefix($prefix)->group(function () use ($controller) {
+                    Route::post('', $controller->list(...));
+                    Route::post('update', $controller->push(...));
+                    Route::post('remove', $controller->remove(...));
+
+                    Route::get('schema', $controller->schema(...));
+                });
+            }
+        });
+    }
+
+    /**
+     * Define your route model bindings, pattern filters, and other route configuration.
+     *
+     * @return void
+     */
+    public function boot(): void
+    {
+        $this->configureRateLimiting();
+    }
+
+    /**
+     * Configure the rate limiters for the application.
+     *
+     * @return void
+     */
+    protected function configureRateLimiting(): void
+    {
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+        });
+    }
+}

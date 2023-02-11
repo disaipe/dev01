@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ "$#" -eq 0 ]; then
+  docker-compose exec -u www-data php /bin/bash
+  exit 0
+fi
+
+docker-compose exec -u www-data php $@
