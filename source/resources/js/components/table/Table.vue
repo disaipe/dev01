@@ -74,6 +74,16 @@
                 @saved='save'
                 @removed='remove'
             )
+
+    el-dialog(
+        v-model='historyDialog'
+        title='История изменений'
+    )
+        history-table(
+            v-if='contextRow.$getKey()'
+            :reference='reference'
+            :id='contextRow.$getKey()'
+        )
 </template>
 
 <script>
@@ -90,11 +100,10 @@ import { useTableStore } from '../../store/modules';
 
 import TableFilter from './TableFilter.vue';
 import TableColumnsSettings from './TableColumnsSettings.vue';
-import RecordForm from '../record-form/RecordForm.vue';
 
 export default {
     name: 'ItTable',
-    components: { RecordForm, TableColumnsSettings, TableFilter },
+    components: { TableColumnsSettings, TableFilter },
     mixins: [tableFilters, tableContextMenu],
     provide() {
         return {
@@ -171,8 +180,10 @@ export default {
             },
 
             selectedRow: null,
+            contextRow: null,
 
             drawer: false,
+            historyDialog: false,
 
             loading: false,
 
@@ -355,6 +366,11 @@ export default {
                 this.expanded = this.expanded.filter((v) => v !== key);
             }
             this.saveExpanded();
+        },
+
+        onRowHistory(row) {
+            this.contextRow = row;
+            this.historyDialog = true;
         },
 
         close() {

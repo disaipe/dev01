@@ -86,4 +86,20 @@ export default class Api extends Repository {
                return {};
             });
     }
+
+    history(key) {
+        return this.api()
+            .get(`${this.baseURL()}/history/${key}`)
+            .then((response) => {
+                if (response.ok) {
+                    const { status, data } = response.data;
+
+                    if (status) {
+                        return data;
+                    }
+                }
+
+                return [];
+            });
+    }
 }

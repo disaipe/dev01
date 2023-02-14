@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Core\Traits\Protocolable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -19,6 +20,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Domain extends Model
 {
+    use Protocolable;
+
     protected $fillable = [
         'name',
         'code',

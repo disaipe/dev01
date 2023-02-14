@@ -20,11 +20,9 @@ export default {
 
             if (this[menu.code] instanceof Function) {
                 this[menu.code](row, menu.props);
+            } else {
+                console.warn(`[Table] Method ${menu.code} not implemented`);
             }
         },
-
-        onRowHistory(row) {
-            console.log('history', row);
-        }
     }
 }

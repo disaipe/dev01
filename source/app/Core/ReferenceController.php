@@ -5,6 +5,8 @@ namespace App\Core;
 use App\Core\Reference\ReferenceEntry;
 use App\Http\Requests\ReferenceListingRequest;
 use App\Http\Requests\ReferencePushRequest;
+use App\Http\Resources\ProtocolRecordResource;
+use App\Models\ProtocolRecord;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -153,6 +155,27 @@ class ReferenceController extends BaseController
         return new JsonResponse([
             'status' => true,
             'data' => $schema,
+        ]);
+    }
+
+    public function history(Request $request): JsonResponse
+    {
+        $id = $request->route('record');
+        $data = [];
+
+        if ($id) {
+            $shortModel = class_basename($this->model);
+
+            $data = ProtocolRecord::query()
+                ->where('object_id', '=', $id)
+                ->where('object_type', '=', $shortModel)
+                ->orderBy('datetime', 'desc')
+                ->get();
+        }
+
+        return new JsonResponse([
+            'status' => true,
+            'data' => ProtocolRecordResource::collection($data)
         ]);
     }
 
