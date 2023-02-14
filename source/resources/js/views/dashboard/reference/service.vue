@@ -1,6 +1,6 @@
 <template lang='pug'>
 .reference-page
-    Table(
+    ItTable(
         reference='Service'
         :columns='columns'
         :tree='true'

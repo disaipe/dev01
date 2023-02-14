@@ -5,19 +5,31 @@ import RepositoryApi from './api';
 import { parseRules } from '../../utils/formUtils';
 
 export default class Repository extends RepositoryApi {
+    static fieldsSchema = {};
+
+    get name() {
+        return this.model.$self().name;
+    }
+
     getEagerLoad() {
         return this.model.constructor.eagerLoad;
     }
 
     getFieldsSchema() {
+        if (this.constructor.fieldsSchema[this.name]) {
+            return Promise.resolve(this.constructor.fieldsSchema[this.name]);
+        }
+
         return this.schema().then((schema) => {
             const result = defaultsDeep(schema || {}, this.model.constructor.schema());
 
             for (const field of Object.values(result)) {
-                if (field.rules) {
+                if (field.rules && field.visible !== false) {
                     Object.assign(field, parseRules(field.rules));
                 }
             }
+
+            this.constructor.fieldsSchema[this.name] = result;
 
             return result;
         })

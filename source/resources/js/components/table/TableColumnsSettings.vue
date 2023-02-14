@@ -34,7 +34,7 @@ export default {
         const fields = toRef(table, 'fields');
 
         const sortables = ref(null);
-        const sortable = reactive(null);
+        const sortable = ref(null);
 
         return {
             table,

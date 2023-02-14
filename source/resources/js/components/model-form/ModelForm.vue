@@ -9,17 +9,11 @@ el-form(
 
 <script>
 import { ref, toRef, provide } from 'vue';
-import { ElForm } from 'element-plus';
+import props from './modelFormProps';
 
 export default {
     name: 'ModelForm',
-    props: {
-        ...ElForm.props,
-        modelValue: {
-            type: Object,
-            default: () => ({})
-        }
-    },
+    props,
     setup(props) {
         const form = ref();
         const modelForm = toRef(props, 'modelValue');

@@ -10,7 +10,9 @@ export default {
     }),
     computed: {
         visibleColumns() {
-            return Object.values(this.columnStore).filter((column) => column.visible);
+            return Object
+                .values(this.columnStore)
+                .filter((column) => column.visible);
         }
     },
     watch: {
@@ -61,11 +63,12 @@ export default {
                     result[field] = {};
                 }
 
-                const { label } = schema;
+                const { label, defaultColumn } = schema;
 
                 defaults(result[field], {
                     field,
-                    label
+                    label,
+                    visible: defaultColumn
                 });
             }
 

@@ -15,13 +15,19 @@
             border
             size='small'
             :loading='loading'
-            :data='data'
+            :data='verifiedData'
             :row-config='rowConfig'
             :tree-config='treeConfig'
+            :menu-config='menuConfig'
             @cell-dblclick='handleRowDblClick'
             @toggle-tree-expand='handleRowExpand'
+            @menu-click='onContextMenuClick'
         )
             template(#default)
+                vxe-column(
+                    :visible='!visibleColumns.length'
+                )
+                    el-alert(type='warning' title='Не выбраны видимые колонки')
                 vxe-column(
                     v-for='({ field, label }, i) of visibleColumns'
                     :prop='field'
@@ -30,7 +36,7 @@
                 )
                     template(#header='{ column }')
                         .flex.items-center.justify-between.space-x-2.leading-3
-                            span(style='word-break: break-word') {{ label || fields[field].label }}
+                            span(style='word-break: break-word') {{ label }}
 
                             TableFilter(
                                 :field='field'
@@ -60,55 +66,36 @@
         @closed='close'
     )
         el-scrollbar.pr-4
-            model-form(
-                ref='form'
-                v-if='selectedRow'
+            record-form(
                 v-model='selectedRow'
-                :rules='rules'
-                :disabled='!canUpdate'
-                label-position='top'
+                :can-create='canCreate'
+                :can-update='canUpdate'
+                :can-delete='canDelete'
+                @saved='save'
+                @removed='remove'
             )
-                model-form-item(
-                    v-for='(field, prop) of fields'
-                    v-model='selectedRow[prop]'
-                    :field='field'
-                    :prop='prop'
-                )
-
-                el-button(v-if='canUpdate' type='primary' :loading='saving' @click='save($refs.form)') Сохранить
-
-                el-popconfirm(
-                    v-if='canRemove'
-                    width='auto'
-                    title='Точно удалить?'
-                    confirm-button-text='Да'
-                    cancel-button-text='Подумаю ещё'
-                    @confirm='remove'
-                )
-                    template(#reference)
-                        el-button(v-if='canDelete' type='danger' :loading='removing') Удалить
 </template>
 
 <script>
-import { ref, toRef, computed } from 'vue';
+import { ref, toRef } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { useRepos } from '../../store/repository';
-import { validationRulesFromSchema } from '../../utils/formUtils';
 import { snake } from '../../utils/stringsUtils';
 
 import tableFilters from './mixins/tableFilters';
+import tableContextMenu from './mixins/tableContextMenu';
 
-import { useTableStore} from '../../store/modules';
+import { useTableStore } from '../../store/modules';
 
 import TableFilter from './TableFilter.vue';
 import TableColumnsSettings from './TableColumnsSettings.vue';
-import ModelFormItem from '../model-form/ModelFormItem.vue';
+import RecordForm from '../record-form/RecordForm.vue';
 
 export default {
     name: 'ItTable',
-    components: { ModelFormItem, TableColumnsSettings, TableFilter },
-    mixins: [tableFilters],
+    components: { RecordForm, TableColumnsSettings, TableFilter },
+    mixins: [tableFilters, tableContextMenu],
     provide() {
         return {
             TableInstance: this
@@ -142,41 +129,35 @@ export default {
     },
     setup(props) {
         const reference = toRef(props, 'reference');
-        const visibleColumns = toRef(props, 'columns');
+        const columns = toRef(props, 'columns');
 
         const route = useRoute();
         const tableId = [route.name, snake(reference.value)].join('_');
 
         const repository = useRepos()[reference.value];
-        const fieldsSchema = ref();
-        const fields = ref();
-        repository.getFieldsSchema().then((schema) => {
-            fieldsSchema.value = schema;
 
-            const a = Object.values(schema).filter((value) => {
-                return value.visible !== false
-            });
-
-            fields.value = Object.fromEntries(a);
-        });
-
-        const {
-            loadExpanded,
-            saveExpanded
-        } = useTableStore();
+        // Tree table functionality
+        const { loadExpanded, saveExpanded } = useTableStore();
         const expanded = ref(loadExpanded(tableId));
 
+        const visibleColumns = ref(columns.value);
+
+        const fields = ref();
+        repository.getFieldsSchema().then((schema) => {
+            fields.value = schema;
+        });
 
         return {
             tableId,
             repository,
+
             fields,
+
+            columns,
             visibleColumns,
 
             expanded,
-            saveExpanded: () => saveExpanded({ tableId, expanded: expanded.value }),
-
-            rules: computed(() => validationRulesFromSchema(fields.value)),
+            saveExpanded: () => saveExpanded({ tableId, expanded: expanded.value })
         };
     },
     data: function () {
@@ -194,8 +175,6 @@ export default {
             drawer: false,
 
             loading: false,
-            saving: false,
-            removing: false,
 
             rowConfig: {
                 useKey: true,
@@ -215,8 +194,12 @@ export default {
         }
     },
     computed: {
-        canRemove() {
-            return this.selectedRow && this.selectedRow.$isSaved();
+        verifiedData() {
+            if (!this.visibleColumns.length) {
+                return [{}];
+            }
+
+            return this.data;
         }
     },
     mounted() {
@@ -267,8 +250,6 @@ export default {
         loadTree(root = null) {
             const query = { root };
 
-            console.log(this.filterStore.filters);
-
             if (Object.keys(this.filterStore.filters || {}).length) {
                 query.filters = this.filterStore.filters;
             }
@@ -307,60 +288,42 @@ export default {
             this.drawer = true;
         },
 
-        save(form) {
-            form.validate((valid) => {
-              if (valid) {
-                  this.saving = true;
+        save({ original, saved }) {
+            if (saved) {
+                const key = original.$getKey();
 
-                  this.repository.push(this.selectedRow).then((savedRecord) => {
-                      if (savedRecord) {
-                          this.saving = false;
+                // find record in table to update it
+                const record = this.$refs.vxe.getRowById(key);
 
-                          const key = this.selectedRow.$getKey();
-
-                          // find record in table to update it
-                          const record = this.$refs.vxe.getRowById(key);
-
-                          if (record) {
-                              // update if found
-                              Object.assign(record, savedRecord);
-                          } else {
-                              // create new row if no record exists
-                              if (this.tree) {
-                                  const parentKey = savedRecord[this.treeConfig.parentField];
-                                  this.$refs.vxe.getRowById(parentKey)?.[this.treeConfig.children]?.push(savedRecord);
-                              } else {
-                                  this.$refs.vxe.insertAt(savedRecord, 0);
-                              }
-                          }
-
-                          this.selectedRow = savedRecord;
-                      }
-                  });
-              }
-            });
-        },
-
-        remove() {
-            this.removing = true;
-
-            this.repository.remove(this.selectedRow.$getKey()).then((removed) => {
-                this.removing = false;
-
-                if (removed) {
-                    const keyName = this.selectedRow.$getKeyName();
-
-                    for (const key of removed) {
-                        const rowIdx = this.data.findIndex((row) => row[keyName] === key);
-
-                        if (rowIdx > -1) {
-                            this.data.splice(rowIdx, 1);
-                        }
+                if (record) {
+                    // update if found
+                    Object.assign(record, saved);
+                } else {
+                    // create new row if no record exists
+                    if (this.tree) {
+                        const parentKey = saved[this.treeConfig.parentField];
+                        this.$refs.vxe.getRowById(parentKey)?.[this.treeConfig.children]?.push(saved);
+                    } else {
+                        this.$refs.vxe.insertAt(saved, 0);
                     }
                 }
 
-                this.close();
-            });
+                this.selectedRow = saved;
+            }
+        },
+
+        remove(removed) {
+            if (removed) {
+                for (const key of removed) {
+                    const row = this.$refs.vxe.getRowById(key);
+
+                    if (row) {
+                        this.$refs.vxe.remove(row);
+                    }
+                }
+            }
+
+            this.close();
         },
 
         handlePageChange() {
