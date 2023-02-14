@@ -29,7 +29,11 @@
                         trigger='click'
                     )
                         .flex.space-x-2.items-center
-                            el-avatar(shape='square' size='small')
+                            el-avatar(
+                                :src='user.avatar'
+                                shape='square'
+                                size='small'
+                            )
                             .text-gray-400 {{ user.name }}
 
                         template(#dropdown)

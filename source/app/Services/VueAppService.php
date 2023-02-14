@@ -22,11 +22,8 @@ class VueAppService
 
     private function getPropsData($share = []): array
     {
-        /** @var User $user */
-        $user = Auth::user();
-
         $share = array_merge_recursive([
-            'user' => $user?->only('name'),
+            'user' => $this->getUserProps(),
             'routes' => $this->getReferenceRoutes(),
             'models' => $this->getReferenceModels(),
         ], $share);
@@ -40,6 +37,25 @@ class VueAppService
         ];
     }
 
+    private function getUserProps(): ?array
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        if (!$user) {
+            return null;
+        }
+
+        $avatar = \Storage::disk('public')->exists("avatars/{$user->id}")
+            ? "/storage/avatars/{$user->id}"
+            : null;
+
+        return [
+            ...$user?->only('name'),
+            'avatar' => $avatar
+        ];
+    }
+
     private function getReferenceRoutes(): array
     {
         /** @var ReferenceManager $references */
@@ -50,6 +66,7 @@ class VueAppService
                 'name' => $entry->getName(),
                 'path' => $entry->getPrefix(),
                 'meta' => [
+                    'model' => class_basename($entry->getModel()),
                     'icon' => $entry->getIcon(),
                     'view' => $entry->getView(),
                     'title' => $entry->getPluralLabel(),
