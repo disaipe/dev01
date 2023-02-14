@@ -11,6 +11,8 @@ class CompanyReference extends ReferenceEntry
 
     protected bool $piniaBindings = false;
 
+    protected int $order = 99;
+
     protected array $schema = [
         'id' => [
             'label' => 'ID',

@@ -67,6 +67,7 @@ class VueAppService
                 'path' => $entry->getPrefix(),
                 'meta' => [
                     'model' => class_basename($entry->getModel()),
+                    'order' => $entry->getOrder(),
                     'icon' => $entry->getIcon(),
                     'view' => $entry->getView(),
                     'title' => $entry->getPluralLabel(),

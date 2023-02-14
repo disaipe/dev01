@@ -11,6 +11,8 @@ class ServiceReference extends ReferenceEntry
 
     protected bool $piniaBindings = false;
 
+    protected int $order = 98;
+
     protected array $schema = [
         'id' => [
             'label' => 'ID',

@@ -59,6 +59,7 @@
 <script>
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
+import { orderBy } from 'lodash';
 
 import { useTabsStore } from '../store/modules/tabs';
 import usePage from '../utils/usePage';
@@ -71,13 +72,17 @@ export default {
         const logout = () => window.location.href = '/logout';
 
         const router = useRouter();
-        const routes = reactive([]);
 
+        // get reference routes
+        const tempRoutes = [];
         for (const route of router.getRoutes()) {
             if (route.meta?.isReference) {
-                routes.push(route);
+                tempRoutes.push(route);
             }
         }
+
+        // order reference routes
+        const routes = reactive(orderBy(tempRoutes, [(r) => r.meta.order], ['desc']));
 
         const { user } = usePage();
 

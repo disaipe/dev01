@@ -45,6 +45,13 @@ class ReferenceEntry
     protected ?string $icon = 'Collection';
 
     /**
+     * Menu order
+     *
+     * @var int
+     */
+    protected int $order = 0;
+
+    /**
      * Determine the schema contains bindings for the Pinia-orm model
      *
      * @var bool
@@ -172,6 +179,16 @@ class ReferenceEntry
     public function getIcon(): string
     {
         return $this->icon;
+    }
+
+    /**
+     * Get reference menu item order
+     *
+     * @return int
+     */
+    public function getOrder(): int
+    {
+        return $this->order;
     }
 
     /**
