@@ -5,7 +5,10 @@ export default {
                 body: {
                     options: [
                         [
-                            { code: 'onRowHistory', name: 'История изменений' }
+                            { code: 'onContextRowEdit', name: 'Редактировать' }
+                        ],
+                        [
+                            { code: 'onContextRowHistory', name: 'История изменений' }
                         ]
                     ]
                 }
@@ -23,6 +26,6 @@ export default {
             } else {
                 console.warn(`[Table] Method ${menu.code} not implemented`);
             }
-        },
+        }
     }
 }

@@ -1,7 +1,7 @@
 <template lang='pug'>
 .it-table
     .flex.flex-col.space-y-2
-        .flex.items-center.justify-between.pr-4
+        .flex.items-center.justify-between
             el-button-group
                 el-button(v-if='canCreate' icon='CirclePlus' @click='create') Создать
                 el-button(icon='Refresh' @click='load') Обновить
@@ -15,6 +15,7 @@
             border
             size='small'
             :loading='loading'
+            :loading-config='loadingConfig'
             :data='verifiedData'
             :row-config='rowConfig'
             :tree-config='treeConfig'
@@ -63,7 +64,7 @@
 
     el-drawer(
         v-model='drawer'
-        @closed='close'
+        @closed='closeDrawer'
     )
         el-scrollbar.pr-4
             record-form(
@@ -187,6 +188,9 @@ export default {
 
             loading: false,
 
+            loadingConfig: {
+                text: 'Собираем данные'
+            },
             rowConfig: {
                 useKey: true,
                 keyField: this.repository.model.$getKeyName()
@@ -334,7 +338,7 @@ export default {
                 }
             }
 
-            this.close();
+            this.closeDrawer();
         },
 
         handlePageChange() {
@@ -368,12 +372,17 @@ export default {
             this.saveExpanded();
         },
 
-        onRowHistory(row) {
+        onContextRowEdit(row) {
+            this.selectedRow = this.repository.make(row);
+            this.drawer = true;
+        },
+
+        onContextRowHistory(row) {
             this.contextRow = row;
             this.historyDialog = true;
         },
 
-        close() {
+        closeDrawer() {
             this.selectedRow = null;
             this.drawer = false;
         }
