@@ -22,12 +22,12 @@ el-popover(
             ) Применить
 
         div
-            el-button.w-full(
-                type='text'
-                size='small'
+            el-link.w-full(
+                :underline='false'
                 :disabled='!filterStore.inputs[field]'
                 @click.stop='applyFilter()'
-            ) Сбросить
+            )
+                .text-xs Сбросить
 </template>
 
 <script>
@@ -50,26 +50,26 @@ export default {
         const value = toRef(filterStore.filters, field.value);
 
         const applyFilter = (value = undefined) => {
-            filterStore.visibility[field] = false;
-            filterStore.filters[field] = value;
+            filterStore.visibility[field.value] = false;
+            filterStore.filters[field.value] = value;
 
-            emit('filter-change', field, value);
+            emit('filter-change', field.value, value);
         };
 
         return {
             value,
             filterStore,
             applyFilter,
-            isSet: computed(() => filterStore.filters[field]),
-            isCanSet: computed(() => filterStore.inputs[field] !== filterStore.filters[field]),
-            isVisible: computed(() => filterStore.visibility[field] || false),
+            isSet: computed(() => filterStore.filters[field.value]),
+            isCanSet: computed(() => filterStore.inputs[field.value] !== filterStore.filters[field.value]),
+            isVisible: computed(() => filterStore.visibility[field.value] || false),
             onShow() {
-                if (!filterStore.inputs[field]) {
-                    filterStore.inputs[field] = filterStore.filters[field];
+                if (!filterStore.inputs[field.value]) {
+                    filterStore.inputs[field.value] = filterStore.filters[field.value];
                 }
             },
             toggleFilter() {
-                filterStore.visibility[field] = !filterStore.visibility[field];
+                filterStore.visibility[field.value] = !filterStore.visibility[field.value];
             }
         };
     }
