@@ -51,7 +51,7 @@ class ADEntryReference extends ReferenceEntry
             ],
             'groups' => [
                 'label' => 'Группы',
-                'pinia' => PiniaAttribute::string(),
+                'pinia' => PiniaAttribute::attr([]),
             ],
             'last_logon' => [
                 'label' => 'Последний вход',

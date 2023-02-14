@@ -18,10 +18,12 @@ class CompanyReference extends ReferenceEntry
         'code' => [
             'label' => 'Префикс',
             'rules' => 'required|max:16',
+            'defaultColumn' => true,
         ],
         'name' => [
             'label' => 'Наименование',
             'rules' => 'required',
+            'defaultColumn' => true,
         ],
         'fullname' => [
             'label' => 'Полное наименование',
@@ -29,6 +31,7 @@ class CompanyReference extends ReferenceEntry
         'identity' => [
             'label' => 'ИНН',
             'rules' => 'max:32',
+            'defaultColumn' => true,
         ],
         'description' => [
             'label' => 'Описание',

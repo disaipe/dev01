@@ -79,7 +79,6 @@ return [
                 'sync_passwords' => true,
                 'sync_attributes' => [
                     'name' => 'cn',
-                    // 'username' => 'sAMAccountName',
                     'email' => 'mail',
                 ],
             ],

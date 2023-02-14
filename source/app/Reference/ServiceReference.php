@@ -21,10 +21,12 @@ class ServiceReference extends ReferenceEntry
         'name' => [
             'label' => 'Наименование',
             'rules' => 'required|max:128',
+            'defaultColumn' => true,
         ],
         'display_name' => [
             'rules' => 'max:512',
             'label' => 'Полное наименование',
+            'defaultColumn' => true,
         ],
         'tags' => [
             'rules' => 'array',

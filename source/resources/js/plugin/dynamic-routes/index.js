@@ -9,10 +9,10 @@ export default {
         for (const route of routes) {
             const component = route.meta.view
                 ? import(`../../views/dashboard/reference/${route.meta.view}.vue`)
-                : defineComponent({
+                : Promise.resolve(defineComponent({
                     ...Reference,
                     name: `Reference${route.name}`
-                });
+                }));
 
             router.addRoute('dashboard-root', {
                 ...route,
