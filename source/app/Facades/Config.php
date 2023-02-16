@@ -44,7 +44,9 @@ class Config
      */
     public static function setArray(array $values, array $types = []): void
     {
-        foreach ($values as $key => $_value) {
+        $dotValues = Arr::dot($values);
+
+        foreach ($dotValues as $key => $_value) {
             $value = $_value;
             $type = Arr::get($types, $key);
             $encrypt = false;
