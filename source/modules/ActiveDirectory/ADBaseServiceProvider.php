@@ -5,8 +5,11 @@ namespace App\Modules\ActiveDirectory;
 use App\Core\Module\ModuleBaseServiceProvider;
 use App\Core\Reference\ReferenceManager;
 use App\Core\RegularExpressions;
+use App\Forms\Components\RawHtmlContent;
 use App\Models\Domain;
 use App\Modules\ActiveDirectory\Commands\LdapSync;
+use Cron\CronExpression;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -47,12 +50,16 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
                         Textarea::make('filters')
                             ->label(__('ad::messages.filter')),
                     ]),
-                    Section::make(__('admin.schedule'))->schema([
-                        TextInput::make('schedule')
-                            ->label('Cron')
+                    Section::make(__('ad::messages.job.ldap_sync.title'))->schema([
+                        RawHtmlContent::make(__('ad::messages.job.ldap_sync.description')),
+                        Checkbox::make('LdapSync.enabled')
+                            ->label(__('admin.enabled')),
+                        TextInput::make('LdapSync.schedule')
+                            ->label(__('admin.schedule'))
+                            ->placeholder('* * * * * *')
                             ->helperText(__('admin.cron_helper'))
-                            ->regex(RegularExpressions::CRON),
-                    ]),
+                            ->regex(RegularExpressions::CRON)
+                    ])->collapsible()->collapsed(),
                 ],
             ],
         ]);
