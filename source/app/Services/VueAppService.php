@@ -33,7 +33,7 @@ class VueAppService
 
         return [
             'k' => base64_encode($key),
-            'v' => $encrypter->encrypt(json_encode($share), false),
+            'v' => $encrypter->encrypt(json_encode($share, JSON_OBJECT_AS_ARRAY), false),
         ];
     }
 
@@ -95,6 +95,7 @@ class VueAppService
                     'fields' => $entry->getPiniaFields(),
                 ];
             })
+            ->values()
             ->toArray();
     }
 }
