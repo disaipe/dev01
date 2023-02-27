@@ -11,8 +11,12 @@ export default {
                     const fields = {};
 
                     for (const [key, def] of Object.entries(model.fields)) {
-                        const [method, ...args] = def;
-                        fields[key] = this[method](...args);
+                        if (Array.isArray(def)) {
+                            const [method, ...args] = def;
+                            fields[key] = this[method](...args);
+                        } else {
+                            console.warn(`Model "${model.name}" field "${key} definition is not valid, skipping`);
+                        }
                     }
 
                     return fields;
