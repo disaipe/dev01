@@ -14,10 +14,18 @@ const routes = [
         children: [
             {
                 path: '',
-                component: () => import('../views/dashboard/index.vue'),
+                component: () => import('../views/dashboard/Index.vue'),
                 name: 'dashboard',
                 meta: {
                     title: 'Главная'
+                }
+            },
+            {
+                path: 'report_template/:id',
+                component: () => import('../views/dashboard/record/ReportTemplate.vue'),
+                name: 'ReportTemplateRecord',
+                meta: {
+                    scroll: false
                 }
             }
         ]

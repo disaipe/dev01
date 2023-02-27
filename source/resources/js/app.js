@@ -4,6 +4,9 @@ import elementLang from 'element-plus/dist/locale/ru.min';
 
 import VXETable from 'vxe-table';
 
+import vClickOutside from 'click-outside-vue3';
+import { Icon } from '@iconify/vue';
+
 import '../styles/dashboard.pcss';
 import 'element-plus/dist/index.css'
 import 'vxe-table/lib/style.css';
@@ -24,6 +27,10 @@ const app = createApp(App)
     .use(VXETable)
     .use(pinia)
     .use(router)
+
+    .use(vClickOutside)
+
+    .component('Icon', Icon)
 
     // app plugins
     .use(dynamicRoutes)
