@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Core\ReferenceModel;
+use App\Core\Reference\ReferenceModel;
 
 class Company extends ReferenceModel
 {

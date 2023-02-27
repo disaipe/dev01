@@ -16,6 +16,9 @@ class ReferenceListingRequest extends FormRequest
     public function rules(): array
     {
         return [
+            // fast filter by id
+            'id' => 'numeric',
+
             // filters object
             'filters' => 'array',
 

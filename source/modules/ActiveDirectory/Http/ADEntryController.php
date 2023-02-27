@@ -2,8 +2,8 @@
 
 namespace App\Modules\ActiveDirectory\Http;
 
-use App\Core\ReferenceController;
-use App\Core\ReferenceModel;
+use App\Core\Reference\ReferenceController;
+use App\Core\Reference\ReferenceModel;
 use App\Modules\ActiveDirectory\Models\ADEntry;
 
 class ADEntryController extends ReferenceController

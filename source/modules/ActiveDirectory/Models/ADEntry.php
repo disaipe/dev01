@@ -2,13 +2,17 @@
 
 namespace App\Modules\ActiveDirectory\Models;
 
-use App\Core\ReferenceModel;
+use App\Core\Reference\ReferenceModel;
+use App\Core\Traits\CompanyScope;
 use App\Models\Company;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ADEntry extends ReferenceModel
 {
+    use CompanyScope;
+
     protected $table = 'ad_entries';
+    protected ?string $companyCodeColumn = 'company_prefix';
 
     protected $fillable = [
         'company_prefix',

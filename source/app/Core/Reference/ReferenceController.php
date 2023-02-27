@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Core;
+namespace App\Core\Reference;
 
-use App\Core\Reference\ReferenceEntry;
 use App\Http\Requests\ReferenceListingRequest;
 use App\Http\Requests\ReferencePushRequest;
 use App\Http\Resources\ProtocolRecordResource;
 use App\Models\ProtocolRecord;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -38,6 +38,9 @@ class ReferenceController extends BaseController
 
     public function list(ReferenceListingRequest $request): JsonResponse
     {
+        // fast filter by id
+        $id = $request->input('id');
+
         // filters input
         $filters = $request->input('filters');
 
@@ -54,6 +57,10 @@ class ReferenceController extends BaseController
         // make query
         $model = $this->getModel();
         $query = $model->newQuery();
+
+        if ($id) {
+            $query->whereKey($id);
+        }
 
         if ($filters) {
             $this->applyFilters($query, $filters);
@@ -176,6 +183,23 @@ class ReferenceController extends BaseController
         return new JsonResponse([
             'status' => true,
             'data' => ProtocolRecordResource::collection($data)
+        ]);
+    }
+
+    public function related(Request $request): JsonResponse {
+        $models = $request->input('models', []);
+
+        $results = [];
+
+        foreach ($models as $model) {
+            /** @var Model $modelInstance */
+            $modelInstance = app()->make("App\\Models\\{$model}");
+            $results[$model] = $modelInstance->newQuery()->get()->toArray();
+        }
+
+        return new JsonResponse([
+            'status' => true,
+            'data' => $results
         ]);
     }
 

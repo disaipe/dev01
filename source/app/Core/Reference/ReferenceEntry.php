@@ -2,7 +2,6 @@
 
 namespace App\Core\Reference;
 
-use App\Core\ReferenceController;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Str;

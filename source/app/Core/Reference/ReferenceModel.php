@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core;
+namespace App\Core\Reference;
 
 use App\Core\Traits\Protocolable;
 use Illuminate\Database\Eloquent\Model;
