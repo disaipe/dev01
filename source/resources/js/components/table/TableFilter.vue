@@ -11,7 +11,7 @@ el-popover(
         )
             el-icon
                 Filter
-    .flex.flex-col.space-y-1
+    .flex.flex-col.space-y-1(v-click-outside='close')
         el-input(v-model='filterStore.inputs[field]')
 
         div
@@ -70,6 +70,9 @@ export default {
             },
             toggleFilter() {
                 filterStore.visibility[field.value] = !filterStore.visibility[field.value];
+            },
+            close() {
+                filterStore.visibility[field.value] = false;
             }
         };
     }

@@ -167,7 +167,6 @@ export default {
 
             fields,
 
-            columns,
             visibleColumns,
 
             expanded,

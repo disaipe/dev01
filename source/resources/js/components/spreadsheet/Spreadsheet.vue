@@ -101,7 +101,7 @@
     )
 
     .spreadsheet-container
-        hot-table.bg-gray-100(ref='spread' :settings='settings')
+        hot-table.bg-gray-100(ref='spread' :settings='hotSettings')
 </template>
 
 <script>
@@ -109,7 +109,7 @@ import { ref, toRef, reactive } from 'vue';
 import { HotTable } from '@handsontable/vue3';
 import 'handsontable/dist/handsontable.full.css';
 
-import { ptToPx, pxToPt } from '../../utils/cssUtils';
+import { pxToPt } from '../../utils/cssUtils';
 
 import {
     configure,
@@ -130,8 +130,14 @@ export default {
     name: 'Spreadsheet',
     components: { HotTable },
     props: {
-        settings: Object,
-        cellModifier: Function
+        settings: {
+            type: Object,
+            default: null
+        },
+        cellModifier: {
+            type: Function,
+            default: null
+        }
     },
     setup(props) {
         const settingsProp = toRef(props, 'settings');
@@ -156,7 +162,7 @@ export default {
             cellModifier: cellModifier.value
         });
 
-        const settings = configure({
+        const hotSettings = configure({
             startRows: 50,
             startCols: 25,
             width: '100%',
@@ -199,7 +205,7 @@ export default {
             defaultFontFamilies: ['Arial', 'Calibri', 'Courier New', 'Helvetica', 'Verdana'],
             defaultFontSizes: [8,9,10,11,12,14,16,18,22,24,26,36,42],
 
-            settings,
+            hotSettings,
 
             // $refs
             spread,
