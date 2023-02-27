@@ -1,4 +1,4 @@
-const files = import.meta.glob('./**/index.js', { eager: true });
+const files = import.meta.glob('./*/index.js', { eager: true });
 
 const modules = {};
 
