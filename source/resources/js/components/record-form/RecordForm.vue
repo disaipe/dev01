@@ -7,7 +7,7 @@ model-form(
     label-position='top'
 )
     model-form-item(
-        v-for='(field, prop) of fields'
+        v-for='(field, prop) of visibleFields'
         v-model='modelValue[prop]'
         :field='field'
         :prop='prop'
@@ -29,6 +29,7 @@ model-form(
 
 <script>
 import { computed, ref, toRef } from 'vue';
+import pickBy from 'lodash/pickBy';
 
 import { useRepos } from '../../store/repository';
 import { validationRulesFromSchema } from '../../utils/formUtils';
@@ -60,8 +61,10 @@ export default {
         const repository = useRepos()[reference];
 
         const fields = ref();
+        const visibleFields = ref();
         repository.getFieldsSchema().then((schema) => {
-            fields.value = schema;
+            fields.value = (schema || {});
+            visibleFields.value = pickBy(schema, (value) => value.visible !== false);
         });
 
         const rules =  computed(() => validationRulesFromSchema(fields.value));
@@ -70,6 +73,7 @@ export default {
             reference,
             repository,
             fields,
+            visibleFields,
             rules
         };
     },
