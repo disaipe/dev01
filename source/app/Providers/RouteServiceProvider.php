@@ -60,6 +60,7 @@ class RouteServiceProvider extends ServiceProvider
 
                     Route::get('schema', $controller->schema(...));
                     Route::get('history/{record}', $controller->history(...));
+                    Route::post('related', $controller->related(...));
                 });
             }
         });
