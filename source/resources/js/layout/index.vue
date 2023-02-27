@@ -48,7 +48,7 @@
                                             span Выйти
             el-main(class='!pr-1')
                 RouterTabs
-                el-scrollbar.pr-4
+                component.pt-1.pr-4.h-full(:is='isRouteScroll ? "el-scrollbar" : "div"')
                     router-view(v-slot='{ Component }')
                         transition(name='fade-transform' mode='out-in')
                             keep-alive(:include='cachedViews')
@@ -57,9 +57,9 @@
 </template>
 
 <script>
-import { reactive } from 'vue';
+import { reactive, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import { orderBy } from 'lodash';
+import orderBy from 'lodash/orderBy';
 
 import { useTabsStore } from '../store/modules/tabs';
 import usePage from '../utils/usePage';
@@ -87,6 +87,8 @@ export default {
         const { user } = usePage();
 
         return {
+            isRouteScroll: computed(() => router.currentRoute.value.meta?.scroll !== false),
+
             cachedViews,
             routes,
             user,
