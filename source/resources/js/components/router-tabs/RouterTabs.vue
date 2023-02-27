@@ -70,7 +70,7 @@ export default {
 
 <style lang='postcss' scoped>
 .router-tabs-container {
-    @apply h-8 w-full;
+    @apply h-9 w-full;
 
     .wrapper {
         @apply flex items-center space-x-1;
