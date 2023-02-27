@@ -35,6 +35,26 @@ export default class Repository extends RepositoryApi {
         })
     }
 
+    getRelatedModels() {
+        return this.getFieldsSchema().then((schema) => {
+            return Object.values(schema).reduce((acc, cur) => {
+                if (cur.relation) {
+                    const model = cur.relation.model;
+
+                    if (
+                        model
+                        && model !== this.name
+                        && !acc.includes(model)
+                    ) {
+                        acc.push(model);
+                    }
+                }
+
+                return acc;
+            }, []);
+        });
+    }
+
     groupTreeBy(parentKey = 'parent_id', childrenKey = 'children', items = null) {
         const groupItems = items || this.all();
         const grouped = useGroupBy(groupItems, parentKey);

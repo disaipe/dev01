@@ -152,10 +152,14 @@ export default {
 
         const visibleColumns = ref(columns.value);
 
+        // Get model fields schema
         const fields = ref();
         repository.getFieldsSchema().then((schema) => {
             fields.value = schema;
         });
+
+        // TODO: Determine related models to load
+        repository.fetchRelatedModels();
 
         return {
             tableId,

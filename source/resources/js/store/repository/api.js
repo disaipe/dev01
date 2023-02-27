@@ -1,5 +1,7 @@
 import { Repository } from 'pinia-orm';
 
+import { useRepos } from './index';
+
 export default class Api extends Repository {
     api() {
         return this.model.constructor.api();
@@ -28,6 +30,10 @@ export default class Api extends Repository {
                     items
                 };
             });
+    }
+
+    load(id) {
+        return this.fetch({ id });
     }
 
     push(record) {
@@ -75,15 +81,15 @@ export default class Api extends Repository {
         return this.api()
             .get(`${this.baseURL()}/schema`)
             .then((response) => {
-               if (response.ok) {
-                   const { status, data } = response.data;
+                if (response.ok) {
+                    const { status, data } = response.data;
 
-                   if (status) {
-                       return data;
-                   }
-               }
+                    if (status) {
+                        return data;
+                    }
+                }
 
-               return {};
+                return {};
             });
     }
 
@@ -101,5 +107,27 @@ export default class Api extends Repository {
 
                 return [];
             });
+    }
+
+    fetchRelatedModels() {
+        return this.getRelatedModels().then((models) => {
+            if (!models.length) {
+                return models;
+            }
+
+            return this.api()
+                .post(`${this.baseURL()}/related`, { models })
+                .then((response) => {
+                    if (response.ok) {
+                        const { status, data } = response.data;
+
+                        if (status) {
+                            for (const [model, items] of Object.entries(data)) {
+                                useRepos()[model].save(items);
+                            }
+                        }
+                    }
+                });
+        });
     }
 }
