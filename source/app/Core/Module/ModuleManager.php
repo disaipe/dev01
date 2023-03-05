@@ -14,7 +14,7 @@ class ModuleManager
      *
      * @param  ModuleBaseServiceProvider  $provider
      * @param  string  $key module unique key
-     * @param  array  $options module options
+     * @param  array  $options module optionsi
      * @return Module
      */
     public function register(ModuleBaseServiceProvider $provider, string $key, array $options = []): Module
