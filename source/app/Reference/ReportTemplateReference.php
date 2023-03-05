@@ -11,6 +11,8 @@ class ReportTemplateReference extends ReferenceEntry
 
     protected bool $piniaBindings = false;
 
+    protected ?string $view = 'ReportTemplate';
+
     protected array $schema = [
         'id' => [
             'label' => 'ID',

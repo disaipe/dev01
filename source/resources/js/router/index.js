@@ -21,6 +21,14 @@ const routes = [
                 }
             },
             {
+                path: 'invoice',
+                component: () => import('../views/dashboard/report/InvoiceReport.vue'),
+                name: 'report-invoice',
+                meta: {
+                    title: 'Отчет'
+                }
+            },
+            {
                 path: 'report_template/:id',
                 component: () => import('../views/dashboard/record/ReportTemplate.vue'),
                 name: 'ReportTemplateRecord',

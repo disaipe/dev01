@@ -12,6 +12,8 @@ import { registerLanguageDictionary, ruRU } from 'handsontable/i18n';
 import { registerAllModules } from 'handsontable/registry';
 
 import { makeMatrix } from '../../utils/arrayUtils';
+import { base64ToBuffer } from '../../utils/base64';
+import { isServiceNameCell, isServiceCountCell } from './cellTypes';
 
 registerLanguageDictionary(ruRU);
 registerAllModules();
@@ -127,12 +129,10 @@ export function configure(settings = {}) {
 
 export function loadFromBuffer(buffer) {
     const workbook = new excel.Workbook();
+
     workbook.xlsx.load(buffer).then(() => {
         const worksheet = workbook.getWorksheet(1);
         store.value.worksheet = worksheet;
-
-        console.log({ workbook });
-        console.log({ worksheet });
 
         // set cells
         const data = makeMatrix(50, 30);
@@ -140,28 +140,28 @@ export function loadFromBuffer(buffer) {
 
         for (let row = 0; row < worksheet.rowCount; row++) {
             for (let col = 0; col < worksheet.columnCount; col++) {
-                const v = worksheet.getRow(row + 1).getCell(col + 1);
+                const cell = worksheet.getRow(row + 1).getCell(col + 1);
 
                 // clone style object to avoid changing it by reference
-                v.style = cloneDeep(v.style);
+                cell.style = cloneDeep(cell.style);
+
+                // apply custom cell modifiers if set
+                if (store.value.cellModifier instanceof Function) {
+                    store.value.cellModifier(cell);
+                }
 
                 // detect composite types like a formulas
-                if (v.value && typeof(v.value) === 'object') {
-                    const { formula } = v.value;
+                if (cell.value && typeof(cell.value) === 'object') {
+                    const { formula } = cell.value;
 
                     if (formula) {
                         data[row][col] = `=${formula}`;
                     }
                 } else {
-                    data[row][col] = v.value;
+                    data[row][col] = cell.value;
                 }
 
-                // apply custom cell modifiers if set
-                if (store.value.cellModifier instanceof Function) {
-                    store.value.cellModifier(v);
-                }
-
-                cells[row][col] = v;
+                cells[row][col] = cell;
             }
         }
 
@@ -206,6 +206,12 @@ export function loadFromBuffer(buffer) {
 export function loadFromFile(file) {
     return file.raw.arrayBuffer().then((buffer) => {
         return loadFromBuffer(buffer);
+    });
+}
+
+export function loadFromBase64(base64string) {
+    return base64ToBuffer(base64string).then((buffer) => {
+        loadFromBuffer(buffer);
     });
 }
 

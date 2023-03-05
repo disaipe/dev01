@@ -9,6 +9,11 @@
                         HomeFilled
                     div Главная
 
+                el-menu-item(:route='{ name: "report-invoice" }' index='report')
+                    .flex.items-center.space-x-2.pl-1
+                        Icon(icon='teenyicons:invoice-outline' height='18')
+                        div Отчет
+
                 el-menu-item(
                     v-for='route of routes'
                     :route='{ name: route.name }'
@@ -47,7 +52,7 @@
                                         template(#reference)
                                             span Выйти
             el-main(class='!pr-1')
-                RouterTabs
+                //- RouterTabs
                 component.pt-1.pr-4.h-full(:is='isRouteScroll ? "el-scrollbar" : "div"')
                     router-view(v-slot='{ Component }')
                         transition(name='fade-transform' mode='out-in')

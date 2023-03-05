@@ -29,6 +29,7 @@
                     :visible='!visibleColumns.length'
                 )
                     el-alert(type='warning' title='Не выбраны видимые колонки')
+                slot(name='columns-before')
                 vxe-column(
                     v-for='({ field, label }, i) of visibleColumns'
                     :prop='field'

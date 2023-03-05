@@ -2,7 +2,7 @@
 .spreadsheet-wrapper.h-full
     .relative.z-10
         slot(name='toolbar')
-            .flex.space-x-2.mb-1
+            .flex.space-x-2.mb-1(v-if='showToolbar')
                 el-dropdown(trigger='click')
                     el-button(size='small' icon='arrow-down') Действия
                     template(#dropdown)
@@ -100,7 +100,7 @@
         :show-file-list='false'
     )
 
-    .spreadsheet-container
+    .spreadsheet-container(:class='{ "pt-8": showToolbar, "pb-8": showToolbar }')
         hot-table.bg-gray-100(ref='spread' :settings='hotSettings')
 </template>
 
@@ -114,6 +114,8 @@ import { pxToPt } from '../../utils/cssUtils';
 import {
     configure,
 
+    loadFromBuffer,
+    loadFromBase64,
     loadFromFile,
     download,
 
@@ -130,6 +132,10 @@ export default {
     name: 'Spreadsheet',
     components: { HotTable },
     props: {
+        showToolbar: {
+            type: Boolean,
+            default: true
+        },
         settings: {
             type: Object,
             default: null
@@ -223,6 +229,9 @@ export default {
             setFontSize,
             setBorder,
 
+            loadFromBuffer,
+            loadFromBase64,
+            loadFromFile,
             upload: (file) => {
                 loadFromFile(file).then(() => {
                     uploader.value.clearFiles();
@@ -248,8 +257,7 @@ export default {
 .spreadsheet-container {
     @apply
         absolute top-0 bottom-0 left-0 right-0
-        text-xs
-        pt-8 pb-8;
+        text-xs;
 }
 
 .table {

@@ -19,10 +19,6 @@
                         el-dropdown-item Стоимость услуги
                         el-dropdown-item(divided @click='resetServiceFormat') Сбросить
 
-        template(#toolbar-center)
-            .text-center
-                .font-bold {{ record.name }}
-
         template(#toolbar-extra-actions)
             el-button(:loading='data.saving' @click='save')
                 Icon.text-lg(icon='material-symbols:save-outline')
@@ -34,17 +30,9 @@ import { useRoute } from 'vue-router';
 import { SelectEditor } from 'handsontable/editors';
 
 import { useRepos } from '../../../store/repository';
-import { loadFromBuffer } from '../../../components/spreadsheet/xlsxUtils';
-import { bufferToBase64, base64ToBuffer } from '../../../utils/base64';
-
-function isServiceNameCell(cellValue) {
-    return typeof(cellValue) === 'string' && /SERVICE#.+?#NAME/.test(cellValue)
-}
-
-function isServiceCountCell(cellValue) {
-    return typeof(cellValue) === 'string' && /SERVICE#.+?#COUNT/.test(cellValue)
-}
-
+import { loadFromBase64 } from '../../../components/spreadsheet/xlsxUtils';
+import { bufferToBase64 } from '../../../utils/base64';
+import { isServiceNameCell, isServiceCountCell } from '../../../components/spreadsheet/cellTypes';
 
 export default {
     name: 'ReportTemplateRecord',
@@ -112,11 +100,11 @@ export default {
 
                 record.value = item;
 
-                base64ToBuffer(item.content).then((buffer) => {
-                    loadFromBuffer(buffer);
-
-                    data.loading = false;
-                });
+                if (item.content) {
+                    loadFromBase64(item.content).then(() => {
+                        data.loading = false;
+                    });
+                }
             });
         };
 
