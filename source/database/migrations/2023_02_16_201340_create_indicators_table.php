@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('indicators', function (Blueprint $table) {
             $table->id();
+            $table->string('code', 32)->unique();
             $table->string('name', 256);
             $table->jsonb('schema')->nullable();
             $table->boolean('published')->default(false);

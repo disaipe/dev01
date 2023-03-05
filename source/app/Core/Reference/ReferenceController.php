@@ -15,6 +15,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class ReferenceController extends BaseController
 {
@@ -194,7 +195,13 @@ class ReferenceController extends BaseController
         foreach ($models as $model) {
             /** @var Model $modelInstance */
             $modelInstance = app()->make("App\\Models\\{$model}");
-            $results[$model] = $modelInstance->newQuery()->get()->toArray();
+            $relatedMethod = 'asRelated';
+
+            if (method_exists($modelInstance, $relatedMethod)) {
+                $results[$model] = $modelInstance->$relatedMethod();
+            } else {
+                $results[$model] = $modelInstance->newQuery()->get()->toArray();
+            }
         }
 
         return new JsonResponse([
