@@ -34,6 +34,12 @@ class ServiceReference extends ReferenceEntry
             'rules' => 'array',
             'label' => 'Тэги',
         ],
+        'indicator_code' => [
+            'visible' => false
+        ],
+        'indicator' => [
+            'label' => 'Индикатор'
+        ],
         'parent' => [
             'label' => 'Родитель',
         ],

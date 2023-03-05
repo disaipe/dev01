@@ -11,6 +11,7 @@ class Service extends ReferenceModel
         'name',
         'display_name',
         'tags',
+        'indicator_code',
     ];
 
     protected $casts = [
