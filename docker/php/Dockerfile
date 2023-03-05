@@ -16,7 +16,11 @@ RUN usermod -u $USER_ID www-data
 
 # Install selected extensions and other stuff
 RUN apt-get update \
-    && apt-get -y --no-install-recommends install $PHP-mysql $PHP-xdebug $PHP-ldap
+    && apt-get -y --no-install-recommends install \
+      $PHP-mysql \
+      $PHP-xdebug \
+      $PHP-ldap \
+      $PHP-gd
 
 # Install tools
 RUN apt-get -y install git cron
