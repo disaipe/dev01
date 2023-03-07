@@ -1,5 +1,24 @@
 import { defineComponent } from 'vue';
-import Reference from '../../views/dashboard/reference/reference.vue';
+import Reference from '../../views/dashboard/reference/BaseReference.vue';
+import Record from '../../views/dashboard/record/BaseRecord.vue';
+
+const referenceComponent = (route) => {
+    return route.meta.view
+        ? import(`../../views/dashboard/reference/${route.meta.view}.vue`)
+        : Promise.resolve(defineComponent({
+            ...Reference,
+            name: `Reference${route.name}`
+        }));
+}
+
+const recordComponent = (route) => {
+    return route.meta.view
+        ? import(`../../views/dashboard/record/${route.meta.view}.vue`)
+        : Promise.resolve(defineComponent({
+            ...Record,
+            name: `Record${route.name}`
+        }));
+}
 
 export default {
     install(app) {
@@ -7,26 +26,23 @@ export default {
         const routes = app.config.globalProperties.$page.routes;
 
         for (const route of routes) {
-            const component = route.meta.view
-                ? import(`../../views/dashboard/reference/${route.meta.view}.vue`)
-                : Promise.resolve(defineComponent({
-                    ...Reference,
-                    name: `Reference${route.name}`
-                }));
+            console.log(route);
 
-            router.addRoute('dashboard-root', {
-                ...route,
-                component: () => component,
-                meta: {
-                    ...route.meta,
-                    title: route.meta?.title || route.name,
-                    isReference: true
+            if (Array.isArray(route.children)) {
+                for (const childRoute of route.children) {
+                    if (childRoute.meta?.isReference) {
+                        childRoute.component = () => referenceComponent(childRoute);
+                    } else if (childRoute.meta?.isRecord) {
+                        childRoute.component = () => recordComponent(childRoute);
+                    }
                 }
-            });
+            }
+
+            router.addRoute('dashboard-root', route);
         }
 
         // Manually resolve and replace location
-        // Without it you will see empty screen on reference routes
+        // Without it, you will see empty screen on reference routes
         const resolved = router.resolve(window.location.pathname);
         if (resolved.matched.length) {
             router.replace(resolved.href);

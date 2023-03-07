@@ -1,5 +1,8 @@
 <template lang='pug'>
 .spreadsheet-page
+    .pb-4
+        .font-bold {{ record.name }}
+
     spreadsheet(
         ref='spread'
         :settings='settings'
@@ -241,7 +244,9 @@ export default {
             resetServiceFormat,
 
             load,
-            save
+            save,
+
+            getTitle: () => '123'
         }
     }
 }

@@ -62,21 +62,50 @@ class VueAppService
         $references = app('references');
 
         return Arr::map($references->getReferences(), function (ReferenceEntry $entry) {
+            $meta = [
+                'model' => class_basename($entry->getModel()),
+                'order' => $entry->getOrder(),
+                'icon' => $entry->getIcon(),
+                'permissions' => [
+                    'create' => $entry->canCreate(),
+                    'update' => $entry->canUpdate(),
+                    'delete' => $entry->canDelete(),
+                ],
+            ];
+
             return [
                 'name' => $entry->getName(),
                 'path' => $entry->getPrefix(),
-                'meta' => [
-                    'model' => class_basename($entry->getModel()),
-                    'order' => $entry->getOrder(),
-                    'icon' => $entry->getIcon(),
-                    'view' => $entry->getView(),
-                    'title' => $entry->getPluralLabel(),
-                    'permissions' => [
-                        'create' => $entry->canCreate(),
-                        'update' => $entry->canUpdate(),
-                        'delete' => $entry->canDelete(),
-                    ],
+                'redirect' => [
+                  'name' => $entry->getName() . 'Reference',
                 ],
+                'meta' => [
+                    'title' => $entry->getPluralLabel(),
+                ],
+                'children' => [
+                    [
+                        'name' => $entry->getName() . 'Reference',
+                        'path' => '',
+                        'meta' => [
+                            ...$meta,
+                            'view' => $entry->getReferenceView(),
+                            'title' => $entry->getPluralLabel(),
+                            'isReference' => true,
+                            ...$entry->getReferenceMeta(),
+                        ]
+                    ],
+                    [
+                        'name' => $entry->getName() . 'Record',
+                        'path' => ':id',
+                        'meta' => [
+                            ...$meta,
+                            'view' => $entry->getRecordView(),
+                            'title' => $entry->getLabel(),
+                            'isRecord' => true,
+                            ...$entry->getRecordMeta(),
+                        ],
+                    ]
+                ]
             ];
         });
     }

@@ -4,13 +4,16 @@ import Layout from '../layout/index.vue';
 
 const routes = [
     {
-      path: '/',
-      redirect: '/dashboard'
+        path: '/',
+        redirect: '/dashboard'
     },
     {
         path: '/dashboard',
         component: Layout,
         name: 'dashboard-root',
+        meta: {
+            title: 'Главная',
+        },
         children: [
             {
                 path: '',
@@ -26,14 +29,6 @@ const routes = [
                 name: 'report-invoice',
                 meta: {
                     title: 'Отчет'
-                }
-            },
-            {
-                path: 'report_template/:id',
-                component: () => import('../views/dashboard/record/ReportTemplate.vue'),
-                name: 'ReportTemplateRecord',
-                meta: {
-                    scroll: false
                 }
             }
         ]

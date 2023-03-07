@@ -34,7 +34,14 @@ class ReferenceEntry
      *
      * @var string|null
      */
-    protected ?string $view;
+    protected ?string $referenceView;
+
+    /**
+     * Record view name for the front-end application
+     *
+     * @var string|null
+     */
+    protected ?string $recordView;
 
     /**
      * Reference icon
@@ -145,9 +152,21 @@ class ReferenceEntry
      *
      * @return string|null
      */
-    public function getView(): ?string
+    public function getReferenceView(): ?string
     {
-        return $this->view ?? null;
+        return $this->referenceView ?? null;
+    }
+
+    /**
+     * Get Vue record view name.
+     *
+     * View must be placed in `source/resources/js/views/dashboard/record` directory.
+     *
+     * @return string|null
+     */
+    public function getRecordView(): ?string
+    {
+        return $this->recordView ?? null;
     }
 
     /**
@@ -218,6 +237,26 @@ class ReferenceEntry
     public function canDelete(): bool
     {
         return true;
+    }
+
+    /**
+     * Determine Vue router reference route meta
+     *
+     * @return array
+     */
+    public function getReferenceMeta(): array
+    {
+        return [];
+    }
+
+    /**
+     * Determine Vue router record route meta
+     *
+     * @return array
+     */
+    public function getRecordMeta(): array
+    {
+        return [];
     }
 
     /**
