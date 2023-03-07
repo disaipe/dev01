@@ -16,11 +16,12 @@ class ServiceProviderReference extends ReferenceEntry
     protected array $schema = [
         'id' => [
             'label' => 'ID',
+            'hidden' => true,
         ],
         'name' => [
             'label' => 'Наименование',
             'rules' => 'required',
-            'defaultColumn' => true,
+            'visible' => true,
         ],
         'fullname' => [
             'label' => 'Полное наименование',
@@ -28,7 +29,7 @@ class ServiceProviderReference extends ReferenceEntry
         'identity' => [
             'label' => 'ИНН',
             'rules' => 'max:32',
-            'defaultColumn' => true,
+            'visible' => true,
         ],
         'description' => [
             'label' => 'Описание',

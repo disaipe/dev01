@@ -17,20 +17,21 @@ class ReportTemplateReference extends ReferenceEntry
     protected array $schema = [
         'id' => [
             'label' => 'ID',
+            'hidden' => true,
         ],
         'name' => [
             'label' => 'Наименование',
             'rules' => 'required',
-            'defaultColumn' => true,
+            'visible' => true,
         ],
         'service_provider' => [
             'label' => 'Провайдер услуг',
         ],
         'service_provider_id' => [
-            'visible' => false,
+            'hidden' => true,
         ],
         'content' => [
-            'visible' => false,
+            'hidden' => true,
         ]
     ];
 

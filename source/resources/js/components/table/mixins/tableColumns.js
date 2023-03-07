@@ -9,6 +9,11 @@ export default {
         columnOrder: []
     }),
     computed: {
+        allowedColumns() {
+            return Object
+                .values(this.columnStore)
+                .filter((column) => !column.hidden);
+        },
         visibleColumns() {
             return Object
                 .values(this.columnStore)
@@ -63,12 +68,13 @@ export default {
                     result[field] = {};
                 }
 
-                const { label, defaultColumn } = schema;
+                const { label, visible, hidden } = schema;
 
                 defaults(result[field], {
                     field,
                     label,
-                    visible: defaultColumn
+                    hidden,
+                    visible
                 });
             }
 

@@ -10,7 +10,7 @@ el-dropdown(
             el-scrollbar
                 .flex.flex-col.p-2(ref='sortables')
                     el-checkbox(
-                        v-for='(_, field) of columnStore'
+                        v-for='{ field } of allowedColumns'
                         v-model='columnStore[field].visible'
                         :label='columnStore[field].label'
                         :data-id='field'

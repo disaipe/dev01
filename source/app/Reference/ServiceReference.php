@@ -16,26 +16,27 @@ class ServiceReference extends ReferenceEntry
     protected array $schema = [
         'id' => [
             'label' => 'ID',
+            'hidden' => true,
         ],
         'parent_id' => [
-            'visible' => false,
+            'hidden' => true,
         ],
         'name' => [
             'label' => 'Наименование',
             'rules' => 'required|max:128',
-            'defaultColumn' => true,
+            'visible' => true,
         ],
         'display_name' => [
             'rules' => 'max:512',
             'label' => 'Полное наименование',
-            'defaultColumn' => true,
+            'visible' => true,
         ],
         'tags' => [
             'rules' => 'array',
             'label' => 'Тэги',
         ],
         'indicator_code' => [
-            'visible' => false
+            'hidden' => true
         ],
         'indicator' => [
             'label' => 'Индикатор'
@@ -44,7 +45,7 @@ class ServiceReference extends ReferenceEntry
             'label' => 'Родитель',
         ],
         'children' => [
-            'visible' => false,
+            'hidden' => true,
         ],
     ];
 }

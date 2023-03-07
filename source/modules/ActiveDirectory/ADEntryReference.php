@@ -14,7 +14,7 @@ class ADEntryReference extends ReferenceEntry
     {
         return [
             'id' => [
-                'visible' => false,
+                'hidden' => true,
                 'pinia' => PiniaAttribute::uid(),
             ],
             'company_prefix' => [

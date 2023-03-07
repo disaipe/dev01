@@ -16,16 +16,17 @@ class CompanyReference extends ReferenceEntry
     protected array $schema = [
         'id' => [
             'label' => 'ID',
+            'hidden' => true,
         ],
         'code' => [
             'label' => 'Префикс',
             'rules' => 'required|max:16',
-            'defaultColumn' => true,
+            'visible' => true,
         ],
         'name' => [
             'label' => 'Наименование',
             'rules' => 'required',
-            'defaultColumn' => true,
+            'visible' => true,
         ],
         'fullname' => [
             'label' => 'Полное наименование',
@@ -33,7 +34,7 @@ class CompanyReference extends ReferenceEntry
         'identity' => [
             'label' => 'ИНН',
             'rules' => 'max:32',
-            'defaultColumn' => true,
+            'visible' => true,
         ],
         'description' => [
             'label' => 'Описание',
