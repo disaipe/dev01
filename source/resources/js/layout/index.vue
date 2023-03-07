@@ -28,6 +28,7 @@
                 .flex.justify-between.w-full
                     //- left side
                     div
+                        bread-crumbs
 
                     //- right side
                     el-dropdown(
@@ -54,23 +55,26 @@
             el-main(class='!pr-1')
                 //- RouterTabs
                 component.pt-1.pr-4.h-full(:is='isRouteScroll ? "el-scrollbar" : "div"')
-                    router-view(v-slot='{ Component }')
-                        transition(name='fade-transform' mode='out-in')
-                            keep-alive(:include='cachedViews')
-                                component(:is='Component')
+                    router-view
+                    //router-view(v-slot='{ Component }')
+                    //    transition(name='fade-transform' mode='out-in')
+                    //        keep-alive(:include='cachedViews')
+                    //            component(:is='Component')
             //- el-footer Footer
 </template>
 
 <script>
-import { reactive, computed } from 'vue';
+import { computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import orderBy from 'lodash/orderBy';
 
 import { useTabsStore } from '../store/modules/tabs';
 import usePage from '../utils/usePage';
+import BreadCrumbs from '../components/breadcrumbs/BreadCrumbs.vue';
 
 export default {
     name: 'BaseLayout',
+    components: { BreadCrumbs },
     setup() {
         const { cachedViews } = useTabsStore();
 
