@@ -1,6 +1,11 @@
 <template lang='pug'>
 .it-table
-    .flex.flex-col.space-y-2
+    .errors-list(v-if='errors.length')
+        el-alert(title='Что-то пошло не так' type='error' :closable='false' show-icon)
+            ul
+                li(v-for='error of errors') {{ error }}
+
+    .flex.flex-col.space-y-2(v-else)
         .flex.items-center.justify-between
             el-button-group
                 el-button(v-if='canCreate' icon='CirclePlus' @click='create') Создать
@@ -139,6 +144,7 @@ export default {
         }
     },
     setup(props) {
+        const errors = ref([]);
         const reference = toRef(props, 'reference');
         const columns = toRef(props, 'columns');
 
@@ -155,14 +161,20 @@ export default {
 
         // Get model fields schema
         const fields = ref();
-        repository.getFieldsSchema().then((schema) => {
-            fields.value = schema;
-        });
+        if (repository) {
+            repository.getFieldsSchema().then((schema) => {
+                fields.value = schema;
+            });
 
-        // TODO: Determine related models to load
-        repository.fetchRelatedModels();
+            // TODO: Determine related models to load
+            repository.fetchRelatedModels();
+        } else {
+            errors.value.push('Не задана модель данных Pinia. Без схемы полей данных дальнейшая работа невозможна');
+        }
 
         return {
+            errors,
+
             tableId,
             repository,
 
@@ -197,7 +209,7 @@ export default {
             },
             rowConfig: {
                 useKey: true,
-                keyField: this.repository.model.$getKeyName()
+                keyField: this.repository?.model.$getKeyName()
             },
             treeConfig: {
                 indent: 4,
@@ -226,7 +238,9 @@ export default {
     },
     methods: {
         load() {
-            this.tree ? this.loadTree() : this.loadPages();
+            if (this.repository) {
+                this.tree ? this.loadTree() : this.loadPages();
+            }
         },
 
         loadPages() {
