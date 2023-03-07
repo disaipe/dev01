@@ -36,7 +36,7 @@ class ReferenceEntry
     /**
      * Reference icon
      */
-    protected ?string $icon = 'Collection';
+    protected ?string $icon = 'fluent-mdl2:product-catalog';
 
     /**
      * Menu order

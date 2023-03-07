@@ -20,7 +20,7 @@
                     :index='route.name'
                 )
                     el-icon(v-if='route.meta.icon')
-                        component(:is='route.meta.icon')
+                        Icon(:icon='route.meta.icon' height='18')
                     div {{ route.meta.title }}
 
         el-container
