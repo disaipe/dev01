@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\IndicatorResource\Pages;
 
 use App\Filament\Resources\IndicatorResource;
-use Filament\Pages\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateIndicator extends CreateRecord

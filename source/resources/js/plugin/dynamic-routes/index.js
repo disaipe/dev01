@@ -2,22 +2,20 @@ import { defineComponent } from 'vue';
 import Reference from '../../views/dashboard/reference/BaseReference.vue';
 import Record from '../../views/dashboard/record/BaseRecord.vue';
 
+const resolveDefaultComponent = (component, name) => {
+  return Promise.resolve(defineComponent({ ...component, name }));
+};
+
 const referenceComponent = (route) => {
     return route.meta.view
         ? import(`../../views/dashboard/reference/${route.meta.view}.vue`)
-        : Promise.resolve(defineComponent({
-            ...Reference,
-            name: `Reference${route.name}`
-        }));
+        : resolveDefaultComponent(Reference,`Reference${route.name}`);
 }
 
 const recordComponent = (route) => {
     return route.meta.view
         ? import(`../../views/dashboard/record/${route.meta.view}.vue`)
-        : Promise.resolve(defineComponent({
-            ...Record,
-            name: `Record${route.name}`
-        }));
+        : resolveDefaultComponent(Record,`Record${route.name}`);
 }
 
 export default {
@@ -26,8 +24,6 @@ export default {
         const routes = app.config.globalProperties.$page.routes;
 
         for (const route of routes) {
-            console.log(route);
-
             if (Array.isArray(route.children)) {
                 for (const childRoute of route.children) {
                     if (childRoute.meta?.isReference) {

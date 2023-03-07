@@ -28,8 +28,6 @@ class ModuleBaseServiceProvider extends ServiceProvider
      * Initialize module
      *
      * Method will be called after application boot only if module activated.
-     *
-     * @return void
      */
     public function init(): void
     {
@@ -45,7 +43,6 @@ class ModuleBaseServiceProvider extends ServiceProvider
      * Set module options
      *
      * @param  array  $options module options to set
-     * @return void
      */
     protected function setOptions(array $options): void
     {
@@ -56,8 +53,6 @@ class ModuleBaseServiceProvider extends ServiceProvider
      * Register and initialize module
      *
      * Not necessary change this in module.
-     *
-     * @return void
      */
     final public function boot(): void
     {
@@ -119,8 +114,6 @@ class ModuleBaseServiceProvider extends ServiceProvider
 
     /**
      * Returns module key
-     *
-     * @return string
      */
     private function getKey(): string
     {

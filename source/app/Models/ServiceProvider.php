@@ -10,6 +10,6 @@ class ServiceProvider extends ReferenceModel
         'name',
         'fullname',
         'identity',
-        'description'
+        'description',
     ];
 }

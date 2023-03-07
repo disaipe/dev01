@@ -12,7 +12,6 @@ class ProtocolRecordResource extends JsonResource
      * Transform the resource into an array.
      *
      * @param  Request  $request
-     * @return array
      */
     public function toArray($request): array
     {
@@ -23,7 +22,7 @@ class ProtocolRecordResource extends JsonResource
             'datetime' => $record->datetime,
             'action' => __("common.PROTOCOL_ACTION.{$record->action->name}"),
             'user' => $record->user?->name ?? "{$record->user_id} (не найден)",
-            'data' => $record->data
+            'data' => $record->data,
         ];
     }
 }

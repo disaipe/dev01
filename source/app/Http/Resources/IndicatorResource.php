@@ -21,7 +21,7 @@ class IndicatorResource extends JsonResource
         return [
             'code' => $indicator->code,
             'name' => $indicator->name,
-            'module' => $indicator->module
+            'module' => $indicator->module,
         ];
     }
 }

@@ -2,8 +2,6 @@
 
 namespace App\Core\Report\Expression;
 
-
-
 use Illuminate\Database\Eloquent\Builder;
 
 class CountExpression implements Expression

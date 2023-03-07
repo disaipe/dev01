@@ -12,10 +12,8 @@ class ModuleManager
     /**
      * Register module with given options
      *
-     * @param  ModuleBaseServiceProvider  $provider
      * @param  string  $key module unique key
      * @param  array  $options module optionsi
-     * @return Module
      */
     public function register(ModuleBaseServiceProvider $provider, string $key, array $options = []): Module
     {
@@ -27,9 +25,6 @@ class ModuleManager
 
     /**
      * Returns all registered modules
-     *
-     * @param  bool  $onlyEnabled
-     * @return array
      */
     public function getModules(bool $onlyEnabled = false): array
     {

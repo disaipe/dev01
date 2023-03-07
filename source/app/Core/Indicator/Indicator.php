@@ -8,10 +8,15 @@ use Illuminate\Support\Arr;
 class Indicator
 {
     public string $code;
+
     public string $name;
+
     public string $model;
+
     public string $module;
+
     public $query;
+
     public Expression $expression;
 
     public static function fromArray($options): Indicator
@@ -32,7 +37,7 @@ class Indicator
         return [
             'code' => $this->code,
             'name' => $this->name,
-            'module' => $this->module
+            'module' => $this->module,
         ];
     }
 }

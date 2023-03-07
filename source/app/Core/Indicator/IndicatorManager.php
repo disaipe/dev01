@@ -9,8 +9,7 @@ class IndicatorManager
     private array $indicators = [];
 
     /**
-     * @param Indicator|Indicator[] $indicators
-     * @return void
+     * @param  Indicator|Indicator[]  $indicators
      */
     public function register(Indicator|array $indicators): void
     {

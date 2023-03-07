@@ -12,6 +12,7 @@ class ReportTemplateReference extends ReferenceEntry
     protected bool $piniaBindings = false;
 
     protected ?string $referenceView = 'ReportTemplateReference';
+
     protected ?string $recordView = 'ReportTemplateRecord';
 
     protected array $schema = [
@@ -32,13 +33,13 @@ class ReportTemplateReference extends ReferenceEntry
         ],
         'content' => [
             'hidden' => true,
-        ]
+        ],
     ];
 
     public function getRecordMeta(): array
     {
         return [
-            'scroll' => false
+            'scroll' => false,
         ];
     }
 }

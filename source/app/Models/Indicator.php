@@ -10,7 +10,7 @@ use Illuminate\Support\Arr;
  * @property string code
  * @property string name
  * @property array schema
- * @property boolean published
+ * @property bool published
  */
 class Indicator extends Model
 {
@@ -18,12 +18,12 @@ class Indicator extends Model
         'code',
         'name',
         'schema',
-        'published'
+        'published',
     ];
 
     protected $casts = [
         'schema' => 'json',
-        'published' => 'bool'
+        'published' => 'bool',
     ];
 
     public function asRelated(): array

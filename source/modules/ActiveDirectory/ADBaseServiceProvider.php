@@ -43,7 +43,7 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
                 'code' => 'AD_ENTRY_COUNT',
                 'name' => 'Количество учетных записей',
                 'model' => ADEntry::class,
-                'expression' => new CountExpression()
+                'expression' => new CountExpression(),
             ]),
             Indicator::fromArray([
                 'module' => 'AD',
@@ -51,8 +51,8 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
                 'name' => 'Количество учетных записей Lync',
                 'model' => ADEntry::class,
                 'query' => fn ($query) => $query->where('sip_enabled', '=', true),
-                'expression' => new CountExpression()
-            ])
+                'expression' => new CountExpression(),
+            ]),
         ]);
 
         $this->setOptions([
@@ -79,7 +79,7 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
                             ->label(__('admin.schedule'))
                             ->placeholder('* * * * * *')
                             ->helperText(__('admin.cron_helper'))
-                            ->regex(RegularExpressions::CRON)
+                            ->regex(RegularExpressions::CRON),
                     ])->collapsible()->collapsed(),
                 ],
             ],

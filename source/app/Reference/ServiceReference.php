@@ -36,10 +36,10 @@ class ServiceReference extends ReferenceEntry
             'label' => 'Тэги',
         ],
         'indicator_code' => [
-            'hidden' => true
+            'hidden' => true,
         ],
         'indicator' => [
-            'label' => 'Индикатор'
+            'label' => 'Индикатор',
         ],
         'parent' => [
             'label' => 'Родитель',

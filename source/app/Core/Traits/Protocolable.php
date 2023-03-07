@@ -19,7 +19,7 @@ trait Protocolable
 
         $events = [
             'created' => ReferenceCreatedEvent::class,
-            'updated' => ReferenceUpdatedEvent::class
+            'updated' => ReferenceUpdatedEvent::class,
         ];
 
         if ($softDeletes) {
@@ -32,7 +32,7 @@ trait Protocolable
 
         foreach ($events as $event => $eventHandler) {
             if (method_exists(self::class, $event)) {
-                self::$event(fn($record) => $eventHandler::dispatch($record));
+                self::$event(fn ($record) => $eventHandler::dispatch($record));
             }
         }
     }

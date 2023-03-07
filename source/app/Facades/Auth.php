@@ -35,10 +35,6 @@ class Auth extends Facade
     /**
      * Attempt to authenticate a user using the given credentials
      * in all guards
-     *
-     * @param  array  $credentials
-     * @param  bool  $remember
-     * @return bool
      */
     public static function attempt(array $credentials = [], bool $remember = false): bool
     {
@@ -75,8 +71,6 @@ class Auth extends Facade
 
     /**
      * Determine if the current user is authenticated.
-     *
-     * @return bool
      */
     public static function check(): bool
     {

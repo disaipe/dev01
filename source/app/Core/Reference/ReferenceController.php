@@ -15,7 +15,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 
 class ReferenceController extends BaseController
 {
@@ -183,11 +182,12 @@ class ReferenceController extends BaseController
 
         return new JsonResponse([
             'status' => true,
-            'data' => ProtocolRecordResource::collection($data)
+            'data' => ProtocolRecordResource::collection($data),
         ]);
     }
 
-    public function related(Request $request): JsonResponse {
+    public function related(Request $request): JsonResponse
+    {
         $models = $request->input('models', []);
 
         $results = [];
@@ -206,7 +206,7 @@ class ReferenceController extends BaseController
 
         return new JsonResponse([
             'status' => true,
-            'data' => $results
+            'data' => $results,
         ]);
     }
 

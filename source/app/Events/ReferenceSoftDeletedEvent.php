@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ReferenceSoftDeletedEvent extends ReferenceEvent
 {
-
     protected function protocolEvent(Model $record): void
     {
         ProtocolRecord::query()->create([
@@ -18,7 +17,7 @@ class ReferenceSoftDeletedEvent extends ReferenceEvent
             'action' => ProtocolRecordAction::Delete,
             'object_id' => $record->getKey(),
             'object_type' => class_basename($record),
-            'data' => $record
+            'data' => $record,
         ]);
     }
 }

@@ -12,6 +12,7 @@ class ADEntry extends ReferenceModel
     use CompanyScope;
 
     protected $table = 'ad_entries';
+
     protected ?string $companyCodeColumn = 'company_prefix';
 
     protected $fillable = [

@@ -8,6 +8,6 @@ el-result(
 
 <script>
 export default {
-    name: 'BaseRecord.vue'
+    name: 'BaseRecord'
 }
 </script>

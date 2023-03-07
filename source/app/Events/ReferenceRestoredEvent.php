@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ReferenceRestoredEvent extends ReferenceEvent
 {
-
     protected function protocolEvent(Model $record): void
     {
         ProtocolRecord::query()->create([
@@ -18,7 +17,7 @@ class ReferenceRestoredEvent extends ReferenceEvent
             'action' => ProtocolRecordAction::Restore,
             'object_id' => $record->getKey(),
             'object_type' => class_basename($record),
-            'data' => $record
+            'data' => $record,
         ]);
     }
 }

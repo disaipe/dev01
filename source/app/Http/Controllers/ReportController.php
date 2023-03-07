@@ -18,7 +18,7 @@ class ReportController extends Controller
 
         return new JsonResponse([
             'status' => true,
-            'data' => $data
+            'data' => $data,
         ]);
     }
 }

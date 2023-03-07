@@ -11,8 +11,6 @@ class Config
 {
     /**
      * Loads all database-stored settings
-     *
-     * @return void
      */
     public static function load(): void
     {
@@ -38,9 +36,6 @@ class Config
 
     /**
      * Update multiple config values and store it in database
-     *
-     * @param  array  $values
-     * @param  array  $types
      */
     public static function setArray(array $values, array $types = []): void
     {

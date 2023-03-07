@@ -20,8 +20,6 @@ class ModuleServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
-     *
-     * @return void
      */
     public function register(): void
     {
@@ -40,8 +38,6 @@ class ModuleServiceProvider extends ServiceProvider
 
     /**
      * Detect and register modules from directory
-     *
-     * @return void
      */
     private function registerModules(): void
     {

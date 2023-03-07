@@ -21,12 +21,12 @@ class ProtocolRecord extends Model
         'action',
         'object_id',
         'object_type',
-        'data'
+        'data',
     ];
 
     protected $casts = [
         'action' => ProtocolRecordAction::class,
-        'data' => 'json'
+        'data' => 'json',
     ];
 
     public $timestamps = false;

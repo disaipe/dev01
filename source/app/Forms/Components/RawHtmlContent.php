@@ -9,9 +9,10 @@ class RawHtmlContent extends Component
 {
     protected string $view = 'forms.components.raw-html-content';
 
-    public string | Htmlable  $content;
+    public string|Htmlable  $content;
 
-    public function  __construct(string | Htmlable  $content) {
+    public function __construct(string|Htmlable $content)
+    {
         $this->content = $content;
     }
 

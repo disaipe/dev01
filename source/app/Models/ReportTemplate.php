@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string name
  * @property int service_provider_id
  * @property mixed data
- *
  * @property ServiceProvider serviceProvider
  */
 class ReportTemplate extends ReferenceModel
@@ -17,7 +16,7 @@ class ReportTemplate extends ReferenceModel
     protected $fillable = [
         'name',
         'service_provider_id',
-        'content'
+        'content',
     ];
 
     public function serviceProvider(): BelongsTo

@@ -6,11 +6,11 @@ use App\Core\Reference\ReferenceEntry;
 use App\Filament\Resources\IndicatorResource\Pages;
 use App\Models\Indicator;
 use Filament\Forms;
+use Filament\Forms\Components\Builder;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Filament\Forms\Components\Builder;
 
 class IndicatorResource extends Resource
 {
@@ -44,7 +44,7 @@ class IndicatorResource extends Resource
                             ->required(),
 
                         Forms\Components\Checkbox::make('published')
-                            ->label(__('admin.enabled'))
+                            ->label(__('admin.enabled')),
                     ]),
 
                 Forms\Components\Section::make(__('admin.$indicator.schema'))
@@ -60,12 +60,12 @@ class IndicatorResource extends Resource
                                     ->schema([
                                         Forms\Components\TextInput::make('column')
                                             ->label(__('admin.$indicator.column'))
-                                            ->required()
-                                    ])
+                                            ->required(),
+                                    ]),
                             ])
                             ->minItems(1)
-                            ->maxItems(1)
-                    ])
+                            ->maxItems(1),
+                    ]),
             ]);
     }
 
@@ -76,7 +76,7 @@ class IndicatorResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('admin.name')),
                 Tables\Columns\TextColumn::make('code')
-                    ->label(__('admin.code'))
+                    ->label(__('admin.code')),
             ])
             ->filters([
                 //

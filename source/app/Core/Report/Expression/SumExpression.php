@@ -8,7 +8,8 @@ class SumExpression implements Expression
 {
     protected string $column;
 
-    public function __construct(string $column) {
+    public function __construct(string $column)
+    {
         $this->column = $column;
     }
 

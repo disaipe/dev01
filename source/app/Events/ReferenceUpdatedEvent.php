@@ -22,8 +22,8 @@ class ReferenceUpdatedEvent extends ReferenceEvent
             'object_type' => class_basename($record),
             'data' => [
                 'original' => Arr::except($record->getRawOriginal(), $exclude),
-                'changes' => Arr::except($record->getChanges(), $exclude)
-            ]
+                'changes' => Arr::except($record->getChanges(), $exclude),
+            ],
         ]);
     }
 }

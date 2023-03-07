@@ -10,71 +10,51 @@ class ReferenceEntry
 {
     /**
      * Reference linked model
-     *
-     * @var string
      */
     protected string $model;
 
     /**
      * Route prefix for the controller
-     *
-     * @var string|null
      */
     protected ?string $prefix;
 
     /**
      * Reference name
-     *
-     * @var string|null
      */
     protected ?string $name;
 
     /**
      * Reference view name for the front-end application
-     *
-     * @var string|null
      */
     protected ?string $referenceView;
 
     /**
      * Record view name for the front-end application
-     *
-     * @var string|null
      */
     protected ?string $recordView;
 
     /**
      * Reference icon
-     *
-     * @var string|null
      */
     protected ?string $icon = 'Collection';
 
     /**
      * Menu order
-     *
-     * @var int
      */
     protected int $order = 0;
 
     /**
      * Determine the schema contains bindings for the Pinia-orm model
-     *
-     * @var bool
      */
     protected bool $piniaBindings = true;
 
     /**
      * Model fields schema
-     *
-     * @var array
      */
     protected array $schema = [];
 
     /**
      * Get reference name
-     *
-     * @return string
      */
     public function getName(): string
     {
@@ -83,8 +63,6 @@ class ReferenceEntry
 
     /**
      * Get reference controller
-     *
-     * @return ReferenceController
      */
     public function controller(): ReferenceController
     {
@@ -93,8 +71,6 @@ class ReferenceEntry
 
     /**
      * Get route path prefix
-     *
-     * @return string
      */
     public function getPrefix(): string
     {
@@ -103,8 +79,6 @@ class ReferenceEntry
 
     /**
      * Get reference model
-     *
-     * @return string
      */
     public function getModel(): string
     {
@@ -115,8 +89,6 @@ class ReferenceEntry
      * Get model fields schema
      *
      * Used to operate with model fields on front-end
-     *
-     * @return array
      */
     public function getSchema(): array
     {
@@ -125,8 +97,6 @@ class ReferenceEntry
 
     /**
      * Returns the model has pinia bindings in field schema
-     *
-     * @return bool
      */
     public function hasPiniaBindings(): bool
     {
@@ -135,8 +105,6 @@ class ReferenceEntry
 
     /**
      * Get fields definition for the Pinia-orm model
-     *
-     * @return array|null
      */
     public function getPiniaFields(): ?array
     {
@@ -149,8 +117,6 @@ class ReferenceEntry
      * Get Vue reference view name.
      *
      * View must be placed in `source/resources/js/views/dashboard/reference` directory.
-     *
-     * @return string|null
      */
     public function getReferenceView(): ?string
     {
@@ -161,8 +127,6 @@ class ReferenceEntry
      * Get Vue record view name.
      *
      * View must be placed in `source/resources/js/views/dashboard/record` directory.
-     *
-     * @return string|null
      */
     public function getRecordView(): ?string
     {
@@ -171,8 +135,6 @@ class ReferenceEntry
 
     /**
      * Get reference label
-     *
-     * @return string
      */
     public function getLabel(): string
     {
@@ -181,8 +143,6 @@ class ReferenceEntry
 
     /**
      * Get reference plural label
-     *
-     * @return string
      */
     public function getPluralLabel(): string
     {
@@ -191,8 +151,6 @@ class ReferenceEntry
 
     /**
      * Get reference icon
-     *
-     * @return string
      */
     public function getIcon(): string
     {
@@ -201,8 +159,6 @@ class ReferenceEntry
 
     /**
      * Get reference menu item order
-     *
-     * @return int
      */
     public function getOrder(): int
     {
@@ -211,8 +167,6 @@ class ReferenceEntry
 
     /**
      * Determine the user can create new record
-     *
-     * @return bool
      */
     public function canCreate(): bool
     {
@@ -221,8 +175,6 @@ class ReferenceEntry
 
     /**
      * Determine the user can update records
-     *
-     * @return bool
      */
     public function canUpdate(): bool
     {
@@ -231,8 +183,6 @@ class ReferenceEntry
 
     /**
      * Determine the use can remove records
-     *
-     * @return bool
      */
     public function canDelete(): bool
     {
@@ -241,8 +191,6 @@ class ReferenceEntry
 
     /**
      * Determine Vue router reference route meta
-     *
-     * @return array
      */
     public function getReferenceMeta(): array
     {
@@ -251,8 +199,6 @@ class ReferenceEntry
 
     /**
      * Determine Vue router record route meta
-     *
-     * @return array
      */
     public function getRecordMeta(): array
     {
@@ -261,8 +207,6 @@ class ReferenceEntry
 
     /**
      * Get label translation key
-     *
-     * @return string
      */
     protected function getLabelKey(): string
     {

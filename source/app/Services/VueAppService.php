@@ -42,7 +42,7 @@ class VueAppService
         /** @var User $user */
         $user = Auth::user();
 
-        if (!$user) {
+        if (! $user) {
             return null;
         }
 
@@ -52,7 +52,7 @@ class VueAppService
 
         return [
             ...$user?->only('name'),
-            'avatar' => $avatar
+            'avatar' => $avatar,
         ];
     }
 
@@ -77,14 +77,14 @@ class VueAppService
                 'name' => $entry->getName(),
                 'path' => $entry->getPrefix(),
                 'redirect' => [
-                  'name' => $entry->getName() . 'Reference',
+                    'name' => $entry->getName().'Reference',
                 ],
                 'meta' => [
                     'title' => $entry->getPluralLabel(),
                 ],
                 'children' => [
                     [
-                        'name' => $entry->getName() . 'Reference',
+                        'name' => $entry->getName().'Reference',
                         'path' => '',
                         'meta' => [
                             ...$meta,
@@ -92,10 +92,10 @@ class VueAppService
                             'title' => $entry->getPluralLabel(),
                             'isReference' => true,
                             ...$entry->getReferenceMeta(),
-                        ]
+                        ],
                     ],
                     [
-                        'name' => $entry->getName() . 'Record',
+                        'name' => $entry->getName().'Record',
                         'path' => ':id',
                         'meta' => [
                             ...$meta,
@@ -104,8 +104,8 @@ class VueAppService
                             'isRecord' => true,
                             ...$entry->getRecordMeta(),
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ];
         });
     }

@@ -4,9 +4,7 @@ namespace App\Services;
 
 use App\Core\Indicator\Indicator;
 use App\Core\Indicator\IndicatorManager;
-use App\Core\Report\Expression\CountExpression;
 use App\Core\Report\Expression\Expression;
-use App\Core\Report\Expression\SumExpression;
 use App\Models\Indicator as CustomExpression;
 use App\Models\ReportTemplate;
 use App\Models\Service;
@@ -16,16 +14,20 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxReader;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Exception;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWriter;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class ReportService
 {
     protected string $companyCode;
+
     protected string $templateId;
+
     protected ReportTemplate $template;
+
     protected Collection $services;
+
     protected Spreadsheet $spreadsheet;
 
     protected array $foundCells;
@@ -42,13 +44,14 @@ class ReportService
 
         return [
             'values' => $cellReplacements,
-            'xlsx' => $this->template->content
+            'xlsx' => $this->template->content,
         ];
     }
 
     public function download($companyCode, $templateId): false|string
     {
         $this->generate($companyCode, $templateId);
+
         return $this->getTemplateWithData(true);
     }
 
@@ -95,7 +98,7 @@ class ReportService
                     [,$id,$type] = explode('#', $v);
 
                     if ($type === 'NAME') {
-                        $foundServices []= Arr::get($this->services, $id);
+                        $foundServices[] = Arr::get($this->services, $id);
                     }
                 }
             }
@@ -109,7 +112,6 @@ class ReportService
 
         foreach ($foundServices as $service) {
             /** @var Service $service */
-
             $indicators[$service->getKey()] = $registeredIndicators[$service->indicator_code];
         }
 
@@ -121,7 +123,6 @@ class ReportService
         $results = [];
         foreach ($indicators as $serviceKey => $indicator) {
             /** @var Indicator $indicator */
-
             $scopedQuery = $this->getScopedBaseQuery($indicator->model, $this->companyCode);
             $expressionQuery = $indicator->query
                 ? ($indicator->query)($scopedQuery)
@@ -134,7 +135,7 @@ class ReportService
             $results[$serviceKey] = [
                 'service' => $service,
                 'indicator' => $indicator,
-                'value' => $result
+                'value' => $result,
             ];
         }
 
@@ -186,8 +187,6 @@ class ReportService
      *
      * Modifying template break cell styles on front-end exceljs library
      *
-     * @param $values
-     * @return void
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     protected function applyIndicatorsToTemplate($values): void
@@ -207,7 +206,7 @@ class ReportService
                     if ($type === 'NAME') {
                         $service = Arr::get($this->services, $id);
                         $cell->setValue($service->name);
-                    } else if ($type === 'COUNT') {
+                    } elseif ($type === 'COUNT') {
                         $value = Arr::get($values, "{$id}.value");
                         $cell->setValue($value);
                     }
@@ -221,8 +220,8 @@ class ReportService
      *
      * Modifying template break cell styles on front-end exceljs library
      *
-     * @param bool $getFile
-     * @return false|string
+     * @param  bool  $getFile
+     *
      * @throws Exception
      */
     protected function getTemplateWithData($getFile = false): false|string
