@@ -11,7 +11,7 @@ el-popover(
         )
             el-icon
                 Filter
-    .flex.flex-col.space-y-1(v-click-outside='close')
+    .flex.flex-col.space-y-1(v-click-outside='{ handler: close, isActive: isVisible }')
         el-input(v-model='filterStore.inputs[field]')
 
         div
@@ -51,6 +51,7 @@ export default {
 
         const applyFilter = (value = undefined) => {
             filterStore.visibility[field.value] = false;
+            filterStore.inputs[field.value] = undefined;
             filterStore.filters[field.value] = value;
 
             emit('filter-change', field.value, value);
