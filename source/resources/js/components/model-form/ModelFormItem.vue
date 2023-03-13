@@ -11,6 +11,12 @@ el-form-item(
             :max='field.max'
             @input='$emit("update:modelValue", $event)'
         )
+    template(v-if='field.type === "boolean"')
+        el-switch(
+            :model-value='modelValue'
+            :disabled='field.readonly'
+            @input='$emit("update:modelValue", $event)'
+        )
     template(v-else-if='field.type === "relation"')
         el-select.w-full(
             :model-value='model[field.relation.key]'
