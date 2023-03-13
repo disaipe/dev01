@@ -13,7 +13,6 @@ import { registerAllModules } from 'handsontable/registry';
 
 import { makeMatrix } from '../../utils/arrayUtils';
 import { base64ToBuffer } from '../../utils/base64';
-import { isServiceNameCell, isServiceCountCell } from './cellTypes';
 
 registerLanguageDictionary(ruRU);
 registerAllModules();
@@ -78,7 +77,10 @@ export function configure(settings = {}) {
             for (const change of changes) {
                 const [row, col, oldVal, newVal] = change;
 
-                const cell = worksheet.value.getCell(row + 1, col + 1)
+                const cell = worksheet.value.getCell(
+                    row + 1,
+                    (typeof(col) === 'string' ? instance.value.propToCol(col) : col) + 1
+                );
 
                 if (isFormula(newVal)) {
                     cell.value = {
@@ -123,6 +125,24 @@ export function configure(settings = {}) {
         },
         afterRowResize(newSize, row) {
             worksheet.value.getRow(row + 1).height = newSize / 1.33;
+        },
+        afterUpdateData(sourceData) {
+            store.value.workbook.removeWorksheet(store.value.worksheet.id);
+            store.value.worksheet = store.value.workbook.addWorksheet('Data');
+
+            const cells = makeMatrix(50, 30);
+
+            for (let row = 0; row < instance.value.countRows(); row++) {
+                for (let col = 0; col < instance.value.countCols(); col++) {
+                    const value = instance.value.getDataAtCell(row, col);
+                    const cell = worksheet.value.getCell(row + 1, col + 1);
+                    cell.value = value;
+
+                    cells[row][col] = cell;
+                }
+            }
+
+            store.value.cells = cells;
         }
     };
 }
