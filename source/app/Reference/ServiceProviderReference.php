@@ -3,6 +3,7 @@
 namespace App\Reference;
 
 use App\Core\Reference\ReferenceEntry;
+use App\Core\Reference\ReferenceFieldSchema;
 use App\Models\ServiceProvider;
 
 class ServiceProviderReference extends ReferenceEntry
@@ -13,26 +14,27 @@ class ServiceProviderReference extends ReferenceEntry
 
     protected int $order = 100;
 
-    protected array $schema = [
-        'id' => [
-            'label' => 'ID',
-            'hidden' => true,
-        ],
-        'name' => [
-            'label' => 'Наименование',
-            'rules' => 'required',
-            'visible' => true,
-        ],
-        'fullname' => [
-            'label' => 'Полное наименование',
-        ],
-        'identity' => [
-            'label' => 'ИНН',
-            'rules' => 'max:32',
-            'visible' => true,
-        ],
-        'description' => [
-            'label' => 'Описание',
-        ],
-    ];
+    public function getSchema(): array
+    {
+        return [
+            'id' => ReferenceFieldSchema::make()
+                ->id(),
+
+            'name' => ReferenceFieldSchema::make()
+                ->label('Наименование')
+                ->required()
+                ->visible(),
+
+            'fullname' => ReferenceFieldSchema::make()
+                ->label('Полное наименование'),
+
+            'identity' => ReferenceFieldSchema::make()
+                ->label('ИНН')
+                ->max(32)
+                ->visible(),
+
+            'description' => ReferenceFieldSchema::make()
+                ->label('Описание')
+        ];
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Reference;
 
 use App\Core\Reference\ReferenceEntry;
+use App\Core\Reference\ReferenceFieldSchema;
 use App\Models\Company;
 
 class CompanyReference extends ReferenceEntry
@@ -13,31 +14,34 @@ class CompanyReference extends ReferenceEntry
 
     protected int $order = 99;
 
-    protected array $schema = [
-        'id' => [
-            'label' => 'ID',
-            'hidden' => true,
-        ],
-        'code' => [
-            'label' => 'Префикс',
-            'rules' => 'required|max:16',
-            'visible' => true,
-        ],
-        'name' => [
-            'label' => 'Наименование',
-            'rules' => 'required',
-            'visible' => true,
-        ],
-        'fullname' => [
-            'label' => 'Полное наименование',
-        ],
-        'identity' => [
-            'label' => 'ИНН',
-            'rules' => 'max:32',
-            'visible' => true,
-        ],
-        'description' => [
-            'label' => 'Описание',
-        ],
-    ];
+    public function getSchema(): array
+    {
+        return [
+            'id' => ReferenceFieldSchema::make()
+                ->id(),
+
+            'code' => ReferenceFieldSchema::make()
+                ->label('Префикс')
+                ->required()
+                ->max(16)
+                ->visible(),
+
+            'name' => ReferenceFieldSchema::make()
+                ->label('Наименование')
+                ->required()
+                ->visible(),
+
+            'fullname' => ReferenceFieldSchema::make()
+                ->label('Полное наименование')
+                ->max(512),
+
+            'identity' => ReferenceFieldSchema::make()
+                ->label('ИНН')
+                ->max(32)
+                ->visible(),
+
+            'description' => ReferenceFieldSchema::make()
+                ->label('Описание')
+        ];
+    }
 }

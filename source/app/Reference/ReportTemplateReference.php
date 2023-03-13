@@ -3,6 +3,7 @@
 namespace App\Reference;
 
 use App\Core\Reference\ReferenceEntry;
+use App\Core\Reference\ReferenceFieldSchema;
 use App\Models\ReportTemplate;
 
 class ReportTemplateReference extends ReferenceEntry
@@ -15,26 +16,27 @@ class ReportTemplateReference extends ReferenceEntry
 
     protected ?string $recordView = 'ReportTemplateRecord';
 
-    protected array $schema = [
-        'id' => [
-            'label' => 'ID',
-            'hidden' => true,
-        ],
-        'name' => [
-            'label' => 'Наименование',
-            'rules' => 'required',
-            'visible' => true,
-        ],
-        'service_provider' => [
-            'label' => 'Провайдер услуг',
-        ],
-        'service_provider_id' => [
-            'hidden' => true,
-        ],
-        'content' => [
-            'hidden' => true,
-        ],
-    ];
+    public function getSchema(): array
+    {
+        return [
+            'id' => ReferenceFieldSchema::make()
+                ->id(),
+
+            'name' => ReferenceFieldSchema::make()
+                ->label('Наименование')
+                ->required()
+                ->visible(),
+
+            'service_provider' => ReferenceFieldSchema::make()
+                ->label('Провайдер услуг'),
+
+            'service_provider_id' => ReferenceFieldSchema::make()
+                ->hidden(),
+
+            'content' => ReferenceFieldSchema::make()
+                ->hidden()
+        ];
+    }
 
     public function getRecordMeta(): array
     {
