@@ -64,7 +64,7 @@ export default {
         const visibleFields = ref();
         repository.getFieldsSchema().then((schema) => {
             fields.value = (schema || {});
-            visibleFields.value = pickBy(schema, (value) => value.visible !== false);
+            visibleFields.value = pickBy(schema, (value) => value.hidden !== true);
         });
 
         const rules =  computed(() => validationRulesFromSchema(fields.value));
