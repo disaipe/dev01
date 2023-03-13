@@ -36,6 +36,11 @@ import { useRepos } from '../../../store/repository';
 import { loadFromBase64 } from '../../../components/spreadsheet/xlsxUtils';
 import { bufferToBase64 } from '../../../utils/base64';
 import { isServiceNameCell, isServiceCountCell } from '../../../components/spreadsheet/cellTypes';
+import {
+    getServiceFromCellValue,
+    serviceCountCellRenderer,
+    serviceNameCellRenderer
+} from '../../../components/spreadsheet/cellRenderers';
 
 export default {
     name: 'ReportTemplateRecord',
@@ -51,33 +56,18 @@ export default {
         const data = reactive({
             loading: false,
             saving: false
-        })
+        });
 
         const services = ref();
         Service.fetch().then(({ items }) => {
-            services.value = items.reduce((acc, cur) => {
-                acc[cur.$getKey()] = cur;
-                return acc;
-            }, {});
+            services.value = items;
         });
 
         const getServiceSelectOption = (type) => {
-            return Object.values(services.value).reduce((acc, cur) => {
+            return services.value.reduce((acc, cur) => {
                 acc[`SERVICE#${cur.$getKey()}#${type}`] = cur.$getName();
                 return acc;
             }, {});
-        };
-
-        const getServiceFromCellValue = (cellValue) => {
-            if (cellValue && typeof(cellValue) === 'string') {
-                const [, id] = cellValue.split('#');
-
-                if (id) {
-                    return services.value[id];
-                }
-            }
-
-            return null;
         };
 
         const settings = {
@@ -123,33 +113,6 @@ export default {
                     data.saving = false;
                 });
             });
-        };
-
-        const serviceNameCellRenderer = (instance, td, row, column, prop, value, cellProperties) => {
-            if (isServiceNameCell(value)) {
-                const service = getServiceFromCellValue(value);
-                if (service) {
-                    td.innerText = service.$getName();
-                }
-            }
-
-            const { className } = cellProperties;
-
-            if (className) {
-                td.classList.add(className);
-            }
-        };
-
-        const serviceCountCellRenderer = (instance, td, row, column, prop, value, cellProperties) => {
-            if (isServiceCountCell(value)) {
-                td.innerText = 1;
-            }
-
-            const { className } = cellProperties;
-
-            if (className) {
-                td.classList.add(className);
-            }
         };
 
         const insertServiceName = () => {
@@ -244,9 +207,7 @@ export default {
             resetServiceFormat,
 
             load,
-            save,
-
-            getTitle: () => '123'
+            save
         }
     }
 }

@@ -27,11 +27,7 @@ export default {
         return {
             reference: 'ReportTemplate',
             editRecord
-        }
+        };
     }
 }
 </script>
-
-<style scoped>
-
-</style>
