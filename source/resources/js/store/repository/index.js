@@ -9,6 +9,7 @@ export function defineModel(name, options = {}){
     return ({
         [name]: class extends CoreModel {
             static entity = options.entity;
+            static eagerLoad = options.eagerLoad;
 
             static fields() {
                 return options?.fields.call(this) || {};

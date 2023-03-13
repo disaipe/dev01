@@ -109,7 +109,8 @@ class ReferenceEntry
     public function getPiniaFields(): ?array
     {
         return Arr::map($this->getSchema(), function ($field) {
-            return Arr::get($field, 'pinia');
+            $definition = is_array($field) ? $field : $field->toArray();
+            return Arr::get($definition, 'pinia');
         });
     }
 
