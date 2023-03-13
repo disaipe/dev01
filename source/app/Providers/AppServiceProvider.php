@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Core\HasManySyncMacro;
 use App\Core\Indicator\IndicatorManager;
 use App\Directives;
 use Illuminate\Support\Facades\Blade;
@@ -14,9 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->registerMacros();
         $this->registerDirectives();
-
-        $this->app->singleton('indicators', fn () => new IndicatorManager());
+        $this->registerSingletons();
     }
 
     /**
@@ -27,8 +28,18 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
-    private function registerDirectives()
+    private function registerMacros(): void
+    {
+        HasManySyncMacro::make();
+    }
+
+    private function registerDirectives(): void
     {
         Blade::directive('vue', [Directives::class, 'vue']);
+    }
+
+    private function registerSingletons(): void
+    {
+        $this->app->singleton('indicators', fn () => new IndicatorManager());
     }
 }
