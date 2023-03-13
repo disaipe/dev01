@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class VueAppService
@@ -46,7 +47,7 @@ class VueAppService
             return null;
         }
 
-        $avatar = \Storage::disk('public')->exists("avatars/{$user->id}")
+        $avatar = Storage::disk('public')->exists("avatars/{$user->id}")
             ? "/storage/avatars/{$user->id}"
             : null;
 
@@ -118,10 +119,16 @@ class VueAppService
         return collect($references->getReferences())
             ->filter(fn (ReferenceEntry $ref) => $ref->hasPiniaBindings())
             ->map(function (ReferenceEntry $entry) {
+                $schema = $entry->getSchema();
+                $fields = $entry->getPiniaFields();
+
+                $eagerLoad = Arr::where($schema, fn ($field) => $field->isEagerLoad());
+
                 return [
                     'name' => $entry->getName(),
+                    'eagerLoad' => array_keys($eagerLoad),
                     'entity' => Str::kebab(Str::plural($entry->getName())),
-                    'fields' => $entry->getPiniaFields(),
+                    'fields' => $fields,
                 ];
             })
             ->values()

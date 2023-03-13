@@ -47,12 +47,15 @@
 
                             TableFilter(
                                 :field='field'
+                                :schema='fields[field]'
                                 @filter-change='handleFilter'
                             )
 
                     template(#default='{ row }')
                         template(v-if='fields[field].relation && row[field]')
                             span {{ row[field].$getName() }}
+                        template(v-else-if='fields[field].type === "boolean"')
+                            el-switch(v-model='row[field]' size='small' disabled)
                         span(v-else) {{ row[field] }}
 
             template(#empty)
@@ -165,9 +168,6 @@ export default {
             repository.getFieldsSchema().then((schema) => {
                 fields.value = schema;
             });
-
-            // TODO: Determine related models to load
-            repository.fetchRelatedModels();
         } else {
             errors.value.push('Не задана модель данных Pinia. Без схемы полей данных дальнейшая работа невозможна');
         }
@@ -239,7 +239,9 @@ export default {
     methods: {
         load() {
             if (this.repository) {
-                this.tree ? this.loadTree() : this.loadPages();
+                this.repository.fetchRelatedModels().then(() => {
+                    this.tree ? this.loadTree() : this.loadPages();
+                });
             }
         },
 
@@ -266,8 +268,14 @@ export default {
                 if (status) {
                     const eagerLoad = this.repository.getEagerLoad();
 
-                    if (eagerLoad) {
-                        this.repository.with(eagerLoad).load(items);
+                    if (eagerLoad && eagerLoad.length) {
+                        let query = this.repository;
+
+                        for (const eager of eagerLoad) {
+                            query = query.with(eager);
+                        }
+
+                        query.load(items);
                     }
 
                     this.data = items;
