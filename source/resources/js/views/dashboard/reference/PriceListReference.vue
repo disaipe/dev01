@@ -7,7 +7,7 @@
             vxe-column(width='40px')
                 template(#default='{ row }')
                     el-link(:underline='false' @click='editRecord(row.$getKey())')
-                        Icon(icon='mdi:table-edit' height='20')
+                        icon(icon='mdi:table-edit' height='20')
 </template>
 
 <script>

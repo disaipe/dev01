@@ -45,14 +45,14 @@
                             :class='{ active: data.fontItalic }'
                             @click='setItalic(!data.fontItalic)'
                         )
-                            Icon(icon='material-symbols:format-italic-rounded' height='14')
+                            icon(icon='material-symbols:format-italic-rounded' height='14')
                         el-button(
                             :class='{ active: data.fontBold }'
                             @click='setBold(!data.fontBold)'
                         )
-                            Icon(icon='material-symbols:format-bold-rounded' height='14')
+                            icon(icon='material-symbols:format-bold-rounded' height='14')
                         el-button(@click='() => borderDrop.handleOpen()')
-                            Icon(icon='material-symbols:border-all-outline-sharp' height='14')
+                            icon(icon='material-symbols:border-all-outline-sharp' height='14')
                             el-dropdown(
                                 ref='borderDrop'
                                 trigger='click'
@@ -61,26 +61,26 @@
                                 template(#dropdown)
                                     .grid.grid-cols-5.p-1.gap-1
                                         el-link(@click='setBorder("all")')
-                                            Icon.text-xl(icon='material-symbols:border-all-outline')
+                                            icon.text-xl(icon='material-symbols:border-all-outline')
                                         el-link(@click='setBorder("inner")' disabled)
-                                            Icon.text-xl(icon='material-symbols:border-inner')
+                                            icon.text-xl(icon='material-symbols:border-inner')
                                         el-link(@click='setBorder("horizontal")' disabled)
-                                            Icon.text-xl(icon='material-symbols:border-horizontal')
+                                            icon.text-xl(icon='material-symbols:border-horizontal')
                                         el-link(@click='setBorder("vertical")' disabled)
-                                            Icon.text-xl(icon='material-symbols:border-vertical')
+                                            icon.text-xl(icon='material-symbols:border-vertical')
                                         el-link(@click='setBorder("outer")' disabled)
-                                            Icon.text-xl(icon='material-symbols:border-outer')
+                                            icon.text-xl(icon='material-symbols:border-outer')
 
                                         el-link(@click='setBorder("left")')
-                                            Icon.text-xl(icon='material-symbols:border-left')
+                                            icon.text-xl(icon='material-symbols:border-left')
                                         el-link(@click='setBorder("top")')
-                                            Icon.text-xl(icon='material-symbols:border-top')
+                                            icon.text-xl(icon='material-symbols:border-top')
                                         el-link(@click='setBorder("right")')
-                                            Icon.text-xl(icon='material-symbols:border-right')
+                                            icon.text-xl(icon='material-symbols:border-right')
                                         el-link(@click='setBorder("bottom")')
-                                            Icon.text-xl(icon='material-symbols:border-bottom')
+                                            icon.text-xl(icon='material-symbols:border-bottom')
                                         el-link(@click='setBorder("none")')
-                                            Icon.text-xl(icon='material-symbols:border-clear')
+                                            icon.text-xl(icon='material-symbols:border-clear')
 
                         slot(name='toolbar-actions')
 

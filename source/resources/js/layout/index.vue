@@ -11,7 +11,7 @@
 
                 el-menu-item(:route='{ name: "report-invoice" }' index='report')
                     .flex.items-center.space-x-2.pl-1
-                        Icon(icon='teenyicons:invoice-outline' height='18')
+                        icon(icon='teenyicons:invoice-outline' height='18')
                         div Отчет
 
                 el-sub-menu
@@ -26,7 +26,7 @@
                         :index='route.name'
                     )
                         //- el-icon(v-if='route.meta.icon')
-                        //-     Icon(:icon='route.meta.icon' height='18')
+                        //-     icon(:icon='route.meta.icon' height='18')
                         div {{ route.meta.title }}
 
         el-container

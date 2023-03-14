@@ -22,7 +22,7 @@
                     )
 
                     template(#prefix)
-                        Icon.relative(class='top-[1px]' icon='mdi:table-edit' height='16')
+                        icon.relative(class='top-[1px]' icon='mdi:table-edit' height='16')
 </template>
 
 <script>
