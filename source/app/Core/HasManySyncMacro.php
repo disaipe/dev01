@@ -7,15 +7,14 @@ use Illuminate\Support\Arr;
 
 class HasManySyncMacro
 {
-    static function make(): void
+    public static function make(): void
     {
         HasMany::macro('sync', function (array $data, $deleting = true) {
             /** @var HasMany $this */
-
             $changes = [
                 'created' => [],
                 'deleted' => [],
-                'updated' => []
+                'updated' => [],
             ];
 
             // Get the primary key.

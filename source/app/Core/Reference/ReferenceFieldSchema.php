@@ -11,7 +11,9 @@ use JsonSerializable;
 class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
 {
     protected array $attributes;
+
     protected array $rules;
+
     protected bool $eagerLoad = false;
 
     protected function __construct()
@@ -22,8 +24,6 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
 
     /**
      * Make reference field schema instance
-     *
-     * @return ReferenceFieldSchema
      */
     public static function make(): ReferenceFieldSchema
     {
@@ -33,48 +33,49 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
     /**
      * Set field label
      *
-     * @param string $label string to display
+     * @param  string  $label string to display
      * @return $this
      */
     public function label(string $label): static
     {
         Arr::set($this->attributes, 'label', $label);
+
         return $this;
     }
 
     /**
      * Make field visible by default
      *
-     * @param bool $isVisible
      * @return $this
      */
     public function visible(bool $isVisible = true): static
     {
         Arr::set($this->attributes, 'visible', $isVisible);
+
         return $this;
     }
 
     /**
      * Make field hidden in tables and forms
      *
-     * @param bool $isHidden
      * @return $this
      */
     public function hidden(bool $isHidden = true): static
     {
         Arr::set($this->attributes, 'hidden', $isHidden);
+
         return $this;
     }
 
     /**
      * Set field`s pinia definition
      *
-     * @param array $piniaFieldDefinition
      * @return $this
      */
     public function pinia(array $piniaFieldDefinition): static
     {
         Arr::set($this->attributes, 'pinia', $piniaFieldDefinition);
+
         return $this;
     }
 
@@ -85,7 +86,8 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
      */
     public function required(): static
     {
-        $this->rules []= 'required';
+        $this->rules[] = 'required';
+
         return $this;
     }
 
@@ -96,19 +98,20 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
      */
     public function array(): static
     {
-        $this->rules []= 'array';
+        $this->rules[] = 'array';
+
         return $this;
     }
 
     /**
      * Set field max length/value
      *
-     * @param string|int $length
      * @return $this
      */
     public function max(string|int $length): static
     {
-        $this->rules []= 'max:' . $length;;
+        $this->rules[] = 'max:'.$length;
+
         return $this;
     }
 
@@ -130,13 +133,12 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
     public function eagerLoad(): static
     {
         $this->eagerLoad = true;
+
         return $this;
     }
 
     /**
      * Get field is eager loading
-     *
-     * @return bool
      */
     public function isEagerLoad(): bool
     {
@@ -145,8 +147,6 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
 
     /**
      * Get field definition as array
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -158,8 +158,6 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
 
     /**
      * Serialize field to json array
-     *
-     * @return array
      */
     public function jsonSerialize(): array
     {

@@ -10,8 +10,7 @@ use Illuminate\Support\Collection;
 /**
  * @property string name
  * @property int service_provider_id
- * @property boolean isDefault
- *
+ * @property bool isDefault
  * @property ServiceProvider serviceProvider
  * @property Collection<PriceListValue> values
  */
@@ -20,11 +19,11 @@ class PriceList extends ReferenceModel
     protected $fillable = [
         'name',
         'service_provider_id',
-        'isDefault'
+        'isDefault',
     ];
 
     protected $casts = [
-        'isDefault' => 'boolean'
+        'isDefault' => 'boolean',
     ];
 
     public function serviceProvider(): BelongsTo
@@ -36,5 +35,4 @@ class PriceList extends ReferenceModel
     {
         return $this->hasMany(PriceListValue::class);
     }
-
 }

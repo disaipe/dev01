@@ -37,7 +37,7 @@ class PriceListValueReference extends ReferenceEntry
 
             'value' => ReferenceFieldSchema::make()
                 ->label('Стоимость')
-                ->pinia(PiniaAttribute::number())
+                ->pinia(PiniaAttribute::number()),
         ];
     }
 }

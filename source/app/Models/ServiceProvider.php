@@ -11,7 +11,6 @@ use Illuminate\Support\Collection;
  * @property string fullname
  * @property string identity
  * @property string description
- *
  * @property Collection<Service> services
  */
 class ServiceProvider extends ReferenceModel

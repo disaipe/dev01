@@ -110,6 +110,7 @@ class ReferenceEntry
     {
         return Arr::map($this->getSchema(), function ($field) {
             $definition = is_array($field) ? $field : $field->toArray();
+
             return Arr::get($definition, 'pinia');
         });
     }

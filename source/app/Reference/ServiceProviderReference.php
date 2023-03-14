@@ -34,7 +34,7 @@ class ServiceProviderReference extends ReferenceEntry
                 ->visible(),
 
             'description' => ReferenceFieldSchema::make()
-                ->label('Описание')
+                ->label('Описание'),
         ];
     }
 }

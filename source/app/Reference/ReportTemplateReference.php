@@ -34,7 +34,7 @@ class ReportTemplateReference extends ReferenceEntry
                 ->hidden(),
 
             'content' => ReferenceFieldSchema::make()
-                ->hidden()
+                ->hidden(),
         ];
     }
 

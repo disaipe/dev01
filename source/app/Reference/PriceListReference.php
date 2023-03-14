@@ -46,14 +46,14 @@ class PriceListReference extends ReferenceEntry
             'isDefault' => ReferenceFieldSchema::make()
                 ->label('Использовать по-умолчанию')
                 ->visible()
-                ->pinia(PiniaAttribute::boolean())
+                ->pinia(PiniaAttribute::boolean()),
         ];
     }
 
     public function getRecordMeta(): array
     {
         return [
-            'scroll' => false
+            'scroll' => false,
         ];
     }
 }
