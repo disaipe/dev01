@@ -12,10 +12,6 @@ class ReportTemplateReference extends ReferenceEntry
 
     protected bool $piniaBindings = false;
 
-    protected ?string $referenceView = 'ReportTemplateReference';
-
-    protected ?string $recordView = 'ReportTemplateRecord';
-
     public function getSchema(): array
     {
         return [

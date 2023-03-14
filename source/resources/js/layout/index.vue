@@ -14,14 +14,20 @@
                         Icon(icon='teenyicons:invoice-outline' height='18')
                         div Отчет
 
-                el-menu-item(
-                    v-for='route of routes'
-                    :route='{ name: route.name }'
-                    :index='route.name'
-                )
-                    el-icon(v-if='route.meta.icon')
-                        Icon(:icon='route.meta.icon' height='18')
-                    div {{ route.meta.title }}
+                el-sub-menu
+                    template(#title)
+                        .flex.items-center.space-x-2
+                            icon(icon='fluent-mdl2:product-catalog' height='18')
+                            div Справочники
+
+                    el-menu-item(
+                        v-for='route of routes'
+                        :route='{ name: route.name }'
+                        :index='route.name'
+                    )
+                        //- el-icon(v-if='route.meta.icon')
+                        //-     Icon(:icon='route.meta.icon' height='18')
+                        div {{ route.meta.title }}
 
         el-container
             el-header

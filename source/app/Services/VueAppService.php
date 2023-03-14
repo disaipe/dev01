@@ -62,7 +62,7 @@ class VueAppService
         /** @var ReferenceManager $references */
         $references = app('references');
 
-        return Arr::map($references->getReferences(), function (ReferenceEntry $entry) {
+        $routes = Arr::map($references->getReferences(), function (ReferenceEntry $entry) {
             $meta = [
                 'model' => class_basename($entry->getModel()),
                 'order' => $entry->getOrder(),
@@ -74,6 +74,44 @@ class VueAppService
                 ],
             ];
 
+            $routes = [];
+
+            // Make reference route if view set
+            $referenceView = $entry->getReferenceView();
+            if ($referenceView !== false) {
+                $routes []= [
+                    'name' => $entry->getName().'Reference',
+                    'path' => '',
+                    'meta' => [
+                        ...$meta,
+                        'view' => $entry->getReferenceView(),
+                        'title' => $entry->getPluralLabel(),
+                        'isReference' => true,
+                        ...$entry->getReferenceMeta(),
+                    ],
+                ];
+            }
+
+            // Make record route if view set
+            $recordView = $entry->getRecordView();
+            if ($recordView !== false) {
+                $routes []= [
+                    'name' => $entry->getName().'Record',
+                    'path' => ':id',
+                    'meta' => [
+                        ...$meta,
+                        'view' => $entry->getRecordView(),
+                        'title' => $entry->getLabel(),
+                        'isRecord' => true,
+                        ...$entry->getRecordMeta(),
+                    ],
+                ];
+            }
+
+            if (!count($routes)) {
+                return null;
+            }
+
             return [
                 'name' => $entry->getName(),
                 'path' => $entry->getPrefix(),
@@ -83,32 +121,11 @@ class VueAppService
                 'meta' => [
                     'title' => $entry->getPluralLabel(),
                 ],
-                'children' => [
-                    [
-                        'name' => $entry->getName().'Reference',
-                        'path' => '',
-                        'meta' => [
-                            ...$meta,
-                            'view' => $entry->getReferenceView(),
-                            'title' => $entry->getPluralLabel(),
-                            'isReference' => true,
-                            ...$entry->getReferenceMeta(),
-                        ],
-                    ],
-                    [
-                        'name' => $entry->getName().'Record',
-                        'path' => ':id',
-                        'meta' => [
-                            ...$meta,
-                            'view' => $entry->getRecordView(),
-                            'title' => $entry->getLabel(),
-                            'isRecord' => true,
-                            ...$entry->getRecordMeta(),
-                        ],
-                    ],
-                ],
+                'children' => $routes,
             ];
         });
+
+        return Arr::whereNotNull($routes);
     }
 
     private function getReferenceModels(): array

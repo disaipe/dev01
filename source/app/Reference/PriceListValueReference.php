@@ -11,6 +11,9 @@ class PriceListValueReference extends ReferenceEntry
 {
     protected string $model = PriceListValue::class;
 
+    protected string|bool|null $referenceView = false;
+    protected string|bool|null $recordView = false;
+
     public function getSchema(): array
     {
         return [

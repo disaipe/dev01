@@ -15,9 +15,8 @@ class PriceListReference extends ReferenceEntry
 
     protected int $order = 97;
 
-    protected ?string $referenceView = 'PriceListReference';
-
-    protected ?string $recordView = 'PriceListRecord';
+    protected string|bool|null $referenceView = 'PriceListReference';
+    protected string|bool|null $recordView = 'PriceListRecord';
 
     public function getSchema(): array
     {

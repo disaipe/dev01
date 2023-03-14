@@ -26,12 +26,12 @@ class ReferenceEntry
     /**
      * Reference view name for the front-end application
      */
-    protected ?string $referenceView;
+    protected string|bool|null $referenceView;
 
     /**
      * Record view name for the front-end application
      */
-    protected ?string $recordView;
+    protected string|bool|null $recordView;
 
     /**
      * Reference icon
@@ -120,9 +120,9 @@ class ReferenceEntry
      *
      * View must be placed in `source/resources/js/views/dashboard/reference` directory.
      */
-    public function getReferenceView(): ?string
+    public function getReferenceView(): string|bool|null
     {
-        return $this->referenceView ?? null;
+        return isset($this->referenceView) ? $this->referenceView : null;
     }
 
     /**
@@ -130,9 +130,9 @@ class ReferenceEntry
      *
      * View must be placed in `source/resources/js/views/dashboard/record` directory.
      */
-    public function getRecordView(): ?string
+    public function getRecordView(): string|bool|null
     {
-        return $this->recordView ?? null;
+        return isset($this->recordView) ? $this->recordView : null;
     }
 
     /**
