@@ -14,7 +14,7 @@
                         icon(icon='teenyicons:invoice-outline' height='18')
                         div Отчет
 
-                el-sub-menu
+                el-sub-menu(index='references')
                     template(#title)
                         .flex.items-center.space-x-2
                             icon(icon='fluent-mdl2:product-catalog' height='18')
