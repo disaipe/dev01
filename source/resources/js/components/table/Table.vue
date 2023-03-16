@@ -337,6 +337,8 @@ export default {
                 const record = this.$refs.vxe.getRowById(key);
 
                 if (record) {
+                    this.repository.withAll().load([saved]);
+
                     // update if found
                     Object.assign(record, saved);
                 } else {
