@@ -13,13 +13,19 @@
 
                 el-select(
                     :model-value='id'
+                    filterable
                     @change='changePriceList'
                 )
-                    el-option(
-                        v-for='priceList of priceLists'
-                        :value='priceList.id'
-                        :label='priceList.name'
+                    el-option-group(
+                        v-for='provider of providers'
+                        :key='provider.id'
+                        :label='provider.name'
                     )
+                        el-option(
+                            v-for='priceList of provider.priceLists'
+                            :value='priceList.id'
+                            :label='priceList.name'
+                        )
 
                     template(#prefix)
                         icon.relative(class='top-[1px]' icon='mdi:table-edit' height='16')
@@ -58,9 +64,10 @@ export default {
             services: [],
             values: []
         });
-        const priceLists = ref();
 
-        const { PriceList, Service } = useRepos();
+        const providers = ref();
+
+        const { PriceList, Service, ServiceProvider } = useRepos();
 
         const load = () => {
             if (!id.value) {
@@ -69,8 +76,11 @@ export default {
 
             priceListData.loading = true;
 
-            PriceList.fetch().then(({ items }) => {
-                priceLists.value = items;
+            Promise.all([
+                PriceList.fetch(),
+                ServiceProvider.fetch()
+            ]).then(() => {
+               providers.value = ServiceProvider.query().with('priceLists').get();
             });
 
             return api.get(`price_list/${id.value}`).then((response) => {
@@ -174,7 +184,7 @@ export default {
             id,
             spread,
 
-            priceLists,
+            providers,
             priceListData,
 
             load,
