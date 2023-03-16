@@ -51,7 +51,7 @@ class ADEntryReference extends ReferenceEntry
 
             'groups' => ReferenceFieldSchema::make()
                 ->label('Группы')
-                ->pinia(PiniaAttribute::string()),
+                ->pinia(PiniaAttribute::attr([])),
 
             'last_logon' => ReferenceFieldSchema::make()
                 ->label('Последний вход')
