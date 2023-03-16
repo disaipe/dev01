@@ -1,46 +1,84 @@
-import { useRepos, defineModel, defineRepo } from '../../store/repository';
+import keyBy from 'lodash/keyBy';
+import predefinedModels from '../../store/models';
+import { defineModel, defineRepo } from '../../store/repository';
 
 export default {
     install(app) {
-        const models = app.config.globalProperties.$page.models;
+        const models = keyBy(app.config.globalProperties.$page.models, 'name');
 
-        const repos = useRepos();
+        const modelsCache = { ...predefinedModels };
 
-        for (const model of models) {
-
-            const newModel = defineModel(model.name, {
+        // define dynamic models in cache
+        // needs to make linking models easy (including relationships to yourself)
+        for (const [name, model] of Object.entries(models)) {
+            modelsCache[name] = defineModel(name, {
                 entity: model.entity,
                 eagerLoad: model.eagerLoad,
-                fields() {
-                    const fields = {};
+            });
+        }
 
-                    for (const [key, def] of Object.entries(model.fields)) {
-                        if (Array.isArray(def)) {
-                            const [method, ...args] = def;
+        // iterate models and make fields binding
+        for (const [name, model] of Object.entries(modelsCache)) {
+            // skip predefined models
+            if (predefinedModels[name]) {
+                continue;
+            }
 
-                            switch (method) {
-                                case 'belongsTo':
-                                    const [related, foreignKey, ownerKey] = args;
-                                    const relatedModel = repos[related]?.model;
+            // override 'fields' method to return new bindings
+            model.fields = function() {
+                const fields = {};
 
-                                    if (relatedModel) {
-                                        fields[key] = this[method](relatedModel.constructor, foreignKey, ownerKey);
-                                    }
-                                    break;
-                                default:
-                                    fields[key] = this[method](...args);
-                                    break;
-                            }
-                        } else {
-                            console.warn(`Model "${model.name}" field "${key} definition is not valid, skipping`);
-                        }
+                // iterate models fields and bind it to model
+                for (const [key, def] of Object.entries(models[name].fields)) {
+                    if (!Array.isArray(def)) {
+                        console.warn(`Model "${model.name}" field "${key} definition is not valid, skipping`);
+                        continue;
                     }
 
-                    return fields;
-                }
-            });
+                    const [method, ...args] = def;
 
-            defineRepo(newModel);
+                    switch (method) {
+                        case 'belongsTo': {
+                            const [related, foreignKey, ownerKey] = args;
+                            const relatedModel = modelsCache[related];
+
+                            if (relatedModel) {
+                                fields[key] = this[method](relatedModel, foreignKey, ownerKey);
+                            } else {
+                                console.warn(`Related model "${related}" for "${model.name}" not found, field definition skipped`);
+                            }
+                            break;
+                        }
+                        case 'hasMany': {
+                            const [related, foreignKey, localKey] = args;
+                            const relatedModel = modelsCache[related];
+
+                            if (relatedModel) {
+                                fields[key] = this[method](relatedModel, foreignKey, localKey);
+                            } else {
+                                console.warn(`Related model "${related}" for "${model.name}" not found, field definition skipped`);
+                            }
+                            break;
+                        }
+                        default:
+                            fields[key] = this[method](...args);
+                            break;
+                    }
+                }
+
+                return fields;
+            }
+        }
+
+        // iterate models cache again to define they repositories
+        // must be after all models defined
+        for (const [name, model] of Object.entries(modelsCache)) {
+            // skip predefined models, they defines manually
+            if (predefinedModels[name]) {
+                continue;
+            }
+
+            defineRepo(model);
         }
     }
 }

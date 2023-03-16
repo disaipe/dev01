@@ -2,6 +2,7 @@
 
 namespace App\Reference;
 
+use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Models\ReportTemplate;
@@ -9,8 +10,6 @@ use App\Models\ReportTemplate;
 class ReportTemplateReference extends ReferenceEntry
 {
     protected string $model = ReportTemplate::class;
-
-    protected bool $piniaBindings = false;
 
     public function getSchema(): array
     {
@@ -21,16 +20,21 @@ class ReportTemplateReference extends ReferenceEntry
             'name' => ReferenceFieldSchema::make()
                 ->label('Наименование')
                 ->required()
-                ->visible(),
+                ->visible()
+                ->pinia(PiniaAttribute::string()),
 
             'service_provider' => ReferenceFieldSchema::make()
-                ->label('Провайдер услуг'),
+                ->label('Провайдер услуг')
+                ->eagerLoad()
+                ->pinia(PiniaAttribute::belongsTo('ServiceProvider', 'service_provider_id')),
 
             'service_provider_id' => ReferenceFieldSchema::make()
-                ->hidden(),
+                ->hidden()
+                ->pinia(PiniaAttribute::number()),
 
             'content' => ReferenceFieldSchema::make()
-                ->hidden(),
+                ->hidden()
+                ->pinia(PiniaAttribute::attr()),
         ];
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Reference;
 
+use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Models\Service;
@@ -9,8 +10,6 @@ use App\Models\Service;
 class ServiceReference extends ReferenceEntry
 {
     protected string $model = Service::class;
-
-    protected bool $piniaBindings = false;
 
     protected int $order = 98;
 
@@ -21,42 +20,54 @@ class ServiceReference extends ReferenceEntry
                 ->id(),
 
             'parent_id' => ReferenceFieldSchema::make()
-                ->hidden(),
+                ->hidden()
+                ->pinia(PiniaAttribute::number()),
 
             'service_provider_id' => ReferenceFieldSchema::make()
-                ->hidden(),
+                ->hidden()
+                ->pinia(PiniaAttribute::number()),
 
             'service_provider' => ReferenceFieldSchema::make()
                 ->label('Провайдер услуг')
                 ->required()
-                ->visible(),
+                ->visible()
+                ->eagerLoad()
+                ->pinia(PiniaAttribute::belongsTo('ServiceProvider', 'service_provider_id')),
 
             'name' => ReferenceFieldSchema::make()
                 ->label('Наименование')
                 ->required()
                 ->max(128)
-                ->visible(),
+                ->visible()
+                ->pinia(PiniaAttribute::string()),
 
             'display_name' => ReferenceFieldSchema::make()
                 ->label('Полное наименование')
                 ->max(512)
-                ->visible(),
+                ->visible()
+                ->pinia(PiniaAttribute::string()),
 
             'tags' => ReferenceFieldSchema::make()
                 ->label('Тэги')
-                ->array(),
+                ->array()
+                ->pinia(PiniaAttribute::attr()),
 
             'indicator_code' => ReferenceFieldSchema::make()
-                ->hidden(),
+                ->hidden()
+                ->pinia(PiniaAttribute::string()),
 
             'indicator' => ReferenceFieldSchema::make()
-                ->label('Индикатор'),
+                ->label('Индикатор')
+                ->pinia(PiniaAttribute::belongsTo('Indicator', 'indicator_code', 'code')),
 
             'parent' => ReferenceFieldSchema::make()
-                ->label('Родитель'),
+                ->label('Родитель')
+                ->eagerLoad()
+                ->pinia(PiniaAttribute::belongsTo('Service', 'parent_id')),
 
             'children' => ReferenceFieldSchema::make()
-                ->hidden(),
+                ->hidden()
+                ->pinia(PiniaAttribute::hasMany('Service', 'parent_id')),
         ];
     }
 }

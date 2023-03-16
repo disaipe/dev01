@@ -12,7 +12,7 @@ export function defineModel(name, options = {}){
             static eagerLoad = options.eagerLoad;
 
             static fields() {
-                return options?.fields.call(this) || {};
+                return options.fields?.call?.(this) || {};
             }
         }
     })[name];

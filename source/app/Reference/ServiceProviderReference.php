@@ -2,6 +2,7 @@
 
 namespace App\Reference;
 
+use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Models\ServiceProvider;
@@ -9,8 +10,6 @@ use App\Models\ServiceProvider;
 class ServiceProviderReference extends ReferenceEntry
 {
     protected string $model = ServiceProvider::class;
-
-    protected bool $piniaBindings = false;
 
     protected int $order = 100;
 
@@ -23,18 +22,26 @@ class ServiceProviderReference extends ReferenceEntry
             'name' => ReferenceFieldSchema::make()
                 ->label('Наименование')
                 ->required()
-                ->visible(),
+                ->visible()
+                ->pinia(PiniaAttribute::string()),
 
             'fullname' => ReferenceFieldSchema::make()
-                ->label('Полное наименование'),
+                ->label('Полное наименование')
+                ->pinia(PiniaAttribute::string()),
 
             'identity' => ReferenceFieldSchema::make()
                 ->label('ИНН')
                 ->max(32)
-                ->visible(),
+                ->visible()
+                ->pinia(PiniaAttribute::string()),
 
             'description' => ReferenceFieldSchema::make()
-                ->label('Описание'),
+                ->label('Описание')
+                ->pinia(PiniaAttribute::string()),
+
+            'priceLists' => ReferenceFieldSchema::make()
+                ->label('Прайс листы')
+                ->pinia(PiniaAttribute::hasMany('PriceList', 'service_provider_id')),
         ];
     }
 }
