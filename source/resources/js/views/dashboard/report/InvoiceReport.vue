@@ -39,7 +39,7 @@
 import { ref, nextTick } from 'vue';
 import { useRepos } from '../../../store/repository';
 import { useApi } from '../../../utils/axiosClient';
-import { isServiceCountCell, isServiceNameCell } from '../../../components/spreadsheet/cellTypes';
+import { isServiceCountCell, isServiceNameCell, isServicePriceCell } from '../../../components/spreadsheet/cellTypes';
 
 export default {
     name: 'InvoiceReport',
@@ -71,7 +71,11 @@ export default {
         Indicator.fetch();
 
         const cellModifier = (cell) => {
-            if (isServiceNameCell(cell.value) || isServiceCountCell(cell.value)) {
+            if (
+                isServiceNameCell(cell.value)
+                || isServiceCountCell(cell.value)
+                || isServicePriceCell(cell.value)
+            ) {
                 if (indicators[cell.value]) {
                     cell.value = indicators[cell.value];
                 }

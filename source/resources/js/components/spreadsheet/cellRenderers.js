@@ -1,4 +1,4 @@
-import { isServiceCountCell, isServiceNameCell } from './cellTypes';
+import { isServiceCountCell, isServiceNameCell, isServicePriceCell } from './cellTypes';
 import { useRepos } from '../../store/repository';
 
 const { Service } = useRepos();
@@ -32,6 +32,18 @@ export function serviceNameCellRenderer(instance, td, row, column, prop, value, 
 
 export function serviceCountCellRenderer(instance, td, row, column, prop, value, cellProperties) {
     if (isServiceCountCell(value)) {
+        td.innerText = 1;
+    }
+
+    const { className } = cellProperties;
+
+    if (className) {
+        td.classList.add(className);
+    }
+}
+
+export function servicePriceCellRenderer(instance, td, row, column, prop, value, cellProperties) {
+    if (isServicePriceCell(value)) {
         td.innerText = 1;
     }
 

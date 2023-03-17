@@ -148,6 +148,8 @@ export function configure(settings = {}) {
 }
 
 export function loadFromBuffer(buffer) {
+    instance.value.suspendRender();
+
     const workbook = new excel.Workbook();
 
     workbook.xlsx.load(buffer).then(() => {
@@ -218,6 +220,8 @@ export function loadFromBuffer(buffer) {
 
         instance.value.updateData(data);
         instance.value.updateSettings({ colWidths, rowHeights });
+    }).finally(() => {
+        instance.value.resumeRender();
     });
 
     store.value.workbook = workbook;

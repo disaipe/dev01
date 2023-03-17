@@ -6,6 +6,7 @@ use App\Core\Indicator\Indicator;
 use App\Core\Indicator\IndicatorManager;
 use App\Core\Report\Expression\Expression;
 use App\Models\Indicator as CustomExpression;
+use App\Models\PriceList;
 use App\Models\ReportTemplate;
 use App\Models\Service;
 use Illuminate\Database\Eloquent\Builder;
@@ -28,6 +29,8 @@ class ReportService
 
     protected Collection $services;
 
+    protected PriceList $priceList;
+
     protected Spreadsheet $spreadsheet;
 
     protected array $foundCells;
@@ -40,6 +43,7 @@ class ReportService
         foreach ($values as $serviceId => $value) {
             $cellReplacements["SERVICE#$serviceId#NAME"] = Arr::get($value, 'service.name');
             $cellReplacements["SERVICE#$serviceId#COUNT"] = Arr::get($value, 'value');
+            $cellReplacements["SERVICE#$serviceId#PRICE"] = Arr::get($value, 'price');
         }
 
         return [
@@ -62,9 +66,10 @@ class ReportService
         $this->services = Service::query()->get()->keyBy('id')->collect();
 
         $this->prepareTemplate();
+        $this->getPriceList();
         $indicators = $this->getTemplateServices();
         $values = $this->calculateIndicators($indicators);
-        $this->applyIndicatorsToTemplate($values);
+        $this->addPrices($values);
 
         return $values;
     }
@@ -154,6 +159,25 @@ class ReportService
     protected function getScopedBaseQuery(string $model, string $companyCode): Builder
     {
         return $this->getBaseQuery($model)->company($companyCode);
+    }
+
+    protected function getPriceList(): void
+    {
+        $serviceProviderId = $this->template->service_provider_id;
+
+        $this->priceList = PriceList::query()
+            ->where('service_provider_id', '=', $serviceProviderId)
+            ->first();
+    }
+
+    protected function addPrices(array &$values)
+    {
+        $priceByService = $this->priceList->values->pluck('value', 'service_id');
+
+        foreach ($values as &$value) {
+            $serviceId = $value['service']->id;
+            $value['price'] = $priceByService[$serviceId];
+        }
     }
 
 //    protected function normalize(array &$service)

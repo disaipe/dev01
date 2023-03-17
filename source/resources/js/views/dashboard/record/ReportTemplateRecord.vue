@@ -19,7 +19,7 @@
                     el-dropdown-menu
                         el-dropdown-item(@click='insertServiceName') Наименование услуги
                         el-dropdown-item(@click='insertServiceCount') Количество оказанной услуги
-                        el-dropdown-item Стоимость услуги
+                        el-dropdown-item(@click='insertServicePrice') Стоимость услуги
                         el-dropdown-item(divided @click='resetServiceFormat') Сбросить
 
         template(#toolbar-extra-actions)
@@ -28,18 +28,19 @@
 </template>
 
 <script>
-import { ref, reactive, computed,  } from 'vue';
+import { ref, reactive, computed, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
 import { SelectEditor } from 'handsontable/editors';
 
 import { useRepos } from '../../../store/repository';
 import { loadFromBase64 } from '../../../components/spreadsheet/xlsxUtils';
 import { bufferToBase64 } from '../../../utils/base64';
-import { isServiceNameCell, isServiceCountCell } from '../../../components/spreadsheet/cellTypes';
+import { isServiceNameCell, isServiceCountCell, isServicePriceCell } from '../../../components/spreadsheet/cellTypes';
 import {
     getServiceFromCellValue,
+    serviceNameCellRenderer,
     serviceCountCellRenderer,
-    serviceNameCellRenderer
+    servicePriceCellRenderer
 } from '../../../components/spreadsheet/cellRenderers';
 
 export default {
@@ -163,6 +164,25 @@ export default {
             }
         };
 
+        const insertServicePrice = () => {
+            const [row, col] = instance.value.getSelectedLast();
+            setCellServicePrice(row, col, true);
+        };
+
+        const setCellServicePrice = (row, col, render = false) => {
+            instance.value.setCellMetaObject(row, col, {
+                renderer: servicePriceCellRenderer,
+                editor: SelectEditor,
+                selectOptions: getServiceSelectOption('PRICE'),
+                type: 'numeric',
+                className: 'service-price'
+            });
+
+            if (render) {
+                instance.value.render();
+            }
+        } ;
+
         const cellModifier = (cell) => {
             const row = cell.row - 1;
             const col = cell.col - 1;
@@ -172,6 +192,8 @@ export default {
             } else if (isServiceCountCell(cell.value)) {
                 setCellServiceCount(row, col);
                 setCellServiceComment(row, col, cell.value);
+            } else if (isServicePriceCell(cell.value)) {
+                setCellServicePrice(row, col, cell.value);
             }
         };
 
@@ -204,6 +226,7 @@ export default {
 
             insertServiceName,
             insertServiceCount,
+            insertServicePrice,
             resetServiceFormat,
 
             load,
@@ -222,5 +245,8 @@ td.service-name {
 }
 td.service-count {
     @apply bg-blue-100;
+}
+td.service-price {
+    @apply bg-yellow-100;
 }
 </style>
