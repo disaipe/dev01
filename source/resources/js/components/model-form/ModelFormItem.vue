@@ -3,6 +3,7 @@ el-form-item(
     :label='field.label'
     :prop='prop'
 )
+    //- NUMBER INPUT
     template(v-if='field.type === "numeric"')
         el-input-number(
             :model-value='modelValue'
@@ -11,12 +12,16 @@ el-form-item(
             :max='field.max'
             @input='$emit("update:modelValue", $event)'
         )
-    template(v-if='field.type === "boolean"')
+
+    //- BOOLEAN / SWITCH INPUT
+    template(v-else-if='field.type === "boolean"')
         el-switch(
             :model-value='modelValue'
             :disabled='field.readonly'
             @input='$emit("update:modelValue", $event)'
         )
+
+    //- RELATION INPUT
     template(v-else-if='field.type === "relation"')
         el-select.w-full(
             :model-value='model[field.relation.key]'
@@ -30,6 +35,8 @@ el-form-item(
                 :label='option.label'
                 :value='option.value'
             )
+
+    //- OTHER / TEXT INPUT
     template(v-else)
         el-input(
             :model-value='modelValue'
@@ -50,7 +57,7 @@ export default {
     name: 'ModelFormItem',
     props: {
         modelValue: {
-            type: [String, Number, Array, Object],
+            type: [String, Number, Array, Object, Boolean],
             default: null
         },
         field: {
