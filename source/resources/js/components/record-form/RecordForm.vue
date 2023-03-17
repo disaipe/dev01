@@ -4,6 +4,7 @@ model-form(
     ref='form'
     v-if='modelValue'
     :disabled='!canUpdate'
+    :rules='rules'
     label-position='top'
 )
     model-form-item(
