@@ -71,10 +71,18 @@
             @current-change='handlePageChange'
         )
 
-    el-drawer(
+    component(
+        :is='drawerComponent'
         v-model='drawer'
         @closed='closeDrawer'
     )
+        template(#header)
+            .py-2(v-if='selectedRow')
+                .text-lg.font-bold.text-gray-600 {{ selectedRow.$getName() }}
+                .text-xs.text-gray-500
+                    div(v-if='selectedRow.$isSaved()') Редактирование
+                    div(v-else) Создание
+
         el-scrollbar.pr-4
             record-form(
                 v-model='selectedRow'
@@ -97,7 +105,7 @@
 </template>
 
 <script>
-import { ref, toRef } from 'vue';
+import { ref, toRef, computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { useRepos } from '../../store/repository';
@@ -106,7 +114,7 @@ import { snake } from '../../utils/stringsUtils';
 import tableFilters from './mixins/tableFilters';
 import tableContextMenu from './mixins/tableContextMenu';
 
-import { useTableStore } from '../../store/modules';
+import { useTableStore, useProfilesSettingsStore } from '../../store/modules';
 
 import TableFilter from './TableFilter.vue';
 import TableColumnsSettings from './TableColumnsSettings.vue';
@@ -156,6 +164,13 @@ export default {
 
         const repository = useRepos()[reference.value];
 
+        // User profile settings
+        const profilesSettings = useProfilesSettingsStore();
+        const drawerComponent = computed(() => profilesSettings.formDisplayType === 'modal'
+            ? 'el-dialog'
+            : 'el-drawer'
+        );
+
         // Tree table functionality
         const { loadExpanded, saveExpanded } = useTableStore();
         const expanded = ref(loadExpanded(tableId));
@@ -181,6 +196,8 @@ export default {
             fields,
 
             visibleColumns,
+
+            drawerComponent,
 
             expanded,
             saveExpanded: () => saveExpanded({ tableId, expanded: expanded.value })
