@@ -11,6 +11,9 @@ class ReportTemplateReference extends ReferenceEntry
 {
     protected string $model = ReportTemplate::class;
 
+    protected string|bool|null $referenceView = 'ReportTemplateReference';
+    protected string|bool|null $recordView = 'ReportTemplateRecord';
+
     public function getSchema(): array
     {
         return [
