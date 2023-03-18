@@ -76,7 +76,7 @@ class ReportService
 
     protected function prepareTemplate(): void
     {
-        $this->template = ReportTemplate::query()->find($this->templateId)->first();
+        $this->template = ReportTemplate::query()->find($this->templateId);
 
         $templateFileName = tempnam('/tmp', 'rep_');
         file_put_contents($templateFileName, base64_decode($this->template->content));
