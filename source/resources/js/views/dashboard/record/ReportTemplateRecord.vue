@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { ref, reactive, computed, nextTick } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { SelectEditor } from 'handsontable/editors';
 
@@ -202,9 +202,12 @@ export default {
             for (const range of ranges) {
                 for (let row = range.from.row; row <= range.to.row; row++) {
                     for (let col = range.from.col; col <= range.to.col; col++) {
-                        instance.value.removeCellMeta(row, col, 'renderer');
-                        instance.value.removeCellMeta(row, col, 'editor');
-                        instance.value.removeCellMeta(row, col, 'selectOptions');
+                        instance.value.setCellMetaObject(row, col, {
+                           renderer: undefined,
+                           editor: undefined,
+                           selectOptions: undefined,
+                           className: undefined
+                        });
                     }
                 }
             }

@@ -266,5 +266,39 @@ export default {
     th, td {
         position: relative;
     }
+
+    td.borderLeft,
+    td.borderTop,
+    td.borderRight,
+    td.borderBottom {
+        overflow: visible;
+
+        &:before {
+            content: '';
+            position: absolute;
+            left: -1px;
+            top: -1px;
+            right: -1px;
+            bottom: -1px;
+            border-style: solid;
+            border-color: black;
+        }
+    }
+
+    td.borderLeft:before {
+        border-left-width: 1px;
+    }
+
+    td.borderTop:before {
+        border-top-width: 1px;
+    }
+
+    td.borderRight:before {
+        border-right-width: 1px;
+    }
+
+    td.borderBottom:before {
+        border-bottom-width: 1px;
+    }
 }
 </style>

@@ -1,12 +1,14 @@
 import { ref, computed } from 'vue';
 
 import set from 'lodash/set';
+import unset from 'lodash/unset';
 import cloneDeep from 'lodash/cloneDeep';
+import round from 'lodash/round';
 
 import excel from 'exceljs';
 import FileSaver from 'file-saver';
 
-import HyperFormula from 'hyperformula';
+import HyperFormula, { AlwaysSparse } from 'hyperformula';
 
 import { registerLanguageDictionary, ruRU } from 'handsontable/i18n';
 import { registerAllModules } from 'handsontable/registry';
@@ -29,7 +31,6 @@ const store = ref({
     workbook: null,
     worksheet: null,
 
-    cells: [],
     merges: [],
 
     cellModifier: null
@@ -39,7 +40,7 @@ const worksheet = computed(() => store.value.worksheet);
 const instance = computed(() => store.value.spread?.hotInstance);
 
 function setCellPropertyValue(row, col, property, value) {
-    set(store.value.cells, `[${row}][${col}].${property}`, value);
+    set(store.value.worksheet.getCell(row + 1, col + 1), property, value);
 }
 
 function setRangePropertyValue(range, property, value) {
@@ -50,10 +51,40 @@ function setRangePropertyValue(range, property, value) {
     }
 }
 
+function removeCellProperty(row, col, property) {
+    unset(store.value.worksheet.getCell(row + 1, col + 1), property);
+}
+
 export function configure(settings = {}) {
     const hyperFormulaInstance = HyperFormula.buildEmpty({
-        licenseKey: 'internal-use-in-handsontable'
+        licenseKey: 'internal-use-in-handsontable',
+        chooseAddressMappingPolicy: new AlwaysSparse()
     });
+
+    const syncData = () => {
+        for (let row = 0; row < instance.value.countRows(); row++) {
+            for (let col = 0; col < instance.value.countCols(); col++) {
+                const value = instance.value.getSourceDataAtCell(row, col);
+                const cell = worksheet.value.getCell(row + 1, col + 1);
+
+                if (isFormula(value)) {
+                    cell.value = {
+                        formula: value.replace('=', '') // remove first sign
+                    };
+                } else {
+                    cell.value = value;
+                }
+            }
+        }
+    };
+
+    // set column widths and row heights
+    const syncSizes = () => {
+        const colWidths = store.value.worksheet._columns.map((column) => column.width * 7.12);
+        const rowHeights = store.value.worksheet._rows.map((row) => row.height * 1.33);
+
+        instance.value.updateSettings({ colWidths, rowHeights });
+    };
 
     return {
         autoRowSize: true,
@@ -72,29 +103,18 @@ export function configure(settings = {}) {
             engine: hyperFormulaInstance
         },
         ...settings,
-        beforeChange(changes, source) {
-            // change is [row, col, oldVal, newVal]
-            for (const change of changes) {
-                const [row, col, oldVal, newVal] = change;
-
-                const cell = worksheet.value.getCell(
-                    row + 1,
-                    (typeof(col) === 'string' ? instance.value.propToCol(col) : col) + 1
-                );
-
-                if (isFormula(newVal)) {
-                    cell.value = {
-                      formula: newVal.replace('=', '') // remove first sign
-                    };
-                } else {
-                    cell.value = newVal;
-                }
-            }
-
-            settings.beforeChange?.(changes, source);
+        afterRender() {
+            syncData();
         },
         beforeRenderer: defaultRenderer,
-        afterMergeCells(cellRange, mergeParent, auto) {
+        /**
+         * Fired after cell merging
+         *
+         * @param {Object} cellRange Selection cell range
+         * @param {Object} mergeParent The parent collection of the provided cell range
+         * @param {boolean} auto `true` if called automatically by the plugin
+         */
+        afterMergeCells(cellRange, mergeParent, auto = false) {
             try {
                 worksheet.value.mergeCells(
                     cellRange.from.row + 1,
@@ -106,12 +126,27 @@ export function configure(settings = {}) {
                 // console.error(e);
             }
         },
-        afterCreateCol(index, amount) {
+        /**
+         * Fired after created a new column.
+         *
+         * @param {number} index Represents the visual index of first newly created column in the data source
+         * @param {number} amount Number of newly created columns in the data source
+         * @param {?string} source String that identifies source of hook cal
+         */
+        afterCreateCol(index, amount, source = null) {
             for (let i = 0; i < amount; i++) {
                 worksheet.value.spliceColumns(index + 1, 0, []);
             }
+            syncSizes();
         },
-        afterCreateRow(index, amount) {
+        /**
+         * Fired after created a new row.
+         *
+         * @param {number} index Represents the visual index of first newly created row in the data source array
+         * @param {number} amount Number of newly created rows in the data source array
+         * @param {?string} source String that identifies source of hook call
+         */
+        afterCreateRow(index, amount, source = null) {
             const rows = [];
 
             for (let i = 0; i < amount; i++) {
@@ -119,36 +154,80 @@ export function configure(settings = {}) {
             }
 
             worksheet.value.insertRows(index + 1, rows);
+            syncSizes();
         },
-        afterColumnResize(newSize, column) {
-            worksheet.value.getColumn(column + 1).width = newSize / 7.12;
+        /**
+         * Fired after one or more columns are removed
+         *
+         * @param {number} index Visual index of starter column
+         * @param {number} amount An amount of removed columns
+         * @param {Array} physicalColumns An array of physical columns removed from the data source
+         * @param {?string} source String that identifies source of hook call
+         */
+        afterRemoveCol(index, amount, physicalColumns, source = null) {
+            worksheet.value.spliceColumns(index + 1, amount);
+            syncSizes();
         },
-        afterRowResize(newSize, row) {
-            worksheet.value.getRow(row + 1).height = newSize / 1.33;
+        /**
+         * Fired after one or more rows are removed.
+         *
+         * @param {number} index Visual index of starter row
+         * @param {number} amount An amount of removed rows.
+         * @param {Array} physicalRows An array of physical rows removed from the data source
+         * @param {?string} source String that identifies source of hook call
+         */
+        afterRemoveRow(index, amount, physicalRows, source = null) {
+            worksheet.value.spliceRows(index + 1, amount);
+            syncSizes();
         },
-        afterUpdateData(sourceData) {
+        /**
+         * Fired by ManualColumnResize plugin after rendering the table with modified column sizes.
+         *
+         * @param {number} newSize Calculated new column width
+         * @param {number} column Visual index of the resized column
+         * @param {boolean} isDoubleClick Flag that determines whether there was a double click
+         */
+        afterColumnResize(newSize, column, isDoubleClick) {
+            worksheet.value.getColumn(column + 1).width = round(newSize / 7.12, 2);
+        },
+        /**
+         * Fired by ManualRowResize plugin after rendering the table with modified row sizes.
+         *
+         * @param {number} newSize Calculated new row height
+         * @param {number} row Visual index of the resized row
+         * @param {boolean} isDoubleClick Flag that determines whether there was a double click
+         */
+        afterRowResize(newSize, row, isDoubleClick) {
+            worksheet.value.getRow(row + 1).height = round(newSize / 1.33, 2);
+        },
+        /**
+         * Fired after Handsontable's data gets modified by the loadData() method or the updateSettings() method
+         *
+         * @param {Array} sourceData An array of arrays, or an array of objects, that contains Handsontable's data
+         * @param {boolean} initialLoad A flag that indicates whether the data was loaded at Handsontable's initialization (true) or later (false)
+         * @param {?string} source The source of the call
+         */
+        afterLoadData(sourceData, initialLoad, source) {
             store.value.workbook.removeWorksheet(store.value.worksheet.id);
             store.value.worksheet = store.value.workbook.addWorksheet('Data');
-
-            const cells = makeMatrix(50, 30);
-
-            for (let row = 0; row < instance.value.countRows(); row++) {
-                for (let col = 0; col < instance.value.countCols(); col++) {
-                    const value = instance.value.getDataAtCell(row, col);
-                    const cell = worksheet.value.getCell(row + 1, col + 1);
-                    cell.value = value;
-
-                    cells[row][col] = cell;
-                }
-            }
-
-            store.value.cells = cells;
+        },
+        /**
+         * Fired after the updateData() method modifies Handsontable's data.
+         *
+         * @param {Array} sourceData An array of arrays, or an array of objects, that contains Handsontable's data
+         * @param {boolean} initialLoad A flag that indicates whether the data was loaded at Handsontable's initialization (true) or later (false)
+         * @param {?string} source The source of the call
+         */
+        afterUpdateData(sourceData, initialLoad, source) {
+            syncData();
+            syncSizes();
         }
     };
 }
 
 export function loadFromBuffer(buffer) {
     instance.value.suspendRender();
+    instance.value.loadData([]);
 
     const workbook = new excel.Workbook();
 
@@ -158,11 +237,10 @@ export function loadFromBuffer(buffer) {
 
         // set cells
         const data = makeMatrix(50, 30);
-        const cells = makeMatrix(50, 30);
 
         for (let row = 0; row < worksheet.rowCount; row++) {
             for (let col = 0; col < worksheet.columnCount; col++) {
-                const cell = worksheet.getRow(row + 1).getCell(col + 1);
+                const cell = worksheet.getCell(row + 1, col + 1);
 
                 // clone style object to avoid changing it by reference
                 cell.style = cloneDeep(cell.style);
@@ -182,12 +260,8 @@ export function loadFromBuffer(buffer) {
                 } else {
                     data[row][col] = cell.value;
                 }
-
-                cells[row][col] = cell;
             }
         }
-
-        store.value.cells = cells;
 
         // set merges
         if (worksheet.hasMerges) {
@@ -214,12 +288,7 @@ export function loadFromBuffer(buffer) {
             }
         }
 
-        // set column widths and row heights
-        const colWidths = worksheet._columns.map((column) => column.width * 7.12);
-        const rowHeights = worksheet._rows.map((row) => row.height * 1.33);
-
         instance.value.updateData(data);
-        instance.value.updateSettings({ colWidths, rowHeights });
     }).finally(() => {
         instance.value.resumeRender();
     });
@@ -250,7 +319,7 @@ export function download() {
 }
 
 export function defaultRenderer(td, row, column, prop, value, cellProperties) {
-    const cell = store.value.cells?.[row]?.[column];
+    const cell = store.value.worksheet.getCell(row + 1, column + 1);
 
     if (cell) {
         const { alignment, border, fill, font } = cell.style;
@@ -287,7 +356,7 @@ export function defaultRenderer(td, row, column, prop, value, cellProperties) {
             const { left, top, right, bottom } = border;
 
             const addBorder = (direction) => {
-                td.style[`border${direction}`] = 'solid 1px black';
+                td.classList.add(`border${direction}`);
             }
 
             left && addBorder('Left');
@@ -376,19 +445,23 @@ export function setBorder(value) {
                         break;
                 }
 
-                const setBorder =  (direction) => {
-                    setCellPropertyValue(row, col, `style.border.${direction}`, {
-                        style: 'thin',
-                        color: {
-                            indexed: 64
-                        }
-                    });
+                const setBorder = (direction, value) => {
+                    if (value) {
+                        setCellPropertyValue(row, col, `style.border.${direction}`, {
+                            style: 'thin',
+                            color: {
+                                indexed: 64
+                            }
+                        });
+                    } else {
+                        removeCellProperty(row, col, `style.border.${direction}`);
+                    }
                 }
 
-                borders.left && setBorder('left');
-                borders.top && setBorder('top');
-                borders.right && setBorder('right');
-                borders.bottom && setBorder('bottom');
+                setBorder('left', borders.left);
+                setBorder('top', borders.top);
+                setBorder('right', borders.right);
+                setBorder('bottom', borders.bottom);
             }
         }
     }
