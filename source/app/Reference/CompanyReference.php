@@ -4,11 +4,12 @@ namespace App\Reference;
 
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
+use App\Core\Reference\ReferenceModel;
 use App\Models\Company;
 
 class CompanyReference extends ReferenceEntry
 {
-    protected string $model = Company::class;
+    protected string|ReferenceModel $model = Company::class;
 
     protected bool $piniaBindings = false;
 

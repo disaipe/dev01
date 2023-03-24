@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Core\Reference\ReferenceModel;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 
-class Reference extends Model
+class Reference extends ReferenceModel
 {
-    protected $fillable = [
-        'name',
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at',
+        'deleted_at'
     ];
 
     public static function query(): Builder

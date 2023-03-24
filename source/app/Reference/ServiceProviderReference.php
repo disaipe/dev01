@@ -5,11 +5,12 @@ namespace App\Reference;
 use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
+use App\Core\Reference\ReferenceModel;
 use App\Models\ServiceProvider;
 
 class ServiceProviderReference extends ReferenceEntry
 {
-    protected string $model = ServiceProvider::class;
+    protected string|ReferenceModel $model = ServiceProvider::class;
 
     protected int $order = 100;
 

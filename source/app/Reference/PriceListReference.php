@@ -5,11 +5,12 @@ namespace App\Reference;
 use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
+use App\Core\Reference\ReferenceModel;
 use App\Models\PriceList;
 
 class PriceListReference extends ReferenceEntry
 {
-    protected string $model = PriceList::class;
+    protected string|ReferenceModel $model = PriceList::class;
 
     protected ?string $icon = 'ic:outline-price-change';
 

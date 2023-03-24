@@ -5,11 +5,12 @@ namespace App\Modules\ActiveDirectory;
 use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
+use App\Core\Reference\ReferenceModel;
 use App\Modules\ActiveDirectory\Models\ADEntry;
 
 class ADEntryReference extends ReferenceEntry
 {
-    protected string $model = ADEntry::class;
+    protected string|ReferenceModel $model = ADEntry::class;
 
     public function getSchema(): array
     {

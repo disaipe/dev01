@@ -26,7 +26,7 @@ class IndicatorResource extends Resource
 
         foreach ($references as $reference) {
             /** @var ReferenceEntry $reference */
-            $options[$reference->getModel()] = $reference->getLabel();
+            $options[$reference->getName()] = $reference->getLabel();
         }
 
         return $form

@@ -5,11 +5,12 @@ namespace App\Reference;
 use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
+use App\Core\Reference\ReferenceModel;
 use App\Models\PriceListValue;
 
 class PriceListValueReference extends ReferenceEntry
 {
-    protected string $model = PriceListValue::class;
+    protected string|ReferenceModel $model = PriceListValue::class;
 
     protected string|bool|null $referenceView = false;
     protected string|bool|null $recordView = false;

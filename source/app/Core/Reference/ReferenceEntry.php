@@ -11,7 +11,7 @@ class ReferenceEntry
     /**
      * Reference linked model
      */
-    protected string $model;
+    protected string|ReferenceModel $model;
 
     /**
      * Route prefix for the controller
@@ -22,6 +22,16 @@ class ReferenceEntry
      * Reference name
      */
     protected ?string $name;
+
+    /**
+     * Reference label
+     */
+    protected ?string $label;
+
+    /**
+     * Reference plural label
+     */
+    protected ?string $pluralLabel;
 
     /**
      * Reference view name for the front-end application
@@ -74,13 +84,13 @@ class ReferenceEntry
      */
     public function getPrefix(): string
     {
-        return $this->prefix ?? Str::snake(class_basename($this->getModel()));
+        return $this->prefix ?? Str::snake($this->getName());
     }
 
     /**
      * Get reference model
      */
-    public function getModel(): string
+    public function getModel(): ReferenceModel|string
     {
         return $this->model;
     }
@@ -140,7 +150,7 @@ class ReferenceEntry
      */
     public function getLabel(): string
     {
-        return trans_choice($this->getLabelKey(), 1);
+        return $this->label ?? trans_choice($this->getLabelKey(), 1);
     }
 
     /**
@@ -148,7 +158,7 @@ class ReferenceEntry
      */
     public function getPluralLabel(): string
     {
-        return trans_choice($this->getLabelKey(), 2);
+        return $this->pluralLabel ?? trans_choice($this->getLabelKey(), 2);
     }
 
     /**

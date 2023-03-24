@@ -5,11 +5,12 @@ namespace App\Reference;
 use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
+use App\Core\Reference\ReferenceModel;
 use App\Models\ReportTemplate;
 
 class ReportTemplateReference extends ReferenceEntry
 {
-    protected string $model = ReportTemplate::class;
+    protected string|ReferenceModel $model = ReportTemplate::class;
 
     protected string|bool|null $referenceView = 'ReportTemplateReference';
     protected string|bool|null $recordView = 'ReportTemplateRecord';

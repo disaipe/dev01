@@ -212,7 +212,11 @@ class ReferenceController extends BaseController
 
     public function getModel(): ReferenceModel
     {
-        return app()->make($this->model);
+        if (is_string($this->model)) {
+            return app()->make($this->model);
+        }
+
+        return $this->model;
     }
 
     protected function applyFilters(Builder $query, array $filters)
