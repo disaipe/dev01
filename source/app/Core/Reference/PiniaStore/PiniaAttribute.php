@@ -29,6 +29,16 @@ class PiniaAttribute
         return ['boolean', $default];
     }
 
+    public static function datetime($default = null): array
+    {
+        return ['datetime', $default];
+    }
+
+    public static function date($default = null): array
+    {
+        return ['date', $default];
+    }
+
     public static function belongsTo($related, $foreignKey, $ownerKey = null): array
     {
         return ['belongsTo', $related, $foreignKey, $ownerKey];

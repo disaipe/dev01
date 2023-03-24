@@ -1,6 +1,8 @@
 import { Type, Relation } from 'pinia-orm';
 
 import ApiModel from './api';
+import Date from './attributes/date';
+import Datetime from './attributes/datetime';
 
 export default class CoreModel extends ApiModel {
 
@@ -24,8 +26,6 @@ export default class CoreModel extends ApiModel {
             let readonly = false;
             let relation;
 
-            // console.log(key, field.constructor.name, field);
-
             if (field instanceof Type) {
                 switch (field.constructor.name) {
                     case 'Uid':
@@ -39,6 +39,12 @@ export default class CoreModel extends ApiModel {
                         break;
                     case 'Boolean':
                         type = 'boolean';
+                        break;
+                    case 'Datetime':
+                        type = 'datetime';
+                        break;
+                    case 'Date':
+                        type = 'date';
                         break;
                     default:
                         break;
@@ -71,6 +77,14 @@ export default class CoreModel extends ApiModel {
 
 
         return schema;
+    }
+
+    static datetime(value) {
+        return new Datetime(this.newRawInstance(), value);
+    }
+
+    static date(value) {
+        return new Date(this.newRawInstance(), value);
     }
 
     $isSaved() {

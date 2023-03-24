@@ -21,6 +21,26 @@ el-form-item(
             @input='$emit("update:modelValue", $event)'
         )
 
+    //- DATETIME
+    template(v-else-if='field.type === "datetime"')
+        el-date-picker(
+            :model-value='modelValue'
+            :disabled='field.readonly'
+            type='datetime'
+            value-format='YYYY-MM-DD HH:mm:ss'
+            @update:model-value='$emit("update:modelValue", $event)'
+        )
+
+    //- DATE
+    template(v-else-if='field.type === "date"')
+        el-date-picker(
+            :model-value='modelValue'
+            :disabled='field.readonly'
+            type='date'
+            value-format='YYYY-MM-DD'
+            @update:model-value='$emit("update:modelValue", $event)'
+        )
+
     //- RELATION INPUT
     template(v-else-if='field.type === "relation"')
         el-select.w-full(
@@ -28,7 +48,7 @@ el-form-item(
             :disabled='field.readonly'
             :clearable='!field.required'
             filterable
-            @change='model[field.relation.key] = $event'
+            @change='model[field.relation.key] = $event; $emit("update:modelValue", $event)'
         )
             el-option(
                 v-for='option of relatedOptions'
