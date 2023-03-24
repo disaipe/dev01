@@ -15,6 +15,8 @@ class PriceListValueReference extends ReferenceEntry
     protected string|bool|null $referenceView = false;
     protected string|bool|null $recordView = false;
 
+    protected bool $indicators = false;
+
     public function getSchema(): array
     {
         return [

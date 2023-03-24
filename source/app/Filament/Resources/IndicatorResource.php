@@ -11,6 +11,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Illuminate\Support\Arr;
 
 class IndicatorResource extends Resource
 {
@@ -26,8 +27,12 @@ class IndicatorResource extends Resource
 
         foreach ($references as $reference) {
             /** @var ReferenceEntry $reference */
-            $options[$reference->getName()] = $reference->getLabel();
+            if ($reference->canAttachIndicators()) {
+                $options[$reference->getName()] = $reference->getLabel();
+            }
         }
+
+        $options = Arr::sort($options);
 
         return $form
             ->schema([

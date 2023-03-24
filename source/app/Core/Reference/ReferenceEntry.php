@@ -59,6 +59,11 @@ class ReferenceEntry
     protected bool $piniaBindings = true;
 
     /**
+     * Indicators can be applied to the reference
+     */
+    protected bool $indicators = true;
+
+    /**
      * Model fields schema
      */
     protected array $schema = [];
@@ -194,11 +199,19 @@ class ReferenceEntry
     }
 
     /**
-     * Determine the use can remove records
+     * Determine the user can remove records
      */
     public function canDelete(): bool
     {
         return true;
+    }
+
+    /**
+     * Determine the reference can be used in indicators
+     */
+    public function canAttachIndicators(): bool
+    {
+        return $this->indicators;
     }
 
     /**
