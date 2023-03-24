@@ -92,6 +92,18 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
     }
 
     /**
+     * Make field readonly
+     *
+     * @return $this
+     */
+    public function readonly(): static
+    {
+        Arr::set($this->attributes, 'readonly', true);
+
+        return $this;
+    }
+
+    /**
      * Determine field type is array
      *
      * @return $this
