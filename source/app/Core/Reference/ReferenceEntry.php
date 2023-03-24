@@ -2,6 +2,8 @@
 
 namespace App\Core\Reference;
 
+use App\Core\Reference\PiniaStore\PiniaAttribute;
+use App\Models\CustomReference;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Str;
@@ -67,6 +69,87 @@ class ReferenceEntry
      * Model fields schema
      */
     protected array $schema = [];
+
+    /**
+     * Create reference entry from custom reference
+     */
+    public static function fromCustomReference(CustomReference $customReference): self
+    {
+        $entry = new self();
+        $entry->name = Str::ascii(Str::studly($customReference->name));
+        $entry->model = $customReference->getReferenceModel();
+        $entry->label = $customReference->label;
+        $entry->pluralLabel = $customReference->plural_label;
+        $entry->schema = [];
+
+        $fields = Arr::get($customReference->schema, 'fields', []);
+
+        if ($customReference->company_context) {
+            $entry->schema['company_id'] = ReferenceFieldSchema::make()
+                ->pinia(PiniaAttribute::number())
+                ->hidden();
+
+            $entry->schema['company'] = ReferenceFieldSchema::make()
+                ->label('Организация')
+                ->required()
+                ->visible()
+                ->eagerLoad()
+                ->pinia(PiniaAttribute::belongsTo('Company', 'company_id'));
+        }
+
+        foreach ($fields as $field) {
+            $pk = Arr::get($field, 'pk');
+            $name = Arr::get($field, 'name');
+            $label = Arr::get($field, 'display_name');
+            $type = Arr::get($field, 'type');
+            $required = Arr::get($field,  'required');
+            $readonly = Arr::get($field, 'readonly');
+
+            $fieldSchema = ReferenceFieldSchema::make();
+
+            $label && $fieldSchema->label($label);
+            $required && $fieldSchema->required();
+            $readonly && $fieldSchema->readonly();
+
+            $piniaDefinition = null;
+
+            switch ($type) {
+                case 'str':
+                case 'string':
+                    $piniaDefinition = PiniaAttribute::string();
+                    break;
+                case 'int':
+                case 'integer':
+                case 'bigint':
+                case 'float':
+                    if ($pk) {
+                        $piniaDefinition = PiniaAttribute::uid();
+                    } else {
+                        $piniaDefinition = PiniaAttribute::number();
+                    }
+                    break;
+                case 'bool':
+                case 'boolean':
+                    $piniaDefinition = PiniaAttribute::boolean();
+                    break;
+                case 'datetime':
+                    $piniaDefinition = PiniaAttribute::datetime();
+                    break;
+                case 'date':
+                    $piniaDefinition = PiniaAttribute::date();
+                    break;
+                default:
+                    $piniaDefinition = PiniaAttribute::attr();
+                    break;
+            }
+
+            $fieldSchema->pinia($piniaDefinition);
+
+            $entry->schema[$name] = $fieldSchema;
+        }
+
+        return $entry;
+    }
 
     /**
      * Get reference name

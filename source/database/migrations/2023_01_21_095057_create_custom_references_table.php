@@ -15,6 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('display_name', 128);
             $table->string('name', 32);
+            $table->string('label', 128);
+            $table->string('plural_label', 128);
+            $table->boolean('company_context')->default(false);
+            $table->boolean('enabled')->default(false);
             $table->jsonb('schema');
             $table->timestamps();
         });

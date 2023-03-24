@@ -8,6 +8,7 @@ return [
 
     'code' => 'Код',
     'name' => 'Наименование',
+    'short name' => 'Короткое наименование',
     'login' => 'Логин',
     'password' => 'Пароль',
     'email' => 'E-mail',
