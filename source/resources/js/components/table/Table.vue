@@ -57,9 +57,9 @@
                         template(v-else-if='fields[field].type === "boolean"')
                             el-switch(v-model='row[field]' size='small' disabled)
                         template(v-else-if='fields[field].type === "datetime"')
-                            span {{ formatDate(row[field], true) }}
+                            span {{ $filter.formatDate(row[field], true) }}
                         template(v-else-if='fields[field].type === "date"')
-                            span {{ formatDate(row[field]) }}
+                            span {{ $filter.formatDate(row[field]) }}
                         span(v-else) {{ row[field] }}
 
             template(#empty)
@@ -192,14 +192,6 @@ export default {
             errors.value.push('Не задана модель данных Pinia. Без схемы полей данных дальнейшая работа невозможна');
         }
 
-        const formatDate = (value, datetime = false) => {
-            if (!value) {
-                return undefined;
-            }
-
-            return dayjs(value).format(datetime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD');
-        };
-
         return {
             errors,
 
@@ -213,9 +205,7 @@ export default {
             drawerComponent,
 
             expanded,
-            saveExpanded: () => saveExpanded({ tableId, expanded: expanded.value }),
-
-            formatDate
+            saveExpanded: () => saveExpanded({ tableId, expanded: expanded.value })
         };
     },
     data: function () {

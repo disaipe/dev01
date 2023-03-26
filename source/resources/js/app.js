@@ -18,6 +18,7 @@ import pinia from './store';
 
 import dynamicRoutes from './plugin/dynamic-routes';
 import dynamicModels from './plugin/dynamic-models';
+import filters from './plugin/filters';
 import { components } from './components';
 
 import App from './views/App.vue';
@@ -35,6 +36,7 @@ const app = createApp(App)
     // app plugins
     .use(dynamicRoutes)
     .use(dynamicModels)
+    .use(filters)
     .use(components);
 
 for (const [key, component] of Object.entries(ElementPlusIcons)) {
