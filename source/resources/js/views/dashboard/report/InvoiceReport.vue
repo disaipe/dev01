@@ -76,7 +76,7 @@ export default {
                 || isServiceCountCell(cell.value)
                 || isServicePriceCell(cell.value)
             ) {
-                if (indicators[cell.value]) {
+                if (indicators[cell.value] !== undefined) {
                     cell.value = indicators[cell.value];
                 }
             }
