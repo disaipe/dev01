@@ -20,6 +20,11 @@ const state = () => ({
 })
 
 const actions = {
+
+    //---------------------------------------------------------
+    //  FILTERS
+    //---------------------------------------------------------
+
     loadFilters(tableId) {
         return this.filters[tableId];
     },
@@ -45,6 +50,10 @@ const actions = {
     resetFilters(tableId) {
         delete this.filters[tableId];
     },
+
+    //---------------------------------------------------------
+    //  COLUMNS VISIBILITY AND ORDER
+    //---------------------------------------------------------
 
     loadColumns(tableId) {
         return this.columns[tableId];
@@ -89,6 +98,10 @@ const actions = {
             state.columns[tableId].order = order;
         });
     },
+
+    //---------------------------------------------------------
+    //  EXPANDED
+    //---------------------------------------------------------
 
     loadExpanded(tableId) {
         return this.expanded[tableId] || [];

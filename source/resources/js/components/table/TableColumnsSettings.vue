@@ -19,7 +19,7 @@ el-dropdown(
 </template>
 
 <script>
-import { ref, toRef, inject, reactive } from 'vue';
+import { ref, toRef, inject } from 'vue';
 import Sortable from 'sortablejs';
 
 import tableColumns from './mixins/tableColumns';
@@ -46,21 +46,28 @@ export default {
         };
     },
     watch: {
-        visibleColumns(value) {
-            this.table.visibleColumns = value;
+        // Watch column settings and sync them to table
+        visibleColumns() {
+            this.table.visibleColumns = this.visibleColumns;
         }
     },
     mounted() {
         this.sortable = new Sortable(
             this.sortables,
             {
-                // TODO
-                // onEnd: (evt) => {
-                //     this.saveColumnOrder({
-                //         tableId: this.tableId,
-                //         order: this.sortable.toArray()
-                //     });
-                // }
+                onEnd: (evt) => {
+                    const order = this.sortable.toArray();
+
+                    this.saveColumnOrder({
+                        tableId: this.tableId,
+                        order
+                    });
+
+                    this.$nextTick(() => {
+                        this.sortable.sort(order);
+                        this.table.$refs.vxe.updateData();
+                    });
+                }
             }
         );
     }

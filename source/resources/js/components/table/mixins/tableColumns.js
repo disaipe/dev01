@@ -2,31 +2,40 @@ import { mapActions } from 'pinia';
 import defaults from 'lodash/defaults';
 
 import { useTableStore } from '../../../store/modules';
+import sortBy from 'lodash/sortBy';
 
 export default {
     data: () => ({
-        columnStore: {},
-        columnOrder: []
+        columnStore: {}
     }),
     computed: {
+        /**
+         * Returns all available table columns
+         * Used to TableColumnsSetting
+         * @returns {Object[]}
+         */
         allowedColumns() {
-            return Object
+            const order = this.loadColumns(this.tableId).order;
+
+            const columns = Object
                 .values(this.columnStore)
                 .filter((column) => !column.hidden);
+
+            return sortBy(columns, (c) => order.indexOf(c.field));
         },
+
+        /**
+         * Returns all visible at now columns
+         * @returns {Object[]}
+         */
         visibleColumns() {
-            return Object
-                .values(this.columnStore)
-                .filter((column) => column.visible);
+            return this.allowedColumns.filter((column) => column.visible);
         }
     },
     watch: {
         fields: {
             handler() {
                 this.columnStore = this.syncColumnStore();
-
-                // TODO
-                // this.columnOrder = ...
             },
             deep: true
         }
