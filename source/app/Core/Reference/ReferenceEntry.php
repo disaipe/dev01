@@ -184,6 +184,18 @@ class ReferenceEntry
     }
 
     /**
+     * Get reference model class instance
+     */
+    public function getModelInstance(): ReferenceModel
+    {
+        if (is_string($this->model)) {
+            return app()->make($this->model);
+        }
+
+        return $this->model;
+    }
+
+    /**
      * Get model fields schema
      *
      * Used to operate with model fields on front-end

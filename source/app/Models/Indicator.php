@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\Core\Indicator\IndicatorManager;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 /**
  * @property string code
@@ -35,5 +37,22 @@ class Indicator extends Model
         $values = Arr::map($indicators, fn ($indicator) => $indicator->toArray());
 
         return array_values($values);
+    }
+
+    public function scopeEnabled(Builder $query): void
+    {
+        $query->where('published', 1);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function (Indicator $query) {
+            // Generate code if not set
+            if (!isset($query->code)) {
+                $query->code = 'INDICATOR_' . Str::random('6');
+            }
+        });
     }
 }

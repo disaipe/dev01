@@ -3,6 +3,7 @@
 namespace App\Core\Reference;
 
 use App\Models\CustomReference;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Schema;
 
 class ReferenceManager
@@ -23,6 +24,11 @@ class ReferenceManager
     public function getReferences(): array
     {
         return $this->references;
+    }
+
+    public function getByName(string $name): ?ReferenceEntry
+    {
+        return Arr::first($this->references, fn (ReferenceEntry $entry) => $entry->getName() === $name);
     }
 
     public function register(string|ReferenceEntry $reference): void

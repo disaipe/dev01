@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Core\Reference\ReferenceEntry;
 use App\Filament\Resources\IndicatorResource\Pages;
+use App\Forms\Components\RawHtmlContent;
 use App\Models\Indicator;
 use Filament\Forms;
 use Filament\Forms\Components\Builder;
@@ -37,15 +38,23 @@ class IndicatorResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make(__('admin.$indicator.common'))
+                    ->columns(2)
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->label(__('admin.name'))
                             ->maxLength(256)
                             ->required(),
 
+                        Forms\Components\TextInput::make('code')
+                            ->label(__('admin.code'))
+                            ->regex('[a-zA-Z_-]+')
+                            ->maxLength(32)
+                            ->disabled(fn ($record) => isset($record)),
+
                         Forms\Components\Select::make('schema.reference')
                             ->label(trans_choice('admin.reference', 1))
                             ->options($options)
+                            ->columnSpanFull()
                             ->required(),
 
                         Forms\Components\Checkbox::make('published')
@@ -56,13 +65,18 @@ class IndicatorResource extends Resource
                     ->schema([
                         Builder::make('schema.values')
                             ->label('')
+                            ->required()
+                            ->createItemButtonLabel(__('admin.$indicator.schema_add'))
                             ->blocks([
                                 Builder\Block::make('CountExpression')
                                     ->label(__('admin.$expression.count'))
-                                    ->schema([]),
+                                    ->schema([
+                                        RawHtmlContent::make(__('admin.$indicator.count_helper'))
+                                    ]),
                                 Builder\Block::make('SumExpression')
                                     ->label(__('admin.$expression.sum'))
                                     ->schema([
+                                        RawHtmlContent::make(__('admin.$indicator.sum_helper')),
                                         Forms\Components\TextInput::make('column')
                                             ->label(__('admin.$indicator.column'))
                                             ->required(),

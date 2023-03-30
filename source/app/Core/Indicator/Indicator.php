@@ -3,6 +3,7 @@
 namespace App\Core\Indicator;
 
 use App\Core\Report\Expression\Expression;
+use App\Core\Report\Expression\SumExpression;
 use Illuminate\Support\Arr;
 
 class Indicator
@@ -13,11 +14,11 @@ class Indicator
 
     public string $model;
 
-    public string $module;
+    public ?string $module;
 
     public $query;
 
-    public Expression $expression;
+    public ?Expression $expression;
 
     public static function fromArray($options): Indicator
     {
@@ -28,6 +29,29 @@ class Indicator
         $instance->module = Arr::get($options, 'module');
         $instance->query = Arr::get($options, 'query');
         $instance->expression = Arr::get($options, 'expression');
+
+        return $instance;
+    }
+
+    public static function fromModel(\App\Models\Indicator $model): Indicator
+    {
+        $instance = new self();
+        $instance->code = $model->code;
+        $instance->name = $model->name;
+        $instance->model = Arr::get($model->schema, 'reference');
+        $instance->module = Arr::get($model->schema, 'module');
+        $instance->query = null;
+
+        [$expression] = Arr::get($model->schema, 'values', []);
+        if ($expression) {
+            $type = Arr::get($expression, 'type');
+            $data = Arr::get($expression, 'data') ?? [];
+
+            $classType = "App\Core\Report\Expression\\$type";
+            if (class_exists($classType)) {
+                $instance->expression  = new $classType(...$data);
+            }
+        }
 
         return $instance;
     }

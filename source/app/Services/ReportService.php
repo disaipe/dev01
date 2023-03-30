@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Core\Indicator\Indicator;
 use App\Core\Indicator\IndicatorManager;
+use App\Core\Reference\ReferenceManager;
 use App\Core\Report\Expression\Expression;
 use App\Models\Indicator as CustomExpression;
 use App\Models\PriceList;
@@ -25,6 +26,8 @@ class ReportService
 
     protected string $templateId;
 
+    protected ReferenceManager $referenceManager;
+
     protected ReportTemplate $template;
 
     protected Collection $services;
@@ -34,6 +37,11 @@ class ReportService
     protected Spreadsheet $spreadsheet;
 
     protected array $foundCells;
+
+    public function __construct()
+    {
+        $this->referenceManager = app('references');
+    }
 
     public function make($companyCode, $templateId): array
     {
@@ -153,6 +161,11 @@ class ReportService
             return $model::query();
         }
 
+        if ($reference = $this->referenceManager->getByName($model)) {
+            $model = $reference->getModelInstance();
+            return $model->query();
+        }
+
         throw new \Exception('Wrong service model');
     }
 
@@ -170,41 +183,15 @@ class ReportService
             ->first();
     }
 
-    protected function addPrices(array &$values)
+    protected function addPrices(array &$values): void
     {
         $priceByService = $this->priceList->values->pluck('value', 'service_id');
 
         foreach ($values as &$value) {
             $serviceId = $value['service']->id;
-            $value['price'] = $priceByService[$serviceId];
+            $value['price'] = Arr::get($priceByService, $serviceId, 0);
         }
     }
-
-//    protected function normalize(array &$service)
-//    {
-//        $definition = Arr::get($service, 'expression');
-//
-//        if (is_subclass_of($definition, Expression::class)) {
-//            return;
-//        }
-//
-//        if (is_string($definition)) {
-//            /** @var CustomExpression $expressionRecord */
-//            $expressionRecord = CustomExpression::query()->where('code', '=', $definition)->first();
-//
-//            if ($expressionRecord) {
-//                [$data] = Arr::get($expressionRecord->schema, 'values');
-//                $expressionType = Str::start(Arr::get($data, 'type'), 'App\Core\Report\Expression\\');
-//
-//                if (class_exists($expressionType)) {
-//                    $args = Arr::get($data, 'data');
-//
-//                    $service['model'] = Arr::get($expressionRecord->schema, 'reference');
-//                    $service['expression'] = new $expressionType(...$args);
-//                }
-//            }
-//        }
-//    }
 
     /**
      * NOT USED
