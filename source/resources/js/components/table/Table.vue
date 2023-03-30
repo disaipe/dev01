@@ -111,7 +111,6 @@
 <script>
 import { ref, toRef, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import dayjs from 'dayjs';
 
 import { useRepos } from '../../store/repository';
 import { snake } from '../../utils/stringsUtils';

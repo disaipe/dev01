@@ -40,10 +40,10 @@ class CustomReferenceTableService
                 $type = Arr::get($field, 'type');
                 $pk = Arr::get($field, 'pk', false);
                 $autoincrement = Arr::get($field, 'autoincrement', false);
-                $unsigned = Arr::get($field, 'unsigned' ,false);
+                $unsigned = Arr::get($field, 'unsigned', false);
                 $nullable = Arr::get($field, 'nullable', true);
 
-                if (!$name || !$type) {
+                if (! $name || ! $type) {
                     continue;
                 }
 
@@ -89,7 +89,7 @@ class CustomReferenceTableService
 
             $diff = $comparator->compareTables($tableDB, $table);
 
-            if (!$diff->isEmpty()) {
+            if (! $diff->isEmpty()) {
                 $schemaManager->alterTable($diff);
             }
         } else {

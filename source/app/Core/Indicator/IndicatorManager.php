@@ -31,7 +31,7 @@ class IndicatorManager
 
     public function registerStoredIndicators(): void
     {
-        if (!Schema::hasTable('indicators')) {
+        if (! Schema::hasTable('indicators')) {
             return;
         }
 

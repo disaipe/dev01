@@ -3,7 +3,6 @@
 namespace App\Core\Indicator;
 
 use App\Core\Report\Expression\Expression;
-use App\Core\Report\Expression\SumExpression;
 use Illuminate\Support\Arr;
 
 class Indicator
@@ -49,7 +48,7 @@ class Indicator
 
             $classType = "App\Core\Report\Expression\\$type";
             if (class_exists($classType)) {
-                $instance->expression  = new $classType(...$data);
+                $instance->expression = new $classType(...$data);
             }
         }
 

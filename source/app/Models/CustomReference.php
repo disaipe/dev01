@@ -22,11 +22,11 @@ class CustomReference extends Model
         'plural_label',
         'company_context',
         'schema',
-        'enabled'
+        'enabled',
     ];
 
     protected $casts = [
-        'schema' => 'json'
+        'schema' => 'json',
     ];
 
     public function scopeEnabled(Builder $query): void

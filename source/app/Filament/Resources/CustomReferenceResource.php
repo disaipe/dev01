@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CustomReferenceResource\Pages;
-use App\Forms\Components\RawHtmlContent;
 use App\Models\CustomReference;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -23,7 +22,7 @@ class CustomReferenceResource extends Resource
             'id',
             'created_at',
             'updated_at',
-            'deleted_at'
+            'deleted_at',
         ];
 
         $isSystem = fn ($get) => in_array($get('name'), $disabled);
@@ -98,7 +97,7 @@ class CustomReferenceResource extends Resource
                                         'float' => 'Float',
                                         'boolean' => 'Boolean',
                                         'date' => 'Date',
-                                        'datetime' => 'Datetime'
+                                        'datetime' => 'Datetime',
                                     ])
                                     ->disabled($isSystem)
                                     ->required(),
@@ -107,10 +106,10 @@ class CustomReferenceResource extends Resource
                                     ->label('Обязательное')
                                     ->disabled($isSystem)
                                     ->inline(false)
-                                    ->default(false)
+                                    ->default(false),
                             ])
-                            ->required()
-                    ])
+                            ->required(),
+                    ]),
             ]);
     }
 
@@ -152,9 +151,6 @@ class CustomReferenceResource extends Resource
         return trans_choice('reference.CustomReference', 1);
     }
 
-    /**
-     * @return string|null
-     */
     public static function getPluralLabel(): ?string
     {
         return trans_choice('reference.CustomReference', 2);

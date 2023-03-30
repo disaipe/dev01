@@ -5,8 +5,6 @@ namespace App\Services;
 use App\Core\Indicator\Indicator;
 use App\Core\Indicator\IndicatorManager;
 use App\Core\Reference\ReferenceManager;
-use App\Core\Report\Expression\Expression;
-use App\Models\Indicator as CustomExpression;
 use App\Models\PriceList;
 use App\Models\ReportTemplate;
 use App\Models\Service;
@@ -163,6 +161,7 @@ class ReportService
 
         if ($reference = $this->referenceManager->getByName($model)) {
             $model = $reference->getModelInstance();
+
             return $model->query();
         }
 

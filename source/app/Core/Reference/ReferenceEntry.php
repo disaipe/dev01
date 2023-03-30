@@ -103,7 +103,7 @@ class ReferenceEntry
             $name = Arr::get($field, 'name');
             $label = Arr::get($field, 'display_name');
             $type = Arr::get($field, 'type');
-            $required = Arr::get($field,  'required');
+            $required = Arr::get($field, 'required');
             $readonly = Arr::get($field, 'readonly');
 
             $fieldSchema = ReferenceFieldSchema::make();

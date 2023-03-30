@@ -42,7 +42,7 @@ class ReferenceManager
 
     public function registerCustomReferences(): void
     {
-        if (!Schema::hasTable('custom_references')) {
+        if (! Schema::hasTable('custom_references')) {
             return;
         }
 

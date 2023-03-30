@@ -74,7 +74,7 @@ return [
             'driver' => 'ldap',
             'model' => App\Models\UserLdap::class,
             'rules' => [
-                \App\Ldap\Rules\DomainConfigurationRules::class
+                \App\Ldap\Rules\DomainConfigurationRules::class,
             ],
             'database' => [
                 'model' => App\Models\User::class,

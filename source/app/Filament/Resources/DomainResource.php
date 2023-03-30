@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\DomainResource\Pages;
 use App\Forms\Components\MarkdownContent;
-use App\Forms\Components\RawHtmlContent;
 use App\Models\Domain;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -102,9 +101,9 @@ class DomainResource extends Resource
                         Forms\Components\Tabs\Tab::make(__('admin.description'))
                             ->schema([
                                 MarkdownContent::make('')
-                                    ->fromFile(base_path('docs/domain/README.md'))
-                            ])
-                    ])
+                                    ->fromFile(base_path('docs/domain/README.md')),
+                            ]),
+                    ]),
 
             ]);
     }

@@ -71,7 +71,7 @@ class IndicatorResource extends Resource
                                 Builder\Block::make('CountExpression')
                                     ->label(__('admin.$expression.count'))
                                     ->schema([
-                                        RawHtmlContent::make(__('admin.$indicator.count_helper'))
+                                        RawHtmlContent::make(__('admin.$indicator.count_helper')),
                                     ]),
                                 Builder\Block::make('SumExpression')
                                     ->label(__('admin.$expression.sum'))

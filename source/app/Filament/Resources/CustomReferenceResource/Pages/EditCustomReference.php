@@ -5,7 +5,6 @@ namespace App\Filament\Resources\CustomReferenceResource\Pages;
 use App\Filament\Resources\CustomReferenceResource;
 use App\Models\CustomReference;
 use App\Services\CustomReferenceTableService;
-use Filament\Notifications\Notification;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Arr;
@@ -35,7 +34,7 @@ class EditCustomReference extends EditRecord
         $fields = Arr::get($data, 'schema.fields', []);
         $names = Arr::pluck($fields, 'name');
 
-        if (!in_array('id', $names)) {
+        if (! in_array('id', $names)) {
             array_unshift($fields, [
                 'name' => 'id',
                 'display_name' => 'ID',
@@ -44,34 +43,34 @@ class EditCustomReference extends EditRecord
                 'pk' => true,
                 'autoincrement' => true,
                 'nullable' => false,
-                'readonly' => true
+                'readonly' => true,
             ]);
         }
 
-        if (!in_array('created_at', $names)) {
+        if (! in_array('created_at', $names)) {
             $fields[] = [
                 'name' => 'created_at',
                 'display_name' => 'Создано',
                 'type' => 'datetime',
-                'readonly' => true
+                'readonly' => true,
             ];
         }
 
-        if (!in_array('updated_at', $names)) {
+        if (! in_array('updated_at', $names)) {
             $fields[] = [
                 'name' => 'updated_at',
                 'display_name' => 'Изменено',
                 'type' => 'datetime',
-                'readonly' => true
+                'readonly' => true,
             ];
         }
 
-        if (!in_array('deleted_at', $names)) {
+        if (! in_array('deleted_at', $names)) {
             $fields[] = [
                 'name' => 'deleted_at',
                 'display_name' => 'Удалено',
                 'type' => 'datetime',
-                'readonly' => true
+                'readonly' => true,
             ];
         }
 

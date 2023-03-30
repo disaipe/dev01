@@ -13,6 +13,7 @@ class PriceListValueReference extends ReferenceEntry
     protected string|ReferenceModel $model = PriceListValue::class;
 
     protected string|bool|null $referenceView = false;
+
     protected string|bool|null $recordView = false;
 
     protected bool $indicators = false;

@@ -15,6 +15,7 @@ class AuthSettings extends Page implements Forms\Contracts\HasForms
     public ?int $timeout;
 
     protected static ?string $navigationGroup = 'Test';
+
     protected static ?int $navigationSort = 1000;
 
     public function submit()

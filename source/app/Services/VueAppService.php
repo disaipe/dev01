@@ -24,7 +24,7 @@ class VueAppService
         $share = array_merge_recursive([
             'user' => $this->getUserProps(),
             'routes' => $referenceService->getVueRoutes(),
-            'models' => $referenceService->getModels()
+            'models' => $referenceService->getModels(),
         ], $share);
 
         $key = Encrypter::generateKey('aes-128-cbc');

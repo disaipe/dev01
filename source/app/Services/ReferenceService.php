@@ -15,9 +15,6 @@ class ReferenceService
 {
     /**
      * Get reference model from custom reference
-     *
-     * @param CustomReference $customReference
-     * @return Reference
      */
     public static function getModelFromCustom(CustomReference $customReference): Reference
     {
@@ -26,6 +23,7 @@ class ReferenceService
         $instance = new class($tableName) extends Reference
         {
             public static ?string $referenceTable;
+
             public static bool $companyContext;
 
             public function __construct($tableName = null)
@@ -59,8 +57,6 @@ class ReferenceService
 
     /**
      * Get models array from registered references
-     *
-     * @return array
      */
     public function getModels(): array
     {
@@ -88,8 +84,6 @@ class ReferenceService
 
     /**
      * Generate Vue routes for registered references
-     *
-     * @return array
      */
     public function getVueRoutes(): array
     {
@@ -115,7 +109,7 @@ class ReferenceService
             // Make reference route if view set
             $referenceView = $entry->getReferenceView();
             if ($referenceView !== false) {
-                $routes []= [
+                $routes[] = [
                     'name' => $entry->getName().'Reference',
                     'path' => '',
                     'meta' => [
@@ -131,7 +125,7 @@ class ReferenceService
             // Make record route if view set
             $recordView = $entry->getRecordView();
             if ($recordView !== false) {
-                $routes []= [
+                $routes[] = [
                     'name' => $entry->getName().'Record',
                     'path' => ':id',
                     'meta' => [
@@ -144,7 +138,7 @@ class ReferenceService
                 ];
             }
 
-            if (!count($routes)) {
+            if (! count($routes)) {
                 return null;
             }
 

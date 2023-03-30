@@ -31,8 +31,8 @@ class AuthController extends Controller
         if (! Auth::attempt($credentials)) {
             if ($request->expectsJson()) {
                 return response()->json([
-                   'status' => false,
-                   'message' => 'Неверный логин или пароль',
+                    'status' => false,
+                    'message' => 'Неверный логин или пароль',
                 ]);
             }
 

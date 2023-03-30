@@ -32,7 +32,7 @@ class MarkdownContent extends Component
         if ($content) {
             $parse = new GithubFlavoredMarkdownConverter([
                 'html_input' => 'strip',
-                'allow_unsafe_links' => true
+                'allow_unsafe_links' => true,
             ]);
 
             $id = 'md_'.Str::random(6);

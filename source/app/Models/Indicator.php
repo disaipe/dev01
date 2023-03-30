@@ -50,8 +50,8 @@ class Indicator extends Model
 
         static::creating(function (Indicator $query) {
             // Generate code if not set
-            if (!isset($query->code)) {
-                $query->code = 'INDICATOR_' . Str::random('6');
+            if (! isset($query->code)) {
+                $query->code = 'INDICATOR_'.Str::random('6');
             }
         });
     }
