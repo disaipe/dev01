@@ -5,7 +5,7 @@
             slot(name='toolbar')
                 .flex.space-x-2.mb-1(v-if='showToolbar')
                     el-dropdown(trigger='click')
-                        el-button(size='small' icon='arrow-down') Действия
+                        el-button(icon='arrow-down') Действия
                         template(#dropdown)
                             el-dropdown-menu
                                 slot(name='actions-menu-items')

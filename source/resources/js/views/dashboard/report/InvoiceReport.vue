@@ -90,24 +90,27 @@ export default {
 
             loading.value = true;
 
-            api.post('report', body).then((response) => {
-               if (response.ok) {
-                   const { status, data } = response.data;
+            api
+                .post('report', body)
+                .then((response) => {
+                   if (response.ok) {
+                       const { status, data } = response.data;
 
-                   if (status) {
-                       const { xlsx, values } = data;
+                       if (status) {
+                           const { xlsx, values } = data;
 
-                       indicators = values || {};
+                           indicators = values || {};
 
-                       if (xlsx) {
-                           spread.value.loadFromBase64(xlsx);
-                           loaded.value = true;
+                           if (xlsx) {
+                               spread.value.loadFromBase64(xlsx);
+                               loaded.value = true;
+                           }
                        }
                    }
-               }
-
-               nextTick(() => loading.value = false);
-            });
+                })
+                .finally(() => {
+                    nextTick(() => loading.value = false);
+                });
         };
 
         const downloadReport = () => {

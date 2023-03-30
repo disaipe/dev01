@@ -25,6 +25,7 @@
         template(#toolbar-extra-actions)
             el-button(:loading='data.saving' @click='save')
                 icon.text-lg(icon='material-symbols:save-outline')
+                .ml-1 Сохранить
 </template>
 
 <script>
