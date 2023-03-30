@@ -80,10 +80,15 @@ export function configure(settings = {}) {
 
     // set column widths and row heights
     const syncSizes = () => {
-        const colWidths = store.value.worksheet._columns.map((column) => column.width * 7.12);
-        const rowHeights = store.value.worksheet._rows.map((row) => row.height * 1.33);
+        const toSync = {};
 
-        instance.value.updateSettings({ colWidths, rowHeights });
+        if (!settings.colWidths) {
+            toSync.colWidths = store.value.worksheet._columns.map((column) => column.width * 7.12);
+        }
+
+        toSync.rowHeights = store.value.worksheet._rows.map((row) => row.height * 1.33);
+
+        instance.value.updateSettings(toSync);
     };
 
     return {
