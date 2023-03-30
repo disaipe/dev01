@@ -4,6 +4,7 @@ namespace App\Core\Reference;
 
 use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Models\CustomReference;
+use App\Services\ReferenceService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Str;
@@ -77,7 +78,7 @@ class ReferenceEntry
     {
         $entry = new self();
         $entry->name = Str::ascii(Str::studly($customReference->name));
-        $entry->model = $customReference->getReferenceModel();
+        $entry->model = ReferenceService::getModelFromCustom($customReference);
         $entry->label = $customReference->label;
         $entry->pluralLabel = $customReference->plural_label;
         $entry->schema = [];

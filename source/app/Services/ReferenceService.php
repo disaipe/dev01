@@ -4,11 +4,64 @@ namespace App\Services;
 
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceManager;
+use App\Models\Company;
+use App\Models\CustomReference;
+use App\Models\Reference;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class ReferenceService
 {
+    /**
+     * Get reference model from custom reference
+     *
+     * @param CustomReference $customReference
+     * @return Reference
+     */
+    public static function getModelFromCustom(CustomReference $customReference): Reference
+    {
+        $tableName = CustomReferenceTableService::getTableName($customReference->name);
+
+        $instance = new class($tableName) extends Reference
+        {
+            public static ?string $referenceTable;
+            public static bool $companyContext;
+
+            public function __construct($tableName = null)
+            {
+                parent::__construct([]);
+
+                $this->setTable($tableName ?? static::$referenceTable);
+
+                static::$referenceTable = $this->getTable();
+            }
+
+            public function scopeCompany(Builder $query, string $code): Builder
+            {
+                if (static::$companyContext) {
+                    /** @var Company $company */
+                    $company = Company::query()->firstWhere('code', '=', $code);
+
+                    if ($company) {
+                        return $query->where('company_id', '=', $company->getKey());
+                    }
+                }
+
+                return $query;
+            }
+        };
+
+        $instance::$companyContext = $customReference->company_context;
+
+        return $instance;
+    }
+
+    /**
+     * Get models array from registered references
+     *
+     * @return array
+     */
     public function getModels(): array
     {
         /** @var ReferenceManager $references */
@@ -33,6 +86,11 @@ class ReferenceService
             ->toArray();
     }
 
+    /**
+     * Generate Vue routes for registered references
+     *
+     * @return array
+     */
     public function getVueRoutes(): array
     {
         /** @var ReferenceManager $references */
