@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string username
  * @property string password
  * @property string base_dn
+ * @property array filters
  * @property numeric timeout
  * @property bool ssl
  * @property bool tls
@@ -30,18 +31,16 @@ class Domain extends Model
         'username',
         'password',
         'base_dn',
+        'filters',
         'timeout',
         'ssl',
         'tls',
         'enabled',
     ];
 
-    protected $hidden = [
-        'password',
-    ];
-
     protected $casts = [
         'password' => 'encrypted',
+        'filters' => 'json',
         'ssl' => 'boolean',
         'tls' => 'boolean',
         'enabled' => 'boolean',

@@ -6,6 +6,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
 
+/**
+ * @property int id
+ * @property string name
+ * @property string email
+ * @property string domain
+ */
 class User extends Authenticatable
 {
     use AuthenticatesWithLdap, Notifiable;
@@ -19,7 +25,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'permissions',
+        'domain'
     ];
 
     /**
@@ -30,7 +36,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'permissions',
     ];
 
     /**
@@ -39,32 +44,6 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'permissions' => 'array',
         'email_verified_at' => 'datetime',
-    ];
-
-    /**
-     * The attributes for which you can use filters in url.
-     *
-     * @var array
-     */
-    protected $allowedFilters = [
-        'id',
-        'name',
-        'email',
-        'permissions',
-    ];
-
-    /**
-     * The attributes for which can use sort in url.
-     *
-     * @var array
-     */
-    protected $allowedSorts = [
-        'id',
-        'name',
-        'email',
-        'updated_at',
-        'created_at',
     ];
 }

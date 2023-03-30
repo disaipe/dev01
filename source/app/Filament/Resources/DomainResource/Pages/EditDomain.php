@@ -3,8 +3,12 @@
 namespace App\Filament\Resources\DomainResource\Pages;
 
 use App\Filament\Resources\DomainResource;
+use App\Models\Domain;
+use App\Services\LdapService;
+use Filament\Notifications\Notification;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
+use LdapRecord\Container;
 
 class EditDomain extends EditRecord
 {
@@ -13,7 +17,37 @@ class EditDomain extends EditRecord
     protected function getActions(): array
     {
         return [
+            Actions\Action::make('test')
+                ->label(__('admin.$domain.test_connection'))
+                ->action('testConnection'),
+
             Actions\DeleteAction::make(),
         ];
+    }
+
+    public function testConnection(): void
+    {
+        /** @var Domain $domain */
+        $domain = $this->record;
+
+        LdapService::addDomainConnection($domain);
+        Container::setDefault($domain->code);
+
+        try {
+            Container::getDefaultConnection()->connect();
+        } catch (\Exception $e) {
+            Notification::make()
+                ->title(__('admin.error'))
+                ->body($e->getMessage())
+                ->danger()
+                ->send();
+
+            return;
+        }
+
+        Notification::make()
+            ->title(__('admin.$domain.connection_success'))
+            ->success()
+            ->send();
     }
 }

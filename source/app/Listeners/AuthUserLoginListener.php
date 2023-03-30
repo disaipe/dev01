@@ -3,8 +3,10 @@
 namespace App\Listeners;
 
 use App\Models\Domain;
+use App\Models\User;
 use App\Services\LdapService;
 use Illuminate\Auth\Events\Login;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use LdapRecord\Container;
 use LdapRecord\Models\Entry;
@@ -12,39 +14,38 @@ use LdapRecord\Models\Entry;
 class AuthUserLoginListener
 {
     /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Handle the event.
      *
+     * @param Login $event
      * @return void
      */
-    public function handle(Login $event)
+    public function handle(Login $event): void
     {
-        $domainCode = $event->user->domain;
+        /** @var User $user */
+        $user = $event->user;
+        $domainCode = $user->domain;
 
         if ($domainCode) {
-            $id = $event->user->id;
-            $email = $event->user->email;
-            $domain = Domain::query()->where('code', '=', $domainCode)->first();
+            $id = $user->id;
+            $email = $user->email;
+
+            /** @var Domain $domain */
+            $domain = Domain::query()->firstWhere('code', '=', $domainCode);
 
             if ($domain) {
                 LdapService::addDomainConnection($domain);
                 Container::setDefault($domain->code);
 
-                $entry = Entry::query()->select('photo')->where('mail', '=', $email)->first();
+                try {
+                    $entry = Entry::query()->select('photo')->where('mail', '=', $email)->first();
 
-                $photo = $entry->getFirstAttribute('photo');
+                    $photo = $entry->getFirstAttribute('photo');
 
-                if ($photo) {
-                    Storage::disk('public')->put("avatars/{$id}", $photo);
+                    if ($photo) {
+                        Storage::disk('public')->put("avatars/{$id}", $photo);
+                    }
+                } catch (\Exception $e) {
+                    Log::info("Ldap user avatar synchronization failed: {$e->getMessage()}");
                 }
             }
         }

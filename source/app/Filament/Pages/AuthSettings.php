@@ -12,17 +12,10 @@ class AuthSettings extends Page implements Forms\Contracts\HasForms
 
     protected static string $view = 'filament.pages.auth-settings';
 
-    public ?string $host;
-
-    public ?int $port;
-
-    public ?string $username;
-
-    public ?string $password;
-
-    public ?string $baseDN;
-
     public ?int $timeout;
+
+    protected static ?string $navigationGroup = 'Test';
+    protected static ?int $navigationSort = 1000;
 
     public function submit()
     {

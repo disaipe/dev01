@@ -29,6 +29,13 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (! Auth::attempt($credentials)) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                   'status' => false,
+                   'message' => 'Неверный логин или пароль',
+                ]);
+            }
+
             throw ValidationException::withMessages([
                 'username' => 'Неверный логин или пароль',
             ]);

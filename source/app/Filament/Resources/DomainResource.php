@@ -3,6 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\DomainResource\Pages;
+use App\Forms\Components\MarkdownContent;
+use App\Forms\Components\RawHtmlContent;
 use App\Models\Domain;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -20,58 +22,90 @@ class DomainResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label(__('admin.name'))
-                    ->maxLength(64)
-                    ->required(),
+                Forms\Components\Tabs::make('form')
+                    ->columnSpanFull()
+                    ->tabs([
+                        Forms\Components\Tabs\Tab::make(__('admin.configuration'))
+                            ->columns(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->label(__('admin.name'))
+                                    ->helperText(__('admin.$domain.name_helper'))
+                                    ->maxLength(64)
+                                    ->required(),
 
-                Forms\Components\TextInput::make('code')
-                    ->label(__('admin.identity'))
-                    ->maxLength(8)
-                    ->required(),
+                                Forms\Components\TextInput::make('code')
+                                    ->label(__('admin.identity'))
+                                    ->regex('/[a-zA-Z_-]/')
+                                    ->helperText(__('admin.$domain.code_helper'))
+                                    ->maxLength(8)
+                                    ->required(),
 
-                Forms\Components\TextInput::make('host')
-                    ->label(__('admin.host'))
-                    ->maxLength(64)
-                    ->required(),
+                                Forms\Components\TextInput::make('host')
+                                    ->label(__('admin.host'))
+                                    ->maxLength(64)
+                                    ->required(),
 
-                Forms\Components\TextInput::make('port')
-                    ->label(__('admin.port'))
-                    ->numeric()
-                    ->default(389)
-                    ->required(),
+                                Forms\Components\TextInput::make('port')
+                                    ->label(__('admin.port'))
+                                    ->numeric()
+                                    ->default(389)
+                                    ->required(),
 
-                Forms\Components\TextInput::make('username')
-                    ->label(__('admin.$domain.username')),
+                                Forms\Components\TextInput::make('username')
+                                    ->label(__('admin.$domain.username')),
 
-                Forms\Components\TextInput::make('password')
-                    ->label(__('admin.password'))
-                    ->password(),
+                                Forms\Components\TextInput::make('password')
+                                    ->label(__('admin.password'))
+                                    ->password(),
 
-                Forms\Components\TextInput::make('base_dn')
-                    ->label(__('admin.$domain.base_dn'))
-                    ->helperText(__('admin.$domain.base_dn_helper'))
-                    ->columnSpanFull(),
+                                Forms\Components\TextInput::make('base_dn')
+                                    ->label(__('admin.$domain.base_dn'))
+                                    ->helperText(__('admin.$domain.base_dn_helper'))
+                                    ->columnSpanFull(),
 
-                Forms\Components\TextInput::make('timeout')
-                    ->label(__('admin.timeout'))
-                    ->numeric()
-                    ->default(5),
+                                Forms\Components\Repeater::make('filters')
+                                    ->label(__('admin.$domain.filters'))
+                                    ->columnSpanFull()
+                                    ->createItemButtonLabel(__('admin.$domain.filter_add'))
+                                    ->schema([
+                                        Forms\Components\TextInput::make('value')
+                                            ->label(__('admin.$domain.rule'))
+                                            ->helperText(__('admin.$domain.rule_helper'))
+                                            ->required(),
 
-                Forms\Components\Checkbox::make('ssl')
-                    ->label('SSL')
-                    ->default(false)
-                    ->columnSpanFull(),
+                                        Forms\Components\Textarea::make('name')
+                                            ->label(__('admin.description'))
+                                            ->rows(2),
+                                    ]),
 
-                Forms\Components\Checkbox::make('tls')
-                    ->label('TLS')
-                    ->default(false)
-                    ->columnSpanFull(),
+                                Forms\Components\TextInput::make('timeout')
+                                    ->label(__('admin.timeout'))
+                                    ->numeric()
+                                    ->default(5),
 
-                Forms\Components\Checkbox::make('enabled')
-                    ->label(__('admin.enabled'))
-                    ->default(false)
-                    ->columnSpanFull(),
+                                Forms\Components\Checkbox::make('ssl')
+                                    ->label('SSL')
+                                    ->default(false)
+                                    ->columnSpanFull(),
+
+                                Forms\Components\Checkbox::make('tls')
+                                    ->label('TLS')
+                                    ->default(false)
+                                    ->columnSpanFull(),
+
+                                Forms\Components\Checkbox::make('enabled')
+                                    ->label(__('admin.enabled'))
+                                    ->default(false)
+                                    ->columnSpanFull(),
+                            ]),
+                        Forms\Components\Tabs\Tab::make(__('admin.description'))
+                            ->schema([
+                                MarkdownContent::make('')
+                                    ->fromFile(base_path('docs/domain/README.md'))
+                            ])
+                    ])
+
             ]);
     }
 
