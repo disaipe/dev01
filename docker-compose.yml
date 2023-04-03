@@ -29,6 +29,7 @@ services:
       - ./docker/php/php.ini:/etc/php/${DOCKER_PHP_VERSION}/fpm/conf.d/99-overrides.ini
       - ./docker/php/php-cli.ini:/etc/php/${DOCKER_PHP_VERSION}/cli/conf.d/99-overrides.ini
       - ./docker/php/cron/scheduler:/etc/cron.d/scheduler
+      - ./docker/php/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
       - ./source:/var/www/html
 
   mariadb:

@@ -7,8 +7,8 @@ ARG PHP_VERSION
 
 # Fix debconf warnings upon build
 ARG DEBIAN_FRONTEND=noninteractive
-
 ARG USER_ID=1000
+ARG NODE_VERSION=19
 
 ENV PHP=php${PHP_VERSION}
 
@@ -23,10 +23,10 @@ RUN apt-get update \
       $PHP-gd
 
 # Install tools
-RUN apt-get -y install git cron
+RUN apt-get -y install git cron supervisor mysql-client
 
 # Install Nodejs, Yarn
-RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
+RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
   && apt-get -y install nodejs \
   && npm install -g yarn
 
