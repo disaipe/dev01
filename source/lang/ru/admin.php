@@ -18,6 +18,9 @@ return [
     'port' => 'Порт',
     'timeout' => 'Таймаут',
     'schedule' => 'Расписание',
+    'state' => 'Состояние',
+    'result' => 'Результат',
+    'run' => 'Запустить',
 
     'configuration' => 'Конфигурация',
     'description' => 'Описание',
@@ -26,6 +29,11 @@ return [
     'system' => 'Системное',
 
     'error' => 'Ошибка',
+
+    'created_at' => 'Создано',
+    'updated_at' => 'Обновлено',
+    'started_at' => 'Запущено',
+    'ended_at' => 'Закончено',
 
     'cron_helper' => '<pre class="text-xs ml-1">
  - - - - -
