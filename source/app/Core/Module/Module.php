@@ -14,9 +14,6 @@ use Illuminate\Support\Str;
  */
 class Module
 {
-    /** @var string Display name */
-    private string $name;
-
     /** @var string Unique key */
     private string $key;
 
@@ -40,10 +37,6 @@ class Module
         $this->provider = $provider;
         $this->key = Str::camel($key);
         $this->options = $options;
-
-        if ($name = Arr::get($options, 'name')) {
-            $this->setName($name);
-        }
 
         /** @var Model $model */
         $model = Model::query()->firstOrCreate(['key' => $this->key]);
@@ -82,7 +75,12 @@ class Module
 
     public function getName(): string
     {
-        return $this->name ?? Str::ucfirst($this->key);
+        return Arr::get($this->options, 'name') ?? Str::ucfirst($this->key);
+    }
+
+    public function getDescription(): ?string
+    {
+        return Arr::get($this->options, 'description');
     }
 
     public function getConfigurationLayout()
@@ -95,9 +93,10 @@ class Module
         return 'module.'.$this->getKey();
     }
 
-    public function getConfig(): array
+    public function getConfig($path = null): mixed
     {
-        return Config::get($this->getConfigKey(), []);
+        $key = $this->getConfigKey() . ($path ? ".$path" : '');
+        return Config::get($key, []);
     }
 
     public function setConfig($data, $prepend = false): void
@@ -122,10 +121,5 @@ class Module
     public function setEnabled(bool $enabled = true): void
     {
         $this->model->update(['enabled' => $enabled]);
-    }
-
-    private function setName(string $name): void
-    {
-        $this->name = $name;
     }
 }

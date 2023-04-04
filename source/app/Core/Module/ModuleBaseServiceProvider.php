@@ -24,6 +24,9 @@ class ModuleBaseServiceProvider extends ServiceProvider
     /** @var ?array Module options */
     protected ?array $options = null;
 
+    /** @var Module|null Module instance */
+    protected ?Module $module = null;
+
     /**
      * Initialize module
      *
@@ -60,6 +63,8 @@ class ModuleBaseServiceProvider extends ServiceProvider
         $module = app('modules')->register($this, $this->getKey());
 
         if ($module->isEnabled()) {
+            $this->module = $module;
+
             $this->init();
 
             if ($this->options) {
@@ -68,48 +73,27 @@ class ModuleBaseServiceProvider extends ServiceProvider
         }
     }
 
-    protected function parseSchedule(string $periodName): array
+    protected function scheduleJob(Schedule $schedule, ModuleScheduledJob $job, string $jobName = null): ?CallbackEvent
     {
-        $configName = Str::start($periodName, 'integration.');
-        $configName = Str::finish($configName, '.syncPeriod');
+        $enabled = (bool)$this->module->getConfig("$jobName.enabled");
 
-        $periodData = config($configName) ?? [];
-
-        $method = Arr::get($periodData, 'period') ?? 'disabled';
-        $parameters = [];
-
-        switch ($method) {
-            case 'disabled':
-                return [];
-            case 'cron':
-                $parameters = [$periodData['cron']];
-                break;
-            default:
-                break;
-        }
-
-        return [$method, $parameters];
-    }
-
-    protected function scheduleJob(Schedule $schedule, ModuleScheduledJob $job, string $periodName = null): ?CallbackEvent
-    {
-        if (! $job->enabled()) {
+        if (!$enabled) {
             return null;
         }
 
-        $scheduledJob = $schedule
-            ->job($job)
-            ->name(class_basename($job));
+        $cron = $this->module->getConfig("$jobName.schedule");
 
-        if ($periodName) {
-            @[$method, $parameters] = $this->parseSchedule($periodName);
+        if ($cron) {
+            $scheduledJob = $schedule
+                ->job($job, 'default')
+                ->name(class_basename($job))
+                ->description($job->description)
+                ->cron($cron);
 
-            if ($method) {
-                $scheduledJob->$method(...$parameters);
-            }
+            return $scheduledJob;
         }
 
-        return $scheduledJob;
+        return null;
     }
 
     /**

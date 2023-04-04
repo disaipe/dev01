@@ -13,7 +13,7 @@ class ModuleManager
      * Register module with given options
      *
      * @param  string  $key module unique key
-     * @param  array  $options module optionsi
+     * @param  array  $options module options
      */
     public function register(ModuleBaseServiceProvider $provider, string $key, array $options = []): Module
     {
