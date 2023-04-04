@@ -45,7 +45,7 @@ class JobProtocolResource extends Resource
                     ->size('md')
                     ->options([
                         'heroicon-o-clock' => JobProtocolState::Create->value,
-                        'heroicon-o-command-line' => JobProtocolState::Work->value,
+                        'heroicon-o-terminal' => JobProtocolState::Work->value,
                         'heroicon-o-exclamation' => JobProtocolState::Failed->value,
                         'heroicon-o-check-circle' => JobProtocolState::Ready->value,
                     ])
