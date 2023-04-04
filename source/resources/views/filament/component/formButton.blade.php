@@ -10,11 +10,7 @@
     :required="$isRequired()"
     :state-path="$getStatePath()"
 >
-    <div
-        x-data="{ state: $wire.entangle('{{ $getStatePath() }}') }"
-    >
-        <x-filament::button x-on:click="state = true">
-            {{ $getLabel() }}
-        </x-filament::button>
-    </div>
+    <x-filament::button wire:click="dispatchFormEvent('run')">
+        {{ $getLabel() }}
+    </x-filament::button>
 </x-dynamic-component>
