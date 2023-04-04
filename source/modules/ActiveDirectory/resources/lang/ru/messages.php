@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'name' => 'Коннектор Active Directory',
+    'description' => 'Синронизация данных из Active Directory',
+
     'section_sync' => 'Параметры синхронизации',
 
     'base_dn' => 'Базовый DN',

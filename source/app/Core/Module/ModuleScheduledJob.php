@@ -23,7 +23,7 @@ abstract class ModuleScheduledJob implements ShouldQueue //, ShouldBeUniqueUntil
 
     public ?string $description = null;
 
-    abstract public function work(): mixed;
+    abstract public function work();
 
     /**
      * The number of seconds after which the job's unique lock will be released.

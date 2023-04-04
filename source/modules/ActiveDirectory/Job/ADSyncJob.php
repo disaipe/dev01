@@ -14,7 +14,7 @@ use LdapRecord\Models\Entry;
 
 class ADSyncJob extends ModuleScheduledJob
 {
-    public function handle()
+    public function work()
     {
         $config = $this->getModuleConfig();
 
@@ -41,7 +41,7 @@ class ADSyncJob extends ModuleScheduledJob
                 'memberOf',             // groups
                 'msRTCSIP-UserEnabled', // sip enabled flag
                 'logonCount',           // logon count
-                'lastLogon',             // last logon timestamp
+                'lastLogon',            // last logon timestamp
             ])
             ->setBaseDn($base_dn)
             ->where('objectClass', '=', 'user')
@@ -51,9 +51,16 @@ class ADSyncJob extends ModuleScheduledJob
             $query->rawFilter(explode("\n", $filters));
         }
 
-        $query->chunk(200, function ($entries) {
+        $query->chunk(200, function (Collection $entries) {
             $this->processChunk($entries);
         });
+
+        return [];
+    }
+
+    public function getDescription(): ?string
+    {
+        return __('ad::messages.job.ldap_sync.title');
     }
 
     protected function processChunk(Collection $entries)
