@@ -146,6 +146,11 @@ class CustomReferenceResource extends Resource
         ];
     }
 
+    protected static function getNavigationGroup(): ?string
+    {
+        return __('admin.menu.common');
+    }
+
     public static function getLabel(): ?string
     {
         return trans_choice('reference.CustomReference', 1);

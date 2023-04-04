@@ -21,17 +21,22 @@ class FilamentServiceProvider extends ServiceProvider
     protected function registerNavigation()
     {
         Filament::registerNavigationItems([
-            NavigationItem::make('Main')
+            NavigationItem::make(__('admin.menu.portal'))
                 ->url('/')
-                ->icon('heroicon-o-presentation-chart-line')
-                ->group('Links')
-                ->sort(1),
+                ->icon('heroicon-s-globe-alt')
+                ->sort(0),
         ]);
 
         Filament::registerNavigationGroups([
-            NavigationGroup::make('access')
-                ->label(__('admin.menu.access'))
+            NavigationGroup::make(__('admin.menu.links'))
+                ->icon('heroicon-s-link'),
+
+            NavigationGroup::make(__('admin.menu.access'))
                 ->icon('heroicon-s-lock-closed'),
+
+            NavigationGroup::make(__('admin.menu.debug'))
+                ->icon('heroicon-s-code')
+                ->collapsed()
         ]);
     }
 

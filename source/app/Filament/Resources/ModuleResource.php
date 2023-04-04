@@ -43,6 +43,11 @@ class ModuleResource extends Resource
         ];
     }
 
+    protected static function getNavigationGroup(): ?string
+    {
+        return __('admin.menu.common');
+    }
+
     public static function getModelLabel(): string
     {
         return trans_choice('admin.module', 1);

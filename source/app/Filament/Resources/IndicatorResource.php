@@ -117,6 +117,11 @@ class IndicatorResource extends Resource
         ];
     }
 
+    protected static function getNavigationGroup(): ?string
+    {
+        return __('admin.menu.common');
+    }
+
     public static function getModelLabel(): string
     {
         return trans_choice('reference.Indicator', 1);
