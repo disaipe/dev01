@@ -98,7 +98,7 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
 
 
                             FormButton::make(__('admin.run'))
-                                ->onClick(fn () => $this->runJob())
+                                ->action(fn () => $this->runJob())
                         ])
                 ],
             ],
