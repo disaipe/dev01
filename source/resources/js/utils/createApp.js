@@ -6,7 +6,7 @@ import { decrypt } from './crypt';
 const el = document.getElementById('app');
 const page = JSON.parse(el.dataset.page);
 
-const data = await decrypt(page.v, page.k);
+const data = decrypt(page.v, page.k);
 
 if (data) {
     delete el.dataset.page;

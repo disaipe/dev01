@@ -5,7 +5,7 @@ import CryptoJS from 'crypto-js';
  *
  * @param {string} data
  * @param {string} key
- * @return {Promise<string>}
+ * @return {string}
  */
 export function decrypt(data, key) {
     const encryptStr = CryptoJS.enc.Base64.parse(data);
@@ -19,7 +19,5 @@ export function decrypt(data, key) {
         padding: CryptoJS.pad.Pkcs7
     });
 
-    const decryptedString = CryptoJS.enc.Utf8.stringify(decrypted);
-
-    return Promise.resolve(decryptedString);
+    return CryptoJS.enc.Utf8.stringify(decrypted);
 }
