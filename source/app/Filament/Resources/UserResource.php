@@ -22,18 +22,23 @@ class UserResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->label(__('admin.$user.name'))
+                    ->helperText(__('admin.$user.name help'))
                     ->columnSpanFull()
                     ->required(),
                 Forms\Components\TextInput::make('email')
                     ->label(__('admin.email'))
+                    ->helperText(__('admin.$user.email help'))
                     ->email()
                     ->required(),
                 Forms\Components\TextInput::make('password')
                     ->label(__('admin.password'))
+                    ->helperText(fn ($record) => $record ? __('admin.$user.password help') : null)
                     ->password()
-                    ->required(),
+                    ->required(fn ($record) => !$record),
                 Forms\Components\TextInput::make('domain')
                     ->label(trans_choice('admin.domain', 1))
+                    ->helperText(__('admin.$user.domain help'))
+                    ->visible(fn ($state) => !!$state)
                     ->disabled(),
             ]);
     }
