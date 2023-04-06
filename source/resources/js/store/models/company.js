@@ -1,6 +1,7 @@
 import Model from '../model';
 
 export default class Company extends Model {
+    static name = 'Company';
     static entity = 'companies';
 
     static fields() {

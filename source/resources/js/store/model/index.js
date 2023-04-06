@@ -1,8 +1,14 @@
-import { Type, Relation } from 'pinia-orm';
-
 import ApiModel from './api';
 import Date from './attributes/date';
 import Datetime from './attributes/datetime';
+
+function isAttribute(type) {
+    return ['Uid', 'Attr', 'String', 'String2', 'Number', 'Boolean', 'Datetime', 'Date'].includes(type);
+}
+
+function isRelation(type) {
+    return ['BelongsTo', 'HasMany'].includes(type);
+}
 
 export default class CoreModel extends ApiModel {
 
@@ -26,10 +32,14 @@ export default class CoreModel extends ApiModel {
             let readonly = false;
             let relation;
 
-            if (field instanceof Type) {
-                switch (field.constructor.name) {
+            const fieldType = field.name ?? field.constructor.name;
+
+            if (isAttribute(fieldType)) {
+                switch (fieldType) {
                     case 'Uid':
                         readonly = true;
+                        break;
+                    case 'Attr':
                         break;
                     case 'String':
                     case 'String2':
@@ -49,10 +59,8 @@ export default class CoreModel extends ApiModel {
                     default:
                         break;
                 }
-            }
-
-            if (field instanceof Relation) {
-                switch (field.constructor.name) {
+            } else if (isRelation(fieldType)) {
+                switch (fieldType) {
                     case 'BelongsTo':
                         type = 'relation';
                         relation = {
@@ -60,9 +68,13 @@ export default class CoreModel extends ApiModel {
                             model: field.related.constructor.name
                         };
                         break;
+                    case 'HasMany':
+                        break;
                     default:
                         break;
                 }
+            } else {
+                console.warn(`[Model:${this.name}] Unknown field ${key} type: ${fieldType}`);
             }
 
             schema[key] = {
@@ -79,12 +91,54 @@ export default class CoreModel extends ApiModel {
         return schema;
     }
 
+    static attr(value= null) {
+        const attr = super.attr(value);
+        attr.name = 'Attr';
+        return attr;
+    }
+
+    static string(value = null) {
+        const attr = super.string(value);
+        attr.name = 'String';
+        return attr;
+    }
+
+    static number(value= null) {
+        const attr = super.number(value);
+        attr.name = 'Number';
+        return attr;
+    }
+
+    static boolean(value= null) {
+        const attr = super.boolean(value);
+        attr.name = 'Boolean';
+        return attr;
+    }
+
+    static uid(size= null) {
+        const attr = super.uid(size);
+        attr.name = 'Uid';
+        return attr;
+    }
+
     static datetime(value) {
         return new Datetime(this.newRawInstance(), value);
     }
 
     static date(value) {
         return new Date(this.newRawInstance(), value);
+    }
+
+    static belongsTo(related, foreignKey, ownerKey = null)  {
+        const attr = super.belongsTo(related, foreignKey, ownerKey);
+        attr.name = 'BelongsTo';
+        return attr;
+    }
+
+    static hasMany(related, foreignKey, localKey = null) {
+        const attr = super.hasMany(related, foreignKey, localKey);
+        attr.name = 'HasMany';
+        return attr;
     }
 
     $isSaved() {

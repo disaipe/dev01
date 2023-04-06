@@ -7,6 +7,10 @@ import postcssImport from 'postcss-import';
 import autoprefixer from 'autoprefixer';
 
 export default defineConfig({
+    build: {
+        target: 'esnext'
+    },
+
     server: {
         host: true, // need to listen on all interfaces instead 127.0.0.1
         port: '3000',
@@ -14,7 +18,6 @@ export default defineConfig({
         hmr: {
             host: 'localhost' // needs to resolve correct address instead ipv6 (development only)
         },
-
 
         watch: {
             ignored: [

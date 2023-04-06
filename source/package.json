@@ -3,6 +3,7 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
+        "prod": "yarn build",
         "lint": "eslint \"resources/js\" --ext .js,.vue --fix"
     },
     "devDependencies": {

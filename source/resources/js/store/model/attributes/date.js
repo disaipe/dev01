@@ -1,6 +1,8 @@
 import { Type } from 'pinia-orm';
 
 export default class Date extends Type {
+    static name = 'Date';
+
     /**
      * Create a new Datetime attribute instance
      *
