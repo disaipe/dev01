@@ -16,7 +16,7 @@ class JobProtocol extends Model
         'result',
         'created_at',
         'started_at',
-        'ended_at'
+        'ended_at',
     ];
 
     protected $casts = [
@@ -24,7 +24,7 @@ class JobProtocol extends Model
         'result' => 'json',
         'created_at' => 'datetime:Y-m-d H:i:s',
         'started_at' => 'datetime:Y-m-d H:i:s',
-        'ended_at' => 'datetime:Y-m-d H:i:s'
+        'ended_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     public $timestamps = false;

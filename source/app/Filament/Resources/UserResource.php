@@ -34,11 +34,11 @@ class UserResource extends Resource
                     ->label(__('admin.password'))
                     ->helperText(fn ($record) => $record ? __('admin.$user.password help') : null)
                     ->password()
-                    ->required(fn ($record) => !$record),
+                    ->required(fn ($record) => ! $record),
                 Forms\Components\TextInput::make('domain')
                     ->label(trans_choice('admin.domain', 1))
                     ->helperText(__('admin.$user.domain help'))
-                    ->visible(fn ($state) => !!$state)
+                    ->visible(fn ($state) => (bool) $state)
                     ->disabled(),
             ]);
     }

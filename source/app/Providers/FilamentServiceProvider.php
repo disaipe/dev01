@@ -36,7 +36,7 @@ class FilamentServiceProvider extends ServiceProvider
 
             NavigationGroup::make(__('admin.menu.debug'))
                 ->icon('heroicon-s-code')
-                ->collapsed()
+                ->collapsed(),
         ]);
     }
 

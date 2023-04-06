@@ -31,6 +31,7 @@ class JobProtocolResource extends Resource
 
         $modulesOptions = collect($modules)->reduce(function ($acc, Module $cur) {
             $acc[$cur->getKey()] = $cur->getName();
+
             return $acc;
         }, []);
 
@@ -51,7 +52,7 @@ class JobProtocolResource extends Resource
                     ])
                     ->colors([
                         'danger' => JobProtocolState::Failed->value,
-                        'success' => JobProtocolState::Ready->value
+                        'success' => JobProtocolState::Ready->value,
                     ]),
 
                 Tables\Columns\TextColumn::make('name')
@@ -67,7 +68,7 @@ class JobProtocolResource extends Resource
 
                 Tables\Columns\TextColumn::make('ended_at')
                     ->label(__('admin.ended_at'))
-                    ->size('sm')
+                    ->size('sm'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('state')
@@ -76,12 +77,12 @@ class JobProtocolResource extends Resource
                         JobProtocolState::Create->value => __('common.JOB_PROTOCOL_STATE.C'),
                         JobProtocolState::Work->value => __('common.JOB_PROTOCOL_STATE.W'),
                         JobProtocolState::Ready->value => __('common.JOB_PROTOCOL_STATE.R'),
-                        JobProtocolState::Failed->value => __('common.JOB_PROTOCOL_STATE.F')
+                        JobProtocolState::Failed->value => __('common.JOB_PROTOCOL_STATE.F'),
                     ]),
 
                 Tables\Filters\SelectFilter::make('module')
                     ->label(trans_choice('admin.module', 1))
-                    ->options($modulesOptions)
+                    ->options($modulesOptions),
             ])
             ->actions([
                 Tables\Actions\Action::make('result')
@@ -92,11 +93,11 @@ class JobProtocolResource extends Resource
                             'htmlable',
                             [
                                 'content' => '<pre class="text-xs" style="white-space: break-spaces">'
-                                    . json_encode($record->result, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE)
-                                    .'</pre>'
+                                    .json_encode($record->result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+                                    .'</pre>',
                             ]
                         );
-                    })
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

@@ -7,5 +7,5 @@ enum JobProtocolState: string
     case Create = 'C';
     case Work = 'W';
     case Ready = 'R';
-    Case Failed = 'F';
+    case Failed = 'F';
 }

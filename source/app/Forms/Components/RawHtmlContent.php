@@ -27,7 +27,7 @@ class RawHtmlContent extends Component
     public function getViewData(): array
     {
         return [
-            'content' => $this->content
+            'content' => $this->content,
         ];
     }
 }

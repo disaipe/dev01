@@ -15,16 +15,11 @@ use App\Modules\ActiveDirectory\Commands\LdapSync;
 use App\Modules\ActiveDirectory\Job\ADSyncJob;
 use App\Modules\ActiveDirectory\Models\ADEntry;
 use Filament\Facades\Filament;
-use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\Fieldset;
-use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\View;
 use Illuminate\Console\Scheduling\Schedule;
 
 class ADBaseServiceProvider extends ModuleBaseServiceProvider
@@ -71,18 +66,18 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
                 'config' => [
                     Section::make(__('ad::messages.section_sync'))
                         ->schema([
-                        Select::make('domain_id')
-                            ->label(trans_choice('admin.domain', 1))
-                            ->options(Domain::all()->pluck('name', 'id'))
-                            ->required(),
+                            Select::make('domain_id')
+                                ->label(trans_choice('admin.domain', 1))
+                                ->options(Domain::all()->pluck('name', 'id'))
+                                ->required(),
 
-                        TextInput::make('base_dn')
-                            ->label(__('ad::messages.base_dn'))
-                            ->helperText(__('ad::messages.base_dn_helper')),
+                            TextInput::make('base_dn')
+                                ->label(__('ad::messages.base_dn'))
+                                ->helperText(__('ad::messages.base_dn_helper')),
 
-                        Textarea::make('filters')
-                            ->label(__('ad::messages.filter')),
-                    ]),
+                            Textarea::make('filters')
+                                ->label(__('ad::messages.filter')),
+                        ]),
                     Section::make(__('ad::messages.job.ldap_sync.title'))
                         ->schema([
                             RawHtmlContent::make(__('ad::messages.job.ldap_sync.description')),
@@ -96,10 +91,9 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
                                 ->helperText(__('admin.cron_helper'))
                                 ->regex(RegularExpressions::CRON),
 
-
                             FormButton::make(__('admin.run'))
-                                ->action(fn () => $this->runJob())
-                        ])
+                                ->action(fn () => $this->runJob()),
+                        ]),
                 ],
             ],
         ]);

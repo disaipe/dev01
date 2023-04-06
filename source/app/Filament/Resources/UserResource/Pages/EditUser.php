@@ -22,7 +22,7 @@ class EditUser extends EditRecord
     {
         $password = Arr::get($data, 'password');
 
-        if (!$password) {
+        if (! $password) {
             Arr::forget($data, 'password');
         }
 

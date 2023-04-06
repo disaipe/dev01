@@ -95,7 +95,8 @@ class Module
 
     public function getConfig($path = null): mixed
     {
-        $key = $this->getConfigKey() . ($path ? ".$path" : '');
+        $key = $this->getConfigKey().($path ? ".$path" : '');
+
         return Config::get($key, []);
     }
 

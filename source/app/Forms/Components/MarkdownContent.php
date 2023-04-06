@@ -52,13 +52,10 @@ class MarkdownContent extends Component
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getViewData(): array
     {
         return [
-            'content' => $this->content
+            'content' => $this->content,
         ];
     }
 }

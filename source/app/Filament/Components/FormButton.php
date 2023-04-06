@@ -8,6 +8,7 @@ use Filament\Forms\Components\Checkbox;
 class FormButton extends Checkbox
 {
     protected string $view = 'filament.component.formButton';
+
     public Closure $callback;
 
     protected function setUp(): void
@@ -20,12 +21,12 @@ class FormButton extends Checkbox
                     if ($component->callback) {
                         call_user_func($component->callback);
                     }
-                }
-            ]
+                },
+            ],
         ]);
     }
 
-    public function action(\Closure $closure): static
+    public function action(Closure $closure): static
     {
         $this->callback = $closure;
 

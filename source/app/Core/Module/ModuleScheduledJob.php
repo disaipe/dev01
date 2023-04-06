@@ -35,7 +35,7 @@ abstract class ModuleScheduledJob implements ShouldQueue //, ShouldBeUniqueUntil
         $this->jobId = Str::uuid();
     }
 
-    public final function handle()
+    final public function handle()
     {
         $uuid = $this->job?->uuid();
 
@@ -44,19 +44,19 @@ abstract class ModuleScheduledJob implements ShouldQueue //, ShouldBeUniqueUntil
                 ->where('uuid', '=', $uuid)
                 ->update([
                     'state' => JobProtocolState::Work,
-                    'started_at' => Carbon::now()
+                    'started_at' => Carbon::now(),
                 ]);
         }
 
         $failed = false;
 
-         try {
+        try {
             $result = $this->work();
         } catch (\Exception $e) {
             $failed = true;
             $result = [
-              'error' => $e->getMessage(),
-              'stacktrace' => $e->getTraceAsString()
+                'error' => $e->getMessage(),
+                'stacktrace' => $e->getTraceAsString(),
             ];
 
             Log::error($e);
@@ -68,7 +68,7 @@ abstract class ModuleScheduledJob implements ShouldQueue //, ShouldBeUniqueUntil
                 ->update([
                     'result' => $result,
                     'state' => $failed ? JobProtocolState::Failed : JobProtocolState::Ready,
-                    'ended_at' => Carbon::now()
+                    'ended_at' => Carbon::now(),
                 ]);
         }
     }

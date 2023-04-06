@@ -4,7 +4,6 @@ namespace App\Core\Module;
 
 use Illuminate\Console\Scheduling\CallbackEvent;
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 
@@ -75,9 +74,9 @@ class ModuleBaseServiceProvider extends ServiceProvider
 
     protected function scheduleJob(Schedule $schedule, ModuleScheduledJob $job, string $jobName = null): ?CallbackEvent
     {
-        $enabled = (bool)$this->module->getConfig("$jobName.enabled");
+        $enabled = (bool) $this->module->getConfig("$jobName.enabled");
 
-        if (!$enabled) {
+        if (! $enabled) {
             return null;
         }
 

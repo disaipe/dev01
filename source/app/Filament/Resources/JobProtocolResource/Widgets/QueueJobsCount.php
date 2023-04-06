@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 class QueueJobsCount extends Widget
 {
     protected static string $view = 'filament.resources.job-protocol-resource.widgets.queue-jobs-count';
+
     protected string $title = 'Количество заданий в очереди';
 
     public function getQueuedCount(): int
@@ -19,7 +20,7 @@ class QueueJobsCount extends Widget
     {
         return [
             'title' => $this->title,
-            'queuedCount' => $this->getQueuedCount()
+            'queuedCount' => $this->getQueuedCount(),
         ];
     }
 }
