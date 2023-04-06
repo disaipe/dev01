@@ -10,7 +10,7 @@ use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class MarkdownContent extends Component
 {
-    protected string $view = 'forms.components.raw-html-content';
+    protected string $view = 'htmlable';
 
     public string|Htmlable  $content;
 
@@ -44,16 +44,21 @@ class MarkdownContent extends Component
         return $this;
     }
 
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
     public function fromFile($path): static
     {
         $content = File::get($path);
         $this->setContent($content);
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getViewData(): array
+    {
+        return [
+            'content' => $this->content
+        ];
     }
 }

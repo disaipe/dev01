@@ -7,7 +7,7 @@ use Illuminate\Contracts\Support\Htmlable;
 
 class RawHtmlContent extends Component
 {
-    protected string $view = 'forms.components.raw-html-content';
+    protected string $view = 'htmlable';
 
     public string|Htmlable  $content;
 
@@ -24,8 +24,10 @@ class RawHtmlContent extends Component
         return $static;
     }
 
-    public function getContent(): ?string
+    public function getViewData(): array
     {
-        return $this->content;
+        return [
+            'content' => $this->content
+        ];
     }
 }
