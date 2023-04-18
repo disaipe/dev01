@@ -1,7 +1,10 @@
 <template lang='pug'>
 .spreadsheet-page
-    .pb-4
-        .font-bold {{ record.name }}
+    .flex.items-center.pb-4.space-x-2
+        icon(icon="icon-park-outline:page-template" height='32')
+        div
+            .font-bold {{ record.name }}
+            .text-sm {{ serviceProvider?.name }}
 
     spreadsheet(
         ref='spread'
@@ -43,6 +46,7 @@ import {
     serviceCountCellRenderer,
     servicePriceCellRenderer
 } from '../../../components/spreadsheet/cellRenderers';
+import batchApi from '../../../utils/batchApi';
 
 export default {
     name: 'ReportTemplateRecord',
@@ -50,7 +54,7 @@ export default {
         const route = useRoute();
         const { id } = route.params;
 
-        const { ReportTemplate, Service } = useRepos();
+        const { ReportTemplate } = useRepos();
 
         const record = ref({});
         const spread = ref();
@@ -61,15 +65,19 @@ export default {
         });
 
         const services = ref();
-        Service.fetch().then(({ items }) => {
-            services.value = items;
+        const serviceProviders = ref();
+        batchApi.batch('ServiceProvider,Service').then((result) => {
+            services.value = result.Service;
+            serviceProviders.value = result.ServiceProvider;
         });
 
         const getServiceSelectOption = (type) => {
-            return services.value.reduce((acc, cur) => {
-                acc[`SERVICE#${cur.$getKey()}#${type}`] = cur.$getName();
-                return acc;
-            }, {});
+            return services.value
+                .filter((service) => service.service_provider_id === record.value.service_provider_id)
+                .reduce((acc, cur) => {
+                    acc[`SERVICE#${cur.$getKey()}#${type}`] = cur.$getName();
+                    return acc;
+                }, {});
         };
 
         const settings = {
@@ -86,6 +94,10 @@ export default {
                 }
             }
         };
+
+        const serviceProvider = computed(() =>
+            serviceProviders.value?.find((provider) => provider.id === record.value.service_provider_id)
+        );
 
         const load = () => {
             data.loading = true;
@@ -224,6 +236,8 @@ export default {
             data,
             record,
             settings,
+
+            serviceProvider,
 
             spread,
             cellModifier,
