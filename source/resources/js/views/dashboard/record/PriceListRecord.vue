@@ -11,7 +11,7 @@
                     el-button(@click='load') Обновить
                     el-button(@click='save') Сохранить
 
-                el-select(
+                el-select.flex-1(
                     :model-value='id'
                     filterable
                     @change='changePriceList'
@@ -24,8 +24,8 @@
                         el-option(
                             v-for='priceList of provider.priceLists'
                             :value='priceList.id'
-                            :label='priceList.name'
-                        )
+                            :label='`${priceList.name} (${provider.name})`'
+                        ) {{ priceList.name }}
 
                     template(#prefix)
                         icon.relative(class='top-[1px]' icon='mdi:table-edit' height='16')
@@ -40,6 +40,7 @@ import keyBy from 'lodash/keyBy';
 import { useApi } from '../../../utils/axiosClient';
 import { useRepos } from '../../../store/repository';
 import { priceValueRenderer } from '../../../components/spreadsheet/cellRenderers';
+import batchApi from '../../../utils/batchApi';
 
 const VALUE_SHORT_KEY = 'i';
 const VALUE_SHORT_SERVICE = 's';
@@ -67,7 +68,7 @@ export default {
 
         const providers = ref();
 
-        const { PriceList, Service, ServiceProvider } = useRepos();
+        const { Service, ServiceProvider } = useRepos();
 
         const load = () => {
             if (!id.value) {
@@ -76,10 +77,7 @@ export default {
 
             priceListData.loading = true;
 
-            Promise.all([
-                PriceList.fetch(),
-                ServiceProvider.fetch()
-            ]).then(() => {
+            batchApi.batch('PriceList,ServiceProvider').then(() => {
                providers.value = ServiceProvider.query().with('priceLists').get();
             });
 
