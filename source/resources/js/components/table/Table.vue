@@ -52,15 +52,11 @@
                             )
 
                     template(#default='{ row }')
-                        template(v-if='fields[field].relation && row[field]')
-                            span {{ row[field].$getName() }}
-                        template(v-else-if='fields[field].type === "boolean"')
-                            el-switch(v-model='row[field]' size='small' disabled)
-                        template(v-else-if='fields[field].type === "datetime"')
-                            span {{ $filter.formatDate(row[field], true) }}
-                        template(v-else-if='fields[field].type === "date"')
-                            span {{ $filter.formatDate(row[field]) }}
-                        span(v-else) {{ row[field] }}
+                        table-field-column-renderer(
+                            :row='row'
+                            :field='field'
+                            :fields='fields'
+                        )
 
             template(#empty)
                 el-empty(description='Данные не пришли...')
@@ -122,10 +118,11 @@ import { useTableStore, useProfilesSettingsStore } from '../../store/modules';
 
 import TableFilter from './TableFilter.vue';
 import TableColumnsSettings from './TableColumnsSettings.vue';
+import TableFieldColumnRenderer from './TableFieldColumnRenderer.vue';
 
 export default {
     name: 'ItTable',
-    components: { TableColumnsSettings, TableFilter },
+    components: { TableFilter, TableColumnsSettings, TableFieldColumnRenderer },
     mixins: [tableFilters, tableContextMenu],
     provide() {
         return {
