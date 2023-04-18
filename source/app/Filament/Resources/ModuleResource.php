@@ -3,8 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ModuleResource\Pages;
+use App\Filament\Tables\Columns\ModuleNameColumn;
 use App\Models\Module;
-use App\Tables\Columns\ModuleNameColumn;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;

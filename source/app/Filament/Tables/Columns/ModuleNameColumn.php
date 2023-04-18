@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Tables\Columns;
+namespace App\Filament\Tables\Columns;
 
 use App\Core\Module\Module;
 use Filament\Tables\Columns\Column;
 
 class ModuleNameColumn extends Column
 {
-    protected string $view = 'tables.columns.module-name-column';
+    protected string $view = 'filament.tables.columns.module-name-column';
 
     public function getModule(): Module
     {
