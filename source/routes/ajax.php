@@ -11,6 +11,8 @@ Route::reference(\App\Reference\PriceListValueReference::class);
 
 Route::references();
 
+Route::post('batch', \App\Http\Controllers\BatchController::class);
+
 Route::post('indicator', \App\Http\Controllers\IndicatorController::class);
 
 Route::prefix('price_list/{priceList}')
