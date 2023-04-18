@@ -65,6 +65,7 @@ export default class CoreModel extends ApiModel {
                         type = 'relation';
                         relation = {
                             key: field.foreignKey,
+                            ownerKey: field.ownerKey,
                             model: field.related.constructor.name
                         };
                         break;

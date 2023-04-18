@@ -102,11 +102,14 @@ export default {
                 return [];
             }
 
-            const { model } = this.field.relation;
+            const { ownerKey, model } = this.field.relation;
 
-            return useRepos()[model].all().map((item) => {
+            const repo = useRepos()[model];
+            const valueKey = ownerKey || repo.getModel().$getKeyName();
+
+            return repo.all().map((item) => {
                 return {
-                    value: item.$getKey(),
+                    value: item[valueKey],
                     label: item.$getName()
                 };
             });

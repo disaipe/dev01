@@ -24,7 +24,7 @@ el-popover(
                 v-for='relatedOption of relatedOptions'
                 :key='relatedOption.$getKey()'
                 :label='relatedOption.$getName()'
-                :value='relatedOption.$getKey()'
+                :value='relatedOption[relation.ownerKey] || relatedOption.$getKey()'
             )
 
         //- BOOLEAN INPUT
@@ -49,7 +49,7 @@ el-popover(
         div
             el-link.w-full(
                 :underline='false'
-                :disabled='!filterStore.inputs[remoteField]'
+                :disabled='filterStore.inputs[remoteField] === undefined'
                 @click.stop='applyFilter()'
             )
                 .text-xs Сбросить
@@ -112,6 +112,7 @@ export default {
         return {
             remoteField,
 
+            relation: schema.value.relation,
             relatedOptions,
             loadRelatedOptions,
 

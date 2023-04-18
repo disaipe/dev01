@@ -2,6 +2,12 @@ import { mapActions } from 'pinia';
 import { useTableStore } from '../../../store/modules';
 
 export default {
+    props: {
+      filters: {
+          type: Object,
+          default: () => null
+      }
+    },
     data: () => ({
         filterStore: {
             filters: {},
@@ -20,11 +26,18 @@ export default {
         ]),
 
         applySavedFilters() {
-            const filters = this.loadFilters(this.tableId);
+            const filters = this.filters || {};
+            const storedFilters = this.loadFilters(this.tableId);
 
-            if (filters) {
-                for (const [filter, valueObject] of Object.entries(filters)) {
+            if (storedFilters) {
+                Object.assign(filters, storedFilters);
+            }
+
+            for (const [filter, valueObject] of Object.entries(filters)) {
+                if (typeof valueObject === 'object') {
                     this.filterStore.filters[filter] = valueObject.value;
+                } else {
+                    this.filterStore.filters[filter] = valueObject;
                 }
             }
 
