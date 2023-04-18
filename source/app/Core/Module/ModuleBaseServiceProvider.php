@@ -4,8 +4,10 @@ namespace App\Core\Module;
 
 use Illuminate\Console\Scheduling\CallbackEvent;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use ReflectionClass;
 
 /**
  * Module base service provider
@@ -14,6 +16,9 @@ use Illuminate\Support\Str;
  */
 class ModuleBaseServiceProvider extends ServiceProvider
 {
+    /** @var ?string Module directory */
+    protected ?string $basePath = __DIR__;
+
     /** @var ?string Module unique key */
     protected ?string $key = null;
 
@@ -58,6 +63,9 @@ class ModuleBaseServiceProvider extends ServiceProvider
      */
     final public function boot(): void
     {
+        $classInfo = new ReflectionClass($this);
+        $this->basePath = Arr::get(pathinfo($classInfo->getFileName()), 'dirname', '');
+
         /** @var Module $module */
         $module = app('modules')->register($this, $this->getKey());
 
@@ -70,6 +78,33 @@ class ModuleBaseServiceProvider extends ServiceProvider
                 $module->setOptions($this->options);
             }
         }
+    }
+
+    public function getMigrationsDirectory($absolute = false): string
+    {
+        if ($absolute) {
+            return $this->basePath.'/migrations';
+        }
+
+        return Str::replace(base_path() . '/', '', $this->basePath) . '/migrations';
+    }
+
+    public function getTranslationsDirectory(): string
+    {
+        return $this->basePath . '/resources/lang';
+    }
+
+    public function loadTranslations() {
+        $this->loadTranslationsFrom($this->getTranslationsDirectory(), $this->namespace);
+    }
+
+    public function loadMigrations() {
+        $this->loadMigrationsFrom($this->getMigrationsDirectory());
+    }
+
+    public function getOptions(): array
+    {
+        return $this->options ?? [];
     }
 
     protected function scheduleJob(Schedule $schedule, ModuleScheduledJob $job, string $jobName = null): ?CallbackEvent

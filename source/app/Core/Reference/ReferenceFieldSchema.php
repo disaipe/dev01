@@ -104,6 +104,55 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
     }
 
     /**
+     * Set field type textarea
+     *
+     * @return $this
+     */
+    public function textarea(): static
+    {
+        Arr::set($this->attributes, 'type', 'textarea');
+
+        return $this;
+    }
+
+    /**
+     * Set filed type password
+     */
+    public function password(): static
+    {
+        Arr::set($this->attributes, 'type', 'password');
+
+        return $this;
+    }
+
+    /**
+     * Set field display filter
+     *
+     * @param string $name filter name
+     * @param array|null $args filter additional arguments
+     * @return $this
+     */
+    public function displayFilter(string $name, array $args = null): static
+    {
+        Arr::set($this->attributes, 'filter', [$name, $args]);
+
+        return $this;
+    }
+
+    /**
+     * Set field type select with options
+     *
+     * @return $this
+     */
+    public function options(array $values): static
+    {
+        Arr::set($this->attributes, 'type', 'select');
+        Arr::set($this->attributes, 'options', $values);
+
+        return $this;
+    }
+
+    /**
      * Determine field type is array
      *
      * @return $this

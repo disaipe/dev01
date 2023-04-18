@@ -53,9 +53,9 @@ class Module
         return $this->options;
     }
 
-    public function getOption(string $key)
+    public function getOption(string $key, $default = null)
     {
-        return Arr::get($this->options, $key);
+        return Arr::get($this->options, $key, $default);
     }
 
     public function getProvider(): ModuleBaseServiceProvider

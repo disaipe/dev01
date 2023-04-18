@@ -71,6 +71,14 @@ class ReferenceEntry
      */
     protected array $schema = [];
 
+    public function __construct()
+    {
+        // Autoload model class. Needs to controller works correctly
+        if (isset($this->model)) {
+            spl_autoload_call($this->getModel());
+        }
+    }
+
     /**
      * Create reference entry from custom reference
      */

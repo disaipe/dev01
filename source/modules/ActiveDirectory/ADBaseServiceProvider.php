@@ -29,7 +29,6 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
     public function init(): void
     {
         $this->loadMigrationsFrom(__DIR__.'/migrations');
-        $this->loadTranslationsFrom(__DIR__.'/resources/lang', $this->namespace);
 
         $this->commands([
             LdapSync::class,
@@ -58,8 +57,11 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
                 'expression' => new CountExpression(),
             ]),
         ]);
+    }
 
-        $this->setOptions([
+    public function getOptions(): array
+    {
+        return [
             'name' => __('ad::messages.name'),
             'description' => __('ad::messages.description'),
             'view' => [
@@ -96,7 +98,7 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
                         ]),
                 ],
             ],
-        ]);
+        ];
     }
 
     public function schedule(Schedule $schedule)

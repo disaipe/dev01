@@ -92,6 +92,8 @@ class ReferenceService
 
         $routes = Arr::map($references->getReferences(), function (ReferenceEntry $entry) {
             $model = $entry->getName();
+            $referenceView = $entry->getReferenceView();
+            $recordView = $entry->getRecordView();
 
             $meta = [
                 'model' => $model,
@@ -102,12 +104,13 @@ class ReferenceService
                     'update' => $entry->canUpdate(),
                     'delete' => $entry->canDelete(),
                 ],
+                'view' => $referenceView,
+                'recordView' => $recordView
             ];
 
             $routes = [];
 
             // Make reference route if view set
-            $referenceView = $entry->getReferenceView();
             if ($referenceView !== false) {
                 $routes[] = [
                     'name' => $entry->getName().'Reference',
@@ -123,7 +126,6 @@ class ReferenceService
             }
 
             // Make record route if view set
-            $recordView = $entry->getRecordView();
             if ($recordView !== false) {
                 $routes[] = [
                     'name' => $entry->getName().'Record',

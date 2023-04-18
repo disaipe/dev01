@@ -13,11 +13,12 @@ class ModuleManager
      * Register module with given options
      *
      * @param  string  $key module unique key
-     * @param  array  $options module options
      */
-    public function register(ModuleBaseServiceProvider $provider, string $key, array $options = []): Module
+    public function register(ModuleBaseServiceProvider $provider, string $key): Module
     {
-        $module = new Module($provider, $key, $options);
+        $provider->loadTranslations();
+
+        $module = new Module($provider, $key, $provider->getOptions());
         Arr::set($this->modules, $key, $module);
 
         return $module;

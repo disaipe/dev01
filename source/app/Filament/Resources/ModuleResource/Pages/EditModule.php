@@ -4,12 +4,19 @@ namespace App\Filament\Resources\ModuleResource\Pages;
 
 use App\Core\Module\Module;
 use App\Filament\Resources\ModuleResource;
+use Filament\Facades\Filament;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 class EditModule extends EditRecord
 {
     protected ?Module $module = null;
+
+    protected bool $migrationsApplied = true;
 
     protected static string $resource = ModuleResource::class;
 
@@ -26,6 +33,10 @@ class EditModule extends EditRecord
     protected function getActions(): array
     {
         return [
+            Actions\Action::make('applyMigrations')
+                ->label(__('admin.$module.migrate'))
+                ->action('applyMigrations'),
+
             Actions\DeleteAction::make(),
         ];
     }
@@ -57,5 +68,48 @@ class EditModule extends EditRecord
         if (! $this->module) {
             throw new \Exception('Module not found');
         }
+
+        $this->checkMigrations();
+    }
+
+    protected function checkMigrations()
+    {
+        $finder = Finder::create();
+        $finder
+            ->files()
+            ->name('*.php')
+            ->in($this->module->getProvider()->getMigrationsDirectory(true));
+
+        if ($finder->hasResults()) {
+            $names = [];
+
+            foreach ($finder->getIterator() as $file) {
+                /** @var SplFileInfo $file */
+                $names []= $file->getFilenameWithoutExtension();
+            }
+
+            if (count($names)) {
+                $migrations = DB::table('migrations')
+                    ->whereIn('migration', $names)
+                    ->distinct()
+                    ->count();
+
+                if (count($names) != $migrations) {
+                    $this->migrationsApplied = false;
+                }
+            }
+        }
+    }
+
+    public function applyMigrations()
+    {
+        $this->assertModule();
+
+        Artisan::call('migrate', [
+            '--path' => $this->module->getProvider()->getMigrationsDirectory(),
+            '--force' => true
+        ]);
+
+        Filament::notify('success', __('admin.$module.migrations started'));
     }
 }

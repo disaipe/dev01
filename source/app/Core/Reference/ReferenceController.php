@@ -193,8 +193,7 @@ class ReferenceController extends BaseController
         $results = [];
 
         foreach ($models as $model) {
-            /** @var Model $modelInstance */
-            $modelInstance = app()->make("App\\Models\\{$model}");
+            $modelInstance = resolveModel($model);
             $relatedMethod = 'asRelated';
 
             if (method_exists($modelInstance, $relatedMethod)) {
