@@ -8,8 +8,8 @@ el-form-item(
         el-input-number(
             :model-value='modelValue'
             :disabled='field.readonly'
-            :min='field.min'
-            :max='field.max'
+            :min='field.min || undefined'
+            :max='field.max || undefined'
             @input='$emit("update:modelValue", $event)'
         )
 
@@ -24,6 +24,7 @@ el-form-item(
     //- DATETIME
     template(v-else-if='field.type === "datetime"')
         el-date-picker(
+            class='!w-full'
             :model-value='modelValue'
             :disabled='field.readonly'
             type='datetime'
@@ -34,6 +35,7 @@ el-form-item(
     //- DATE
     template(v-else-if='field.type === "date"')
         el-date-picker(
+            class='!w-full'
             :model-value='modelValue'
             :disabled='field.readonly'
             type='date'
@@ -56,9 +58,36 @@ el-form-item(
                 :value='option.value'
             )
 
+    //- SELECT / ENUM
+    template(v-else-if='field.type === "select"')
+        el-select.w-full(
+            :model-value='modelValue'
+            :disabled='field.readonly'
+            :clearable='!field.required'
+            filterable
+            @change='$emit("update:modelValue", $event)'
+        )
+            el-option(
+                v-for='(label, value) of field.options'
+                :label='label'
+                :value='value'
+            )
+
+    //- TEXTAREA
+    template(v-else-if='field.type === "textarea"')
+        el-input(
+            type='textarea'
+            :model-value='modelValue'
+            :disabled='field.readonly'
+            :maxlength='field.max'
+            :show-word-limit='!!field.max'
+            @input='$emit("update:modelValue", $event)'
+        )
+
     //- OTHER / TEXT INPUT
     template(v-else)
         el-input(
+            v-bind:type='field.type === "password" ? "password" : "text"'
             :model-value='modelValue'
             :disabled='field.readonly'
             :min='field.min'
