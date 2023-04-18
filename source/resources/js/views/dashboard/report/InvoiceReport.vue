@@ -2,6 +2,7 @@
 .options-bar.pb-4
     el-select(
         v-model='company'
+        placeholder='Организация'
     )
         el-option(
             v-for='company of companies'
@@ -11,12 +12,17 @@
 
     el-select(
         v-model='reportTemplate'
+        placeholder='Шаблон отчета'
     )
-        el-option(
-            v-for='reportTemplate of reportTemplates'
-            :label='reportTemplate.name'
-            :value='reportTemplate.$getKey()'
+        el-option-group(
+            v-for='provider of providers'
+            :label='provider.name'
         )
+            el-option(
+                v-for='reportTemplate of provider.reportTemplates'
+                :label='reportTemplate.name'
+                :value='reportTemplate.$getKey()'
+            )
 
     el-button(
         type='primary'
@@ -40,6 +46,7 @@ import { ref, nextTick } from 'vue';
 import { useRepos } from '../../../store/repository';
 import { useApi } from '../../../utils/axiosClient';
 import { isServiceCountCell, isServiceNameCell, isServicePriceCell } from '../../../components/spreadsheet/cellTypes';
+import batchApi from '../../../utils/batchApi';
 
 export default {
     name: 'InvoiceReport',
@@ -50,25 +57,22 @@ export default {
 
         const company = ref();
         const reportTemplate = ref();
+        const providers = ref();
 
-        const { Company, ReportTemplate, Indicator } = useRepos();
+        const { ServiceProvider } = useRepos();
 
         const api = useApi();
 
         const companies = ref();
-        const reportTemplates = ref();
 
         let indicators = {};
 
-        Company.fetch().then(({ items }) => {
-           companies.value = items;
-        });
+        batchApi.batch('ServiceProvider,Company,ReportTemplate,Indicator').then((result) => {
+            companies.value = result.Company;
+            providers.value = result.ServiceProvider;
 
-        ReportTemplate.fetch().then(({ items }) => {
-           reportTemplates.value = items;
+            ServiceProvider.with('reportTemplates').load(result.ServiceProvider);
         });
-
-        Indicator.fetch();
 
         const cellModifier = (cell) => {
             if (
@@ -124,12 +128,10 @@ export default {
 
             company,
             companies,
+            providers,
+            reportTemplate,
 
             cellModifier,
-
-            reportTemplate,
-            reportTemplates,
-
             fetchReport,
             downloadReport
         }
