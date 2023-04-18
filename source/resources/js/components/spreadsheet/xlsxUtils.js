@@ -268,6 +268,8 @@ export function loadFromBuffer(buffer) {
             }
         }
 
+        instance.value.updateData(data);
+
         // set merges
         if (worksheet.hasMerges) {
             store.value.merges = [];
@@ -292,8 +294,6 @@ export function loadFromBuffer(buffer) {
                 );
             }
         }
-
-        instance.value.updateData(data);
     }).finally(() => {
         instance.value.resumeRender();
     });
