@@ -1,4 +1,10 @@
 import { defineStore } from 'pinia';
+import clone from 'lodash/clone';
+
+const COLUMN_DEFAULT_STATE = {
+    visible: [],
+    order: []
+}
 
 const state = () => ({
     filters: {
@@ -17,7 +23,7 @@ const state = () => ({
     expanded: {
         // [tableId]: []
     }
-})
+});
 
 const actions = {
 
@@ -56,7 +62,7 @@ const actions = {
     //---------------------------------------------------------
 
     loadColumns(tableId) {
-        return this.columns[tableId];
+        return this.columns[tableId] || clone(COLUMN_DEFAULT_STATE);
     },
 
     saveColumnVisibility({ tableId, field, value }) {
@@ -66,10 +72,7 @@ const actions = {
 
         this.$patch((state) => {
             if (!state.columns[tableId]) {
-                state.columns[tableId] = {
-                    visible: [],
-                    order: []
-                };
+                state.columns[tableId] = clone(COLUMN_DEFAULT_STATE);
             }
 
             const idx = state.columns[tableId].visible.findIndex((v) => v === field);
@@ -89,10 +92,7 @@ const actions = {
 
         this.$patch((state) => {
             if (!state.columns[tableId]) {
-                state.columns[tableId] = {
-                    visible: [],
-                    order: []
-                };
+                state.columns[tableId] = clone(COLUMN_DEFAULT_STATE);
             }
 
             state.columns[tableId].order = order;
@@ -120,7 +120,7 @@ const actions = {
             }
         });
     }
-}
+};
 
 export const useTableStore = defineStore('table', {
     state,
