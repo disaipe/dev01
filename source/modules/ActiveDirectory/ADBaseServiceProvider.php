@@ -21,6 +21,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Facades\Log;
 
 class ADBaseServiceProvider extends ModuleBaseServiceProvider
 {
@@ -93,7 +94,8 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
                                 ->helperText(__('admin.cron_helper'))
                                 ->regex(RegularExpressions::CRON),
 
-                            FormButton::make(__('admin.run'))
+                            FormButton::make('runJob')
+                                ->label(__('admin.run'))
                                 ->action(fn () => $this->runJob()),
                         ]),
                 ],
@@ -108,7 +110,12 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
 
     public function runJob()
     {
-        Filament::notify('success', 'Задание запущено');
-        ADSyncJob::dispatch();
+        try {
+            ADSyncJob::dispatch();
+            Filament::notify('success', 'Задание запущено');
+        } catch (\Exception|\Error $e) {
+            Filament::notify('danger', 'Ошибка запуска задания', $e->getMessage());
+            Log::error($e);
+        }
     }
 }

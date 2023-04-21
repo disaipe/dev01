@@ -14,7 +14,7 @@ use LdapRecord\Models\Entry;
 
 class ADSyncJob extends ModuleScheduledJob
 {
-    public function work()
+    public function work(): ?array
     {
         $config = $this->getModuleConfig();
 
@@ -55,7 +55,9 @@ class ADSyncJob extends ModuleScheduledJob
             $this->processChunk($entries);
         });
 
-        return [];
+        return [
+            'result' => 'Nothing to return'
+        ];
     }
 
     public function getDescription(): ?string
