@@ -18,7 +18,7 @@ class EditDomain extends EditRecord
     {
         return [
             Actions\Action::make('test')
-                ->label(__('admin.$domain.test_connection'))
+                ->label(__('admin.$domain.test connection'))
                 ->action('testConnection'),
 
             Actions\DeleteAction::make(),
@@ -46,7 +46,7 @@ class EditDomain extends EditRecord
         }
 
         Notification::make()
-            ->title(__('admin.$domain.connection_success'))
+            ->title(__('admin.$domain.connection success'))
             ->success()
             ->send();
     }

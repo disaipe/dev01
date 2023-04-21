@@ -66,17 +66,17 @@ class IndicatorResource extends Resource
                         Builder::make('schema.values')
                             ->label('')
                             ->required()
-                            ->createItemButtonLabel(__('admin.$indicator.schema_add'))
+                            ->createItemButtonLabel(__('admin.$indicator.schema add'))
                             ->blocks([
                                 Builder\Block::make('CountExpression')
                                     ->label(__('admin.$expression.count'))
                                     ->schema([
-                                        RawHtmlContent::make(__('admin.$indicator.count_helper')),
+                                        RawHtmlContent::make(__('admin.$indicator.count helper')),
                                     ]),
                                 Builder\Block::make('SumExpression')
                                     ->label(__('admin.$expression.sum'))
                                     ->schema([
-                                        RawHtmlContent::make(__('admin.$indicator.sum_helper')),
+                                        RawHtmlContent::make(__('admin.$indicator.sum helper')),
                                         Forms\Components\TextInput::make('column')
                                             ->label(__('admin.$indicator.column'))
                                             ->required(),

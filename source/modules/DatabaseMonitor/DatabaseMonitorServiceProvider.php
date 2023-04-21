@@ -81,7 +81,7 @@ class DatabaseMonitorServiceProvider extends ModuleBaseServiceProvider
                                     TextInput::make('DatabaseServerSync.schedule')
                                         ->label(__('admin.schedule'))
                                         ->placeholder('* * * * * *')
-                                        ->helperText(__('admin.cron_helper'))
+                                        ->helperText(__('admin.cron helper'))
                                         ->regex(RegularExpressions::CRON),
 
                                     FormButton::make('runAllServersJob')

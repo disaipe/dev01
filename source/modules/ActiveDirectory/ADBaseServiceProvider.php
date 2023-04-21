@@ -74,16 +74,16 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
                                 ->options(Domain::all()->pluck('name', 'id'))
                                 ->required(),
 
-                            TextInput::make('base_dn')
-                                ->label(__('ad::messages.base_dn'))
-                                ->helperText(__('ad::messages.base_dn_helper')),
+                            TextInput::make('base dn')
+                                ->label(__('ad::messages.base dn'))
+                                ->helperText(__('ad::messages.base dn helper')),
 
                             Textarea::make('filters')
                                 ->label(__('ad::messages.filter')),
                         ]),
-                    Section::make(__('ad::messages.job.ldap_sync.title'))
+                    Section::make(__('ad::messages.job.ldap sync.title'))
                         ->schema([
-                            RawHtmlContent::make(__('ad::messages.job.ldap_sync.description')),
+                            RawHtmlContent::make(__('ad::messages.job.ldap sync.description')),
 
                             Checkbox::make('LdapSync.enabled')
                                 ->label(__('admin.enabled')),
@@ -91,7 +91,7 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
                             TextInput::make('LdapSync.schedule')
                                 ->label(__('admin.schedule'))
                                 ->placeholder('* * * * * *')
-                                ->helperText(__('admin.cron_helper'))
+                                ->helperText(__('admin.cron helper'))
                                 ->regex(RegularExpressions::CRON),
 
                             FormButton::make('runJob')

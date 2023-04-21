@@ -62,7 +62,7 @@ class ADSyncJob extends ModuleScheduledJob
 
     public function getDescription(): ?string
     {
-        return __('ad::messages.job.ldap_sync.title');
+        return __('ad::messages.job.ldap sync.title');
     }
 
     protected function processChunk(Collection $entries)

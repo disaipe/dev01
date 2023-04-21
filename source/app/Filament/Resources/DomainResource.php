@@ -29,14 +29,14 @@ class DomainResource extends Resource
                             ->schema([
                                 Forms\Components\TextInput::make('name')
                                     ->label(__('admin.name'))
-                                    ->helperText(__('admin.$domain.name_helper'))
+                                    ->helperText(__('admin.$domain.name helper'))
                                     ->maxLength(64)
                                     ->required(),
 
                                 Forms\Components\TextInput::make('code')
                                     ->label(__('admin.identity'))
                                     ->regex('/[a-zA-Z_-]/')
-                                    ->helperText(__('admin.$domain.code_helper'))
+                                    ->helperText(__('admin.$domain.code helper'))
                                     ->maxLength(8)
                                     ->required(),
 
@@ -59,18 +59,18 @@ class DomainResource extends Resource
                                     ->password(),
 
                                 Forms\Components\TextInput::make('base_dn')
-                                    ->label(__('admin.$domain.base_dn'))
-                                    ->helperText(__('admin.$domain.base_dn_helper'))
+                                    ->label(__('admin.$domain.base dn'))
+                                    ->helperText(__('admin.$domain.base dn helper'))
                                     ->columnSpanFull(),
 
                                 Forms\Components\Repeater::make('filters')
                                     ->label(__('admin.$domain.filters'))
                                     ->columnSpanFull()
-                                    ->createItemButtonLabel(__('admin.$domain.filter_add'))
+                                    ->createItemButtonLabel(__('admin.$domain.filter add'))
                                     ->schema([
                                         Forms\Components\TextInput::make('value')
                                             ->label(__('admin.$domain.rule'))
-                                            ->helperText(__('admin.$domain.rule_helper'))
+                                            ->helperText(__('admin.$domain.rule helper'))
                                             ->required(),
 
                                         Forms\Components\Textarea::make('name')

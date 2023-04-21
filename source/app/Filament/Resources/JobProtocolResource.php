@@ -67,7 +67,7 @@ class JobProtocolResource extends Resource
                     ->formatStateUsing(fn (string $state) => Arr::get($modulesOptions, $state, $state)),
 
                 Tables\Columns\TextColumn::make('ended_at')
-                    ->label(__('admin.ended_at'))
+                    ->label(__('admin.ended at'))
                     ->size('sm'),
             ])
             ->filters([
