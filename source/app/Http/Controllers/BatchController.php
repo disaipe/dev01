@@ -24,7 +24,7 @@ class BatchController extends Controller
 
         return new JsonResponse([
             'status' => true,
-            'data' => $response
+            'data' => $response,
         ]);
     }
 }

@@ -105,7 +105,7 @@ class ReferenceService
                     'delete' => $entry->canDelete(),
                 ],
                 'view' => $referenceView,
-                'recordView' => $recordView
+                'recordView' => $recordView,
             ];
 
             $routes = [];

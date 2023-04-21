@@ -16,7 +16,7 @@ class DatabaseServersSyncJob extends ModuleScheduledJob
         $databases->each(fn (DatabaseServer $server) => DatabaseServerSyncJob::dispatch($server->getKey()));
 
         return [
-            'Result' => 'Started: ' . $databases->count()
+            'Result' => 'Started: '.$databases->count(),
         ];
     }
 

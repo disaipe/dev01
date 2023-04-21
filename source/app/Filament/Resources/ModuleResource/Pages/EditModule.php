@@ -85,7 +85,7 @@ class EditModule extends EditRecord
 
             foreach ($finder->getIterator() as $file) {
                 /** @var SplFileInfo $file */
-                $names []= $file->getFilenameWithoutExtension();
+                $names[] = $file->getFilenameWithoutExtension();
             }
 
             if (count($names)) {
@@ -107,7 +107,7 @@ class EditModule extends EditRecord
 
         Artisan::call('migrate', [
             '--path' => $this->module->getProvider()->getMigrationsDirectory(),
-            '--force' => true
+            '--force' => true,
         ]);
 
         Filament::notify('success', __('admin.$module.migrations started'));

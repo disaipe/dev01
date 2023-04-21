@@ -86,19 +86,21 @@ class ModuleBaseServiceProvider extends ServiceProvider
             return $this->basePath.'/migrations';
         }
 
-        return Str::replace(base_path() . '/', '', $this->basePath) . '/migrations';
+        return Str::replace(base_path().'/', '', $this->basePath).'/migrations';
     }
 
     public function getTranslationsDirectory(): string
     {
-        return $this->basePath . '/resources/lang';
+        return $this->basePath.'/resources/lang';
     }
 
-    public function loadTranslations() {
+    public function loadTranslations()
+    {
         $this->loadTranslationsFrom($this->getTranslationsDirectory(), $this->namespace);
     }
 
-    public function loadMigrations() {
+    public function loadMigrations()
+    {
         $this->loadMigrationsFrom($this->getMigrationsDirectory());
     }
 

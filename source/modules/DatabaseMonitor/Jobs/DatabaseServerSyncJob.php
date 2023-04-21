@@ -15,8 +15,11 @@ use Illuminate\Support\Facades\Log;
 class DatabaseServerSyncJob extends ModuleScheduledJob
 {
     private string $columnId = 'dbid';
+
     private string $columnName = 'name';
+
     private string $columnSize = 'size';
+
     private string $columnCompany = 'company';
 
     protected int $serverId;
@@ -38,14 +41,14 @@ class DatabaseServerSyncJob extends ModuleScheduledJob
      */
     public function work(): ?array
     {
-        if (!$this->server) {
+        if (! $this->server) {
             throw new \Exception(__(
                 'dbmon::messages.job.databases sync.errors.server not found',
                 ['id' => $this->serverId]
             ));
         }
 
-       return $this->processServer($this->server);
+        return $this->processServer($this->server);
     }
 
     public function getDescription(): ?string
@@ -61,7 +64,7 @@ class DatabaseServerSyncJob extends ModuleScheduledJob
             'password' => $server->password,
             'host' => $server->host,
             'port' => $server->port,
-            'driverOptions' => $server->getOptions()
+            'driverOptions' => $server->getOptions(),
         ];
 
         $server->last_check = Carbon::now();
@@ -165,16 +168,16 @@ class DatabaseServerSyncJob extends ModuleScheduledJob
             $size = Arr::get($database, $this->columnSize);
             $company = Arr::get($database, $this->columnCompany);
 
-            if (!$dbid) {
+            if (! $dbid) {
                 continue;
             }
 
             $server->databases()->updateOrCreate([
-                'dbid' => $dbid
+                'dbid' => $dbid,
             ], [
                 'name' => $name,
                 'size' => $size,
-                'company_code' => $company
+                'company_code' => $company,
             ]);
         }
     }
@@ -189,7 +192,7 @@ class DatabaseServerSyncJob extends ModuleScheduledJob
 
         return [
             'error' => $exception->getMessage(),
-            'trace' => $exception->getTraceAsString()
+            'trace' => $exception->getTraceAsString(),
         ];
     }
 }

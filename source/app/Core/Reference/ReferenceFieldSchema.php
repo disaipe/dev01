@@ -128,8 +128,8 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
     /**
      * Set field display filter
      *
-     * @param string $name filter name
-     * @param array|null $args filter additional arguments
+     * @param  string  $name filter name
+     * @param  array|null  $args filter additional arguments
      * @return $this
      */
     public function displayFilter(string $name, array $args = null): static

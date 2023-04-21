@@ -47,8 +47,7 @@ class Indicator
     /**
      * Make indicator instance from array
      *
-     * @param array $options options array
-     * @return Indicator
+     * @param  array  $options options array
      */
     public static function fromArray(array $options): Indicator
     {
@@ -66,9 +65,6 @@ class Indicator
 
     /**
      * Make indicator instance from model
-     *
-     * @param \App\Models\Indicator $model
-     * @return Indicator
      */
     public static function fromModel(\App\Models\Indicator $model): Indicator
     {
@@ -96,8 +92,7 @@ class Indicator
     /**
      * Calculate indicator value
      *
-     * @param Builder $query query modifier
-     * @return mixed
+     * @param  Builder  $query query modifier
      */
     public function exec(Builder $query): mixed
     {

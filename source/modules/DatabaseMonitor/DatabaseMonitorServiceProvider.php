@@ -45,12 +45,12 @@ class DatabaseMonitorServiceProvider extends ModuleBaseServiceProvider
                 'name' => 'Размер баз данных',
                 'model' => Database::class,
                 'expression' => new SumExpression('size'),
-                'mutator' => fn ($value) => round($value / 1024 / 1024, 2)
+                'mutator' => fn ($value) => round($value / 1024 / 1024, 2),
             ]),
         ]);
 
         $this->commands([
-            CheckDatabaseServerCommand::class
+            CheckDatabaseServerCommand::class,
         ]);
     }
 
@@ -68,7 +68,7 @@ class DatabaseMonitorServiceProvider extends ModuleBaseServiceProvider
                                 ->schema([
                                     TextInput::make('sqlserver.organization_prop')
                                         ->label(__('dbmon::messages.sqlserver.organization prop'))
-                                        ->helperText(__('dbmon::messages.sqlserver.organization prop help'))
+                                        ->helperText(__('dbmon::messages.sqlserver.organization prop help')),
                                 ]),
 
                             Section::make(__('dbmon::messages.job.databases sync.title'))
@@ -91,11 +91,11 @@ class DatabaseMonitorServiceProvider extends ModuleBaseServiceProvider
                         ]),
 
                         Tabs\Tab::make(__('admin.description'))->schema([
-                            View::make('dbmon::help')
-                        ])
+                            View::make('dbmon::help'),
+                        ]),
                     ]),
-                ]
-            ]
+                ],
+            ],
         ];
     }
 

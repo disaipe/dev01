@@ -56,7 +56,7 @@ class ADSyncJob extends ModuleScheduledJob
         });
 
         return [
-            'result' => 'Nothing to return'
+            'result' => 'Nothing to return',
         ];
     }
 

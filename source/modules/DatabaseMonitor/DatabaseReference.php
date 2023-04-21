@@ -60,7 +60,7 @@ class DatabaseReference extends ReferenceEntry
                 ->label('Дата изменения')
                 ->readonly()
                 ->visible()
-                ->pinia(PiniaAttribute::datetime())
+                ->pinia(PiniaAttribute::datetime()),
         ];
     }
 

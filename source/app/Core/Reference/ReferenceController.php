@@ -7,7 +7,6 @@ use App\Http\Requests\ReferencePushRequest;
 use App\Http\Resources\ProtocolRecordResource;
 use App\Models\ProtocolRecord;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;

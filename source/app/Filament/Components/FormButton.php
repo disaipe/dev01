@@ -11,7 +11,9 @@ class FormButton extends Component
     use HasName;
 
     protected string $view = 'filament.component.formButton';
+
     protected string $innerEventName = 'formButton::run';
+
     protected Closure|string $action;
 
     public function __construct(string $name)
@@ -19,7 +21,7 @@ class FormButton extends Component
         $this->name($name);
     }
 
-    static function make(string $name): static
+    public static function make(string $name): static
     {
         $static = app(static::class, ['name' => $name]);
         $static->configure();
@@ -31,14 +33,14 @@ class FormButton extends Component
     {
         $this->action = $action;
 
-        if (!is_string($this->action)) {
+        if (! is_string($this->action)) {
             $this->registerListeners([
                 $this->innerEventName => [
                     function (FormButton $component, string $name) {
                         if ($component->getName() === $name) {
                             $component->execute();
                         }
-                    }
+                    },
                 ],
             ]);
         }

@@ -35,13 +35,13 @@ class DatabaseServer extends ReferenceModel
         'options',
         'last_check',
         'last_status',
-        'last_error'
+        'last_error',
     ];
 
     protected $casts = [
         'password' => 'encrypted',
         'monitor' => 'boolean',
-        'last_status' => DatabaseServerStatus::class
+        'last_status' => DatabaseServerStatus::class,
     ];
 
     public function databases(): HasMany
@@ -65,9 +65,6 @@ class DatabaseServer extends ReferenceModel
 
     /**
      * Scope a query to only include monitored database servers
-     *
-     * @param Builder $query
-     * @return void
      */
     public function scopeEnabled(Builder $query): void
     {

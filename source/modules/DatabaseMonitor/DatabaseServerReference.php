@@ -31,7 +31,7 @@ class DatabaseServerReference extends ReferenceEntry
                 ->pinia(PiniaAttribute::string())
                 ->options([
                     'pdo_mysql' => 'Mysql',
-                    'pdo_sqlsrv' => 'SQL Server (2012+)'
+                    'pdo_sqlsrv' => 'SQL Server (2012+)',
                 ]),
 
             'name' => ReferenceFieldSchema::make()
@@ -86,7 +86,7 @@ class DatabaseServerReference extends ReferenceEntry
                 ->label('Последняя ошибка')
                 ->readonly()
                 ->pinia(PiniaAttribute::string())
-                ->textarea()
+                ->textarea(),
         ];
     }
 
