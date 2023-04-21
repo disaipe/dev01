@@ -42,9 +42,9 @@ class EventServiceProvider extends ServiceProvider
             $description = null;
             $moduleKey = null;
 
-            $jobClass = Arr::get($payload, 'data.commandName');
-            if ($jobClass) {
-                $job = new $jobClass();
+            $jobCommand = Arr::get($payload, 'data.command');
+            if ($jobCommand) {
+                $job = unserialize($jobCommand);
 
                 if (method_exists($job, 'getModule')) {
                     /** @var Module $module */
