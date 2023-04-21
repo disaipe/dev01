@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 
 class IndicatorController extends Controller
 {
-    public function __invoke()
+    public function __invoke(): JsonResponse
     {
         /** @var IndicatorManager $indicators */
         $indicatorManager = app('indicators');

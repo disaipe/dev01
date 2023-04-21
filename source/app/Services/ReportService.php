@@ -135,11 +135,8 @@ class ReportService
         foreach ($indicators as $serviceKey => $indicator) {
             /** @var Indicator $indicator */
             $scopedQuery = $this->getScopedBaseQuery($indicator->model, $this->companyCode);
-            $expressionQuery = $indicator->query
-                ? ($indicator->query)($scopedQuery)
-                : $scopedQuery;
 
-            $result = $indicator->expression->exec($expressionQuery);
+            $result = $indicator->exec($scopedQuery);
 
             $service = Arr::get($this->services, $serviceKey);
 

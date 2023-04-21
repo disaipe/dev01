@@ -3,23 +3,54 @@
 namespace App\Core\Indicator;
 
 use App\Core\Report\Expression\Expression;
+use Closure;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 
 class Indicator
 {
+    /**
+     * @var string unique code
+     */
     public string $code;
 
+    /**
+     * @var string display name
+     */
     public string $name;
 
+    /**
+     * @var string model class name
+     */
     public string $model;
 
+    /**
+     * @var string|null module key
+     */
     public ?string $module;
 
-    public $query;
+    /**
+     * @var mixed data query
+     */
+    public mixed $query;
 
+    /**
+     * @var Expression|null expression to calculate aggregated value
+     */
     public ?Expression $expression;
 
-    public static function fromArray($options): Indicator
+    /**
+     * @var Closure|null resulting value mutator function, e.g. for converting bytes to gigabytes
+     */
+    public ?Closure $mutator;
+
+    /**
+     * Make indicator instance from array
+     *
+     * @param array $options options array
+     * @return Indicator
+     */
+    public static function fromArray(array $options): Indicator
     {
         $instance = new self();
         $instance->code = Arr::get($options, 'code');
@@ -28,10 +59,17 @@ class Indicator
         $instance->module = Arr::get($options, 'module');
         $instance->query = Arr::get($options, 'query');
         $instance->expression = Arr::get($options, 'expression');
+        $instance->mutator = Arr::get($options, 'mutator');
 
         return $instance;
     }
 
+    /**
+     * Make indicator instance from model
+     *
+     * @param \App\Models\Indicator $model
+     * @return Indicator
+     */
     public static function fromModel(\App\Models\Indicator $model): Indicator
     {
         $instance = new self();
@@ -53,6 +91,27 @@ class Indicator
         }
 
         return $instance;
+    }
+
+    /**
+     * Calculate indicator value
+     *
+     * @param Builder $query query modifier
+     * @return mixed
+     */
+    public function exec(Builder $query): mixed
+    {
+        $expressionQuery = $this->query
+            ? ($this->query)($query)
+            : $query;
+
+        $result = $this->expression->exec($expressionQuery);
+
+        if (isset($this->mutator)) {
+            $result = call_user_func($this->mutator, $result);
+        }
+
+        return $result;
     }
 
     public function toArray(): array
