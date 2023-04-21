@@ -349,14 +349,14 @@ export default {
 
         save({ original, saved }) {
             if (saved) {
+                this.repository.withAll().load([saved]);
+
                 const key = original.$getKey();
 
                 // find record in table to update it
                 const record = this.$refs.vxe.getRowById(key);
 
                 if (record) {
-                    this.repository.withAll().load([saved]);
-
                     // update if found
                     Object.assign(record, saved);
                 } else {
@@ -366,6 +366,7 @@ export default {
                         this.$refs.vxe.getRowById(parentKey)?.[this.treeConfig.children]?.push(saved);
                     } else {
                         this.$refs.vxe.insertAt(saved, 0);
+                        this.data.unshift(saved);
                     }
                 }
 
