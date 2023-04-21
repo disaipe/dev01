@@ -119,6 +119,7 @@ import { useTableStore, useProfilesSettingsStore } from '../../store/modules';
 import TableFilter from './TableFilter.vue';
 import TableColumnsSettings from './TableColumnsSettings.vue';
 import TableFieldColumnRenderer from './TableFieldColumnRenderer.vue';
+import { ElMessage, ElMessageBox } from 'element-plus';
 
 export default {
     name: 'ItTable',
@@ -371,6 +372,11 @@ export default {
                 }
 
                 this.selectedRow = saved;
+
+                ElMessage({
+                    type: 'success',
+                    message: 'Сохранение завершено'
+                });
             }
         },
 
@@ -383,6 +389,11 @@ export default {
                         this.$refs.vxe.remove(row);
                     }
                 }
+
+                ElMessage({
+                    type: 'success',
+                    message: 'Удаление завершено'
+                });
             }
 
             this.closeDrawer();
@@ -422,6 +433,22 @@ export default {
         onContextRowEdit(row) {
             this.selectedRow = this.repository.make(row);
             this.drawer = true;
+        },
+
+        onContextRowRemove(row) {
+            ElMessageBox.confirm(
+                'Запись будет удалена. Продолжить?',
+                'Внимание!',
+                {
+                    confirmButtonText: 'Да, удалить',
+                    cancelButtonText: 'Нет',
+                    type: 'warning'
+                }
+            ).then(() => {
+                this.repository.remove(row.$getKey()).then((removed) => {
+                    this.remove(removed);
+                });
+            });
         },
 
         onContextRowHistory(row) {
