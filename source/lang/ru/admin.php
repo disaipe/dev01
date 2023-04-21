@@ -21,6 +21,7 @@ return [
     'state' => 'Состояние',
     'result' => 'Результат',
     'run' => 'Запустить',
+    'common' => 'Общее',
 
     'configuration' => 'Конфигурация',
     'description' => 'Описание',
