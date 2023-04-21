@@ -1,35 +1,35 @@
 import { h, resolveComponent } from 'vue';
 import filters from '../../plugin/filters';
 
-export function rawRenderer(value) {
-    return () => value;
+export function rawRenderer(valueRef) {
+    return () => valueRef.value;
 }
 
-export function relationRenderer(value) {
-    return () => h('span', {}, value?.$getName());
+export function relationRenderer(valueRef) {
+    return () => h('span', {}, valueRef.value?.$getName?.());
 }
 
-export function switchRenderer(value, row, field) {
+export function switchRenderer(valueRef) {
     return () => h(
         resolveComponent('el-switch'),
         {
-            modelValue: row[field],
+            modelValue: valueRef.value,
             size: 'small',
             disabled: true
         }
     );
 }
 
-export function datetimeRenderer(value) {
-    return () => h('span', filters.formatDate(value, true));
+export function datetimeRenderer(valueRef) {
+    return () => h('span', filters.formatDate(valueRef.value, true));
 }
 
-export function dateRenderer(value) {
-    return () => h('span', filters.formatDate(value));
+export function dateRenderer(valueRef) {
+    return () => h('span', filters.formatDate(valueRef.value));
 }
 
-export function selectRenderer(value, row, field, fields) {
-    return () => h('span', {}, fields[field].options[value]);
+export function selectRenderer(valueRef, row, field, fields) {
+    return () => h('span', {}, fields[field].options[valueRef.value]);
 }
 
 export function passwordRenderer() {

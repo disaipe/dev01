@@ -1,5 +1,5 @@
 <script>
-import { toRef } from 'vue';
+import { toRef, computed } from 'vue';
 import columnFieldRenderer from './columnFieldRenderer';
 import filters from '../../plugin/filters';
 
@@ -24,7 +24,7 @@ export default {
         const field = toRef(props, 'field');
         const fields = toRef(props, 'fields');
 
-        let value = row.value[field.value];
+        let value = computed(() => row.value[field.value]);
 
         // Choose renderer by type
         const type = fields.value[field.value]?.type;
@@ -59,7 +59,7 @@ export default {
         }
 
         return (columnFieldRenderer[rendererType] || columnFieldRenderer['raw'])
-            (value, row.value, field.value, fields.value);
+            (value, props.row, field.value, fields.value);
     }
 }
 </script>
