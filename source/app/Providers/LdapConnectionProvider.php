@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Domain;
 use App\Services\LdapService;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class LdapConnectionProvider extends ServiceProvider
@@ -18,6 +19,10 @@ class LdapConnectionProvider extends ServiceProvider
 
     private function registerConnections()
     {
+        if (!Schema::hasTable('domains')) {
+            return;
+        }
+
         $domains = Domain::query()->where('enabled', true)->get();
 
         foreach ($domains as $domain) {
