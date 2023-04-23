@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Storage;
 
 class VueAppService
 {
-    public static function render($view, $share = []): View
+    public static function render($view, $share = [], $bladeShares = []): View
     {
         $data = (new self())->getPropsData($share);
 
-        return view($view, ['vueData' => json_encode($data)]);
+        return view($view, ['vueData' => json_encode($data), ...$bladeShares]);
     }
 
     private function getPropsData($share = []): array

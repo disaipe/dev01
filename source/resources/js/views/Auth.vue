@@ -9,8 +9,13 @@
                 el-input(v-model='password' size='large' show-password )
 
                 .flex.items-center.justify-between
-                    el-select(v-model='domain' clearable)
-                        el-option(:value='1' label='GW-AD')
+                    div(v-show='domains')
+                        el-select(v-model='domain' clearable)
+                            el-option(
+                                v-for='(name, id) of domains'
+                                :value='id'
+                                :label='name'
+                            )
 
                     el-button(type='primary' @click='doLogin') Войти
 </template>
@@ -29,6 +34,7 @@ export default {
         const email = ref();
         const password = ref();
         const domain = ref();
+        const domains = ref();
 
         const storeCredentials = (email, domain) => {
             window.localStorage.setItem('q_auth', btoa(JSON.stringify({
@@ -49,6 +55,21 @@ export default {
                 }
             }
         };
+
+        const getDomains = () => {
+            const data = window.localStorage.getItem('domains');
+
+            if (data) {
+                try {
+                    const d = JSON.parse(atob(data));
+
+                    if (typeof(d) === 'object') {
+                        domains.value = d;
+                    }
+                } catch (error) {
+                }
+            }
+        }
 
         const doLogin = () => {
             baseClient.post('/login', {
@@ -86,11 +107,13 @@ export default {
         }
 
         getCredentials();
+        getDomains();
 
         return {
             email,
             password,
             domain,
+            domains,
 
             doLogin
         };

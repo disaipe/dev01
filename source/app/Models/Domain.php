@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Core\Traits\Protocolable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @property string name
@@ -45,4 +46,9 @@ class Domain extends Model
         'tls' => 'boolean',
         'enabled' => 'boolean',
     ];
+
+    public function scopeEnabled(Builder $query): void
+    {
+        $query->where('enabled', '=', true);
+    }
 }

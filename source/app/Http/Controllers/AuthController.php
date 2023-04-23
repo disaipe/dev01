@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Facades\Auth;
+use App\Models\Domain;
 use App\Services\VueAppService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -18,7 +19,11 @@ class AuthController extends Controller
             return redirect('/dashboard');
         }
 
-        return VueAppService::render('auth/login');
+        $shares = [
+          'domains' => Domain::query()->enabled()->pluck('name', 'id'),
+        ];
+
+        return VueAppService::render('auth/login', [], $shares);
     }
 
     /**

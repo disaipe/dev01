@@ -8,6 +8,10 @@
         <title>{{ config('app.name') }}</title>
 
         @vite(['resources/js/auth.js'])
+
+        <script lang='text/javascript'>
+            window.localStorage.setItem('domains', '{!! base64_encode(json_encode($domains)) !!}');
+        </script>
     </head>
     <body>
         @vue
