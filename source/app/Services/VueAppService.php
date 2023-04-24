@@ -52,6 +52,7 @@ class VueAppService
         return [
             ...$user?->only('name'),
             'avatar' => $avatar,
+            'hasAdminAccess' => $user->canAccessFilament(),
         ];
     }
 }

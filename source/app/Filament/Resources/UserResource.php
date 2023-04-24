@@ -40,6 +40,10 @@ class UserResource extends Resource
                     ->helperText(__('admin.$user.domain help'))
                     ->visible(fn ($state) => (bool) $state)
                     ->disabled(),
+                Forms\Components\Select::make('roles')
+                    ->label(trans_choice('admin.role', 2))
+                    ->relationship('roles', 'name')
+                    ->multiple(),
             ]);
     }
 
@@ -53,9 +57,6 @@ class UserResource extends Resource
                     ->label(__('admin.email')),
                 Tables\Columns\TextColumn::make('domain')
                     ->label(trans_choice('admin.domain', 1)),
-            ])
-            ->filters([
-
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

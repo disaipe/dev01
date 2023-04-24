@@ -56,7 +56,7 @@
                                             icon(icon='material-symbols:display-settings-outline-rounded' height='16')
                                             span Настройки
 
-                                    el-dropdown-item
+                                    el-dropdown-item(v-if='user.hasAdminAccess')
                                         a.flex.items-center.space-x-1(href='/admin')
                                             icon(icon='material-symbols:settings-alert' height='16')
                                             span Управление

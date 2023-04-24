@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * @property int id
@@ -12,9 +14,9 @@ use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
  * @property string email
  * @property string domain
  */
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
-    use AuthenticatesWithLdap, Notifiable;
+    use AuthenticatesWithLdap, HasRoles, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -46,4 +48,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Determine the user can access administration panel
+     */
+    public function canAccessFilament(): bool
+    {
+        return $this->canAny(['super admin', 'admin']);
+    }
 }
