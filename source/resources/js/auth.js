@@ -4,8 +4,7 @@ import ElementPlus from 'element-plus';
 import * as ElementPlusIcons from '@element-plus/icons-vue';
 import elementLang from 'element-plus/dist/locale/ru.min';
 
-import '../styles/auth.pcss';
-import 'element-plus/dist/index.css';
+import '../css/auth.css';
 
 import App from './views/Auth.vue';
 

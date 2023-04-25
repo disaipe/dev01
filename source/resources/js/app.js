@@ -7,9 +7,7 @@ import VXETable from 'vxe-table';
 import vClickOutside from 'click-outside-vue3';
 import { Icon } from '@iconify/vue';
 
-import '../styles/dashboard.pcss';
-import 'element-plus/dist/index.css';
-import 'vxe-table/lib/style.css';
+import '../css/app.css';
 
 import { createApp } from './utils/createApp';
 
