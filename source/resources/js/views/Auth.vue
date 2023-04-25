@@ -9,13 +9,14 @@
                 el-input(v-model='password' size='large' show-password )
 
                 .flex.items-center.justify-between
-                    div(v-show='domains')
-                        el-select(v-model='domain' clearable)
-                            el-option(
-                                v-for='(name, id) of domains'
-                                :value='id'
-                                :label='name'
-                            )
+                    div
+                        div(v-show='domains?.length')
+                            el-select(v-model='domain' clearable)
+                                el-option(
+                                    v-for='(name, id) of domains'
+                                    :value='id'
+                                    :label='name'
+                                )
 
                     el-button(type='primary' @click='doLogin') Войти
 </template>
@@ -65,6 +66,7 @@ export default {
 
                     if (typeof(d) === 'object') {
                         domains.value = d;
+                        console.log(domains.value);
                     }
                 } catch (error) {
                 }
