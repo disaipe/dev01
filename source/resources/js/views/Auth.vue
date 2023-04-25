@@ -6,7 +6,7 @@
         .form
             .space-y-2
                 el-input(v-model='email' size='large')
-                el-input(v-model='password' size='large' show-password )
+                el-input(v-model='password' size='large' show-password)
 
                 .flex.items-center.justify-between
                     div
@@ -66,7 +66,6 @@ export default {
 
                     if (typeof(d) === 'object') {
                         domains.value = d;
-                        console.log(domains.value);
                     }
                 } catch (error) {
                 }
