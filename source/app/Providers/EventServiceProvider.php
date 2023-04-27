@@ -4,8 +4,13 @@ namespace App\Providers;
 
 use App\Core\Enums\JobProtocolState;
 use App\Core\Module\Module;
+use App\Core\Module\ModuleScheduledJob;
 use App\Listeners\AuthUserLoginListener;
+use App\Models\Contract;
 use App\Models\JobProtocol;
+use App\Models\PriceList;
+use App\Observers\ContractObserver;
+use App\Observers\PriceListObserver;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -35,6 +40,25 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Contract::observe(ContractObserver::class);
+        PriceList::observe(PriceListObserver::class);
+
+        $this->observeQueue();
+    }
+
+    /**
+     * Determine if events and listeners should be automatically discovered.
+     */
+    public function shouldDiscoverEvents(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Write queued job protocol after it finishes
+     */
+    protected function observeQueue(): void
+    {
         Queue::before(function (JobProcessing $event) {
             $uuid = $event->job->uuid();
             $name = $event->job->resolveName();
@@ -44,6 +68,7 @@ class EventServiceProvider extends ServiceProvider
 
             $jobCommand = Arr::get($payload, 'data.command');
             if ($jobCommand) {
+                /** @var ModuleScheduledJob $job */
                 $job = unserialize($jobCommand);
 
                 if (method_exists($job, 'getModule')) {
@@ -65,13 +90,5 @@ class EventServiceProvider extends ServiceProvider
                 'state' => JobProtocolState::Create,
             ]);
         });
-    }
-
-    /**
-     * Determine if events and listeners should be automatically discovered.
-     */
-    public function shouldDiscoverEvents(): bool
-    {
-        return false;
     }
 }
