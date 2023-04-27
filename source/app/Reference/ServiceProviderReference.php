@@ -42,10 +42,12 @@ class ServiceProviderReference extends ReferenceEntry
 
             'priceLists' => ReferenceFieldSchema::make()
                 ->label('Прайс листы')
+                ->hidden()
                 ->pinia(PiniaAttribute::hasMany('PriceList', 'service_provider_id')),
 
             'reportTemplates' => ReferenceFieldSchema::make()
                 ->label('Шаблоны отчетов')
+                ->hidden()
                 ->pinia(PiniaAttribute::hasMany('ReportTemplate', 'service_provider_id')),
         ];
     }
