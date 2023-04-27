@@ -5,12 +5,12 @@
             el-image.w-64(src='/images/logo_lg.png')
         .form
             .space-y-2
-                el-input(v-model='email' size='large')
-                el-input(v-model='password' size='large' show-password)
+                el-input(v-model='email' size='large' placeholder='Логин или email')
+                el-input(v-model='password' size='large' placeholder='Пароль' show-password)
 
                 .flex.items-center.justify-between
                     div
-                        div(v-show='domains?.length')
+                        div(v-show='domains')
                             el-select(v-model='domain' clearable)
                                 el-option(
                                     v-for='(name, id) of domains'
@@ -64,7 +64,7 @@ export default {
                 try {
                     const d = JSON.parse(atob(data));
 
-                    if (typeof(d) === 'object') {
+                    if (typeof(d) === 'object' && Object.keys(d).length) {
                         domains.value = d;
                     }
                 } catch (error) {
