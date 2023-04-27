@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 /**
  * @property string name
  * @property int service_provider_id
- * @property bool isDefault
+ * @property bool is_default
  * @property ServiceProvider serviceProvider
  * @property Collection<PriceListValue> values
  */
@@ -19,11 +19,11 @@ class PriceList extends ReferenceModel
     protected $fillable = [
         'name',
         'service_provider_id',
-        'isDefault',
+        'is_default',
     ];
 
     protected $casts = [
-        'isDefault' => 'boolean',
+        'is_default' => 'boolean',
     ];
 
     public function serviceProvider(): BelongsTo

@@ -11,7 +11,7 @@ class PriceListObserver
      */
     public function created(PriceList $priceList): void
     {
-        if ($priceList->isDefault) {
+        if ($priceList->is_default) {
             $this->setDefault($priceList);
         }
     }
@@ -21,7 +21,7 @@ class PriceListObserver
      */
     public function updated(PriceList $priceList): void
     {
-        if ($priceList->isDefault) {
+        if ($priceList->is_default) {
             $this->setDefault($priceList);
         }
     }
@@ -56,7 +56,7 @@ class PriceListObserver
             ->whereNot($list->getKeyName(), '=', $list->getKey())
             ->where('service_provider_id', '=', $list->service_provider_id)
             ->update([
-                'isDefault' => false,
+                'is_default' => false,
             ]);
     }
 }

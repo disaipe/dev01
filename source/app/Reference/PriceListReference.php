@@ -44,7 +44,7 @@ class PriceListReference extends ReferenceEntry
                 ->pinia(PiniaAttribute::belongsTo('ServiceProvider', 'service_provider_id'))
                 ->eagerLoad(),
 
-            'isDefault' => ReferenceFieldSchema::make()
+            'is_default' => ReferenceFieldSchema::make()
                 ->label('Использовать по-умолчанию')
                 ->visible()
                 ->pinia(PiniaAttribute::boolean()),
