@@ -1,4 +1,3 @@
-import { isServiceCountCell, isServiceNameCell, isServicePriceCell } from './cellTypes';
 import { useRepos } from '../../store/repository';
 
 const { Service } = useRepos();
@@ -16,11 +15,9 @@ export function getServiceFromCellValue(cellValue) {
 }
 
 export function serviceNameCellRenderer(instance, td, row, column, prop, value, cellProperties) {
-    if (isServiceNameCell(value)) {
-        const service = getServiceFromCellValue(value);
-        if (service) {
-            td.innerText = service.$getName();
-        }
+    const service = getServiceFromCellValue(value);
+    if (service) {
+        td.innerText = service.$getName();
     }
 
     const { className } = cellProperties;
@@ -31,9 +28,7 @@ export function serviceNameCellRenderer(instance, td, row, column, prop, value, 
 }
 
 export function serviceCountCellRenderer(instance, td, row, column, prop, value, cellProperties) {
-    if (isServiceCountCell(value)) {
-        td.innerText = 1;
-    }
+    td.innerText = 1;
 
     const { className } = cellProperties;
 
@@ -43,9 +38,27 @@ export function serviceCountCellRenderer(instance, td, row, column, prop, value,
 }
 
 export function servicePriceCellRenderer(instance, td, row, column, prop, value, cellProperties) {
-    if (isServicePriceCell(value)) {
-        td.innerText = 1;
+    td.innerText = 1;
+
+    const { className } = cellProperties;
+
+    if (className) {
+        td.classList.add(className);
     }
+}
+
+export function contractNumberRenderer(instance, td, row, column, prop, value, cellProperties) {
+    td.innerText = 'ДОГ_НОМ';
+
+    const { className } = cellProperties;
+
+    if (className) {
+        td.classList.add(className);
+    }
+}
+
+export function contractDateRenderer(instance, td, row, column, prop, value, cellProperties) {
+    td.innerText = 'ДОГ_ДАТА';
 
     const { className } = cellProperties;
 

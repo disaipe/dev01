@@ -6,6 +6,12 @@
             .font-bold {{ record.name }}
             .text-sm {{ serviceProvider?.name }}
 
+    mixin cellTypeMenuItem(label, type, classes)
+        el-dropdown-item(@click=`formatCell('${type}')` :divided=attributes.divided)
+            .flex.items-center.space-x-2
+                .helper(class=classes)
+                div= label
+
     spreadsheet(
         ref='spread'
         :settings='settings'
@@ -17,13 +23,17 @@
 
         template(#toolbar-actions)
             el-dropdown
-                el-button(type='primary') Услуги
+                el-button(type='primary') Вставить
                 template(#dropdown)
                     el-dropdown-menu
-                        el-dropdown-item(@click='insertServiceName') Наименование услуги
-                        el-dropdown-item(@click='insertServiceCount') Количество оказанной услуги
-                        el-dropdown-item(@click='insertServicePrice') Стоимость услуги
-                        el-dropdown-item(divided @click='resetServiceFormat') Сбросить
+                        +cellTypeMenuItem('Наименование услуги', 'serviceName', 'cell-service-name')
+                        +cellTypeMenuItem('Количество оказанной услуги', 'serviceCount', 'cell-service-count')
+                        +cellTypeMenuItem('Стоимость услуги', 'servicePrice', 'cell-service-price')
+
+                        +cellTypeMenuItem('Номер договора', 'contractNumber', 'cell-contract-number')(divided='true')
+                        +cellTypeMenuItem('Дата договора', 'contractDate', 'cell-contract-date')
+
+                        el-dropdown-item(divided @click='resetCellFormat') Сбросить
 
         template(#toolbar-extra-actions)
             el-button(:loading='data.saving' @click='save')
@@ -34,19 +44,13 @@
 <script>
 import { ref, reactive, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { SelectEditor } from 'handsontable/editors';
 
 import { useRepos } from '../../../store/repository';
 import { loadFromBase64 } from '../../../components/spreadsheet/xlsxUtils';
 import { bufferToBase64 } from '../../../utils/base64';
-import { isServiceNameCell, isServiceCountCell, isServicePriceCell } from '../../../components/spreadsheet/cellTypes';
-import {
-    getServiceFromCellValue,
-    serviceNameCellRenderer,
-    serviceCountCellRenderer,
-    servicePriceCellRenderer
-} from '../../../components/spreadsheet/cellRenderers';
 import batchApi from '../../../utils/batchApi';
+
+import { cellFormatter, setCellFormat } from '../../../components/spreadsheet/cellFormatter';
 
 export default {
     name: 'ReportTemplateRecord',
@@ -66,34 +70,8 @@ export default {
 
         const services = ref();
         const serviceProviders = ref();
-        batchApi.batch('ServiceProvider,Service').then((result) => {
-            services.value = result.Service;
-            serviceProviders.value = result.ServiceProvider;
-        });
 
-        const getServiceSelectOption = (type) => {
-            return services.value
-                .filter((service) => service.service_provider_id === record.value.service_provider_id)
-                .reduce((acc, cur) => {
-                    acc[`SERVICE#${cur.$getKey()}#${type}`] = cur.$getName();
-                    return acc;
-                }, {});
-        };
-
-        const settings = {
-            afterChange: (changes) => {
-                if (!changes) {
-                    return;
-                }
-
-                for (const change of changes) {
-                    const [row, col,, newValue] = change;
-                    if (isServiceCountCell(newValue)) {
-                        setCellServiceComment(row, col, newValue);
-                    }
-                }
-            }
-        };
+        const settings = {};
 
         const serviceProvider = computed(() =>
             serviceProviders.value?.find((provider) => provider.id === record.value.service_provider_id)
@@ -102,7 +80,7 @@ export default {
         const load = () => {
             data.loading = true;
 
-            ReportTemplate.load(id).then(({ items }) => {
+            return ReportTemplate.load(id).then(({ items }) => {
                 const [item] = items;
 
                 record.value = item;
@@ -129,88 +107,17 @@ export default {
             });
         };
 
-        const insertServiceName = () => {
+        const formatCell = (cellType) => {
             const [row, col] = instance.value.getSelectedLast();
-            setCellServiceName(row, col, true);
+
+            setCellFormat(instance, row, col, cellType, { services });
         };
-
-        const setCellServiceName = (row, col, render = false) => {
-            instance.value.setCellMetaObject(row, col, {
-                renderer: serviceNameCellRenderer,
-                editor: SelectEditor,
-                selectOptions: getServiceSelectOption('NAME'),
-                type: 'text',
-                className: 'service-name'
-            });
-
-            if (render) {
-                instance.value.render();
-            }
-        };
-
-        const insertServiceCount = () => {
-            const [row, col] = instance.value.getSelectedLast();
-            setCellServiceCount(row, col, true);
-        };
-
-        const setCellServiceCount = (row, col, render = false) => {
-            instance.value.setCellMetaObject(row, col, {
-                renderer: serviceCountCellRenderer,
-                editor: SelectEditor,
-                selectOptions: getServiceSelectOption('COUNT'),
-                type: 'numeric',
-                className: 'service-count'
-            });
-
-            if (render) {
-                instance.value.render();
-            }
-        };
-
-        const setCellServiceComment = (row, col, value) => {
-            const service = getServiceFromCellValue(value);
-
-            if (service) {
-                instance.value
-                    .getPlugin('comments')
-                    .setCommentAtCell(row, col, `Количество оказанной услуги "${service.$getName()}"`);
-            }
-        };
-
-        const insertServicePrice = () => {
-            const [row, col] = instance.value.getSelectedLast();
-            setCellServicePrice(row, col, true);
-        };
-
-        const setCellServicePrice = (row, col, render = false) => {
-            instance.value.setCellMetaObject(row, col, {
-                renderer: servicePriceCellRenderer,
-                editor: SelectEditor,
-                selectOptions: getServiceSelectOption('PRICE'),
-                type: 'numeric',
-                className: 'service-price'
-            });
-
-            if (render) {
-                instance.value.render();
-            }
-        } ;
 
         const cellModifier = (cell) => {
-            const row = cell.row - 1;
-            const col = cell.col - 1;
-
-            if (isServiceNameCell(cell.value)) {
-                setCellServiceName(row, col);
-            } else if (isServiceCountCell(cell.value)) {
-                setCellServiceCount(row, col);
-                setCellServiceComment(row, col, cell.value);
-            } else if (isServicePriceCell(cell.value)) {
-                setCellServicePrice(row, col, cell.value);
-            }
+            cellFormatter(instance, cell.value, cell.row - 1, cell.col - 1, { services });
         };
 
-        const resetServiceFormat = (render = true) => {
+        const resetCellFormat = (render = true) => {
             const ranges = instance.value.getSelectedRange();
             for (const range of ranges) {
                 for (let row = range.from.row; row <= range.to.row; row++) {
@@ -230,7 +137,17 @@ export default {
             }
         };
 
-        load();
+        load()
+            .then(() => {
+                return batchApi.batch('ServiceProvider,Service')
+                    .then((result) => {
+                        services.value = result.Service.filter((service) => service.service_provider_id === record.value.service_provider_id);
+                        serviceProviders.value = result.ServiceProvider;
+                    })
+            })
+            .then(() => {
+                instance.value?.render();
+            });
 
         return {
             data,
@@ -242,10 +159,8 @@ export default {
             spread,
             cellModifier,
 
-            insertServiceName,
-            insertServiceCount,
-            insertServicePrice,
-            resetServiceFormat,
+            formatCell,
+            resetCellFormat,
 
             load,
             save
@@ -258,13 +173,24 @@ export default {
 .spreadsheet-page {
     @apply h-full;
 }
-td.service-name {
-    @apply bg-green-100;
+.cell-service-name {
+    @apply !bg-green-100;
 }
-td.service-count {
-    @apply bg-blue-100;
+.cell-service-count {
+    @apply !bg-blue-100;
 }
-td.service-price {
-    @apply bg-yellow-100;
+.cell-service-price {
+    @apply !bg-yellow-100;
+}
+
+.cell-contract-number {
+    @apply !bg-emerald-100;
+}
+
+.cell-contract-date {
+    @apply !bg-indigo-100;
+}
+.helper {
+    @apply block w-4 h-4 border border-gray-300;
 }
 </style>

@@ -1,11 +1,71 @@
-export function isServiceNameCell(cellValue) {
-    return typeof(cellValue) === 'string' && /SERVICE#.+?#NAME/.test(cellValue);
-}
+import {
+    serviceNameCellRenderer,
+    serviceCountCellRenderer,
+    servicePriceCellRenderer,
+    contractNumberRenderer,
+    contractDateRenderer
+} from './cellRenderers';
 
-export function isServiceCountCell(cellValue) {
-    return typeof(cellValue) === 'string' && /SERVICE#.+?#COUNT/.test(cellValue);
-}
+import { SelectEditor } from 'handsontable/editors';
 
-export function isServicePriceCell(cellValue) {
-    return typeof(cellValue) === 'string' && /SERVICE#.+?#PRICE/.test(cellValue);
-}
+const getServiceSelectOption = (services, type) => {
+    if (!services.value) {
+        return [];
+    }
+
+    return services.value.reduce((acc, cur) => {
+            acc[`SERVICE#${cur.$getKey()}#${type}`] = cur.$getName();
+            return acc;
+        }, {});
+};
+
+export default ({ services, contract }) => ({
+    serviceName: {
+        pattern: /SERVICE#.+?#NAME/,
+        renderer: serviceNameCellRenderer,
+        meta: {
+            editor: SelectEditor,
+            selectOptions: () => getServiceSelectOption(services, 'NAME'),
+            type: 'text',
+            className: 'cell-service-name'
+        }
+    },
+    serviceCount: {
+        pattern: /SERVICE#.+?#COUNT/,
+        renderer: serviceCountCellRenderer,
+        meta: {
+            editor: SelectEditor,
+            selectOptions: () => getServiceSelectOption(services, 'COUNT'),
+            type: 'numeric',
+            className: 'cell-service-count'
+        }
+    },
+    servicePrice: {
+        pattern: /SERVICE#.+?#PRICE/,
+        renderer: servicePriceCellRenderer,
+        meta: {
+            editor: SelectEditor,
+            selectOptions: () => getServiceSelectOption(services, 'PRICE'),
+            type: 'numeric',
+            className: 'cell-service-price'
+        }
+    },
+
+    contractNumber: {
+        pattern: /CONTRACT#NUMBER/,
+        renderer: contractNumberRenderer,
+        data: 'CONTRACT#NUMBER',
+        meta: {
+            className: 'cell-contract-number'
+        }
+    },
+
+    contractDate: {
+        pattern: /CONTRACT#DATE/,
+        renderer: contractDateRenderer,
+        data: 'CONTRACT#DATE',
+        meta: {
+            className: 'cell-contract-date'
+        }
+    }
+});

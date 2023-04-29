@@ -45,7 +45,6 @@
 import { ref, nextTick } from 'vue';
 import { useRepos } from '../../../store/repository';
 import { useApi } from '../../../utils/axiosClient';
-import { isServiceCountCell, isServiceNameCell, isServicePriceCell } from '../../../components/spreadsheet/cellTypes';
 import batchApi from '../../../utils/batchApi';
 
 export default {
@@ -65,7 +64,7 @@ export default {
 
         const companies = ref();
 
-        let indicators = {};
+        let replacements = {};
 
         batchApi.batch('ServiceProvider,Company,ReportTemplate,Indicator').then((result) => {
             companies.value = result.Company;
@@ -75,14 +74,8 @@ export default {
         });
 
         const cellModifier = (cell) => {
-            if (
-                isServiceNameCell(cell.value)
-                || isServiceCountCell(cell.value)
-                || isServicePriceCell(cell.value)
-            ) {
-                if (indicators[cell.value] !== undefined) {
-                    cell.value = indicators[cell.value];
-                }
+            if (replacements[cell.value] !== undefined) {
+                cell.value = replacements[cell.value];
             }
         };
 
@@ -103,7 +96,7 @@ export default {
                        if (status) {
                            const { xlsx, values } = data;
 
-                           indicators = values || {};
+                           replacements = values || {};
 
                            if (xlsx) {
                                spread.value.loadFromBase64(xlsx);

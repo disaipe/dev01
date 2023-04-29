@@ -95,8 +95,8 @@ export default {
                 if (status) {
                     const { values, services } = data;
 
-                    priceListData.values = values;
-                    priceListData.services = Service.save(services);
+                    priceListData.values = Array.isArray(values) ? values : [];
+                    priceListData.services = Array.isArray(services) ? Service.save(services) : [];
 
                     fillSpreadsheet();
 
