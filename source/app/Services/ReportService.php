@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Core\Indicator\Indicator;
 use App\Core\Indicator\IndicatorManager;
 use App\Core\Reference\ReferenceManager;
+use App\Models\Company;
+use App\Models\Contract;
 use App\Models\PriceList;
 use App\Models\ReportTemplate;
 use App\Models\Service;
@@ -24,13 +26,15 @@ class ReportService
 
     protected string $templateId;
 
+    protected Company $company;
+
     protected ReferenceManager $referenceManager;
 
     protected ReportTemplate $template;
 
-    protected Collection $services;
-
     protected PriceList $priceList;
+
+    protected Collection $services;
 
     protected Spreadsheet $spreadsheet;
 
@@ -43,14 +47,22 @@ class ReportService
 
     public function make($companyCode, $templateId): array
     {
-        $values = $this->generate($companyCode, $templateId);
+        $this->company = Company::query()->where('code', '=', $companyCode)->first();
 
         $cellReplacements = [];
+
+        // Process values cells
+        $values = $this->generate($companyCode, $templateId);
         foreach ($values as $serviceId => $value) {
             $cellReplacements["SERVICE#$serviceId#NAME"] = Arr::get($value, 'service.name');
             $cellReplacements["SERVICE#$serviceId#COUNT"] = Arr::get($value, 'value');
             $cellReplacements["SERVICE#$serviceId#PRICE"] = Arr::get($value, 'price');
         }
+
+        // Process contract cells
+        $contract = $this->getContract();
+        $cellReplacements["CONTRACT#NUMBER"] = $contract?->number ?? '';
+        $cellReplacements["CONTRACT#DATE"] = $contract?->date?->toDateString() ?? '';
 
         return [
             'values' => $cellReplacements,
@@ -176,6 +188,11 @@ class ReportService
 
         $this->priceList = PriceList::query()
             ->where('service_provider_id', '=', $serviceProviderId)
+            ->where(fn (Builder $query) =>
+                $query
+                    ->where('company_id', '=', $this->company->getKey())
+                    ->orWhere('is_default', '=', true)
+            )
             ->first();
     }
 
@@ -187,6 +204,15 @@ class ReportService
             $serviceId = $value['service']->id;
             $value['price'] = Arr::get($priceByService, $serviceId, 0);
         }
+    }
+
+    protected function getContract(): ?Contract
+    {
+        return Contract::query()
+            ->where('company_id', '=', $this->company->getKey())
+            ->where('service_provider_id', '=', $this->template->service_provider_id)
+            ->where('is_actual', '=', true)
+            ->first();
     }
 
     /**

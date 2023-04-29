@@ -26,7 +26,7 @@ class PriceListController extends Controller
             ];
         });
 
-        $services = $priceList->serviceProvider?->services;
+        $services = $priceList->service_provider?->services;
 
         return new JsonResponse([
             'status' => true,

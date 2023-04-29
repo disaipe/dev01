@@ -9,15 +9,17 @@ use Illuminate\Support\Collection;
 
 /**
  * @property string name
+ * @property int company_id
  * @property int service_provider_id
  * @property bool is_default
- * @property ServiceProvider serviceProvider
+ * @property ServiceProvider service_provider
  * @property Collection<PriceListValue> values
  */
 class PriceList extends ReferenceModel
 {
     protected $fillable = [
         'name',
+        'company_id',
         'service_provider_id',
         'is_default',
     ];
@@ -26,7 +28,12 @@ class PriceList extends ReferenceModel
         'is_default' => 'boolean',
     ];
 
-    public function serviceProvider(): BelongsTo
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function service_provider(): BelongsTo
     {
         return $this->belongsTo(ServiceProvider::class);
     }

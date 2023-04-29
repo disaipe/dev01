@@ -33,6 +33,16 @@ class PriceListReference extends ReferenceEntry
                 ->max(128)
                 ->pinia(PiniaAttribute::string()),
 
+            'company_id' => ReferenceFieldSchema::make()
+                ->hidden()
+                ->pinia(PiniaAttribute::number()),
+
+            'company' => ReferenceFieldSchema::make()
+                ->label('Организация')
+                ->visible()
+                ->eagerLoad()
+                ->pinia(PiniaAttribute::belongsTo('Company', 'company_id')),
+
             'service_provider_id' => ReferenceFieldSchema::make()
                 ->hidden()
                 ->pinia(PiniaAttribute::number()),
