@@ -108,7 +108,7 @@ export default {
         };
 
         const formatCell = (cellType) => {
-            const [row, col] = instance.value.getSelectedLast();
+            const [[row, col]] = instance.value.getSelected();
 
             setCellFormat(instance, row, col, cellType, { services });
         };

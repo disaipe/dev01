@@ -55,6 +55,19 @@ function removeCellProperty(row, col, property) {
     unset(store.value.worksheet.getCell(row + 1, col + 1), property);
 }
 
+function isMerged(row, col) {
+    for (const merge of store.value.merges) {
+        if (
+            row >= merge.top && row <= merge.bottom
+            && col >= merge.left && col <= merge.right
+        ) {
+            return merge;
+        }
+    }
+
+    return false;
+}
+
 export function configure(settings = {}) {
     const hyperFormulaInstance = HyperFormula.buildEmpty({
         licenseKey: 'internal-use-in-handsontable',
@@ -64,8 +77,22 @@ export function configure(settings = {}) {
     const syncData = () => {
         for (let row = 0; row < instance.value.countRows(); row++) {
             for (let col = 0; col < instance.value.countCols(); col++) {
+                const xrow = row + 1;
+                const xcol = col + 1;
+
+                // check whe cell is not merged, because
+                // we need get only first value from merged cell,
+                // otherwise next cell overwrites value by nulls
+                let merge = isMerged(xrow, xcol)
+
+                if (merge) {
+                    if (xrow !== merge.top || xcol !== merge.left) {
+                        continue;
+                    }
+                }
+
                 const value = instance.value.getSourceDataAtCell(row, col);
-                const cell = worksheet.value.getCell(row + 1, col + 1);
+                const cell = worksheet.value.getCell(xrow, xcol);
 
                 if (isFormula(value)) {
                     cell.value = {
@@ -92,7 +119,7 @@ export function configure(settings = {}) {
     };
 
     return {
-        autoRowSize: true,
+        // autoRowSize: true,
         rowHeaders: true,
         colHeaders: true,
         fillHandle: true,
@@ -125,10 +152,43 @@ export function configure(settings = {}) {
                     cellRange.from.row + 1,
                     cellRange.from.col + 1,
                     cellRange.to.row + 1,
+                    cellRange.to.col + 1
+                );
+            } catch (e) {
+                // console.error(e);
+            }
+        },
+        /**
+         * Fired after unmerging the cells
+         *
+         * @param {Object} cellRange Selection cell range.
+         * @param {boolean} auto `true` if called automatically by the plugin.
+         */
+        afterUnmergeCells(cellRange, auto = false) {
+            try {
+                worksheet.value.unMergeCells(
+                    cellRange.from.row + 1,
+                    cellRange.from.col + 1,
+                    cellRange.to.row + 1,
                     cellRange.to.col + 1,
                 );
             } catch (e) {
                 // console.error(e);
+            }
+
+            // reset cell meta formatting
+            for (let row = cellRange.from.row; row <= cellRange.to.row; row++) {
+                for (let col = cellRange.from.col; col <= cellRange.to.col; col++) {
+                    const v = instance.value.getSourceDataAtCell(row, col);
+                    if (!v) {
+                        instance.value.setCellMetaObject(row, col, {
+                            renderer: undefined,
+                            editor: undefined,
+                            selectOptions: undefined,
+                            className: undefined
+                        });
+                    }
+                }
             }
         },
         /**
