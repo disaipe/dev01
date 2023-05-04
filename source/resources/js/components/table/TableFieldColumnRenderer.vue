@@ -1,5 +1,5 @@
 <script>
-import { toRef, computed } from 'vue';
+import { ref, toRef, computed } from 'vue';
 import columnFieldRenderer from './columnFieldRenderer';
 import filters from '../../plugin/filters';
 
@@ -24,14 +24,15 @@ export default {
         const field = toRef(props, 'field');
         const fields = toRef(props, 'fields');
 
-        let value = computed(() => row.value[field.value]);
+        const getValue = () => row.value[field.value];
+        let reactiveValue = computed(getValue);
 
         // Choose renderer by type
         const type = fields.value[field.value]?.type;
 
         let rendererType = 'raw';
 
-        if (fields.value[field.value]?.relation && row.value[field.value]) {
+        if (fields.value[field.value]?.relation && getValue()) {
             rendererType = 'relation';
         } else if (type) {
             switch (type) {
@@ -54,12 +55,12 @@ export default {
         if (Array.isArray(filter)) {
             const [filterName, args] = filter;
             if (filters[filterName]) {
-                value = filters[filterName](value, ...(args || []));
+                reactiveValue = computed(() => filters[filterName](getValue(), ...(args || [])))
             }
         }
 
         return (columnFieldRenderer[rendererType] || columnFieldRenderer['raw'])
-            (value, props.row, field.value, fields.value);
+            (reactiveValue, props.row, field.value, fields.value);
     }
 }
 </script>
