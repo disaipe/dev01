@@ -69,9 +69,7 @@ export default {
 
         batchApi.batch('ServiceProvider,Company,ReportTemplate,Indicator').then((result) => {
             companies.value = result.Company;
-            providers.value = result.ServiceProvider;
-
-            ServiceProvider.with('reportTemplates').load(result.ServiceProvider);
+            providers.value = ServiceProvider.query().whereHas('reportTemplates').with('reportTemplates').get();
         });
 
         const cellModifier = (cell) => {
