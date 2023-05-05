@@ -43,6 +43,7 @@
 
 <script>
 import { ref, nextTick } from 'vue';
+import { ElMessageBox } from 'element-plus'
 import { useRepos } from '../../../store/repository';
 import { useApi } from '../../../utils/axiosClient';
 import batchApi from '../../../utils/batchApi';
@@ -90,20 +91,32 @@ export default {
             api
                 .post('report', body)
                 .then((response) => {
-                   if (response.ok) {
-                       const { status, data } = response.data;
+                    let message = 'Необработанная ошибка';
 
-                       if (status) {
-                           const { xlsx, values } = data;
+                    if (response.ok) {
+                        const { status, data } = response.data;
 
-                           replacements = values || {};
+                        if (status) {
+                            const { xlsx, values } = data;
 
-                           if (xlsx) {
-                               spread.value.loadFromBase64(xlsx);
-                               loaded.value = true;
-                           }
-                       }
-                   }
+                            replacements = values || {};
+
+                            if (xlsx) {
+                                spread.value.loadFromBase64(xlsx);
+                                loaded.value = true;
+                                return;
+                            }
+                        } else if (data) {
+                            message = data;
+                        }
+                   } else {
+                        message = 'Ошибка при выполнении запроса к серверу';
+                    }
+
+                    ElMessageBox.alert(
+                        message,
+                        'Что-то пошло не так'
+                    );
                 })
                 .finally(() => {
                     nextTick(() => loading.value = false);

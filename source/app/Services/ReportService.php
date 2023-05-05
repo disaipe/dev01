@@ -61,8 +61,8 @@ class ReportService
 
         // Process contract cells
         $contract = $this->getContract();
-        $cellReplacements["CONTRACT#NUMBER"] = $contract?->number ?? '';
-        $cellReplacements["CONTRACT#DATE"] = $contract?->date?->toDateString() ?? '';
+        $cellReplacements['CONTRACT#NUMBER'] = $contract?->number ?? '';
+        $cellReplacements['CONTRACT#DATE'] = $contract?->date?->toDateString() ?? '';
 
         return [
             'values' => $cellReplacements,
@@ -182,18 +182,26 @@ class ReportService
         return $this->getBaseQuery($model)->company($companyCode);
     }
 
+    /**
+     * @throws \Exception
+     */
     protected function getPriceList(): void
     {
         $serviceProviderId = $this->template->service_provider_id;
 
-        $this->priceList = PriceList::query()
+        $priceList = PriceList::query()
             ->where('service_provider_id', '=', $serviceProviderId)
-            ->where(fn (Builder $query) =>
-                $query
+            ->where(fn (Builder $query) => $query
                     ->where('company_id', '=', $this->company->getKey())
                     ->orWhere('is_default', '=', true)
             )
             ->first();
+
+        if (!$priceList) {
+            throw new \Exception('Прайс лист не найден');
+        }
+
+        $this->priceList = $priceList;
     }
 
     protected function addPrices(array &$values): void
