@@ -76,7 +76,7 @@ class CustomReferenceResource extends Resource
                         Forms\Components\Repeater::make('schema.fields')
                             ->label('')
                             ->columnSpanFull()
-                            ->columns(4)
+                            ->columns(5)
                             ->createItemButtonLabel('Добавить поле')
                             ->schema([
                                 Forms\Components\TextInput::make('display_name')
@@ -99,7 +99,17 @@ class CustomReferenceResource extends Resource
                                         'date' => 'Date',
                                         'datetime' => 'Datetime',
                                     ])
+                                    ->reactive()
                                     ->disabled($isSystem)
+                                    ->required(),
+
+                                Forms\Components\TextInput::make('length')
+                                    ->label('Длина')
+                                    ->visible(fn ($get) => $get('type') === 'string')
+                                    ->disabled($isSystem)
+                                    ->default(255)
+                                    ->numeric()
+                                    ->minValue(1)
                                     ->required(),
 
                                 Forms\Components\Toggle::make('required')

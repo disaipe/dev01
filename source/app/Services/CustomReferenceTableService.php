@@ -23,7 +23,9 @@ class CustomReferenceTableService
 
         // company context - column and foreign key
         if ($reference->company_context) {
-            $table->addColumn('company_id', 'bigint', ['unsigned' => true]);
+            $column = $table->addColumn('company_id', 'bigint', ['unsigned' => true]);
+            $column->setNotnull(false);
+
             $table->addForeignKeyConstraint(
                 'companies',
                 ['company_id'],
@@ -51,7 +53,8 @@ class CustomReferenceTableService
 
                 switch ($type) {
                     case 'string':
-                        $column = $table->addColumn($name, 'string');
+                        $length = Arr::get($field, 'length') ?? 255;
+                        $column = $table->addColumn($name, 'string', ['length' => $length]);
                         break;
                     case 'int':
                     case 'integer':
@@ -59,6 +62,9 @@ class CustomReferenceTableService
                         break;
                     case 'bigint':
                         $column = $table->addColumn($name, 'bigint', ['unsigned' => $unsigned]);
+                        break;
+                    case 'float':
+                        $column = $table->addColumn($name, 'float');
                         break;
                     case 'date':
                         $column = $table->addColumn($name, 'date');
