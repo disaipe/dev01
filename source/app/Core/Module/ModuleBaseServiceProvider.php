@@ -32,6 +32,15 @@ class ModuleBaseServiceProvider extends ServiceProvider
     protected ?Module $module = null;
 
     /**
+     * Make actions on module booting
+     *
+     * @return void
+     */
+    public function onBooting() {
+        // insert code here
+    }
+
+    /**
      * Initialize module
      *
      * Method will be called after application boot only if module activated.
@@ -54,6 +63,18 @@ class ModuleBaseServiceProvider extends ServiceProvider
     protected function setOptions(array $options): void
     {
         $this->options = $options;
+    }
+
+    /**
+     * Register service provider
+     *
+     * @return void
+     */
+    final public function register(): void
+    {
+        $this->app->booting(function () {
+            $this->onBooting();
+        });
     }
 
     /**
