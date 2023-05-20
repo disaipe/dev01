@@ -26,13 +26,12 @@ class DatabaseServerSyncJob extends ModuleScheduledJob
 
     private ?DatabaseServer $server;
 
-    public function __construct($serverId)
+    public function __construct(int $serverId)
     {
         parent::__construct();
 
         $this->serverId = $serverId;
 
-        /** @var DatabaseServer $server */
         $this->server = DatabaseServer::query()->find($this->serverId);
     }
 
@@ -43,7 +42,7 @@ class DatabaseServerSyncJob extends ModuleScheduledJob
     {
         if (! $this->server) {
             throw new \Exception(__(
-                'dbmon::messages.job.databases sync.errors.server not found',
+                'dbmon::messages.job.database sync.errors.server not found',
                 ['id' => $this->serverId]
             ));
         }

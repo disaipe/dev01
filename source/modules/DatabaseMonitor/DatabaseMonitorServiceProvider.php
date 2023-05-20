@@ -10,7 +10,7 @@ use App\Core\RegularExpressions;
 use App\Core\Report\Expression\SumExpression;
 use App\Filament\Components\FormButton;
 use App\Forms\Components\RawHtmlContent;
-use App\Modules\DatabaseMonitor\Commands\CheckDatabaseServerCommand;
+use App\Modules\DatabaseMonitor\Commands\CheckDatabaseServersCommand;
 use App\Modules\DatabaseMonitor\Jobs\DatabaseServersSyncJob;
 use App\Modules\DatabaseMonitor\Models\Database;
 use Filament\Facades\Filament;
@@ -50,7 +50,7 @@ class DatabaseMonitorServiceProvider extends ModuleBaseServiceProvider
         ]);
 
         $this->commands([
-            CheckDatabaseServerCommand::class,
+            CheckDatabaseServersCommand::class,
         ]);
     }
 
