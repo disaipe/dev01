@@ -38,7 +38,7 @@ class CreateAdmin extends Command
         $user = User::query()->create([
             'name' => $name,
             'email' => $email,
-            'password' => Hash::make($password)
+            'password' => Hash::make($password),
         ]);
 
         $user->givePermissionTo('super admin');
@@ -49,7 +49,7 @@ class CreateAdmin extends Command
     private function askName(): ?string
     {
         $name = $this->ask('Enter user name');
-        if (!$name) {
+        if (! $name) {
             $this->error('User name is required');
             exit(0);
         }
@@ -65,7 +65,7 @@ class CreateAdmin extends Command
     private function askEmail(): ?string
     {
         $email = $this->ask('Enter email address');
-        if (!$email) {
+        if (! $email) {
             $this->error('Email address is required');
             exit(0);
         }
@@ -82,13 +82,14 @@ class CreateAdmin extends Command
     {
         $password = $this->ask('Password (leave blank to generate)');
 
-        if (!$password) {
+        if (! $password) {
             $password = Str::random(12);
         }
 
         if (Str::length($password) < 6) {
-          $this->error('Password must contain at least 6 characters');
-          return $this->askPassword();
+            $this->error('Password must contain at least 6 characters');
+
+            return $this->askPassword();
         }
 
         return $password;

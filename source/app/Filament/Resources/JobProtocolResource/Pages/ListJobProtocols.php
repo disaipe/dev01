@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\JobProtocolResource\Pages;
 
 use App\Filament\Resources\JobProtocolResource;
+use Closure;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
 
@@ -23,5 +24,10 @@ class ListJobProtocols extends ListRecords
             JobProtocolResource\Widgets\QueueJobsCount::class,
             JobProtocolResource\Widgets\FailedJobsCount::class,
         ];
+    }
+
+    protected function getTableRecordActionUsing(): ?Closure
+    {
+        return fn (): string => 'result';
     }
 }

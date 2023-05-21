@@ -86,18 +86,21 @@ class JobProtocolResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('result')
-                    ->label(__('admin.result'))
+                    ->icon('heroicon-s-eye')
+                    ->label('')
                     ->action(fn () => $this->record->adance())
+                    ->modalHeading(__('admin.result'))
                     ->modalContent(function ($record) {
                         return view(
                             'htmlable',
                             [
-                                'content' => '<pre class="text-xs" style="white-space: break-spaces">'
+                                'getContent' => fn () => '<pre class="text-xs" style="white-space: break-spaces">'
                                     .json_encode($record->result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
                                     .'</pre>',
                             ]
                         );
-                    }),
+                    })
+                    ->modalActions([]),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

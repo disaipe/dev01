@@ -24,7 +24,7 @@ class ReportController extends Controller
         } catch (\Exception|\Error $e) {
             return new JsonResponse([
                 'status' => false,
-                'data' => $e->getMessage()
+                'data' => $e->getMessage(),
             ]);
         }
     }

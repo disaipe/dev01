@@ -25,7 +25,6 @@ class EditModule extends EditRecord
         $this->assertModule();
 
         return array_merge(
-            parent::getFormSchema(),
             $this->module->getOption('view.config', [])
         );
     }

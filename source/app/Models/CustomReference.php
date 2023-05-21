@@ -40,10 +40,10 @@ class CustomReference extends Model
         $fields = Arr::get($this->schema, 'fields');
 
         if ($this->company_context) {
-            $fields []= [
+            $fields[] = [
                 'display_name' => trans_choice('reference.Company', 1),
                 'name' => 'company_id',
-                'type' => 'int'
+                'type' => 'int',
             ];
         }
 

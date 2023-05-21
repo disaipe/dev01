@@ -197,7 +197,7 @@ class ReportService
             )
             ->first();
 
-        if (!$priceList) {
+        if (! $priceList) {
             throw new \Exception('Прайс лист не найден');
         }
 

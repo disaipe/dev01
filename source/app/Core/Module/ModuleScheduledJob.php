@@ -88,6 +88,7 @@ abstract class ModuleScheduledJob implements ShouldQueue //, ShouldBeUniqueUntil
 
     public function getModule(): ?Module
     {
+        /** @var ModuleManager $modules */
         $modules = app('modules');
 
         return $modules->getByNamespace(get_class($this));

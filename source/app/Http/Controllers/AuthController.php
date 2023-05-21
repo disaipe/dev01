@@ -20,7 +20,7 @@ class AuthController extends Controller
         }
 
         $shares = [
-          'domains' => Domain::query()->enabled()->pluck('name', 'id'),
+            'domains' => Domain::query()->enabled()->pluck('name', 'id'),
         ];
 
         return VueAppService::render('auth/login', [], $shares);

@@ -19,7 +19,7 @@ class LdapConnectionProvider extends ServiceProvider
 
     private function registerConnections()
     {
-        if (!Schema::hasTable('domains')) {
+        if (! Schema::hasTable('domains')) {
             return;
         }
 
