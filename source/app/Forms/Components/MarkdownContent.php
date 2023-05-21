@@ -2,6 +2,7 @@
 
 namespace App\Forms\Components;
 
+use Closure;
 use Filament\Forms\Components\Component;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\File;
@@ -12,9 +13,9 @@ class MarkdownContent extends Component
 {
     protected string $view = 'htmlable';
 
-    public string|Htmlable  $content;
+    public string|Htmlable|Closure  $content;
 
-    public function __construct(string|Htmlable $content = null)
+    public function __construct(string|Htmlable|Closure $content = null)
     {
         $this->setContent($content);
     }
@@ -27,9 +28,9 @@ class MarkdownContent extends Component
         return $static;
     }
 
-    public function setContent(string|Htmlable $content = null): static
+    public function setContent(string|Htmlable|Closure $content = null): static
     {
-        if ($content) {
+        if ($content && (is_string($content) || $content instanceof Htmlable)) {
             $parse = new GithubFlavoredMarkdownConverter([
                 'html_input' => 'strip',
                 'allow_unsafe_links' => true,
@@ -52,10 +53,8 @@ class MarkdownContent extends Component
         return $this;
     }
 
-    public function getViewData(): array
+    public function getContent(): mixed
     {
-        return [
-            'content' => $this->content,
-        ];
+        return $this->evaluate($this->content);
     }
 }

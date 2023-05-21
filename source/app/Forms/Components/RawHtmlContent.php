@@ -2,6 +2,7 @@
 
 namespace App\Forms\Components;
 
+use Closure;
 use Filament\Forms\Components\Component;
 use Illuminate\Contracts\Support\Htmlable;
 
@@ -9,14 +10,14 @@ class RawHtmlContent extends Component
 {
     protected string $view = 'htmlable';
 
-    public string|Htmlable  $content;
+    public string|Htmlable|Closure  $content;
 
-    public function __construct(string|Htmlable $content)
+    public function __construct(string|Htmlable|Closure $content)
     {
         $this->content = $content;
     }
 
-    public static function make(string $content): static
+    public static function make(string|Htmlable|Closure $content): static
     {
         $static = app(static::class, ['content' => $content]);
         $static->configure();
@@ -24,10 +25,8 @@ class RawHtmlContent extends Component
         return $static;
     }
 
-    public function getViewData(): array
+    public function getContent(): mixed
     {
-        return [
-            'content' => $this->content,
-        ];
+        return $this->evaluate($this->content);
     }
 }
