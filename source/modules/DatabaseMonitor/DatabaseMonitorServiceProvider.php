@@ -2,17 +2,20 @@
 
 namespace App\Modules\DatabaseMonitor;
 
+use App\Core\Enums\JobProtocolState;
 use App\Core\Indicator\Indicator;
 use App\Core\Indicator\IndicatorManager;
 use App\Core\Module\ModuleBaseServiceProvider;
 use App\Core\Reference\ReferenceManager;
-use App\Core\RegularExpressions;
 use App\Core\Report\Expression\SumExpression;
+use App\Filament\Components\CronExpressionInput;
 use App\Filament\Components\FormButton;
 use App\Forms\Components\RawHtmlContent;
+use App\Models\JobProtocol;
 use App\Modules\DatabaseMonitor\Commands\CheckDatabaseServersCommand;
 use App\Modules\DatabaseMonitor\Jobs\DatabaseServersSyncJob;
 use App\Modules\DatabaseMonitor\Models\Database;
+use Cron\CronExpression;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Section;
@@ -61,6 +64,38 @@ class DatabaseMonitorServiceProvider extends ModuleBaseServiceProvider
             'description' => __('dbmon::messages.description'),
             'view' => [
                 'config' => [
+                    RawHtmlContent::make(function ($get) {
+                        $out = '';
+
+                        $lastSync = JobProtocol::query()
+                            ->where('name', '=', DatabaseServersSyncJob::class)
+                            ->where('state', '=', JobProtocolState::Ready->value)
+                            ->orderByDesc('ended_at')
+                            ->first();
+
+                        if ($lastSync) {
+                            $out = '<div class="text-right text-sm">'.
+                                __('admin.last sync date', ['date' => $lastSync->ended_at]).
+                                '</div>';
+                        }
+
+                        $syncEnabled = $get('DatabaseServerSync.enabled');
+                        $schedule = $get('DatabaseServerSync.schedule');
+
+                        if ($syncEnabled && $schedule) {
+                            $expr = new CronExpression($schedule);
+                            $nextDate = $expr->getNextRunDate();
+                            $nextDateStr = $nextDate->format('Y-m-d H:i:s');
+
+                            $out .= '<div class="text-right text-sm">'.
+                                __('admin.next sync date', ['date' => $nextDateStr]).
+                                '</div>';
+                        }
+
+                        return $out;
+                    })
+                        ->columnSpanFull(),
+
                     Tabs::make('configurationTabs')->tabs([
                         Tabs\Tab::make(__('admin.configuration'))->schema([
                             Section::make('SQL Server')
@@ -75,14 +110,11 @@ class DatabaseMonitorServiceProvider extends ModuleBaseServiceProvider
                                 ->schema([
                                     RawHtmlContent::make(__('dbmon::messages.job.databases sync.description')),
 
+                                    CronExpressionInput::make('DatabaseServerSync.schedule')
+                                        ->label(__('admin.schedule')),
+
                                     Checkbox::make('DatabaseServerSync.enabled')
                                         ->label(__('admin.enabled')),
-
-                                    TextInput::make('DatabaseServerSync.schedule')
-                                        ->label(__('admin.schedule'))
-                                        ->placeholder('* * * * * *')
-                                        ->helperText(__('admin.cron helper'))
-                                        ->regex(RegularExpressions::CRON),
 
                                     FormButton::make('runAllServersJob')
                                         ->label(__('admin.run'))
