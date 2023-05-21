@@ -36,7 +36,8 @@ class ModuleBaseServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function onBooting() {
+    public function onBooting()
+    {
         // insert code here
     }
 
@@ -67,8 +68,6 @@ class ModuleBaseServiceProvider extends ServiceProvider
 
     /**
      * Register service provider
-     *
-     * @return void
      */
     final public function register(): void
     {
@@ -140,17 +139,18 @@ class ModuleBaseServiceProvider extends ServiceProvider
 
         $cron = $this->module->getConfig("$jobName.schedule");
 
-        if ($cron) {
-            $scheduledJob = $schedule
-                ->job($job, 'default')
-                ->name(class_basename($job))
-                ->description($job->description)
-                ->cron($cron);
+        return $cron
+            ? $this->scheduleCronJob($schedule, $job, $cron)
+            : null;
+    }
 
-            return $scheduledJob;
-        }
-
-        return null;
+    protected function scheduleCronJob(Schedule $schedule, ModuleScheduledJob $job, string $cron): ?CallbackEvent
+    {
+        return $schedule
+            ->job($job, 'default')
+            ->name(class_basename($job))
+            ->description($job->description)
+            ->cron($cron);
     }
 
     /**
