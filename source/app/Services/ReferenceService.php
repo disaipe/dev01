@@ -8,6 +8,7 @@ use App\Models\Company;
 use App\Models\CustomReference;
 use App\Models\Reference;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -33,6 +34,11 @@ class ReferenceService
                 $this->setTable($tableName ?? static::$referenceTable);
 
                 static::$referenceTable = $this->getTable();
+            }
+
+            public function company(): BelongsTo
+            {
+                return $this->belongsTo(Company::class, 'company_id');
             }
 
             public function scopeCompany(Builder $query, string $code): Builder

@@ -3,6 +3,9 @@
 namespace App\Filament\Resources;
 
 use App\Core\Reference\ReferenceEntry;
+use App\Core\Reference\ReferenceFieldSchema;
+use App\Core\Reference\ReferenceManager;
+use App\Filament\Components\ConditionBuilder;
 use App\Filament\Resources\IndicatorResource\Pages;
 use App\Forms\Components\RawHtmlContent;
 use App\Models\Indicator;
@@ -22,18 +25,7 @@ class IndicatorResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $references = app('references')->getReferences();
-
-        $options = [];
-
-        foreach ($references as $reference) {
-            /** @var ReferenceEntry $reference */
-            if ($reference->canAttachIndicators()) {
-                $options[$reference->getName()] = $reference->getLabel();
-            }
-        }
-
-        $options = Arr::sort($options);
+        $referencesOptions = static::getReferencesOptions();
 
         return $form
             ->schema([
@@ -47,21 +39,25 @@ class IndicatorResource extends Resource
 
                         Forms\Components\TextInput::make('code')
                             ->label(__('admin.code'))
-                            ->regex('[a-zA-Z_-]+')
+                            ->regex('/[a-zA-Z_-]+/')
                             ->maxLength(32)
                             ->disabled(fn ($record) => isset($record)),
 
                         Forms\Components\Select::make('schema.reference')
                             ->label(trans_choice('admin.reference', 1))
-                            ->options($options)
+                            ->options($referencesOptions)
                             ->columnSpanFull()
-                            ->required(),
+                            ->required()
+                            ->reactive()
+                            ->afterStateHydrated(static::updateReferenceFields(...))
+                            ->afterStateUpdated(static::updateReferenceFields(...)),
 
                         Forms\Components\Checkbox::make('published')
                             ->label(__('admin.enabled')),
                     ]),
 
                 Forms\Components\Section::make(__('admin.$indicator.schema'))
+                    ->collapsible()
                     ->schema([
                         Builder::make('schema.values')
                             ->label('')
@@ -85,6 +81,17 @@ class IndicatorResource extends Resource
                             ->minItems(1)
                             ->maxItems(1),
                     ]),
+
+                Forms\Components\Section::make(__('admin.$indicator.conditions'))
+                    ->collapsible()
+                    ->schema([
+                        RawHtmlContent::make(__('admin.$indicator.conditions helper')),
+
+                        ConditionBuilder::make('schema.conditions')
+                            ->disableLabel()
+                            ->reactive()
+                            ->fields(fn ($get) => $get('__referenceFields')),
+                    ]),
             ]);
     }
 
@@ -96,9 +103,6 @@ class IndicatorResource extends Resource
                     ->label(__('admin.name')),
                 Tables\Columns\TextColumn::make('code')
                     ->label(__('admin.code')),
-            ])
-            ->filters([
-                //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -130,5 +134,48 @@ class IndicatorResource extends Resource
     public static function getPluralLabel(): ?string
     {
         return trans_choice('reference.Indicator', 2);
+    }
+
+    protected static function getReferencesOptions(): array
+    {
+        $references = app('references')->getReferences();
+
+        $referencesOptions = [];
+
+        foreach ($references as $reference) {
+            /** @var ReferenceEntry $reference */
+            if ($reference->canAttachIndicators()) {
+                $referencesOptions[$reference->getName()] = $reference->getLabel();
+            }
+        }
+
+        return Arr::sort($referencesOptions);
+    }
+
+    protected static function updateReferenceFields($state, $set): void
+    {
+        if (! $state) {
+            $set('__referenceFields', []);
+
+            return;
+        }
+
+        /** @var ReferenceManager $references */
+        $references = app('references');
+        $reference = $references->getByName($state);
+
+        $schema = $reference->getSchema();
+        $model = $reference->getModelInstance();
+        $filteredFields = Arr::where($schema, function (ReferenceFieldSchema $field, string $key) use ($model) {
+            return ! $model->isRelation($key);
+        });
+
+        $fields = Arr::map($filteredFields, function (ReferenceFieldSchema $field, $key) {
+            $label = $field->getAttribute('label');
+
+            return $label ? "$key ({$label})" : $key;
+        }, []);
+
+        $set('__referenceFields', $fields);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Core\Indicator;
 
 use App\Core\Report\Expression\Expression;
+use App\Core\Utils\QueryConditionsBuilder;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
@@ -28,6 +29,9 @@ class Indicator
      * @var string|null module key
      */
     public ?string $module;
+
+    /** @var array|null query conditions */
+    public ?array $conditions;
 
     /**
      * @var mixed data query
@@ -59,6 +63,7 @@ class Indicator
         $instance->query = Arr::get($options, 'query');
         $instance->expression = Arr::get($options, 'expression');
         $instance->mutator = Arr::get($options, 'mutator');
+        $instance->conditions = Arr::get($options, 'conditions');
 
         return $instance;
     }
@@ -73,6 +78,7 @@ class Indicator
         $instance->name = $model->name;
         $instance->model = Arr::get($model->schema, 'reference');
         $instance->module = Arr::get($model->schema, 'module');
+        $instance->conditions = Arr::get($model->schema, 'conditions');
         $instance->query = null;
 
         [$expression] = Arr::get($model->schema, 'values', []);
@@ -99,6 +105,10 @@ class Indicator
         $expressionQuery = $this->query
             ? ($this->query)($query)
             : $query;
+
+        if ($this->conditions) {
+            QueryConditionsBuilder::applyToQuery($expressionQuery, $this->conditions);
+        }
 
         $result = $this->expression->exec($expressionQuery);
 

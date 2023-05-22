@@ -207,6 +207,14 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
     }
 
     /**
+     * Get attribute value by name
+     */
+    public function getAttribute(string $attribute): mixed
+    {
+        return Arr::get($this->attributes, $attribute);
+    }
+
+    /**
      * Get field definition as array
      */
     public function toArray(): array
