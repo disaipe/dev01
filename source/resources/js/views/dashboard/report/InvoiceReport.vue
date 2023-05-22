@@ -32,6 +32,19 @@
     ) Сформировать
     el-button(v-if='loaded' @click='downloadReport') Скачать
 
+.errors.py-4
+    el-alert(
+        v-if='reportErrors && reportErrors.length'
+        :closable='false'
+        type='error'
+        title='Внимание! При расчете отчета возникли ошибки'
+        show-icon
+    )
+        ul.list-disc.list-inside
+            li(v-for='error of reportErrors')
+                span.font-bold {{ error.service_name }}
+                div {{ error.message }}
+
 .spread(class='h-[600px]')
     spreadsheet(
         v-show='loaded'
@@ -56,14 +69,15 @@ export default {
         const loaded = ref(false);
 
         const company = ref();
-        const reportTemplate = ref();
+        const companies = ref();
         const providers = ref();
+        const reportTemplate = ref();
+        const reportErrors = ref();
 
         const { ServiceProvider } = useRepos();
 
         const api = useApi();
 
-        const companies = ref();
 
         let replacements = {};
 
@@ -95,9 +109,10 @@ export default {
                         const { status, data } = response.data;
 
                         if (status) {
-                            const { xlsx, values } = data;
+                            const { xlsx, values, errors } = data;
 
                             replacements = values || {};
+                            reportErrors.value = errors;
 
                             if (xlsx) {
                                 spread.value.loadFromBase64(xlsx);
@@ -134,6 +149,7 @@ export default {
             companies,
             providers,
             reportTemplate,
+            reportErrors,
 
             cellModifier,
             fetchReport,

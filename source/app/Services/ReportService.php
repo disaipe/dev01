@@ -50,13 +50,24 @@ class ReportService
         $this->company = Company::query()->where('code', '=', $companyCode)->first();
 
         $cellReplacements = [];
+        $errors = [];
 
         // Process values cells
         $values = $this->generate($companyCode, $templateId);
         foreach ($values as $serviceId => $value) {
-            $cellReplacements["SERVICE#$serviceId#NAME"] = Arr::get($value, 'service.name');
-            $cellReplacements["SERVICE#$serviceId#COUNT"] = Arr::get($value, 'value');
-            $cellReplacements["SERVICE#$serviceId#PRICE"] = Arr::get($value, 'price');
+            $serviceName = Arr::get($value, 'service.name');
+
+            if ($error = Arr::get($value, 'error')) {
+                $errors[] = [
+                    'service_id' => $serviceId,
+                    'service_name' => $serviceName,
+                    'message' => $error,
+                ];
+            }
+
+            $cellReplacements["SERVICE#$serviceId#NAME"] = $serviceName;
+            $cellReplacements["SERVICE#$serviceId#COUNT"] = Arr::get($value, 'value') ?? 0;
+            $cellReplacements["SERVICE#$serviceId#PRICE"] = Arr::get($value, 'price') ?? 0;
         }
 
         // Process contract cells
@@ -65,6 +76,7 @@ class ReportService
         $cellReplacements['CONTRACT#DATE'] = $contract?->date?->toDateString() ?? '';
 
         return [
+            'errors' => $errors,
             'values' => $cellReplacements,
             'xlsx' => $this->template->content,
         ];
@@ -147,16 +159,20 @@ class ReportService
         foreach ($indicators as $serviceKey => $indicator) {
             /** @var Indicator $indicator */
             $scopedQuery = $this->getScopedBaseQuery($indicator->model, $this->companyCode);
-
-            $result = $indicator->exec($scopedQuery);
-
             $service = Arr::get($this->services, $serviceKey);
 
             $results[$serviceKey] = [
                 'service' => $service,
                 'indicator' => $indicator,
-                'value' => $result,
             ];
+
+            try {
+                $result = $indicator->exec($scopedQuery);
+
+                $results[$serviceKey]['value'] = $result;
+            } catch (\Exception $e) {
+                $results[$serviceKey]['error'] = $e->getMessage();
+            }
         }
 
         return $results;
@@ -209,8 +225,10 @@ class ReportService
         $priceByService = $this->priceList->values->pluck('value', 'service_id');
 
         foreach ($values as &$value) {
-            $serviceId = $value['service']->id;
-            $value['price'] = Arr::get($priceByService, $serviceId, 0);
+            if (! Arr::has($value, 'error')) {
+                $serviceId = $value['service']->id;
+                $value['price'] = Arr::get($priceByService, $serviceId, 0);
+            }
         }
     }
 
