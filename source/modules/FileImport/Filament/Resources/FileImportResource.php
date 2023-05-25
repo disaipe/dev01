@@ -8,16 +8,14 @@ use App\Models\CustomReference;
 use App\Modules\FileImport\Filament\Resources\FileImportResource\Pages;
 use App\Modules\FileImport\FileImportCompanySyncType;
 use App\Modules\FileImport\Models\FileImport;
-use App\Modules\FileImport\Services\FileImportService;
 use Cron\CronExpression;
 use Filament\Forms;
-use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
+use Filament\Support\Components\ViewComponent;
 use Filament\Tables;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 
 class FileImportResource extends Resource
@@ -79,10 +77,9 @@ class FileImportResource extends Resource
                         ->required()
                         ->suffixIcon('heroicon-s-check')
                         ->maxLength(1024)
-                        ->reactive()
-                        ->afterStateHydrated(FileImportResource::getFileHeaders(...))
-                        ->afterStateUpdated(FileImportResource::getFileHeaders(...))
                         ->columnSpanFull(),
+
+                    Forms\Components\View::make('fileimport::path-insertions'),
 
                     Forms\Components\Select::make('custom_reference_id')
                         ->label(__('fileimport::messages.reference'))
@@ -106,10 +103,9 @@ class FileImportResource extends Resource
                                 ])
                                 ->required(),
 
-                            Forms\Components\Select::make('options.company_prefix.field')
+                            Forms\Components\TextInput::make('options.company_prefix.field')
                                 ->label(__('fileimport::messages.fields schema.company prefix column'))
                                 ->helperText(__('fileimport::messages.fields schema.company prefix column help'))
-                                ->options(fn ($get) => $get('__headers') ?? [])
                                 ->required(),
                         ]),
 
@@ -143,10 +139,9 @@ class FileImportResource extends Resource
                                         return [];
                                     }),
 
-                                Forms\Components\Select::make('file')
+                                Forms\Components\TextInput::make('file')
                                     ->label(__('fileimport::messages.fields schema.file'))
                                     ->helperText(__('fileimport::messages.fields schema.file help'))
-                                    ->options(fn ($get) => $get('../../../__headers') ?? [])
                                     ->required(),
                             ])
                             ->createItemButtonLabel(__('fileimport::messages.fields schema.add'))
@@ -212,33 +207,5 @@ class FileImportResource extends Resource
         } else {
             $set('__hasCompanyContext', false);
         }
-    }
-
-    /**
-     * Parse file and get headers from them
-     *
-     * @param  TextInput  $component
-     */
-    public static function getFileHeaders(Forms\Components\TextInput $component, $state, $set): void
-    {
-        $headers = [];
-
-        try {
-            if (File::exists($state)) {
-                $file = FileImportService::make($state);
-                $headers = $file->getHeaders();
-
-                $headers = array_reduce($headers, function ($acc, $cur) {
-                    $acc[$cur] = $cur;
-
-                    return $acc;
-                }, []);
-            }
-        } catch (\Exception $e) {
-        }
-
-        $set('__headers', $headers);
-
-        $component->suffixIcon(count($headers) ? 'heroicon-s-check' : 'heroicon-s-x-circle');
     }
 }

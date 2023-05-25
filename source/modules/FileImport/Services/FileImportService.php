@@ -10,6 +10,7 @@ use App\Services\ReferenceService;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -25,7 +26,7 @@ class FileImportService
     public function __construct(string $path = null)
     {
         if ($path) {
-            $this->load($path);
+            $this->load($this->preparePath($path));
         }
     }
 
@@ -199,5 +200,24 @@ class FileImportService
         }
 
         return $data;
+    }
+
+    protected function preparePath($path): ?string
+    {
+        if (!$path) {
+            return $path;
+        }
+
+        $today = Carbon::today();
+
+        // d - Day of the month, 2 digits with leading zeros, 01 to 31
+        // j - Day of the month without leading zeros, 1 to 31
+        // m - 	Numeric representation of a month, with leading zeros, 01 to 12
+        // n - Numeric representation of a month, without leading zeros, 1 to 12
+        // Y - A full numeric representation of a year, at least 4 digits
+        // y - A two digit representation of a year
+        return Str::of($path)
+            ->replaceMatches('/\{(d|j|m|n|Y|y)}/', fn ($m) => $today->format($m[1]))
+            ->toString();
     }
 }
