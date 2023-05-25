@@ -130,9 +130,9 @@ class ReportService
                 $v = $cell->getValue();
 
                 if ($v && Str::startsWith($v, 'SERVICE')) {
-                    [,$id,$type] = explode('#', $v);
+                    [,$id] = explode('#', $v);
 
-                    if ($type === 'NAME') {
+                    if ($id) {
                         $foundServices[] = Arr::get($this->services, $id);
                     }
                 }
