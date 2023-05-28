@@ -25,7 +25,7 @@ class Auth extends Facade
             config('auth.defaults.guard'),
         ];
 
-        if (config('auth.ldap.enabled', true)) {
+        if (config('auth.ldap.enabled')) {
             $guards[] = 'ldap';
         }
 
@@ -61,7 +61,6 @@ class Auth extends Facade
             }
 
             if ($guard->attempt($credentials, $remember)) {
-                // $found = true;
                 return true;
             }
         }
