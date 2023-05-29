@@ -106,6 +106,7 @@ class FileImportService
         $reference::query()->truncate();
         $reference::query()->insert($data);
 
+        $fileImport->discardChanges();
         $fileImport->last_sync = Carbon::now();
         $fileImport->saveQuietly();
 

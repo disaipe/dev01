@@ -79,9 +79,9 @@ class FileImportResource extends Resource
                         ->label(__('fileimport::messages.path'))
                         ->helperText(__('fileimport::messages.path help'))
                         ->required()
-                        ->suffixIcon('heroicon-s-check')
                         ->maxLength(1024)
-                        ->columnSpanFull(),
+                        ->columnSpanFull()
+                        ->reactive(),
 
                     Forms\Components\View::make('fileimport::path-insertions'),
 
