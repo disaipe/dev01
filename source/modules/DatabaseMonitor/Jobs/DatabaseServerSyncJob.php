@@ -123,17 +123,18 @@ class DatabaseServerSyncJob extends ModuleScheduledJob
 
         $propertyName = config('module.databaseMonitor.sqlserver.organization_prop');
         if ($propertyName) {
-            foreach ($databases as $database) {
+            foreach ($databases as &$database) {
                 $name = Arr::get($database, $this->columnName);
                 $r = $conn->executeQuery("
                     select value
                     from [{$name}].sys.extended_properties
                     where
-                        name = '{$propertyName}'
+                        name = ltrim(rtrim('{$propertyName}'))
                         and class_desc = 'DATABASE'
                 ");
 
-                $company = $r->fetchFirstColumn();
+                $companyRaw = $r->fetchOne();
+                $company = $companyRaw !== false ? $companyRaw : null;
                 Arr::set($database, $this->columnCompany, $company);
             }
         }

@@ -40,7 +40,8 @@ class DatabaseReference extends ReferenceEntry
                 ->pinia(PiniaAttribute::string()),
 
             'company_code' => ReferenceFieldSchema::make()
-                ->hidden()
+                ->label('Код организации')
+                ->visible()
                 ->pinia(PiniaAttribute::string()),
 
             'company' => ReferenceFieldSchema::make()
