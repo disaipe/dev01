@@ -108,13 +108,15 @@ class DatabaseServerSyncJob extends ModuleScheduledJob
     protected function getSqlServerDatabases(Connection $conn): array
     {
         $result = $conn->executeQuery("
-             select
-                d.dbid as '{$this->columnId}',
+            select
+                d.database_id as '{$this->columnId}',
                 d.name as '{$this->columnName}',
                 sum(f.size) * 8 as '{$this->columnSize}'
-            from master.dbo.sysdatabases as d
-            left join sys.master_files as f on f.database_id = d.dbid
-            group by d.dbid, d.name
+            from master.sys.databases as d
+            left join sys.master_files as f on f.database_id = d.database_id
+            where
+                d.state = 0
+            group by d.database_id , d.name
         ");
 
         $databases = $result->fetchAllAssociative();
