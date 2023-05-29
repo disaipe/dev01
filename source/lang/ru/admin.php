@@ -118,4 +118,13 @@ return [
             'actions' => 'Действия',
         ],
     ],
+
+    '$schedule' => [
+        'widget' => [
+            'title' => 'Фоновые задачи',
+            'attempts' => 'Попытка',
+            'available at' => 'Создано',
+            'reserved at' => 'Запланировано',
+        ]
+    ],
 ];
