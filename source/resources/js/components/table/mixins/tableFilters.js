@@ -15,6 +15,11 @@ export default {
             inputs: {}
         }
     }),
+    computed: {
+        hasActiveFilters() {
+            return Object.keys(this.filterStore?.filters).length > 0;
+        }
+    },
     created() {
         this.applySavedFilters();
     },
@@ -42,6 +47,12 @@ export default {
             }
 
             this.$emit('filters-ready', this.filterStore.filters);
+        },
+
+        resetSavedFilters() {
+            this.resetFilters(this.tableId);
+
+            this.filterStore.filters = {};
         }
     }
 };

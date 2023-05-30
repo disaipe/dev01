@@ -11,7 +11,17 @@
                 el-button(v-if='canCreate' icon='CirclePlus' @click='create') Создать
                 el-button(icon='Refresh' @click='load') Обновить
 
-            TableColumnsSettings
+            .space-x-2
+                el-button(
+                    v-if='hasActiveFilters'
+                    text
+                    @click='handleResetFilters'
+                )
+                    .flex.space-x-1
+                        icon(icon='clarity:filter-off-solid')
+                        span Сбросить фильтры
+
+                TableColumnsSettings
 
         vxe-table(
             v-if='fields'
@@ -60,6 +70,14 @@
 
             template(#empty)
                 el-empty(description='Данные не пришли...')
+                    el-button(
+                        v-if='hasActiveFilters'
+                        type='primary'
+                        @click='handleResetFilters'
+                    )
+                        .flex.space-x-1
+                            icon(icon='clarity:filter-off-solid')
+                            span Сбросить фильтры, может поможет
 
         el-pagination(
             v-model:current-page='pagination.page'
@@ -411,6 +429,12 @@ export default {
             });
 
             this.load();
+        },
+
+        handleResetFilters() {
+          this.resetSavedFilters();
+
+          this.load();
         },
 
         handleRowDblClick({ row }) {
