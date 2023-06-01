@@ -301,7 +301,7 @@ export function loadFromBuffer(buffer) {
         store.value.worksheet = worksheet;
 
         // set cells
-        const data = makeMatrix(50, 30);
+        const data = makeMatrix(Math.max(50, worksheet.rowCount), Math.max(30, worksheet.columnCount));
 
         for (let row = 0; row < worksheet.rowCount; row++) {
             for (let col = 0; col < worksheet.columnCount; col++) {
