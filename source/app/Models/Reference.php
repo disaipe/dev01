@@ -13,9 +13,4 @@ class Reference extends ReferenceModel
         'updated_at',
         'deleted_at',
     ];
-
-    public static function query(): Builder
-    {
-        return (new static(static::$referenceTable))->newQuery();
-    }
 }

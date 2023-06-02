@@ -4,59 +4,61 @@ namespace App\Services;
 
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceManager;
-use App\Models\Company;
 use App\Models\CustomReference;
 use App\Models\Reference;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class ReferenceService
 {
+    static array $modelClasses = [];
+
     /**
      * Get reference model from custom reference
      */
     public static function getModelFromCustom(CustomReference $customReference): Reference
     {
+        $key = $customReference->getKey();
+
+        if (Arr::has(static::$modelClasses,$key)) {
+            return Arr::get(static::$modelClasses, $key);
+        }
+
         $tableName = CustomReferenceTableService::getTableName($customReference->name);
+        $companyContext = ($customReference->company_context ? 'true' : 'false');
 
-        $instance = new class($tableName) extends Reference
+        /** @var Reference $instance */
+        $instance = null;
+
+        eval('$instance = new class() extends \App\Models\Reference
         {
-            public static ?string $referenceTable;
+            public static bool $companyContext = ' . $companyContext . ';
 
-            public static bool $companyContext;
-
-            public function __construct($tableName = null)
+            public function getTable()
             {
-                parent::__construct([]);
-
-                $this->setTable($tableName ?? static::$referenceTable);
-
-                static::$referenceTable = $this->getTable();
+                return "' . $tableName . '";
             }
 
-            public function company(): BelongsTo
+            public function company()
             {
-                return $this->belongsTo(Company::class, 'company_id');
+                return $this->belongsTo(App\Models\Company::class, "company_id");
             }
 
-            public function scopeCompany(Builder $query, string $code): Builder
+            public function scopeCompany($query, string $code)
             {
                 if (static::$companyContext) {
-                    /** @var Company $company */
-                    $company = Company::query()->firstWhere('code', '=', $code);
+                    $company = App\Models\Company::query()->firstWhere("code", "=", $code);
 
                     if ($company) {
-                        return $query->where('company_id', '=', $company->getKey());
+                        return $query->where("company_id", "=", $company->getKey());
                     }
                 }
 
                 return $query;
             }
-        };
+        };');
 
-        $instance::$companyContext = $customReference->company_context;
+        static::$modelClasses[$key] = $instance;
 
         return $instance;
     }
