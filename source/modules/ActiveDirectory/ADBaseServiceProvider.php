@@ -109,9 +109,9 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
                                 ->options(Domain::all()->pluck('name', 'id'))
                                 ->required(),
 
-                            TextInput::make('base dn')
-                                ->label(__('ad::messages.base dn'))
-                                ->helperText(__('ad::messages.base dn helper')),
+                            Textarea::make('base_dn')
+                                ->label(__('ad::messages.base dn or ou'))
+                                ->helperText(__('ad::messages.base dn or ou helper')),
 
                             Textarea::make('filters')
                                 ->label(__('ad::messages.filter')),

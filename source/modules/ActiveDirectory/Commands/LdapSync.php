@@ -12,7 +12,7 @@ class LdapSync extends Command
      *
      * @var string
      */
-    protected $signature = 'test:sync';
+    protected $signature = 'ad:sync';
 
     /**
      * The console command description.
