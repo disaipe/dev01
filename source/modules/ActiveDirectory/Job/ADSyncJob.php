@@ -5,6 +5,7 @@ namespace App\Modules\ActiveDirectory\Job;
 use App\Core\Module\ModuleScheduledJob;
 use App\Models\Domain;
 use App\Modules\ActiveDirectory\Models\ADEntry;
+use App\Modules\ActiveDirectory\Utils\LdapQueryConditionsBuilder;
 use App\Services\LdapService;
 use Illuminate\Support\Arr;
 use LdapRecord\Container;
@@ -47,7 +48,7 @@ class ADSyncJob extends ModuleScheduledJob
             ]);
 
         if ($filters) {
-            $query->rawFilter(explode("\n", $filters));
+            LdapQueryConditionsBuilder::applyToQuery($query, $filters);
         }
 
         foreach ($baseOUs as $ou) {

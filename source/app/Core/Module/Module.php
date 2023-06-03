@@ -97,11 +97,43 @@ class Module
     {
         $key = $this->getConfigKey().($path ? ".$path" : '');
 
-        return Config::get($key, []);
+        $data = Config::get($key, []);
+
+        $casts = $this->getOption('casts');
+
+        if ($casts) {
+            foreach ($casts as $field => $type) {
+                $value = Arr::get($data, $field);
+
+                if ($value) {
+                    $data[$field] = match ($type) {
+                        'json' => json_decode($value, true),
+                        default => $value
+                    };
+                }
+            }
+        }
+
+        return $data;
     }
 
     public function setConfig($data, $prepend = false): void
     {
+        $casts = $this->getOption('casts');
+
+        if ($casts) {
+            foreach ($casts as $field => $type) {
+                $value = Arr::get($data, $field);
+
+                if ($value) {
+                    $data[$field] = match ($type) {
+                        'json' => json_encode($value),
+                        default => $value
+                    };
+                }
+            }
+        }
+
         $configData = $prepend
             ? Arr::prependKeysWith($data, $this->getConfigKey().'.')
             : $data;

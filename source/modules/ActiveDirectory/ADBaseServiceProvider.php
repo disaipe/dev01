@@ -14,17 +14,22 @@ use App\Forms\Components\RawHtmlContent;
 use App\Models\Domain;
 use App\Models\JobProtocol;
 use App\Modules\ActiveDirectory\Commands\LdapSync;
+use App\Modules\ActiveDirectory\Filament\Components\LdapFilterBuilder;
 use App\Modules\ActiveDirectory\Job\ADSyncJob;
 use App\Modules\ActiveDirectory\Models\ADEntry;
+use App\Modules\ActiveDirectory\Utils\LdapQueryConditionsBuilder;
+use App\Services\LdapService;
 use Cron\CronExpression;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
+use LdapRecord\Container;
+use LdapRecord\Models\ActiveDirectory\User;
 
 class ADBaseServiceProvider extends ModuleBaseServiceProvider
 {
@@ -68,6 +73,9 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
         return [
             'name' => __('ad::messages.name'),
             'description' => __('ad::messages.description'),
+            'casts' => [
+                'filters' => 'json',
+            ],
             'view' => [
                 'config' => [
                     RawHtmlContent::make(function ($get) {
@@ -113,8 +121,14 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
                                 ->label(__('ad::messages.base dn or ou'))
                                 ->helperText(__('ad::messages.base dn or ou helper')),
 
-                            Textarea::make('filters')
+                            LdapFilterBuilder::make('filters')
                                 ->label(__('ad::messages.filter')),
+
+                            RawHtmlContent::make(__('ad::messages.action.test filters.description')),
+
+                            FormButton::make('runFiltersTest')
+                                ->label(__('ad::messages.action.test filters.title'))
+                                ->action(fn ($state) => $this->runFiltersTest($state)),
                         ]),
 
                     Section::make(__('ad::messages.job.ldap sync.title'))
@@ -149,6 +163,50 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
         } catch (\Exception|\Error $e) {
             Filament::notify('danger', 'Ошибка запуска задания', $e->getMessage());
             Log::error($e);
+        }
+    }
+
+    public function runFiltersTest($config)
+    {
+        $domainId = Arr::get($config, 'domain_id');
+        $filters = Arr::get($config, 'filters');
+
+        try {
+            /** @var Domain $domain */
+            $domain = Domain::query()->find($domainId);
+            LdapService::addDomainConnection($domain);
+            Container::setDefault($domain->code);
+
+            $baseDN = Arr::get($config, 'base_dn', $domain->base_dn);
+            $baseOUs = explode("\n", $baseDN);
+
+            $query = User::query()->select('dn')->limit(1000);
+
+            if ($filters) {
+                LdapQueryConditionsBuilder::applyToQuery($query, $filters);
+            }
+
+            $results = [];
+
+            foreach ($baseOUs as $ou) {
+                $query->in($ou);
+
+                $results = array_merge($results, $query->get()->toArray());
+            }
+
+            $uniques = collect($results)->unique(fn (User $entry) => $entry->getDn());
+            $count = $uniques->count();
+
+            if ($count) {
+                Filament::notify(
+                    'success',
+                    __('ad::messages.action.test filters.found N records', ['count' => $count])
+                );
+            } else {
+                Filament::notify('warning', __('ad::messages.action.test filters.records not found'));
+            }
+        } catch (\Exception $e) {
+            Filament::notify('danger', $e->getMessage());
         }
     }
 }
