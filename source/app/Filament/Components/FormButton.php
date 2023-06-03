@@ -61,7 +61,7 @@ class FormButton extends Component
     public function execute()
     {
         if (isset($this->action)) {
-            call_user_func($this->action);
+            $this->evaluate($this->action);
         }
     }
 }
