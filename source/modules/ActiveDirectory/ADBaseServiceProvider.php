@@ -159,9 +159,9 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
     {
         try {
             ADSyncJob::dispatch();
-            Filament::notify('success', 'Задание запущено');
+            Filament::notify('success', __('admin.job started'));
         } catch (\Exception|\Error $e) {
-            Filament::notify('danger', 'Ошибка запуска задания', $e->getMessage());
+            Filament::notify('danger', __('admin.job staring error'), $e->getMessage());
             Log::error($e);
         }
     }

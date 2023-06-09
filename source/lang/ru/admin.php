@@ -41,6 +41,9 @@ return [
     'last sync date' => 'Последняя синхронизация: :date',
     'next sync date' => 'Ближайшая синхронизация: :date',
 
+    'job started' => 'Задание запущено',
+    'job staring error' => 'Ошибка запуска задания',
+
     'where' => 'Где',
     'or' => 'Или',
     'and' => 'И',
