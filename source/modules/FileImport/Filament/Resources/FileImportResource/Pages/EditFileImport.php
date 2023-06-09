@@ -9,11 +9,22 @@ use Filament\Facades\Filament;
 use Filament\Forms\Components\Select;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Arr;
 
 class EditFileImport extends EditRecord
 {
     protected static string $resource = FileImportResource::class;
+
+    protected function getTitle(): string
+    {
+        return $this->record->name;
+    }
+
+    protected function getSubheading(): string|Htmlable|null
+    {
+        return trans_choice('fileimport::messages.file import', 1);
+    }
 
     protected function getActions(): array
     {

@@ -7,11 +7,22 @@ use App\Models\CustomReference;
 use App\Services\CustomReferenceTableService;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Arr;
 
 class EditCustomReference extends EditRecord
 {
     protected static string $resource = CustomReferenceResource::class;
+
+    protected function getTitle(): string
+    {
+        return $this->record->display_name;
+    }
+
+    protected function getSubheading(): string|Htmlable|null
+    {
+        return trans_choice('admin.reference', 1);
+    }
 
     protected function getActions(): array
     {

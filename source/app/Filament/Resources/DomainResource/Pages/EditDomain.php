@@ -8,11 +8,22 @@ use App\Services\LdapService;
 use Filament\Notifications\Notification;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Contracts\Support\Htmlable;
 use LdapRecord\Container;
 
 class EditDomain extends EditRecord
 {
     protected static string $resource = DomainResource::class;
+
+    protected function getTitle(): string
+    {
+        return $this->record->name;
+    }
+
+    protected function getSubheading(): string|Htmlable|null
+    {
+        return trans_choice('admin.domain', 1);
+    }
 
     protected function getActions(): array
     {

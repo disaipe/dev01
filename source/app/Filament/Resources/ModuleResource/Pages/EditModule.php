@@ -7,6 +7,7 @@ use App\Filament\Resources\ModuleResource;
 use Filament\Facades\Filament;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Finder\Finder;
@@ -19,6 +20,16 @@ class EditModule extends EditRecord
     protected bool $migrationsApplied = true;
 
     protected static string $resource = ModuleResource::class;
+
+    protected function getTitle(): string
+    {
+        return $this->module->getName();
+    }
+
+    protected function getSubheading(): string|Htmlable|null
+    {
+        return trans_choice('admin.module', 1);
+    }
 
     protected function getFormSchema(): array
     {
