@@ -55,6 +55,7 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
                 'code' => 'AD_ENTRY_COUNT',
                 'name' => 'Количество учетных записей',
                 'model' => ADEntry::class,
+                'query' => fn ($query) => $query->active(),
                 'expression' => new CountExpression(),
             ]),
             Indicator::fromArray([
@@ -62,7 +63,7 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
                 'code' => 'AD_LYNC_COUNT',
                 'name' => 'Количество учетных записей Lync',
                 'model' => ADEntry::class,
-                'query' => fn ($query) => $query->where('sip_enabled', '=', true),
+                'query' => fn ($query) => $query->active()->where('sip_enabled', '=', true),
                 'expression' => new CountExpression(),
             ]),
         ]);

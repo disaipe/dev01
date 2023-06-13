@@ -5,6 +5,7 @@ namespace App\Modules\ActiveDirectory\Models;
 use App\Core\Reference\ReferenceModel;
 use App\Core\Traits\CompanyScope;
 use App\Models\Company;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ADEntry extends ReferenceModel
@@ -46,5 +47,10 @@ class ADEntry extends ReferenceModel
             'company_prefix',
             'code'
         );
+    }
+
+    public function scopeActive(Builder $query): void
+    {
+        $query->where('blocked', 0);
     }
 }
