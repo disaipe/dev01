@@ -26,7 +26,8 @@ Route::post('/api/module/fsmonitor/post-result', function (Request $request) {
     }
 
     [$_id, $_appUrl] = explode('|', $decryptedAuth);
-    if (($id != $_id && $_id !== 'batched') || $_appUrl !== config('app.url')) {
+
+    if (($id != $_id && $_id !== 'batched') || !Str::startsWith($_appUrl, config('app.url'))) {
         abort(401);
     }
 

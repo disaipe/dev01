@@ -3,7 +3,9 @@
 namespace App\Modules\FileStorageMonitor\Jobs;
 
 use App\Core\Module\ModuleScheduledJob;
+use App\Modules\FileStorageMonitor\Enums\FileStorageSyncStatus;
 use App\Modules\FileStorageMonitor\Models\FileStorage;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
@@ -42,6 +44,14 @@ class FileStoragesSyncJob extends ModuleScheduledJob
             ->post($method, $body);
 
         if ($resp->ok()) {
+            FileStorage::query()
+                ->enabled()
+                ->update([
+                    'last_error' => null,
+                    'last_sync' => Carbon::now(),
+                    'last_status' => FileStorageSyncStatus::Queued,
+                ]);
+
             return [
                 'Result' => 'Started: '.$storages->count(),
             ];
