@@ -147,7 +147,9 @@ class ReportService
 
         foreach ($foundServices as $service) {
             /** @var Service $service */
-            $indicators[$service->getKey()] = $registeredIndicators[$service->indicator_code];
+
+            $indicator = Arr::get($registeredIndicators, $service->indicator_code);
+            $indicators[$service->getKey()] = $indicator;
         }
 
         return $indicators;
@@ -157,8 +159,6 @@ class ReportService
     {
         $results = [];
         foreach ($indicators as $serviceKey => $indicator) {
-            /** @var Indicator $indicator */
-            $scopedQuery = $this->getScopedBaseQuery($indicator->model, $this->companyCode);
             $service = Arr::get($this->services, $serviceKey);
 
             $results[$serviceKey] = [
@@ -166,12 +166,19 @@ class ReportService
                 'indicator' => $indicator,
             ];
 
-            try {
-                $result = $indicator->exec($scopedQuery);
+            if ($indicator) {
+                /** @var Indicator $indicator */
+                $scopedQuery = $this->getScopedBaseQuery($indicator->model, $this->companyCode);
 
-                $results[$serviceKey]['value'] = $result;
-            } catch (\Exception $e) {
-                $results[$serviceKey]['error'] = $e->getMessage();
+                try {
+                    $result = $indicator->exec($scopedQuery);
+
+                    $results[$serviceKey]['value'] = $result;
+                } catch (\Exception $e) {
+                    $results[$serviceKey]['error'] = $e->getMessage();
+                }
+            } else {
+                $results[$serviceKey]['error'] = 'Индикатор не найден, расчет показателей невозможен';
             }
         }
 

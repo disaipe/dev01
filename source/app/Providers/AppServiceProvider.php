@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Core\HasManySyncMacro;
 use App\Core\Indicator\IndicatorManager;
+use App\Core\Report\Expression\ExpressionManager;
 use App\Directives;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -40,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
 
     private function registerSingletons(): void
     {
+        $this->app->singleton('expressions', fn () => new ExpressionManager());
         $this->app->singleton('indicators', fn () => new IndicatorManager());
     }
 }

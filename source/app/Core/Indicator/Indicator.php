@@ -3,6 +3,7 @@
 namespace App\Core\Indicator;
 
 use App\Core\Report\Expression\Expression;
+use App\Core\Report\Expression\ExpressionManager;
 use App\Core\Utils\QueryConditionsBuilder;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
@@ -86,9 +87,12 @@ class Indicator
             $type = Arr::get($expression, 'type');
             $data = Arr::get($expression, 'data') ?? [];
 
-            $classType = "App\Core\Report\Expression\\$type";
-            if (class_exists($classType)) {
-                $instance->expression = new $classType(...$data);
+            /** @var ExpressionManager $expressions */
+            $expressions = app('expressions');
+            $expression = $expressions->getByKey($type);
+
+            if (class_exists($expression)) {
+                $instance->expression = new $expression(...$data);
             }
         }
 

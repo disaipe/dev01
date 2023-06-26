@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceManager;
+use App\Core\Report\Expression\Expression;
+use App\Core\Report\Expression\ExpressionManager;
 use App\Filament\Components\ConditionBuilder;
 use App\Filament\Resources\IndicatorResource\Pages;
 use App\Forms\Components\RawHtmlContent;
@@ -26,6 +28,10 @@ class IndicatorResource extends Resource
     public static function form(Form $form): Form
     {
         $referencesOptions = static::getReferencesOptions();
+
+        /** @var ExpressionManager $expressions */
+        $expressionsManager = app('expressions');
+        $expressions = $expressionsManager->getExpressions();
 
         return $form
             ->schema([
@@ -63,21 +69,11 @@ class IndicatorResource extends Resource
                             ->label('')
                             ->required()
                             ->createItemButtonLabel(__('admin.$indicator.schema add'))
-                            ->blocks([
-                                Builder\Block::make('CountExpression')
-                                    ->label(__('admin.$expression.count'))
-                                    ->schema([
-                                        RawHtmlContent::make(__('admin.$indicator.count helper')),
-                                    ]),
-                                Builder\Block::make('SumExpression')
-                                    ->label(__('admin.$expression.sum'))
-                                    ->schema([
-                                        RawHtmlContent::make(__('admin.$indicator.sum helper')),
-                                        Forms\Components\TextInput::make('column')
-                                            ->label(__('admin.$indicator.column'))
-                                            ->required(),
-                                    ]),
-                            ])
+                            ->blocks(Arr::map($expressions, function (Expression|string $expression) {
+                                return Builder\Block::make(class_basename($expression))
+                                    ->label($expression::label())
+                                    ->schema($expression::form());
+                            }))
                             ->minItems(1)
                             ->maxItems(1),
                     ]),

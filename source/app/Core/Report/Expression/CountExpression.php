@@ -2,6 +2,7 @@
 
 namespace App\Core\Report\Expression;
 
+use App\Forms\Components\RawHtmlContent;
 use Illuminate\Database\Eloquent\Builder;
 
 class CountExpression implements Expression
@@ -16,5 +17,17 @@ class CountExpression implements Expression
     public function exec(Builder $query): float
     {
         return $query->count($this->column);
+    }
+
+    public static function label(): string
+    {
+        return __('admin.$expression.count');
+    }
+
+    public static function form(): array
+    {
+        return [
+            RawHtmlContent::make(__('admin.$indicator.count helper')),
+        ];
     }
 }
