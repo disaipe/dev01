@@ -114,12 +114,12 @@ class ModuleBaseServiceProvider extends ServiceProvider
         return $this->basePath.'/resources/lang';
     }
 
-    public function loadTranslations()
+    public function loadTranslations(): void
     {
         $this->loadTranslationsFrom($this->getTranslationsDirectory(), $this->namespace);
     }
 
-    public function loadMigrations()
+    public function loadMigrations(): void
     {
         $this->loadMigrationsFrom($this->getMigrationsDirectory());
     }

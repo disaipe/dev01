@@ -3,6 +3,7 @@
 namespace App\Facades;
 
 use App\Models\SystemConfig;
+use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
@@ -71,5 +72,24 @@ class Config
     public static function get(string $key, $default = null)
     {
         return config($key, $default);
+    }
+
+    /**
+     * Try decrypt value
+     *
+     * @param string|null $value
+     * @param null $default
+     *
+     * @return string|null
+     */
+    public static function decryptValue(?string $value, $default = null): ?string {
+        if ($value) {
+            try {
+                return Crypt::decryptString($value);
+            } catch (Exception) {
+            }
+        }
+
+        return $default;
     }
 }

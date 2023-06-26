@@ -67,7 +67,7 @@ class EditModule extends EditRecord
         return parent::mutateFormDataBeforeSave($data);
     }
 
-    protected function assertModule()
+    protected function assertModule(): void
     {
         if ($this->module) {
             return;
@@ -82,13 +82,19 @@ class EditModule extends EditRecord
         $this->checkMigrations();
     }
 
-    protected function checkMigrations()
+    protected function checkMigrations(): void
     {
+        $directory = $this->module->getProvider()->getMigrationsDirectory(true);
+
+        if (!is_dir($directory)) {
+            return;
+        }
+
         $finder = Finder::create();
         $finder
             ->files()
             ->name('*.php')
-            ->in($this->module->getProvider()->getMigrationsDirectory(true));
+            ->in($directory);
 
         if ($finder->hasResults()) {
             $names = [];
@@ -111,7 +117,7 @@ class EditModule extends EditRecord
         }
     }
 
-    public function applyMigrations()
+    public function applyMigrations(): void
     {
         $this->assertModule();
 

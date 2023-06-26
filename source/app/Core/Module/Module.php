@@ -95,7 +95,7 @@ class Module
 
     public function getConfig($path = null): mixed
     {
-        $key = $this->getConfigKey().($path ? ".$path" : '');
+        $key = $this->getConfigKey();
 
         $data = Config::get($key, []);
 
@@ -108,13 +108,16 @@ class Module
                 if ($value) {
                     $data[$field] = match ($type) {
                         'json' => json_decode($value, true),
+                        'password' => Config::decryptValue($value),
                         default => $value
                     };
                 }
             }
         }
 
-        return $data;
+        return $path
+            ? Arr::get($data, $path)
+            : $data;
     }
 
     public function setConfig($data, $prepend = false): void
@@ -128,6 +131,9 @@ class Module
                 if ($value) {
                     $data[$field] = match ($type) {
                         'json' => json_encode($value),
+                        'password' => Str::contains($field, ['password'], true)
+                            ? $value                         // password will be encrypted
+                            : \Crypt::encryptString($value), // automatically if name contains "password"
                         default => $value
                     };
                 }
