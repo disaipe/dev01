@@ -93,6 +93,8 @@ class Indicator
 
             if (class_exists($expression)) {
                 $instance->expression = new $expression(...$data);
+            } else {
+                $instance->expression = null;
             }
         }
 
@@ -114,7 +116,7 @@ class Indicator
             QueryConditionsBuilder::applyToQuery($expressionQuery, $this->conditions);
         }
 
-        $result = $this->expression->exec($expressionQuery);
+        $result = $this->expression?->exec($expressionQuery);
 
         if (isset($this->mutator)) {
             $result = call_user_func($this->mutator, $result);

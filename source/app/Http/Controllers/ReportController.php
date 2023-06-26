@@ -11,11 +11,12 @@ class ReportController extends Controller
     {
         $companyCode = $request->input('company');
         $reportTemplateId = $request->input('template');
+        $period = $request->input('period');
 
         $report = new \App\Services\ReportService();
 
         try {
-            $data = $report->make($companyCode, $reportTemplateId);
+            $data = $report->make($reportTemplateId, $companyCode, $period);
 
             return new JsonResponse([
                 'status' => true,

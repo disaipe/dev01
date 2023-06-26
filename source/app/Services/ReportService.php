@@ -10,6 +10,7 @@ use App\Models\Contract;
 use App\Models\PriceList;
 use App\Models\ReportTemplate;
 use App\Models\Service;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -28,6 +29,8 @@ class ReportService
 
     protected Company $company;
 
+    protected ?string $period;
+
     protected ReferenceManager $referenceManager;
 
     protected ReportTemplate $template;
@@ -45,15 +48,16 @@ class ReportService
         $this->referenceManager = app('references');
     }
 
-    public function make($companyCode, $templateId): array
+    public function make(string $templateId, string $companyCode, string $period = null): array
     {
         $this->company = Company::query()->where('code', '=', $companyCode)->first();
+        $this->period = $period;
 
         $cellReplacements = [];
         $errors = [];
 
         // Process values cells
-        $values = $this->generate($companyCode, $templateId);
+        $values = $this->generate($templateId, $companyCode);
         foreach ($values as $serviceId => $value) {
             $serviceName = Arr::get($value, 'service.name');
 
@@ -82,14 +86,14 @@ class ReportService
         ];
     }
 
-    public function download($companyCode, $templateId): false|string
+    public function download(string $templateId, string $companyCode): false|string
     {
-        $this->generate($companyCode, $templateId);
+        $this->generate($templateId, $companyCode);
 
         return $this->getTemplateWithData(true);
     }
 
-    protected function generate($companyCode, $templateId): array
+    protected function generate(string $templateId, string $companyCode): array
     {
         $this->companyCode = $companyCode;
         $this->templateId = $templateId;
@@ -155,7 +159,7 @@ class ReportService
         return $indicators;
     }
 
-    protected function calculateIndicators($indicators): array
+    protected function calculateIndicators(array $indicators): array
     {
         $results = [];
         foreach ($indicators as $serviceKey => $indicator) {
@@ -202,7 +206,20 @@ class ReportService
 
     protected function getScopedBaseQuery(string $model, string $companyCode): Builder
     {
-        return $this->getBaseQuery($model)->company($companyCode);
+        $query = $this->getBaseQuery($model)->company($companyCode);
+
+        if ($query->hasNamedScope('period') && $this->period) {
+            $date = Carbon::parse($this->period);
+
+            if ($date->isValid()) {
+                $from = $date->copy()->startOfMonth();
+                $to = $date->copy()->endOfMonth();
+
+                $query->period($from, $to);
+            }
+        }
+
+        return $query;
     }
 
     /**

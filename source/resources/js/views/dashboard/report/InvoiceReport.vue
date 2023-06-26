@@ -24,6 +24,12 @@
                 :value='reportTemplate.$getKey()'
             )
 
+    el-date-picker(
+        v-model='period'
+        type='month'
+        placeholder='Период'
+    )
+
     el-button(
         type='primary'
         :loading='loading'
@@ -55,8 +61,10 @@
 </template>
 
 <script>
-import { ref, nextTick } from 'vue';
+import { ref, nextTick, watch } from 'vue';
 import { ElMessageBox } from 'element-plus'
+import dayjs from 'dayjs';
+import { useReportSettingsStore } from '../../../store/modules';
 import { useRepos } from '../../../store/repository';
 import { useApi } from '../../../utils/axiosClient';
 import batchApi from '../../../utils/batchApi';
@@ -68,16 +76,23 @@ export default {
         const loading = ref(false);
         const loaded = ref(false);
 
-        const company = ref();
+        const savedSettings = useReportSettingsStore();
+
+        const company = ref(savedSettings.company);
+        const reportTemplate = ref(savedSettings.reportTemplate);
+        const period = ref(savedSettings.period);
+
         const companies = ref();
         const providers = ref();
-        const reportTemplate = ref();
         const reportErrors = ref();
+
+        watch(company, () => savedSettings.company = company.value);
+        watch(reportTemplate, () => savedSettings.reportTemplate = reportTemplate.value);
+        watch(period, () => savedSettings.period = period.value);
 
         const { ServiceProvider } = useRepos();
 
         const api = useApi();
-
 
         let replacements = {};
 
@@ -88,14 +103,25 @@ export default {
 
         const cellModifier = (cell) => {
             if (replacements[cell.value] !== undefined) {
-                cell.value = replacements[cell.value];
+                const replacement = replacements[cell.value];
+
+                if (typeof(replacement) === 'number') {
+                    cell.value = replacement.toFixed(2);
+                } else {
+                    cell.value = replacement;
+                }
             }
         };
 
         const fetchReport = () => {
+            const _period = period
+                ? dayjs(period.value).tz('UTC', true).toISOString()
+                : null;
+
             const body = {
                 company: company.value,
-                template: reportTemplate.value
+                template: reportTemplate.value,
+                period: _period
             };
 
             loading.value = true;
@@ -150,6 +176,7 @@ export default {
             providers,
             reportTemplate,
             reportErrors,
+            period,
 
             cellModifier,
             fetchReport,

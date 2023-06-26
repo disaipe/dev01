@@ -7,6 +7,10 @@ import VXETable from 'vxe-table';
 import vClickOutside from 'click-outside-vue3';
 import { Icon } from '@iconify/vue';
 
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+
 import '../css/app.css';
 
 import { createApp } from './utils/createApp';
@@ -20,6 +24,10 @@ import filters from './plugin/filters';
 import { components } from './components';
 
 import App from './views/App.vue';
+
+dayjs.extend(timezone);
+dayjs.extend(utc);
+dayjs.tz.setDefault('UTC');
 
 const app = createApp(App)
     .use(ElementPlus, { locale: elementLang })
