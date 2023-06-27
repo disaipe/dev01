@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 
 class ReferenceService
 {
-    static array $modelClasses = [];
+    public static array $modelClasses = [];
 
     /**
      * Get reference model from custom reference
@@ -20,7 +20,7 @@ class ReferenceService
     {
         $key = $customReference->getKey();
 
-        if (Arr::has(static::$modelClasses,$key)) {
+        if (Arr::has(static::$modelClasses, $key)) {
             return Arr::get(static::$modelClasses, $key);
         }
 
@@ -32,11 +32,11 @@ class ReferenceService
 
         eval('$instance = new class() extends \App\Models\Reference
         {
-            public static bool $companyContext = ' . $companyContext . ';
+            public static bool $companyContext = '.$companyContext.';
 
             public function getTable()
             {
-                return "' . $tableName . '";
+                return "'.$tableName.'";
             }
 
             public function company()

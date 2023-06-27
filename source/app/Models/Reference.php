@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Core\Reference\ReferenceModel;
-use Illuminate\Database\Eloquent\Builder;
 
 class Reference extends ReferenceModel
 {

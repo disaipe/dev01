@@ -60,9 +60,10 @@ class SDServiceCountExpression implements Expression
                             ->pluck('name', 'serviceid');
                     } catch (\Exception $e) {
                         Filament::notify('danger', $e->getMessage());
+
                         return [];
                     }
-                })
+                }),
         ];
     }
 }

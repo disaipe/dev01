@@ -45,7 +45,8 @@ class FileStorageSyncJob extends ModuleScheduledJob
         return __('fsmonitor::messages.job.storage sync.title', ['storage' => $this->storage->name]);
     }
 
-    protected function processStorage(FileStorage $storage): array {
+    protected function processStorage(FileStorage $storage): array
+    {
         $config = $this->getModuleConfig();
 
         $baseUrl = Arr::get($config, 'base_url');
@@ -58,7 +59,7 @@ class FileStorageSyncJob extends ModuleScheduledJob
         $headers = [
             'Content-Type' => 'application/json',
             'X-SECRET' => $secret,
-            'X-APP-AUTH' => Crypt::encryptString($id . '|' . config('app.url')),
+            'X-APP-AUTH' => Crypt::encryptString($id.'|'.config('app.url')),
         ];
 
         $resp = Http::baseUrl($baseUrl)
@@ -75,7 +76,7 @@ class FileStorageSyncJob extends ModuleScheduledJob
         if ($resp->ok()) {
             $status = $resp->json('Status');
 
-            if (!$status) {
+            if (! $status) {
                 $lastError = 'API Error';
                 $lastStatus = FileStorageSyncStatus::Failed;
             }

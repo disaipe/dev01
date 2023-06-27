@@ -27,16 +27,16 @@ class FileStoragesSyncJob extends ModuleScheduledJob
         $headers = [
             'Content-Type' => 'application/json',
             'X-SECRET' => $secret,
-            'X-APP-AUTH' => Crypt::encryptString('batched|' . config('app.url')),
+            'X-APP-AUTH' => Crypt::encryptString('batched|'.config('app.url')),
         ];
 
         $body = [
             'Paths' => Arr::map($storages->toArray(), function ($storage) {
                 return [
                     'Id' => $storage['id'],
-                    'Path' => $storage['path']
+                    'Path' => $storage['path'],
                 ];
-            })
+            }),
         ];
 
         $resp = Http::baseUrl($baseUrl)

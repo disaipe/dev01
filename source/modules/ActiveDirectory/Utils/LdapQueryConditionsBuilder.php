@@ -44,7 +44,7 @@ class LdapQueryConditionsBuilder
             $value = Arr::get($condition, 'data.value');
 
             return Str::of($value)->start('(')->finish(')')->toString();
-        } else if ($type === 'or' or $type === 'and') {
+        } elseif ($type === 'or' or $type === 'and') {
             $conditions = Arr::get($condition, "data.$type");
 
             return static::parseGroups($conditions, $type);

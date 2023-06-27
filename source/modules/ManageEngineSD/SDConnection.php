@@ -41,7 +41,7 @@ class SDConnection
         $modules = app('modules');
         $module = $modules->getByKey('manageEngineSD');
 
-        if (!$module) {
+        if (! $module) {
             return [];
         }
 

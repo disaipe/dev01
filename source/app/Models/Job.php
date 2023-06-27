@@ -19,7 +19,7 @@ class Job extends Model
 
         $command = Arr::get($this->payload, 'data.command');
 
-        if (!$command) {
+        if (! $command) {
             return $fallback;
         }
 
@@ -29,7 +29,8 @@ class Job extends Model
             if (method_exists($job, 'getDescription')) {
                 return @$job->getDescription();
             }
-        } catch (\Exception) {}
+        } catch (\Exception) {
+        }
 
         return $fallback;
     }

@@ -86,7 +86,7 @@ class EditModule extends EditRecord
     {
         $directory = $this->module->getProvider()->getMigrationsDirectory(true);
 
-        if (!is_dir($directory)) {
+        if (! is_dir($directory)) {
             return;
         }
 

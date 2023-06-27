@@ -151,7 +151,6 @@ class ReportService
 
         foreach ($foundServices as $service) {
             /** @var Service $service */
-
             $indicator = Arr::get($registeredIndicators, $service->indicator_code);
             $indicators[$service->getKey()] = $indicator;
         }
@@ -232,8 +231,8 @@ class ReportService
         $priceList = PriceList::query()
             ->where('service_provider_id', '=', $serviceProviderId)
             ->where(fn (Builder $query) => $query
-                    ->where('company_id', '=', $this->company->getKey())
-                    ->orWhere('is_default', '=', true)
+                ->where('company_id', '=', $this->company->getKey())
+                ->orWhere('is_default', '=', true)
             )
             ->first();
 

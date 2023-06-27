@@ -18,7 +18,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class SDWorkorder extends ReferenceModel
 {
     protected $connection = SDConnection::NAME;
+
     protected $table = 'workorder';
+
     protected $primaryKey = 'workorderid';
 
     public static function query(): Builder
@@ -64,7 +66,7 @@ class SDWorkorder extends ReferenceModel
     public function hours(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->charges()->sum('timespent') / 1000 / 60 / 60
+            get: fn () => $this->charges()->sum('timespent') / 1000 / 60 / 60
         );
     }
 

@@ -15,7 +15,7 @@ class UserFileImportJob extends ModuleScheduledJob
 
     private ?FileImport $fileImport;
 
-    public function __construct(int  $fileImportId, string $path)
+    public function __construct(int $fileImportId, string $path)
     {
         parent::__construct();
 
@@ -36,7 +36,7 @@ class UserFileImportJob extends ModuleScheduledJob
                 'fileimport::messages.job.file import.errors.file import not found',
                 ['id' => $this->fileImportId]
             ));
-        } else if (! file_exists($this->path)) {
+        } elseif (! file_exists($this->path)) {
             throw new Exception(__(
                 'fileimport::messages.job.file import.errors.file not exist',
                 ['path' => $this->path]

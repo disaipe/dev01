@@ -56,7 +56,7 @@ class FileStorageMonitorServiceProvider extends ModuleBaseServiceProvider
         ]);
 
         $this->commands([
-            FileStorageSizeCommand::class
+            FileStorageSizeCommand::class,
         ]);
     }
 
@@ -161,13 +161,13 @@ class FileStorageMonitorServiceProvider extends ModuleBaseServiceProvider
             if ($resp->status() == 400) {
                 $notifyType = 'success';
                 $notifyMessage = __('fsmonitor::messages.action.test service.success');
-            } else if ($resp->unauthorized()) {
+            } elseif ($resp->unauthorized()) {
                 $notifyMessage = __('fsmonitor::messages.action.test service.wrong secret');
             } else {
-                $notifyMessage = __('fsmonitor::messages.action.test service.request failed') . $resp->reason();
+                $notifyMessage = __('fsmonitor::messages.action.test service.request failed').$resp->reason();
             }
         } catch (\Exception $e) {
-            $notifyMessage = __('admin.error') . ': ' . $e->getMessage();
+            $notifyMessage = __('admin.error').': '.$e->getMessage();
         }
 
         Filament::notify($notifyType, $notifyMessage);

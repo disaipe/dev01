@@ -40,9 +40,9 @@ class EditFileImport extends EditRecord
                 ->action('selectAndImportFile')
                 ->form(function () {
                     $basePath = dirname($this->getRecord()->path);
-                    $files = glob($basePath . '/*.{csv,xls,xlsx}', GLOB_BRACE);
+                    $files = glob($basePath.'/*.{csv,xls,xlsx}', GLOB_BRACE);
 
-                    $options = Arr::mapWithKeys($files, fn ($v) => [ $v => basename($v) ]);
+                    $options = Arr::mapWithKeys($files, fn ($v) => [$v => basename($v)]);
 
                     return [
                         Select::make('path')

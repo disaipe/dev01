@@ -9,8 +9,8 @@ use App\Modules\ActiveDirectory\Utils\LdapQueryConditionsBuilder;
 use App\Services\LdapService;
 use Illuminate\Support\Arr;
 use LdapRecord\Container;
-use LdapRecord\Models\Collection;
 use LdapRecord\Models\ActiveDirectory\User;
+use LdapRecord\Models\Collection;
 
 class ADSyncJob extends ModuleScheduledJob
 {
@@ -73,7 +73,6 @@ class ADSyncJob extends ModuleScheduledJob
     {
         foreach ($entries as $user) {
             /** @var User $user */
-
             $username = $user->getFirstAttribute('sAMAccountName');
             $state = intval($user->getFirstAttribute('userAccountControl'));
             $blocked = $user->isDisabled();

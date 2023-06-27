@@ -39,7 +39,7 @@ class FileStorage extends ReferenceModel
 
     protected $casts = [
         'enabled' => 'bool',
-        'exclude' => 'bool'
+        'exclude' => 'bool',
     ];
 
     public function company(): BelongsTo

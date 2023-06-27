@@ -13,7 +13,6 @@ use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
-use Filament\Support\Components\ViewComponent;
 use Filament\Tables;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Schema;

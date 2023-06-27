@@ -205,7 +205,7 @@ class FileImportService
 
     protected function preparePath($path): ?string
     {
-        if (!$path) {
+        if (! $path) {
             return $path;
         }
 

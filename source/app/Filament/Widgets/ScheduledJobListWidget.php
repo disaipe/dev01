@@ -10,11 +10,8 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 
 class ScheduledJobListWidget extends TableWidget
 {
-    protected int | string | array $columnSpan = 2;
+    protected int|string|array $columnSpan = 2;
 
-    /**
-     * @return string|null
-     */
     public function getTableHeading(): ?string
     {
         return __('admin.$schedule.widget.title');

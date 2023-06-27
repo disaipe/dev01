@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class SDCharge extends Model
 {
     protected $connection = SDConnection::NAME;
+
     protected $table = 'chargestable';
 }

@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class SDServiceDefinition extends Model
 {
     protected $connection = SDConnection::NAME;
+
     protected $table = 'servicedefinition';
+
     protected $primaryKey = 'serviceid';
 
     public function scopeActive(Builder $query): void

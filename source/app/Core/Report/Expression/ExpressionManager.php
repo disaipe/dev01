@@ -8,7 +8,8 @@ class ExpressionManager
 {
     private array $expressions = [];
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->register(CountExpression::class);
         $this->register(SumExpression::class);
     }
@@ -16,7 +17,7 @@ class ExpressionManager
     public function register(string|array $expressions): void
     {
         foreach (Arr::wrap($expressions) as $expression) {
-            $this->expressions[class_basename($expression)]= $expression;
+            $this->expressions[class_basename($expression)] = $expression;
         }
     }
 

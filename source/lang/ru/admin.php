@@ -128,6 +128,6 @@ return [
             'attempts' => 'Попытка',
             'available at' => 'Создано',
             'reserved at' => 'Запланировано',
-        ]
+        ],
     ],
 ];

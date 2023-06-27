@@ -79,7 +79,7 @@ class ManageEngineSDServiceProvider extends ModuleBaseServiceProvider
                                         'allow' => 'Allow',
                                         'prefer' => 'Prefer',
                                         'require' => 'Require',
-                                    ])
+                                    ]),
                             ]),
 
                             Section::make(__('mesd::messages.settings'))->schema([
@@ -95,8 +95,8 @@ class ManageEngineSDServiceProvider extends ModuleBaseServiceProvider
                                         } catch (\Exception) {
                                             return [];
                                         }
-                                    })
-                            ])
+                                    }),
+                            ]),
                         ]),
 
                         Tabs\Tab::make(__('admin.description'))->schema([

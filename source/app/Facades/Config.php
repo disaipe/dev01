@@ -76,13 +76,9 @@ class Config
 
     /**
      * Try decrypt value
-     *
-     * @param string|null $value
-     * @param null $default
-     *
-     * @return string|null
      */
-    public static function decryptValue(?string $value, $default = null): ?string {
+    public static function decryptValue(?string $value, mixed $default = null): ?string
+    {
         if ($value) {
             try {
                 return Crypt::decryptString($value);
