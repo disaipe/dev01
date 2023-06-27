@@ -23,6 +23,7 @@ RUN apt install php-pear
 RUN apt -y --no-install-recommends install \
   $PHP-dev \
   $PHP-mysql \
+  $PHP-pgsql \
   $PHP-xdebug \
   $PHP-ldap \
   $PHP-gd
