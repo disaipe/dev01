@@ -4,13 +4,11 @@ namespace App\Modules\ManageEngineSD;
 
 use App\Core\Module\ModuleManager;
 use App\Core\Report\Expression\Expression;
-use App\Modules\ManageEngineSD\Models\SDServiceDefinition;
-use Filament\Facades\Filament;
 use Filament\Forms\Components\Select;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 
-class SDServiceTimeExpression implements Expression
+class SDServiceTimeExpression extends SDServiceExpression implements Expression
 {
     protected array $serviceId;
 
@@ -52,20 +50,9 @@ class SDServiceTimeExpression implements Expression
                 ->label(__('mesd::messages.$expression.$timer.service'))
                 ->helperText(__('mesd::messages.$expression.$timer.service help'))
                 ->multiple()
-                ->options(function () {
-                    try {
-                        return SDServiceDefinition::query()
-                            ->where('status', '=', 'ACTIVE')
-                            ->where('isdeleted', '=', false)
-                            ->orderBy('name')
-                            ->get()
-                            ->pluck('name', 'serviceid');
-                    } catch (\Exception $e) {
-                        Filament::notify('danger', $e->getMessage());
-
-                        return [];
-                    }
-                }),
+                ->searchable()
+                ->getSearchResultsUsing(fn ($search) => self::getServices($search))
+                ->options(self::getServices()),
         ];
     }
 }
