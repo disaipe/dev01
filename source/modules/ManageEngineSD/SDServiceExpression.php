@@ -5,7 +5,6 @@ namespace App\Modules\ManageEngineSD;
 use App\Modules\ManageEngineSD\Models\SDServiceDefinition;
 use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Str;
 
 class SDServiceExpression
 {
@@ -15,9 +14,7 @@ class SDServiceExpression
             return SDServiceDefinition::query()
                 ->where('status', '=', 'ACTIVE')
                 ->where('isdeleted', '=', false)
-                ->when($search, function (Builder $query) use ($search) {
-                    $query->whereRaw('lower(name) like ?', '%'.Str::lower($search).'%');
-                })
+                ->when($search, fn (Builder $query) => $query->whereRaw('name like ?', '%'.$search.'%'))
                 ->orderBy('name')
                 ->get()
                 ->pluck('name', 'serviceid')
