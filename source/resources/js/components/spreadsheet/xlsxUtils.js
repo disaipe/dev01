@@ -125,6 +125,7 @@ export function configure(settings = {}) {
         fillHandle: true,
         contextMenu: true,
         comments: true,
+        wordWrap: false,
         manualRowResize: true,
         manualColumnResize: true,
         mergeCells: true,

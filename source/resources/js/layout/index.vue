@@ -1,33 +1,16 @@
 <template lang='pug'>
 .app-wrapper
     el-container
-        el-aside(width='200px')
-            //- el-scrollbar
+        el-aside.overflow-hidden(width='240px')
             el-menu(router)
-                el-menu-item(:route='{ name: "dashboard" }' index='dashboard')
-                    el-icon
-                        HomeFilled
-                    div Главная
-
-                el-menu-item(:route='{ name: "report-invoice" }' index='report')
-                    .flex.items-center.space-x-2.pl-1
-                        icon(icon='teenyicons:invoice-outline' height='18')
-                        div Отчет
-
-                el-sub-menu(index='references')
-                    template(#title)
-                        .flex.items-center.space-x-2
-                            icon(icon='fluent-mdl2:product-catalog' height='18')
-                            div Справочники
-
-                    el-menu-item(
-                        v-for='route of routes'
-                        :route='{ name: route.name }'
-                        :index='route.name'
-                    )
-                        //- el-icon(v-if='route.meta.icon')
-                        //-     icon(:icon='route.meta.icon' height='18')
-                        div {{ route.meta.title }}
+                side-bar-menu-item(
+                    v-for='item of routes'
+                    :index='item.name'
+                    :route='item'
+                    :icon='item.icon'
+                    :label='item.label'
+                    :children='item.children'
+                )
 
         el-container
             el-header
@@ -101,17 +84,32 @@
 </template>
 
 <script>
-import { ref, computed, reactive } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
+import groupBy from 'lodash/groupBy';
 import orderBy from 'lodash/orderBy';
 
 import { useTabsStore, useProfilesSettingsStore } from '../store/modules';
 import usePage from '../utils/usePage';
+import SideBarMenuItem from './components/SideBarMenuItem.vue';
 import BreadCrumbs from '../components/breadcrumbs/BreadCrumbs.vue';
+
+function makeMenuTree(data) {
+    const grouped = groupBy(data, (item) => item.parent || null);
+
+    function childrenOf(parentId) {
+        const arr = (grouped[parentId] || [])
+            .map((item) => ({ ...item, children: childrenOf(item.name) }));
+
+        return orderBy(arr, ['order', 'label']);
+    }
+
+    return childrenOf(null);
+}
 
 export default {
     name: 'BaseLayout',
-    components: { BreadCrumbs },
+    components: { BreadCrumbs, SideBarMenuItem },
     setup() {
         const { cachedViews } = useTabsStore();
 
@@ -122,15 +120,46 @@ export default {
         const router = useRouter();
 
         // get reference routes
-        const tempRoutes = [];
+        const referenceRoutes = [];
         for (const route of router.getRoutes()) {
             if (route.meta?.isReference) {
-                tempRoutes.push(route);
+                referenceRoutes.push(route);
             }
         }
 
-        // order reference routes
-        const routes = reactive(orderBy(tempRoutes, [(r) => r.meta.order], ['desc']));
+        const flatRoutes = [
+            {
+                name: 'dashboard',
+                label: 'Главная',
+                icon: 'fluent-mdl2:home',
+                route: { name: 'dashboard' },
+                order: 1
+            },
+            {
+                name: 'report-invoice',
+                label: 'Отчет',
+                icon: 'teenyicons:invoice-outline',
+                route: { name: "report-invoice" },
+                order: 2
+            },
+            {
+                name: 'references',
+                label: 'Справочники',
+                icon: 'fluent-mdl2:product-catalog',
+                order: 99
+            },
+
+            ...referenceRoutes.map((r) => ({
+                name: r.name,
+                label: r.meta.title,
+                icon: r.meta.icon,
+                order: r.meta.order,
+                parent: r.meta.menuParent,
+                route: { name: r.name }
+            }))
+        ];
+
+        const routes = makeMenuTree(flatRoutes);
 
         const { user } = usePage();
 

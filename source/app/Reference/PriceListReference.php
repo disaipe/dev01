@@ -14,11 +14,13 @@ class PriceListReference extends ReferenceEntry
 
     protected ?string $icon = 'ic:outline-price-change';
 
-    protected int $order = 97;
+    protected int $order = 5;
 
     protected string|bool|null $referenceView = 'PriceListReference';
 
     protected string|bool|null $recordView = 'PriceListRecord';
+
+    protected string|null $sidebarMenuParent = null;
 
     public function getSchema(): array
     {

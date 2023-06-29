@@ -35,6 +35,7 @@ class Indicator extends Model
 
         $indicators = $indicatorManager->getIndicators();
         $values = Arr::map($indicators, fn ($indicator) => $indicator->toArray());
+        $values = Arr::sort($values, fn ($indicator) => Arr::get($indicator, 'name'));
 
         return array_values($values);
     }

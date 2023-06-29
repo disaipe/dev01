@@ -265,6 +265,8 @@ export default {
 
     th, td {
         position: relative;
+        white-space: nowrap;
+        overflow: hidden;
     }
 
     td.borderLeft,
@@ -282,6 +284,12 @@ export default {
             bottom: -1px;
             border-style: solid;
             border-color: black;
+
+            /*
+                z-index of cell selector editor = 200, borders must be below
+                to avoid conflicts
+             */
+            z-index: 199;
         }
     }
 

@@ -114,6 +114,7 @@ class ReferenceService
                 ],
                 'view' => $referenceView,
                 'recordView' => $recordView,
+                'menuParent' => $entry->getSidebarMenuParent(),
             ];
 
             $routes = [];
@@ -160,6 +161,7 @@ class ReferenceService
                 ],
                 'meta' => [
                     'title' => $entry->getPluralLabel(),
+                    'menuParent' => $entry->getSidebarMenuParent(),
                 ],
                 'children' => $routes,
             ];

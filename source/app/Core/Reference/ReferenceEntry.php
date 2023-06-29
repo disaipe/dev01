@@ -47,6 +47,11 @@ class ReferenceEntry
     protected string|bool|null $recordView;
 
     /**
+     * Sidebar menu parent item
+     */
+    protected string|null $sidebarMenuParent = 'references';
+
+    /**
      * Reference icon
      */
     protected ?string $icon = 'fluent-mdl2:product-catalog';
@@ -252,6 +257,14 @@ class ReferenceEntry
     public function getRecordView(): string|bool|null
     {
         return isset($this->recordView) ? $this->recordView : null;
+    }
+
+    /**
+     * Get Vue sidebar menu parent item
+     */
+    public function getSidebarMenuParent(): string|null
+    {
+        return $this->sidebarMenuParent;
     }
 
     /**

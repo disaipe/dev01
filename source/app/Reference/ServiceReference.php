@@ -12,7 +12,11 @@ class ServiceReference extends ReferenceEntry
 {
     protected string|ReferenceModel $model = Service::class;
 
-    protected int $order = 98;
+    protected ?string $icon = 'ion:pricetags-outline';
+
+    protected int $order = 4;
+
+    protected string|null $sidebarMenuParent = null;
 
     public function getSchema(): array
     {
@@ -47,11 +51,6 @@ class ServiceReference extends ReferenceEntry
                 ->max(512)
                 ->visible()
                 ->pinia(PiniaAttribute::string()),
-
-            'tags' => ReferenceFieldSchema::make()
-                ->label('Тэги')
-                ->array()
-                ->pinia(PiniaAttribute::attr()),
 
             'indicator_code' => ReferenceFieldSchema::make()
                 ->hidden()
