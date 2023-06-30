@@ -82,6 +82,35 @@
                                         el-link(@click='setBorder("none")')
                                             icon.text-xl(icon='material-symbols:border-clear')
 
+
+                        el-button(@click='() => alignDrop.handleOpen()')
+                            icon(icon='material-symbols:format-align-left-rounded' height='14')
+
+                            el-dropdown(
+                                ref='alignDrop'
+                                trigger='click'
+                            )
+                                span
+                                template(#dropdown)
+                                    el-dropdown-item.space-x-2(@click='setAlign("left")')
+                                        icon(icon='material-symbols:format-align-left-rounded' height='14')
+                                        span По левому краю
+                                    el-dropdown-item.space-x-2(@click='setAlign("center")')
+                                        icon(icon='material-symbols:format-align-center-rounded' height='14')
+                                        span По центру
+                                    el-dropdown-item.space-x-2(@click='setAlign("right")')
+                                        icon(icon='material-symbols:format-align-right-rounded' height='14')
+                                        span По правому краю
+                                    el-dropdown-item.space-x-2(@click='setAlign("top")' divided)
+                                        icon(icon='material-symbols:vertical-align-top-rounded' height='14')
+                                        span По верхнему краю
+                                    el-dropdown-item.space-x-2(@click='setAlign("middle")')
+                                        icon(icon='material-symbols:vertical-align-center-rounded' height='14')
+                                        span По середине
+                                    el-dropdown-item.space-x-2(@click='setAlign("bottom")')
+                                        icon(icon='material-symbols:vertical-align-bottom-rounded' height='14')
+                                        span По нижнему краю
+
                         slot(name='toolbar-actions')
 
                     .flex-1
@@ -123,6 +152,7 @@ import {
     setFontSize,
     setFontFamily,
     setBorder,
+    setAlign,
 
     useHotTable
 } from './xlsxUtils';
@@ -151,6 +181,7 @@ export default {
         const spread = ref();
         const uploader = ref();
         const borderDrop = ref();
+        const alignDrop = ref();
 
         const data = reactive({
             fontBold: null,
@@ -216,6 +247,7 @@ export default {
             spread,
             uploader,
             borderDrop,
+            alignDrop,
 
             store,
             instance,
@@ -227,6 +259,7 @@ export default {
             setFontFamily,
             setFontSize,
             setBorder,
+            setAlign,
 
             loadFromBuffer,
             loadFromBase64,

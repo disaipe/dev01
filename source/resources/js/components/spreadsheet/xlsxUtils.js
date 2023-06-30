@@ -287,6 +287,34 @@ export function configure(settings = {}) {
         afterUpdateData(sourceData, initialLoad, source) {
             syncData();
             syncSizes();
+        },
+
+        /**
+         * Fired before aligning the cell contents.
+         *
+         * @param {Object} stateBefore An object with class names defining the cell alignment.
+         * @param {Array} ranges An array of CellRange coordinates where the alignment will be applied.
+         * @param {string} type Type of the alignment - either horizontal or vertical.
+         * @param {string} alignmentClass String defining the alignment class added to the cell. Possible values:
+         *  htLeft, htCenter, htRight, htJustify, htTop, htMiddle, htBottom.
+         */
+        beforeCellAlignment(stateBefore, ranges, type, alignmentClass) {
+            for (const range of ranges) {
+                const stylesMap = {
+                    htLeft: 'left',
+                    htCenter: 'center',
+                    htRight: 'right',
+                    htTop: 'top',
+                    htMiddle: 'middle',
+                    htBottom: 'bottom'
+                };
+
+                const style = stylesMap[alignmentClass];
+
+                setRangePropertyValue(range, `style.alignment.${type}`, style);
+            }
+
+            instance.value.render();
         }
     };
 }
@@ -530,6 +558,27 @@ export function setBorder(value) {
                 setBorder('bottom', borders.bottom);
             }
         }
+    }
+
+    instance.value.render();
+}
+
+export function setAlign(value) {
+    const ranges = instance.value.getSelectedRange();
+
+    for (const range of ranges) {
+        const stylesMap = {
+            left: 'horizontal',
+            center: 'horizontal',
+            right: 'horizontal',
+            top: 'vertical',
+            middle: 'vertical',
+            bottom: 'vertical'
+        };
+
+        const type = stylesMap[value];
+
+        setRangePropertyValue(range, `style.alignment.${type}`, value);
     }
 
     instance.value.render();

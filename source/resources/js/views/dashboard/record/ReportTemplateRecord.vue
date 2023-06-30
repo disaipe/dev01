@@ -22,7 +22,7 @@
             el-dropdown-item(@click='save') Сохранить
 
         template(#toolbar-actions)
-            el-dropdown
+            el-dropdown(trigger='click')
                 el-button(type='primary') Вставить
                 template(#dropdown)
                     el-dropdown-menu
