@@ -12,8 +12,6 @@ class ContractReference extends ReferenceEntry
 {
     protected string|ReferenceModel $model = Contract::class;
 
-    protected int $order = 99;
-
     public function getSchema(): array
     {
         return [

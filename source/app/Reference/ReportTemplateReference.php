@@ -12,9 +12,15 @@ class ReportTemplateReference extends ReferenceEntry
 {
     protected string|ReferenceModel $model = ReportTemplate::class;
 
+    protected ?string $icon = 'tabler:template';
+
+    protected int $order = 6;
+
     protected string|bool|null $referenceView = 'ReportTemplateReference';
 
     protected string|bool|null $recordView = 'ReportTemplateRecord';
+
+    protected string|null $sidebarMenuParent = null;
 
     public function getSchema(): array
     {

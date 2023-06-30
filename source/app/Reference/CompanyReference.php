@@ -13,8 +13,6 @@ class CompanyReference extends ReferenceEntry
 
     protected bool $piniaBindings = false;
 
-    protected int $order = 99;
-
     public function getSchema(): array
     {
         return [

@@ -12,8 +12,6 @@ class ServiceProviderReference extends ReferenceEntry
 {
     protected string|ReferenceModel $model = ServiceProvider::class;
 
-    protected int $order = 100;
-
     public function getSchema(): array
     {
         return [
