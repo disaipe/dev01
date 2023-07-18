@@ -44,9 +44,9 @@ class ModuleManager
      */
     public function getByKey(string $key): ?Module
     {
-        $_key = Str::camel($key);
+        $_key = Str::lower($key);
 
-        return Arr::first($this->modules, fn (Module $module) => $module->getKey() === $_key);
+        return Arr::first($this->modules, fn (Module $module) => Str::lower($module->getKey()) === $_key);
     }
 
     public function getByNamespace(string $namespace): ?Module

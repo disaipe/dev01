@@ -4,6 +4,7 @@ use App\Modules\FileStorageMonitor\Enums\FileStorageSyncStatus;
 use App\Modules\FileStorageMonitor\Models\FileStorage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/api/module/fsmonitor/post-result', function (Request $request) {
@@ -13,17 +14,17 @@ Route::post('/api/module/fsmonitor/post-result', function (Request $request) {
         abort(401);
     }
 
+    try {
+        $decryptedAuth = Crypt::decryptString($auth);
+    } catch (\Exception $e) {
+        abort(401);
+    }
+
     $result = $request->all();
 
     $id = Arr::get($result, 'Id');
     $size = Arr::get($result, 'Size');
     $duration = Arr::get($result, 'Duration');
-
-    try {
-        $decryptedAuth = \Illuminate\Support\Facades\Crypt::decryptString($auth);
-    } catch (\Exception $e) {
-        abort(401);
-    }
 
     [$_id, $_appUrl] = explode('|', $decryptedAuth);
 
