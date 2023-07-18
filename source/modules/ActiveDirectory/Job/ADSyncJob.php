@@ -45,6 +45,7 @@ class ADSyncJob extends ModuleScheduledJob
                 'msRTCSIP-UserEnabled', // sip enabled flag
                 'logonCount',           // logon count
                 'lastLogon',            // last logon timestamp
+                'msExchMailboxGuid',    // MS exchange GUID
             ]);
 
         if ($filters) {
@@ -77,6 +78,7 @@ class ADSyncJob extends ModuleScheduledJob
             $state = intval($user->getFirstAttribute('userAccountControl'));
             $blocked = $user->isDisabled();
             $lastLogonDate = $user->getAttribute('lastlogon') ?: null;
+            $msExchMailboxGuid = $user->getFirstAttribute('msExchMailboxGuid');
 
             $record = [
                 'company_prefix' => $user->getFirstAttribute('employeeType'),
@@ -92,6 +94,7 @@ class ADSyncJob extends ModuleScheduledJob
                 'logon_count' => intval($user->getFirstAttribute('logonCount')),
                 'state' => $state,
                 'sip_enabled' => $user->getFirstAttribute('msRTCSIP-UserEnabled') === 'TRUE',
+                'mailbox_guid' => $msExchMailboxGuid,
                 'blocked' => $blocked,
             ];
 

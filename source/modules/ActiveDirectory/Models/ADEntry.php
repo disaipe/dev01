@@ -30,6 +30,7 @@ class ADEntry extends ReferenceModel
         'logon_count',
         'state',
         'sip_enabled',
+        'mailbox_guids',
         'blocked',
     ];
 

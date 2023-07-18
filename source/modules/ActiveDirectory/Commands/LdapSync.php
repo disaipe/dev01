@@ -26,8 +26,7 @@ class LdapSync extends Command
      */
     public function handle(): int
     {
-        $job = new ADSyncJob();
-        $job->handle();
+        ADSyncJob::dispatchSync();
 
         return Command::SUCCESS;
     }
