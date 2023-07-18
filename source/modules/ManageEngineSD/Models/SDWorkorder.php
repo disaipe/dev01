@@ -70,9 +70,9 @@ class SDWorkorder extends ReferenceModel
         );
     }
 
-    public function scopeCompany(Builder $query, string $code): Builder
+    public function scopeCompany(Builder $query, string $code): void
     {
-        return $query->whereRelation('organization', 'description', '=', $code);
+        $query->whereRelation('organization', 'description', '=', $code);
     }
 
     public function scopePeriod(Builder $query, Carbon $from, Carbon $to): Builder

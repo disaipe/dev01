@@ -9,8 +9,8 @@ trait CompanyScope
     /**
      * Scope a query to only include records of a given company
      */
-    public function scopeCompany(Builder $query, string $code): Builder
+    public function scopeCompany(Builder $query, string $code): void
     {
-        return $query->where($this->companyCodeColumn ?? 'company_code', '=', $code);
+        $query->where($this->companyCodeColumn ?? 'company_code', '=', $code);
     }
 }

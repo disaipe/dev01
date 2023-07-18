@@ -50,11 +50,9 @@ class ReferenceService
                     $company = App\Models\Company::query()->firstWhere("code", "=", $code);
 
                     if ($company) {
-                        return $query->where("company_id", "=", $company->getKey());
+                        $query->where("company_id", "=", $company->getKey());
                     }
                 }
-
-                return $query;
             }
         };');
 
