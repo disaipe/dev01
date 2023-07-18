@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class SDServiceExpression
 {
-    static function getServices(string $search = null): array
+    public static function getServices(string $search = null): array
     {
         try {
             return SDServiceDefinition::query()

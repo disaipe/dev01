@@ -21,7 +21,7 @@ return [
         'MSEXMONITOR_MAILBOX_SIZE_SUM' => 'Размер всех почтовых ящиков организации',
         'MSEXMONITOR_MAILBOX_COUNT' => 'Количество всех почтовых ящиков организации',
         'MSEXMONITOR_MAILBOX_OVERSIZE_COUNT' => 'Количество почтовых ящиков с превышенным лимитом',
-        'MSEXMONITOR_MAILBOX_OVERSIZE_SUM' => 'Сумма дополнительного размера почтовых ящиков'
+        'MSEXMONITOR_MAILBOX_OVERSIZE_SUM' => 'Сумма дополнительного размера почтовых ящиков',
     ],
 
     'action' => [
@@ -38,6 +38,6 @@ return [
         'mailbox size sync' => [
             'title' => 'Синхронизация размера почтовых ящиков',
             'description' => 'Периодическая синхронизация размеров почтовых ящиков на сервере MS Exchange',
-        ]
-    ]
+        ],
+    ],
 ];

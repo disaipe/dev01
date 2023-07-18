@@ -23,7 +23,7 @@ class MSExchangeStatsSyncJob extends ModuleScheduledJob
         $headers = [
             'Content-Type' => 'application/json',
             'X-SECRET' => $secret,
-            'X-APP-AUTH' => Crypt::encryptString($id . '|' . config('app.url')),
+            'X-APP-AUTH' => Crypt::encryptString($id.'|'.config('app.url')),
         ];
 
         $resp = Http::baseUrl($baseUrl)
@@ -38,7 +38,7 @@ class MSExchangeStatsSyncJob extends ModuleScheduledJob
         if ($resp->ok()) {
             $status = $resp->json('Status');
 
-            if (!$status) {
+            if (! $status) {
                 $lastError = 'API Error';
                 $lastStatus = false;
             }

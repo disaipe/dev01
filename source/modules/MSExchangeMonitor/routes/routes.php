@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 Route::any('/api/module/msexmonitor/post-result', function (Request $request) {
     $auth = $request->header('X-APP-AUTH');
 
-    if (!$auth) {
+    if (! $auth) {
         abort(401);
     }
 
@@ -36,7 +36,7 @@ Route::any('/api/module/msexmonitor/post-result', function (Request $request) {
     $errorMessage = Arr::get($result, 'Error');
     $items = Arr::get($result, 'Items');
 
-    if (!$status) {
+    if (! $status) {
         Log::error("[MSExchangeMailboxStat] Error: $errorMessage");
 
         abort(400);

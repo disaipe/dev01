@@ -145,7 +145,7 @@ class MSExchangeMonitorServiceProvider extends ModuleBaseServiceProvider
                                         ->label(__('msexmonitor::messages.oversize step'))
                                         ->helperText(__('msexmonitor::messages.oversize step help'))
                                         ->numeric(),
-                                ])
+                                ]),
                             ]),
 
                             Section::make(__('msexmonitor::messages.job.mailbox size sync.title'))

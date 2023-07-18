@@ -29,13 +29,13 @@ class OversizeSumExpression implements Expression
             ->where('total_item_size', '>', Size::Gigabyte($limitF))
             ->get();
 
-        return $items->sum(fn($model) => ($model['oversizeGb']));
+        return $items->sum(fn ($model) => ($model['oversizeGb']));
     }
 
     public static function label(): string
     {
         // internal indicator, no label required
-        return "";
+        return '';
     }
 
     public static function form(): array
