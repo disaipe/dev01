@@ -4,6 +4,7 @@ namespace App\Filament\Components;
 
 use Closure;
 use Filament\Forms\Components\Builder;
+use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 
@@ -78,6 +79,13 @@ class ConditionBuilder extends Builder
                         ->disableLabel()
                         ->afterStateUpdated(fn () => $this->callAfterStateUpdated()),
                 ]),
+
+            Builder\Block::make('raw')
+                ->label(__('admin.raw'))
+                ->schema(fn () => [
+                    TextInput::make('value')
+                        ->helperText(__('admin.raw condition help')),
+                ]),
         ]);
 
         return parent::getBlocks();
@@ -90,7 +98,7 @@ class ConditionBuilder extends Builder
         return $this;
     }
 
-    protected function getFieldInput()
+    protected function getFieldInput(): Field
     {
         if ($this->fieldsOptions) {
             $component = Select::make('field')

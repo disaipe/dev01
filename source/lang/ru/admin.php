@@ -52,6 +52,9 @@ return [
     'condition' => 'Условие',
     'value' => 'Значение',
 
+    'raw' => 'RAW',
+    'raw condition help' => 'Введите текст условия вручную, например `and year(OrderDate) = year(NOW()))`',
+
     'add' => 'Добавить',
 
     'menu' => [

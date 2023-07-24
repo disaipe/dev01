@@ -34,6 +34,10 @@ class QueryConditionsBuilder
         } elseif ($type === 'or' or $type === 'and') {
             $conditions = Arr::get($condition, "data.$type");
             static::parseGroups($query, $conditions, $type);
+        } elseif ($type === 'raw') {
+            $value = Arr::get($condition, 'data.value');
+
+            $query->whereRaw($value);
         }
     }
 }
