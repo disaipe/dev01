@@ -10,6 +10,7 @@ use App\Services\LdapService;
 use Illuminate\Support\Arr;
 use LdapRecord\Container;
 use LdapRecord\Models\ActiveDirectory\User;
+use LdapRecord\Models\Attributes\Guid;
 use LdapRecord\Models\Collection;
 
 class ADSyncJob extends ModuleScheduledJob
@@ -79,6 +80,11 @@ class ADSyncJob extends ModuleScheduledJob
             $blocked = $user->isDisabled();
             $lastLogonDate = $user->getAttribute('lastlogon') ?: null;
             $msExchMailboxGuid = $user->getFirstAttribute('msExchMailboxGuid');
+
+            if ($msExchMailboxGuid) {
+                $guid = new Guid($msExchMailboxGuid);
+                $msExchMailboxGuid = $guid->getValue();
+            }
 
             $record = [
                 'company_prefix' => $user->getFirstAttribute('employeeType'),
