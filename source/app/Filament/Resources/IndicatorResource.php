@@ -87,6 +87,13 @@ class IndicatorResource extends Resource
                             ->disableLabel()
                             ->reactive()
                             ->fields(fn ($get) => $get('__referenceFields')),
+
+                        Forms\Components\Section::make(__('admin.$indicator.placeholders'))
+                            ->collapsed()
+                            ->schema([
+                                Forms\Components\ViewField::make('placeholdersHelp')
+                                    ->view('admin.help.indicatorPlaceholders')
+                            ])
                     ]),
             ]);
     }

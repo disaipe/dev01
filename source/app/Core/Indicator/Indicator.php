@@ -104,16 +104,17 @@ class Indicator
     /**
      * Calculate indicator value
      *
-     * @param  Builder  $query query modifier
+     * @param Builder $query query modifier
+     * @param array $context query context
      */
-    public function exec(Builder $query): mixed
+    public function exec(Builder $query, array $context = []): mixed
     {
         $expressionQuery = $this->query
             ? ($this->query)($query)
             : $query;
 
         if ($this->conditions) {
-            QueryConditionsBuilder::applyToQuery($expressionQuery, $this->conditions);
+            QueryConditionsBuilder::applyToQuery($expressionQuery, $this->conditions, $context);
         }
 
         $result = $this->expression?->exec($expressionQuery);

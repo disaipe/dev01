@@ -174,7 +174,7 @@ class ReportService
                 $scopedQuery = $this->getScopedBaseQuery($indicator->model, $this->companyCode);
 
                 try {
-                    $result = $indicator->exec($scopedQuery);
+                    $result = $indicator->exec($scopedQuery, $this->getContext());
 
                     $results[$serviceKey]['value'] = $result;
                 } catch (\Exception $e) {
@@ -262,6 +262,18 @@ class ReportService
             ->where('service_provider_id', '=', $this->template->service_provider_id)
             ->where('is_actual', '=', true)
             ->first();
+    }
+
+    protected function getContext(): array {
+        $period = Carbon::make($this->period);
+
+        return [
+            'PERIOD' => $this->period,
+            'PERIOD_YEAR' => $period->year,
+            'PERIOD_MONTH' => $period->month,
+            'COMPANY_ID' => $this->company->getKey(),
+            'COMPANY_CODE' => $this->company->code,
+        ];
     }
 
     /**

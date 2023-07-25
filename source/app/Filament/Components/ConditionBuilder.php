@@ -81,10 +81,10 @@ class ConditionBuilder extends Builder
                 ]),
 
             Builder\Block::make('raw')
-                ->label(__('admin.raw'))
+                ->label(__('admin.$indicator.raw'))
                 ->schema(fn () => [
                     TextInput::make('value')
-                        ->helperText(__('admin.raw condition help')),
+                        ->helperText(__('admin.$indicator.raw condition help')),
                 ]),
         ]);
 
