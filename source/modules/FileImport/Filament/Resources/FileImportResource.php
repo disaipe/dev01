@@ -6,7 +6,6 @@ use App\Filament\Components\CronExpressionInput;
 use App\Forms\Components\RawHtmlContent;
 use App\Models\CustomReference;
 use App\Modules\FileImport\Filament\Resources\FileImportResource\Pages;
-use App\Modules\FileImport\FileImportCompanySyncType;
 use App\Modules\FileImport\Models\FileImport;
 use Cron\CronExpression;
 use Filament\Forms;
@@ -93,24 +92,6 @@ class FileImportResource extends Resource
                         ->afterStateHydrated(FileImportResource::getCustomReference(...))
                         ->afterStateUpdated(FileImportResource::getCustomReference(...))
                         ->columnSpanFull(),
-
-                    Forms\Components\Fieldset::make(__('fileimport::messages.company linking'))
-                        ->visible(fn ($get) => $get('__hasCompanyContext'))
-                        ->schema([
-                            Forms\Components\Select::make('options.company_prefix.type')
-                                ->label(__('fileimport::messages.fields schema.company prefix type'))
-                                ->helperText(__('fileimport::messages.fields schema.company prefix type help'))
-                                ->options([
-                                    FileImportCompanySyncType::Id->value => __('fileimport::messages.fields schema.by company id'),
-                                    FileImportCompanySyncType::Code->value => __('fileimport::messages.fields schema.by company code'),
-                                ])
-                                ->required(),
-
-                            Forms\Components\TextInput::make('options.company_prefix.field')
-                                ->label(__('fileimport::messages.fields schema.company prefix column'))
-                                ->helperText(__('fileimport::messages.fields schema.company prefix column help'))
-                                ->required(),
-                        ]),
 
                     CronExpressionInput::make('options.schedule')
                         ->label(__('admin.schedule')),

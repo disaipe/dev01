@@ -45,39 +45,12 @@ class FileImportService
         $fields = Arr::get($fileImport->options, 'fields', []);
         $columns = Arr::pluck($fields, 'ref', 'file');
 
-        $companySyncType = null;
-        $companySyncColumn = null;
-        $companyColumn = null;
-        $companies = null;
-
-        if ($customReference->company_context) {
-            $companySyncType = Arr::get($fileImport->options, 'company_prefix.type');
-            $companySyncColumn = Arr::get($fileImport->options, 'company_prefix.field');
-
-            $fields = Arr::where($fields, function ($v) use ($companySyncColumn) {
-                return $v['ref'] !== 'company_id' && $v['file'] !== $companySyncColumn;
-            });
-        }
-
         $file = static::make($fileImport->path);
         $data = $file->getFilteredRows(array_keys($columns), $columns);
 
         $tableColumnTypes = Arr::pluck($customReference->getFields(), 'type', 'name');
 
-        if ($customReference->company_context && $companySyncType === FileImportCompanySyncType::Code->value) {
-            $companies = Company::query()->get()->pluck('id', 'code');
-            $companyColumn = $columns[$companySyncColumn];
-        }
-
         foreach ($data as &$row) {
-            if ($customReference->company_context && $companySyncType === FileImportCompanySyncType::Code->value) {
-                $companyId = $row[$companyColumn]
-                    ? Arr::get($companies, $row[$companyColumn])
-                    : null;
-
-                $row[$companyColumn] = $companyId;
-            }
-
             foreach ($row as $column => &$value) {
                 $columnType = Arr::get($tableColumnTypes, $column);
 

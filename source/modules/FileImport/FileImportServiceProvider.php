@@ -18,7 +18,7 @@ class FileImportServiceProvider extends ModuleBaseServiceProvider
 {
     protected string $namespace = 'fileimport';
 
-    public function onBooting()
+    public function onBooting(): void
     {
         Filament::registerResources([
             FileImportResource::class,
