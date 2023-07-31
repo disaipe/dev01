@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Core\Enums\CustomReferenceContextType;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceManager;
 use App\Models\CustomReference;
@@ -26,33 +27,25 @@ class ReferenceService
 
         $tableName = CustomReferenceTableService::getTableName($customReference->name);
         $companyContext = ($customReference->company_context ? 'true' : 'false');
+        $contextType = $customReference->context_type ?? CustomReferenceContextType::Id->value;
 
         /** @var Reference $instance */
         $instance = null;
 
         eval('$instance = new class() extends \App\Models\Reference
         {
-            public static bool $companyContext = '.$companyContext.';
-
             public function getTable()
             {
                 return "'.$tableName.'";
             }
 
-            public function company()
-            {
-                return $this->belongsTo(App\Models\Company::class, "company_id");
+            public function hasCompanyContext(): bool {
+                return '.$companyContext.';
             }
 
-            public function scopeCompany($query, string $code)
+            public function getContextType(): \App\Core\Enums\CustomReferenceContextType
             {
-                if (static::$companyContext) {
-                    $company = App\Models\Company::query()->firstWhere("code", "=", $code);
-
-                    if ($company) {
-                        $query->where("company_id", "=", $company->getKey());
-                    }
-                }
+                return \App\Core\Enums\CustomReferenceContextType::from("'.$contextType.'");
             }
         };');
 

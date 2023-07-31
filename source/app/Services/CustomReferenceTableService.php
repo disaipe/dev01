@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Core\Enums\CustomReferenceContextType;
 use App\Models\CustomReference;
 use Doctrine\DBAL\Schema\Table;
 use Illuminate\Support\Arr;
@@ -23,15 +24,20 @@ class CustomReferenceTableService
 
         // company context - column and foreign key
         if ($reference->company_context) {
-            $column = $table->addColumn('company_id', 'bigint', ['unsigned' => true]);
-            $column->setNotnull(false);
+            if ($reference->context_type === CustomReferenceContextType::Code->value) {
+                $column = $table->addColumn('company_code', 'string', ['length' => 16]);
+                $column->setNotnull(false);
+            } else {
+                $column = $table->addColumn('company_id', 'bigint', ['unsigned' => true]);
+                $column->setNotnull(false);
 
-            $table->addForeignKeyConstraint(
-                'companies',
-                ['company_id'],
-                ['id'],
-                ['onDelete' => 'CASCADE']
-            );
+                $table->addForeignKeyConstraint(
+                    'companies',
+                    ['company_id'],
+                    ['id'],
+                    ['onDelete' => 'CASCADE']
+                );
+            }
         }
 
         if (is_array($reference->schema)) {

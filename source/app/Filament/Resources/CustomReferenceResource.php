@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Core\Enums\CustomReferenceContextType;
 use App\Filament\Resources\CustomReferenceResource\Pages;
 use App\Models\CustomReference;
 use Filament\Forms;
@@ -55,11 +56,25 @@ class CustomReferenceResource extends Resource
                         ->maxLength(64)
                         ->required(),
 
-                    Forms\Components\Toggle::make('company_context')
-                        ->label('Контекст организации')
-                        ->helperText('Добавить колонку организации для создания привязки записи справочника к организации')
-                        ->default(true)
-                        ->columnSpanFull(),
+                    Forms\Components\Grid::make()->schema([
+                        Forms\Components\Toggle::make('company_context')
+                            ->label('Контекст организации')
+                            ->helperText('Добавить колонку организации для создания привязки записи справочника к организации')
+                            ->default(true),
+
+                        Forms\Components\Select::make('context_type')
+                            ->label('Значение организации')
+                            ->helperText(
+                                'Укажите тип хранения контекста организации - по коду или идентификатору. Предпочтительнее использовать'
+                                . ' идентификатор, но при необходимости (например, при интеграции из сторонних систем)'
+                                . ' можете использовать префикс организации.'
+                            )
+                            ->disablePlaceholderSelection()
+                            ->options([
+                                CustomReferenceContextType::Id->value => 'По id (company_id)',
+                                CustomReferenceContextType::Code->value => 'По коду (company_code)',
+                            ]),
+                    ]),
 
                     Forms\Components\Toggle::make('enabled')
                         ->label('Активно')

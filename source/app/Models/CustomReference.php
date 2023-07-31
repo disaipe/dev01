@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Core\Enums\CustomReferenceContextType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -12,6 +13,7 @@ use Illuminate\Support\Arr;
  * @property string label
  * @property string plural_label
  * @property bool company_context
+ * @property string context_type
  * @property array schema
  */
 class CustomReference extends Model
@@ -22,6 +24,7 @@ class CustomReference extends Model
         'label',
         'plural_label',
         'company_context',
+        'context_type',
         'schema',
         'enabled',
     ];
@@ -40,11 +43,19 @@ class CustomReference extends Model
         $fields = Arr::get($this->schema, 'fields');
 
         if ($this->company_context) {
-            $fields[] = [
-                'display_name' => trans_choice('reference.Company', 1),
-                'name' => 'company_id',
-                'type' => 'int',
-            ];
+            if ($this->context_type === CustomReferenceContextType::Code->value) {
+                $fields[] = [
+                    'display_name' => trans_choice('reference.Company', 1),
+                    'name' => 'company_code',
+                    'type' => 'string',
+                ];
+            } else {
+                $fields[] = [
+                    'display_name' => trans_choice('reference.Company', 1),
+                    'name' => 'company_id',
+                    'type' => 'int',
+                ];
+            }
         }
 
         return $fields;

@@ -2,6 +2,7 @@
 
 namespace App\Core\Reference;
 
+use App\Core\Enums\CustomReferenceContextType;
 use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Models\CustomReference;
 use App\Services\ReferenceService;
@@ -99,16 +100,29 @@ class ReferenceEntry
         $fields = Arr::get($customReference->schema, 'fields', []);
 
         if ($customReference->company_context) {
-            $entry->schema['company_id'] = ReferenceFieldSchema::make()
-                ->pinia(PiniaAttribute::number())
-                ->hidden();
+            if ($customReference->context_type === CustomReferenceContextType::Code->value) {
+                $entry->schema['company_code'] = ReferenceFieldSchema::make()
+                    ->pinia(PiniaAttribute::string())
+                    ->hidden();
 
-            $entry->schema['company'] = ReferenceFieldSchema::make()
-                ->label('Организация')
-                ->required()
-                ->visible()
-                ->eagerLoad()
-                ->pinia(PiniaAttribute::belongsTo('Company', 'company_id'));
+                $entry->schema['company'] = ReferenceFieldSchema::make()
+                    ->label('Организация')
+                    ->required()
+                    ->visible()
+                    ->eagerLoad()
+                    ->pinia(PiniaAttribute::belongsTo('Company', 'company_code', 'code'));
+            } else {
+                $entry->schema['company_id'] = ReferenceFieldSchema::make()
+                    ->pinia(PiniaAttribute::number())
+                    ->hidden();
+
+                $entry->schema['company'] = ReferenceFieldSchema::make()
+                    ->label('Организация')
+                    ->required()
+                    ->visible()
+                    ->eagerLoad()
+                    ->pinia(PiniaAttribute::belongsTo('Company', 'company_id'));
+            }
         }
 
         foreach ($fields as $field) {
