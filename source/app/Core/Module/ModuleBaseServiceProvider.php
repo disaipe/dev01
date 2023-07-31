@@ -53,7 +53,7 @@ class ModuleBaseServiceProvider extends ServiceProvider
 
     public function schedule(Schedule $schedule)
     {
-        // insert sheduled jobs here
+        // insert scheduled jobs here
     }
 
     /**
@@ -88,10 +88,9 @@ class ModuleBaseServiceProvider extends ServiceProvider
 
         /** @var Module $module */
         $module = app('modules')->register($this, $this->getKey());
+        $this->module = $module;
 
-        if ($module->isEnabled()) {
-            $this->module = $module;
-
+        if ($module && $module->isEnabled()) {
             $this->init();
 
             if ($this->options) {
