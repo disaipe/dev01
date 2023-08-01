@@ -17,6 +17,7 @@ class ModuleManager
     public function register(ModuleBaseServiceProvider $provider, string $key): Module
     {
         $provider->loadTranslations();
+        $provider->loadViews();
 
         $module = new Module($provider, $key, $provider->getOptions());
         Arr::set($this->modules, $key, $module);

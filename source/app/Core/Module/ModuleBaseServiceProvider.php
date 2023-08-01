@@ -113,6 +113,11 @@ class ModuleBaseServiceProvider extends ServiceProvider
         return $this->basePath.'/resources/lang';
     }
 
+    public function getViewsDirectory(): string
+    {
+        return $this->basePath.'/resources/view';
+    }
+
     public function loadTranslations(): void
     {
         $this->loadTranslationsFrom($this->getTranslationsDirectory(), $this->namespace);
@@ -121,6 +126,11 @@ class ModuleBaseServiceProvider extends ServiceProvider
     public function loadMigrations(): void
     {
         $this->loadMigrationsFrom($this->getMigrationsDirectory());
+    }
+
+    public function loadViews(): void
+    {
+        $this->loadViewsFrom($this->getViewsDirectory(), $this->namespace);
     }
 
     public function getOptions(): array
