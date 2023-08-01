@@ -3,6 +3,7 @@
 namespace App\Modules\ManageEngineSD;
 
 use App\Core\Module\ModuleBaseServiceProvider;
+use App\Core\Reference\ReferenceManager;
 use App\Core\Report\Expression\ExpressionManager;
 use App\Facades\Config;
 use App\Modules\ManageEngineSD\Models\SDStatusDefinition;
@@ -21,8 +22,8 @@ class ManageEngineSDServiceProvider extends ModuleBaseServiceProvider
     {
         $this->setupDatabaseConnection();
 
-        $this->loadMigrationsFrom(__DIR__.'/migrations');
-        $this->loadViewsFrom(__DIR__.'/resources/view', $this->namespace);
+        $this->loadMigrations();
+        $this->loadViews();
 
         /** @var ReferenceManager $references */
         $references = app('references');
@@ -60,7 +61,8 @@ class ManageEngineSDServiceProvider extends ModuleBaseServiceProvider
 
                                 TextInput::make('db_port')
                                     ->label(__('mesd::messages.port'))
-                                    ->numeric(),
+                                    ->numeric()
+                                    ->required(),
 
                                 TextInput::make('db_username')
                                     ->label(__('mesd::messages.login')),

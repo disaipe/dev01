@@ -2,9 +2,7 @@
 
 namespace App\Modules\FileImport\Services;
 
-use App\Models\Company;
 use App\Models\CustomReference;
-use App\Modules\FileImport\FileImportCompanySyncType;
 use App\Modules\FileImport\Models\FileImport;
 use App\Services\ReferenceService;
 use Carbon\Carbon;

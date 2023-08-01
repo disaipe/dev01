@@ -20,6 +20,8 @@ use App\Modules\ActiveDirectory\Models\ADEntry;
 use App\Modules\ActiveDirectory\Utils\LdapQueryConditionsBuilder;
 use App\Services\LdapService;
 use Cron\CronExpression;
+use Error;
+use Exception;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Section;
@@ -37,7 +39,7 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
 
     public function init(): void
     {
-        $this->loadMigrationsFrom(__DIR__.'/migrations');
+        $this->loadMigrations();
 
         $this->commands([
             LdapSync::class,
@@ -151,23 +153,23 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
         ];
     }
 
-    public function schedule(Schedule $schedule)
+    public function schedule(Schedule $schedule): void
     {
         $this->scheduleJob($schedule, new ADSyncJob(), 'LdapSync');
     }
 
-    public function runJob()
+    public function runJob(): void
     {
         try {
             ADSyncJob::dispatch();
             Filament::notify('success', __('admin.job started'));
-        } catch (\Exception|\Error $e) {
+        } catch (Exception|Error $e) {
             Filament::notify('danger', __('admin.job staring error'), $e->getMessage());
             Log::error($e);
         }
     }
 
-    public function runFiltersTest($config)
+    public function runFiltersTest($config): void
     {
         $domainId = Arr::get($config, 'domain_id');
         $filters = Arr::get($config, 'filters');
@@ -206,7 +208,7 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
             } else {
                 Filament::notify('warning', __('ad::messages.action.test filters.records not found'));
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Filament::notify('danger', $e->getMessage());
         }
     }

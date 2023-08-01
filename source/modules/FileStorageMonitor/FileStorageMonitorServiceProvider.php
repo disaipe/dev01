@@ -33,9 +33,9 @@ class FileStorageMonitorServiceProvider extends ModuleBaseServiceProvider
 
     public function init(): void
     {
-        $this->loadMigrationsFrom(__DIR__.'/migrations');
+        $this->loadMigrations();
+        $this->loadViews();
         $this->loadRoutesFrom(__DIR__.'/routes/routes.php');
-        $this->loadViewsFrom(__DIR__.'/resources/view', $this->namespace);
 
         /** @var ReferenceManager $references */
         $references = app('references');
@@ -141,12 +141,12 @@ class FileStorageMonitorServiceProvider extends ModuleBaseServiceProvider
         ];
     }
 
-    public function schedule(Schedule $schedule)
+    public function schedule(Schedule $schedule): void
     {
         $this->scheduleJob($schedule, new FileStoragesSyncJob(), 'FileStorageSync');
     }
 
-    public function testConnection($state)
+    public function testConnection($state): void
     {
         $appUrl = Arr::get($state, 'base_url');
         $secret = Arr::get($state, 'secret');
@@ -173,7 +173,7 @@ class FileStorageMonitorServiceProvider extends ModuleBaseServiceProvider
         Filament::notify($notifyType, $notifyMessage);
     }
 
-    public function runAllStoragesJob()
+    public function runAllStoragesJob(): void
     {
         try {
             FileStoragesSyncJob::dispatch();

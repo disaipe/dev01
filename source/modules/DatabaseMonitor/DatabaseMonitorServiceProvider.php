@@ -32,8 +32,7 @@ class DatabaseMonitorServiceProvider extends ModuleBaseServiceProvider
 
     public function init(): void
     {
-        $this->loadMigrationsFrom(__DIR__.'/migrations');
-        $this->loadViewsFrom(__DIR__.'/resources/view', $this->namespace);
+        $this->loadMigrations();
 
         /** @var ReferenceManager $references */
         $references = app('references');
@@ -133,12 +132,12 @@ class DatabaseMonitorServiceProvider extends ModuleBaseServiceProvider
         ];
     }
 
-    public function schedule(Schedule $schedule)
+    public function schedule(Schedule $schedule): void
     {
         $this->scheduleJob($schedule, new DatabaseServersSyncJob(), 'DatabaseServerSync');
     }
 
-    public function runAllServersJob()
+    public function runAllServersJob(): void
     {
         try {
             DatabaseServersSyncJob::dispatch();

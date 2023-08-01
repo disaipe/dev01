@@ -42,8 +42,8 @@ class FileImportServiceProvider extends ModuleBaseServiceProvider
 
     public function init(): void
     {
-        $this->loadMigrationsFrom(__DIR__.'/migrations');
-        $this->loadViewsFrom(__DIR__.'/resources/view', $this->namespace);
+        $this->loadMigrations();
+        $this->loadViews();
 
         $this->commands([
             ImportFilesCommand::class,
@@ -67,7 +67,7 @@ class FileImportServiceProvider extends ModuleBaseServiceProvider
         ];
     }
 
-    public function schedule(Schedule $schedule)
+    public function schedule(Schedule $schedule): void
     {
         $fileImports = FileImport::query()->enabled()->whereNotNull('options')->get();
 
