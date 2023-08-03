@@ -53,6 +53,9 @@ class ADSyncJob extends ModuleScheduledJob
             LdapQueryConditionsBuilder::applyToQuery($query, $filters);
         }
 
+        // Truncate table to remove records not presented after filter changes
+        ADEntry::query()->truncate();
+
         foreach ($baseOUs as $ou) {
             $query->in($ou);
 
