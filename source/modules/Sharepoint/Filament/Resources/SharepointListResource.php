@@ -92,55 +92,46 @@ class SharepointListResource extends Resource
 
                         Forms\Components\TextInput::make('list_site')
                             ->label(__('sharepoint::messages.list site')),
-                    ]),
 
-                    Forms\Components\Select::make('custom_reference_id')
-                        ->label(__('sharepoint::messages.reference'))
-                        ->helperText(__('sharepoint::messages.reference help'))
-                        ->relationship('reference', 'display_name')
-                        ->required()
-                        ->reactive()
-                        ->afterStateHydrated(SharepointListResource::getCustomReference(...))
-                        ->afterStateUpdated(SharepointListResource::getCustomReference(...))
-                        ->columnSpanFull(),
+                        Forms\Components\Select::make('custom_reference_id')
+                            ->label(__('sharepoint::messages.reference'))
+                            ->helperText(__('sharepoint::messages.reference help'))
+                            ->relationship('reference', 'display_name')
+                            ->required()
+                            ->reactive()
+                            ->afterStateHydrated(SharepointListResource::getCustomReference(...))
+                            ->afterStateUpdated(SharepointListResource::getCustomReference(...)),
 
-                    Forms\Components\Fieldset::make(__('sharepoint::messages.company linking'))
-                        ->visible(fn($get) => $get('__hasCompanyContext'))
-                        ->schema([
-                            Forms\Components\TextInput::make('options.company_prefix.field')
-                                ->label(__('sharepoint::messages.company prefix field'))
-                                ->helperText(__('sharepoint::messages.company prefix field help'))
-                                ->required(),
+                        Forms\Components\Select::make('options.company_prefix.field')
+                            ->label(__('sharepoint::messages.company prefix field'))
+                            ->helperText(__('sharepoint::messages.company prefix field help'))
+                            ->required()
+                            ->options(function ($get, $set) use ($sharepointService) {
+                                $result = [];
 
-                            Forms\Components\Select::make('options.company_prefix.field2')
-                                ->label(__('sharepoint::messages.company prefix field'))
-                                ->helperText(__('sharepoint::messages.company prefix field help'))
-                                ->options(function ($get, $set) use ($sharepointService) {
-                                    $result = [];
+                                $listName = $get('list_name');
+                                $listSite = $get('list_site');
 
-                                    $listName = $get('list_name');
-                                    $listSite = $get('list_site');
+                                if ($listName) {
+                                    $sharepointList = $sharepointService->getList($listName, $listSite);
 
-                                    if ($listName) {
-                                        $sharepointList = $sharepointService->getList($listName, $listSite);
+                                    if ($sharepointList) {
+                                        $fields = $sharepointList->getFields();
 
-                                        if ($sharepointList) {
-                                            $fields = $sharepointList->getFields();
+                                        if ($fields) {
+                                            $visibleFields = Arr::where($fields, fn($field) => Arr::get($field, 'Hidden') !== 'TRUE');
+                                            $options = Arr::pluck($visibleFields, 'DisplayName', 'ColName');
 
-                                            if ($fields) {
-                                                $visibleFields = Arr::where($fields, fn($field) => Arr::get($field, 'Hidden') !== 'TRUE');
-                                                $options = Arr::pluck($visibleFields, 'DisplayName', 'ColName');
-
-                                                $set('__list_fields', $options);
-                                                return $options;
-                                            }
+                                            $set('__list_fields', $options);
+                                            return $options;
                                         }
                                     }
+                                }
 
-                                    $set('__list_fields', []);
-                                    return $result;
-                                }),
-                        ]),
+                                $set('__list_fields', []);
+                                return $result;
+                            }),
+                    ]),
 
                     CronExpressionInput::make('options.schedule')
                         ->label(__('admin.schedule')),
