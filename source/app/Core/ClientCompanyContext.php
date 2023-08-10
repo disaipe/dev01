@@ -37,6 +37,7 @@ class ClientCompanyContext
 
                 if ($company) {
                     $this->companyContextCode = $company->code;
+
                     return;
                 }
             } else {
@@ -50,6 +51,7 @@ class ClientCompanyContext
                     $this->companyContextCode = $company->code;
 
                     setcookie(self::COMPANY_CONTEXT_COOKIE_NAME, $this->companyContextId, ['path' => '/']);
+
                     return;
                 }
             }

@@ -68,6 +68,6 @@ class ContractReference extends ReferenceEntry
 
     public function canUpdate(User $user = null): bool
     {
-        return !$user?->isClient();
+        return ! $user?->isClient();
     }
 }

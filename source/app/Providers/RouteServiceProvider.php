@@ -54,7 +54,7 @@ class RouteServiceProvider extends ServiceProvider
                 $prefix = $reference->getPrefix();
                 $controller = $reference->controller();
 
-                Route::prefix($prefix)->group(function () use ($reference, $controller) {
+                Route::prefix($prefix)->group(function () use ($controller) {
                     Route::post('', $controller->list(...));
 
                     Route::middleware(DenyClientAccess::class)->group(function () use ($controller) {

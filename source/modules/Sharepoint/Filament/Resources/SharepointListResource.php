@@ -26,14 +26,14 @@ class SharepointListResource extends Resource
 
     protected static function shouldRegisterNavigation(): bool
     {
-        if (!Schema::hasTable('sharepoint_lists')) {
+        if (! Schema::hasTable('sharepoint_lists')) {
             return false;
         }
 
         /** @var Module $module */
         $module = app('modules')->getByKey('sharepoint');
 
-        if (!$module?->isEnabled()) {
+        if (! $module?->isEnabled()) {
             return false;
         }
 
@@ -47,15 +47,15 @@ class SharepointListResource extends Resource
         return $form
             ->schema([
                 RawHtmlContent::make(function (SharepointList $record = null) {
-                    if (!$record) {
+                    if (! $record) {
                         return '';
                     }
 
                     $out = '';
 
                     if ($record->last_sync) {
-                        $out = '<div class="text-right text-sm">' .
-                            __('admin.last sync date', ['date' => $record->last_sync]) .
+                        $out = '<div class="text-right text-sm">'.
+                            __('admin.last sync date', ['date' => $record->last_sync]).
                             '</div>';
                     }
 
@@ -67,8 +67,8 @@ class SharepointListResource extends Resource
                         $nextDate = $expr->getNextRunDate();
                         $nextDateStr = $nextDate->format('Y-m-d H:i:s');
 
-                        $out .= '<div class="text-right text-sm">' .
-                            __('admin.next sync date', ['date' => $nextDateStr]) .
+                        $out .= '<div class="text-right text-sm">'.
+                            __('admin.next sync date', ['date' => $nextDateStr]).
                             '</div>';
                     }
 
@@ -119,16 +119,18 @@ class SharepointListResource extends Resource
                                         $fields = $sharepointList->getFields();
 
                                         if ($fields) {
-                                            $visibleFields = Arr::where($fields, fn($field) => Arr::get($field, 'Hidden') !== 'TRUE');
+                                            $visibleFields = Arr::where($fields, fn ($field) => Arr::get($field, 'Hidden') !== 'TRUE');
                                             $options = Arr::pluck($visibleFields, 'DisplayName', 'ColName');
 
                                             $set('__list_fields', $options);
+
                                             return $options;
                                         }
                                     }
                                 }
 
                                 $set('__list_fields', []);
+
                                 return $result;
                             }),
                     ]),
@@ -141,7 +143,7 @@ class SharepointListResource extends Resource
                 ]),
 
                 Forms\Components\Section::make(__('sharepoint::messages.fields schema.title'))
-                    ->visible(fn($get) => (bool)$get('custom_reference_id'))
+                    ->visible(fn ($get) => (bool) $get('custom_reference_id'))
                     ->schema([
                         Forms\Components\Repeater::make('options.fields')
                             ->disableLabel()
@@ -168,6 +170,7 @@ class SharepointListResource extends Resource
                                     ->helperText(__('sharepoint::messages.fields schema.list help'))
                                     ->options(function ($get) {
                                         $options = $get('../../../__list_fields');
+
                                         return $options ?? [];
                                     }),
                             ])

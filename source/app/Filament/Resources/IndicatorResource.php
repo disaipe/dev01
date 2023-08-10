@@ -92,8 +92,8 @@ class IndicatorResource extends Resource
                             ->collapsed()
                             ->schema([
                                 Forms\Components\ViewField::make('placeholdersHelp')
-                                    ->view('admin.help.indicatorPlaceholders')
-                            ])
+                                    ->view('admin.help.indicatorPlaceholders'),
+                            ]),
                     ]),
             ]);
     }

@@ -114,7 +114,7 @@ export default {
         };
 
         const fetchReport = () => {
-            const _period = period
+            const _period = period.value
                 ? dayjs(period.value).tz('UTC', true).toISOString()
                 : null;
 

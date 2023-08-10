@@ -264,7 +264,8 @@ class ReportService
             ->first();
     }
 
-    protected function getContext(): array {
+    protected function getContext(): array
+    {
         $period = Carbon::make($this->period);
 
         return [

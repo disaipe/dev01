@@ -53,6 +53,6 @@ class ServiceProviderReference extends ReferenceEntry
 
     public function canRead(User $user = null): bool
     {
-        return !$user?->isClient();
+        return ! $user?->isClient();
     }
 }

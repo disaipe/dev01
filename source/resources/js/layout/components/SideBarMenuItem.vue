@@ -28,10 +28,22 @@ el-sub-menu(
 
 <script setup>
 defineProps({
-    route: Object,
-    icon: String,
-    label: String,
-    index: String,
+    route: {
+        type: Object,
+        required: true
+    },
+    icon: {
+        type: String,
+        default: null
+    },
+    label: {
+        type: String,
+        default: null
+    },
+    index: {
+        type: String,
+        default: null,
+    },
     children: {
         type: Array,
         default: () => ([])

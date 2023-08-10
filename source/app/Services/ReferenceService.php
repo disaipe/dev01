@@ -172,7 +172,7 @@ class ReferenceService
         });
 
         if (! $user->isClient()) {
-            $routes [] = [
+            $routes[] = [
                 'name' => 'report-invoice',
                 'path' => 'invoice',
                 'meta' => [
@@ -180,7 +180,7 @@ class ReferenceService
                     'view' => 'InvoiceReport',
                     'icon' => 'teenyicons:invoice-outline',
                     'order' => 2,
-                ]
+                ],
             ];
         }
 

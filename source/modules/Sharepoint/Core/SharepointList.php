@@ -33,7 +33,7 @@ class SharepointList
 
         $this->cacheFields = [];
         foreach ($xml->xpath('/root/Field') as $field) {
-            $this->cacheFields []= ((array)$field)['@attributes'];
+            $this->cacheFields[] = ((array) $field)['@attributes'];
         }
 
         return $this->cacheFields;
@@ -71,12 +71,12 @@ class SharepointList
             $name = Arr::get($this->aliases, $column, $column);
 
             if ($column && $name) {
-                $acc []= "{$column} as {$name}";
+                $acc[] = "{$column} as {$name}";
             }
 
             return $acc;
-        },[]);
+        }, []);
 
-        return join(', ', $queryFields);
+        return implode(', ', $queryFields);
     }
 }

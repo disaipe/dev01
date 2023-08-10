@@ -43,7 +43,7 @@ class SyncSharepointListJob extends ModuleScheduledJob
 
         return [
             'result' => $result
-                ? count($result) . ' records synced'
+                ? count($result).' records synced'
                 : 'no records synced',
         ];
     }

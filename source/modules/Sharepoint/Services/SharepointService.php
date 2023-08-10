@@ -15,7 +15,8 @@ class SharepointService
 
     protected Connection $connection;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->connection = $this->getConnection();
     }
 
@@ -37,7 +38,7 @@ class SharepointService
                 )
         ");
 
-        if (!$result) {
+        if (! $result) {
             return null;
         }
 
@@ -70,7 +71,7 @@ class SharepointService
 
             $itemsToSync = [];
             foreach ($items as $item) {
-                $itemsToSync []= Arr::only((array)$item, $onlyFields);
+                $itemsToSync[] = Arr::only((array) $item, $onlyFields);
             }
 
             $reference = ReferenceService::getModelFromCustom($sharepointList->reference);

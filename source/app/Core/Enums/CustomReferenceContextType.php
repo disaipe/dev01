@@ -2,7 +2,8 @@
 
 namespace App\Core\Enums;
 
-enum CustomReferenceContextType: string {
+enum CustomReferenceContextType: string
+{
     case Id = 'id';
     case Code = 'code';
 }

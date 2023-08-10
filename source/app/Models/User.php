@@ -67,6 +67,6 @@ class User extends Authenticatable implements FilamentUser
 
     public function isClient(): bool
     {
-        return $this->can('client') && !$this->canAny(['super admin', 'admin']);
+        return $this->can('client') && ! $this->canAny(['super admin', 'admin']);
     }
 }

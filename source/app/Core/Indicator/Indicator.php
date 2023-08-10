@@ -104,8 +104,8 @@ class Indicator
     /**
      * Calculate indicator value
      *
-     * @param Builder $query query modifier
-     * @param array $context query context
+     * @param  Builder  $query query modifier
+     * @param  array  $context query context
      */
     public function exec(Builder $query, array $context = []): mixed
     {
