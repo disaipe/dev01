@@ -9,7 +9,7 @@
         template(#columns-before)
             vxe-column(v-if='hasRecordView' width='40px')
                 template(#default='{ row }')
-                    el-link(:underline='false' @click='editRecord(row.$getKey())')
+                    el-link(:underline='false' :disabled='!row.$getKey' @click='editRecord(row.$getKey())')
                         icon(icon='tabler:list-details' height='20')
 </template>
 
