@@ -5,6 +5,7 @@ namespace App\Core\Reference;
 use App\Core\Enums\CustomReferenceContextType;
 use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Models\CustomReference;
+use App\Models\User;
 use App\Services\ReferenceService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Lang;
@@ -314,9 +315,17 @@ class ReferenceEntry
     }
 
     /**
+     * Determine the user can access references records
+     */
+    public function canRead(User $user = null): bool
+    {
+        return true;
+    }
+
+    /**
      * Determine the user can create new record
      */
-    public function canCreate(): bool
+    public function canCreate(User $user = null): bool
     {
         return true;
     }
@@ -324,7 +333,7 @@ class ReferenceEntry
     /**
      * Determine the user can update records
      */
-    public function canUpdate(): bool
+    public function canUpdate(User $user = null): bool
     {
         return true;
     }
@@ -332,7 +341,7 @@ class ReferenceEntry
     /**
      * Determine the user can remove records
      */
-    public function canDelete(): bool
+    public function canDelete(User $user = null): bool
     {
         return true;
     }

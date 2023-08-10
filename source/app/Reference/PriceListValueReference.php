@@ -7,6 +7,7 @@ use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceModel;
 use App\Models\PriceListValue;
+use App\Models\User;
 
 class PriceListValueReference extends ReferenceEntry
 {
@@ -46,5 +47,10 @@ class PriceListValueReference extends ReferenceEntry
                 ->label('Стоимость')
                 ->pinia(PiniaAttribute::number()),
         ];
+    }
+
+    public function canRead(User $user = null): bool
+    {
+        return !$user?->isClient();
     }
 }

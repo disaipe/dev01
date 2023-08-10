@@ -6,6 +6,7 @@ use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceModel;
+use App\Models\User;
 use App\Modules\FileStorageMonitor\Models\FileStorage;
 
 class FileStorageReference extends ReferenceEntry
@@ -87,5 +88,20 @@ class FileStorageReference extends ReferenceEntry
     protected function getLabelKey(): string
     {
         return 'fsmonitor::messages.file storage';
+    }
+
+    public function canCreate(User $user = null): bool
+    {
+        return !$user->isClient();
+    }
+
+    public function canUpdate(User $user = null): bool
+    {
+        return !$user->isClient();
+    }
+
+    public function canDelete(User $user = null): bool
+    {
+        return !$user->isClient();
     }
 }

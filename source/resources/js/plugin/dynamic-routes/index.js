@@ -30,8 +30,14 @@ export default {
                         childRoute.component = () => referenceComponent(childRoute);
                     } else if (childRoute.meta?.isRecord) {
                         childRoute.component = () => recordComponent(childRoute);
+                    } else if (childRoute.meta?.view) {
+                        childRoute.component = () => import(`../../views/dashboard/${childRoute.meta.view}.vue`);
                     }
                 }
+            }
+
+            if (route.meta?.view) {
+                route.component = () => import(`../../views/dashboard/${route.meta.view}.vue`);
             }
 
             router.addRoute('dashboard-root', route);

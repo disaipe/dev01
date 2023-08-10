@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Core\Reference\ReferenceModel;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -40,5 +41,13 @@ class Contract extends ReferenceModel
     public function service_provider(): BelongsTo
     {
         return $this->belongsTo(ServiceProvider::class, 'service_provider_id');
+    }
+
+    public function scopeCompany(Builder $builder, string $code): void
+    {
+        $builder->whereHas(
+            'company',
+            fn (Builder $company) => $company->where('code', '=', $code)
+        );
     }
 }

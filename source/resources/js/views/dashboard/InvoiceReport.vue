@@ -64,10 +64,10 @@
 import { ref, nextTick, watch } from 'vue';
 import { ElMessageBox } from 'element-plus'
 import dayjs from 'dayjs';
-import { useReportSettingsStore } from '../../../store/modules';
-import { useRepos } from '../../../store/repository';
-import { useApi } from '../../../utils/axiosClient';
-import batchApi from '../../../utils/batchApi';
+import { useReportSettingsStore } from '../../store/modules';
+import { useRepos } from '../../store/repository';
+import { useApi } from '../../utils/axiosClient';
+import batchApi from '../../utils/batchApi';
 
 export default {
     name: 'InvoiceReport',

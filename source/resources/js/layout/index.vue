@@ -1,7 +1,7 @@
 <template lang='pug'>
 .app-wrapper
     el-container
-        el-aside.overflow-hidden(width='240px')
+        el-aside.flex.flex-col.overflow-hidden(width='240px')
             el-menu(router)
                 side-bar-menu-item(
                     v-for='item of routes'
@@ -16,11 +16,27 @@
             el-header
                 .flex.justify-between.w-full
                     //- left side
-                    div
+                    .flex.items-center
                         bread-crumbs
 
                     //- right side
                     .flex.items-center.space-x-2
+                        template(v-if='user.isClient')
+                            div(
+                                :class='company ? "" : "outline outline-offset-2 outline-2 outline-red-400 rounded"'
+                            )
+                                el-select(
+                                    v-model='company'
+                                    placeholder='Организация'
+                                    no-data-text='Нет доступа к организациям'
+                                    @change='onChangeCompany'
+                                )
+                                    el-option(
+                                        v-for='[key, name] of Object.entries(user.companies)'
+                                        :value='key'
+                                        :label='name'
+                                    )
+
                         el-dropdown(
                             trigger='click'
                         )
@@ -28,8 +44,9 @@
                                 el-avatar(
                                     :src='user.avatar'
                                     shape='square'
-                                    size='small'
+                                    :size='32'
                                 )
+                                    icon(icon='tabler:alien-filled' width='28')
                                 .text-gray-400 {{ user.name }}
 
                             template(#dropdown)
@@ -112,18 +129,22 @@ export default {
     components: { BreadCrumbs, SideBarMenuItem },
     setup() {
         const { cachedViews } = useTabsStore();
+        const profileSettings = useProfilesSettingsStore();
 
         const drawer = ref(false);
-
-        const profileSettings = useProfilesSettingsStore();
+        const company = ref(profileSettings.companyContext);
 
         const router = useRouter();
 
-        // get reference routes
-        const referenceRoutes = [];
+        // get routes with sidebar menu item
+        const menuRoutes = [];
         for (const route of router.getRoutes()) {
             if (route.meta?.isReference) {
-                referenceRoutes.push(route);
+                menuRoutes.push(route);
+            } else if (route.meta?.isRecord) {
+                //
+            } else if (route.meta?.view) {
+                menuRoutes.push(route);
             }
         }
 
@@ -136,20 +157,13 @@ export default {
                 order: 1
             },
             {
-                name: 'report-invoice',
-                label: 'Отчет',
-                icon: 'teenyicons:invoice-outline',
-                route: { name: "report-invoice" },
-                order: 2
-            },
-            {
                 name: 'references',
                 label: 'Справочники',
                 icon: 'fluent-mdl2:product-catalog',
                 order: 99
             },
 
-            ...referenceRoutes.map((r) => ({
+            ...menuRoutes.map((r) => ({
                 name: r.name,
                 label: r.meta.title,
                 icon: r.meta.icon,
@@ -163,6 +177,11 @@ export default {
 
         const { user } = usePage();
 
+        if (! Object.hasOwn(user.companies, profileSettings.companyContext)) {
+            company.value = Object.values(user.companies)[0];
+            profileSettings.setCompanyContext(company.value);
+        }
+
         return {
             isRouteScroll: computed(() => router.currentRoute.value.meta?.scroll !== false),
 
@@ -171,9 +190,11 @@ export default {
             user,
 
             drawer,
+            company,
             profileSettings,
 
             openSettingsDrawer: () => drawer.value = true,
+            onChangeCompany: () => profileSettings.setCompanyContext(company.value),
             logout: () => window.location.href = '/logout'
         };
     }
@@ -194,7 +215,7 @@ export default {
 }
 
 .el-menu {
-    @apply h-full;
+    @apply flex-1;
 }
 
 .el-main {

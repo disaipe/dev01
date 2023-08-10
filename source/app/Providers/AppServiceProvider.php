@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Core\ClientCompanyContext;
 use App\Core\HasManySyncMacro;
 use App\Core\Indicator\IndicatorManager;
 use App\Core\Report\Expression\ExpressionManager;
@@ -19,6 +20,8 @@ class AppServiceProvider extends ServiceProvider
         $this->registerMacros();
         $this->registerDirectives();
         $this->registerSingletons();
+
+        $this->app->singleton(ClientCompanyContext::class, fn () => new ClientCompanyContext());
     }
 
     /**

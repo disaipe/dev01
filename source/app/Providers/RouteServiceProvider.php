@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Core\Reference\ReferenceManager;
+use App\Http\Middleware\DenyClientAccess;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const HOME = '/home';
 
-    public function register()
+    public function register(): void
     {
         parent::register();
 
@@ -53,10 +54,13 @@ class RouteServiceProvider extends ServiceProvider
                 $prefix = $reference->getPrefix();
                 $controller = $reference->controller();
 
-                Route::prefix($prefix)->group(function () use ($controller) {
+                Route::prefix($prefix)->group(function () use ($reference, $controller) {
                     Route::post('', $controller->list(...));
-                    Route::post('update', $controller->push(...));
-                    Route::post('remove', $controller->remove(...));
+
+                    Route::middleware(DenyClientAccess::class)->group(function () use ($controller) {
+                        Route::post('update', $controller->push(...));
+                        Route::post('remove', $controller->remove(...));
+                    });
 
                     Route::get('schema', $controller->schema(...));
                     Route::get('history/{record}', $controller->history(...));

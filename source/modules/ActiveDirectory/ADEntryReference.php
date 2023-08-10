@@ -6,6 +6,7 @@ use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceModel;
+use App\Models\User;
 use App\Modules\ActiveDirectory\Models\ADEntry;
 
 class ADEntryReference extends ReferenceEntry
@@ -76,17 +77,17 @@ class ADEntryReference extends ReferenceEntry
         ];
     }
 
-    public function canCreate(): bool
+    public function canCreate(User $user = null): bool
     {
         return false;
     }
 
-    public function canUpdate(): bool
+    public function canUpdate(User $user = null): bool
     {
         return false;
     }
 
-    public function canDelete(): bool
+    public function canDelete(User $user = null): bool
     {
         return false;
     }

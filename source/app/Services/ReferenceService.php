@@ -5,8 +5,10 @@ namespace App\Services;
 use App\Core\Enums\CustomReferenceContextType;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceManager;
+use App\Facades\Auth;
 use App\Models\CustomReference;
 use App\Models\Reference;
+use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -86,10 +88,21 @@ class ReferenceService
      */
     public function getVueRoutes(): array
     {
+        /** @var User $user */
+        $user = Auth::user();
+
+        if (! $user) {
+            return [];
+        }
+
         /** @var ReferenceManager $references */
         $references = app('references');
 
-        $routes = Arr::map($references->getReferences(), function (ReferenceEntry $entry) {
+        $routes = Arr::map($references->getReferences(), function (ReferenceEntry $entry) use ($user) {
+            if (! $entry->canRead($user)) {
+                return null;
+            }
+
             $model = $entry->getName();
             $referenceView = $entry->getReferenceView();
             $recordView = $entry->getRecordView();
@@ -99,9 +112,9 @@ class ReferenceService
                 'order' => $entry->getOrder(),
                 'icon' => $entry->getIcon(),
                 'permissions' => [
-                    'create' => $entry->canCreate(),
-                    'update' => $entry->canUpdate(),
-                    'delete' => $entry->canDelete(),
+                    'create' => $entry->canCreate($user),
+                    'update' => $entry->canUpdate($user),
+                    'delete' => $entry->canDelete($user),
                 ],
                 'view' => $referenceView,
                 'recordView' => $recordView,
@@ -158,6 +171,19 @@ class ReferenceService
             ];
         });
 
-        return Arr::whereNotNull($routes);
+        if (! $user->isClient()) {
+            $routes [] = [
+                'name' => 'report-invoice',
+                'path' => 'invoice',
+                'meta' => [
+                    'title' => 'Отчет',
+                    'view' => 'InvoiceReport',
+                    'icon' => 'teenyicons:invoice-outline',
+                    'order' => 2,
+                ]
+            ];
+        }
+
+        return array_values(Arr::whereNotNull($routes));
     }
 }

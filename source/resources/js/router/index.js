@@ -22,14 +22,6 @@ const routes = [
                 meta: {
                     title: 'Главная'
                 }
-            },
-            {
-                path: 'invoice',
-                component: () => import('../views/dashboard/report/InvoiceReport.vue'),
-                name: 'report-invoice',
-                meta: {
-                    title: 'Отчет'
-                }
             }
         ]
     }

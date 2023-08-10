@@ -7,6 +7,7 @@ use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceModel;
 use App\Models\Contract;
+use App\Models\User;
 
 class ContractReference extends ReferenceEntry
 {
@@ -63,5 +64,10 @@ class ContractReference extends ReferenceEntry
                 ->visible()
                 ->pinia(PiniaAttribute::boolean()),
         ];
+    }
+
+    public function canUpdate(User $user = null): bool
+    {
+        return !$user?->isClient();
     }
 }

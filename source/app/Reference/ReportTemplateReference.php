@@ -7,6 +7,7 @@ use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceModel;
 use App\Models\ReportTemplate;
+use App\Models\User;
 
 class ReportTemplateReference extends ReferenceEntry
 {
@@ -54,5 +55,10 @@ class ReportTemplateReference extends ReferenceEntry
         return [
             'scroll' => false,
         ];
+    }
+
+    public function canRead(User $user = null): bool
+    {
+        return !$user?->isClient();
     }
 }

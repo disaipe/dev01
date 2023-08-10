@@ -7,6 +7,7 @@ use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceModel;
 use App\Models\ServiceProvider;
+use App\Models\User;
 
 class ServiceProviderReference extends ReferenceEntry
 {
@@ -48,5 +49,10 @@ class ServiceProviderReference extends ReferenceEntry
                 ->hidden()
                 ->pinia(PiniaAttribute::hasMany('ReportTemplate', 'service_provider_id')),
         ];
+    }
+
+    public function canRead(User $user = null): bool
+    {
+        return !$user?->isClient();
     }
 }

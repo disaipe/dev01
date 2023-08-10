@@ -7,6 +7,7 @@ use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceModel;
 use App\Models\PriceList;
+use App\Models\User;
 
 class PriceListReference extends ReferenceEntry
 {
@@ -68,5 +69,10 @@ class PriceListReference extends ReferenceEntry
         return [
             'scroll' => false,
         ];
+    }
+
+    public function canRead(User $user = null): bool
+    {
+        return !$user?->isClient();
     }
 }
