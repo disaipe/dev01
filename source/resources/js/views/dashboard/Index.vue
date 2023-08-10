@@ -1,5 +1,5 @@
 <template lang='pug'>
-p Index
+div
 </template>
 
 <script>
