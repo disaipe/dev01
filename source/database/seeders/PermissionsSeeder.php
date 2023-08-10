@@ -20,6 +20,7 @@ class PermissionsSeeder extends Seeder
         // Create permissions
         Permission::create(['name' => 'super admin']);
         Permission::create(['name' => 'admin']);
+        Permission::create(['name' => 'client']);
 
         // create roles and assign existing permissions
         /** @var Role $superAdmin */
@@ -29,5 +30,9 @@ class PermissionsSeeder extends Seeder
         /** @var Role $admin */
         $admin = Role::create(['name' => 'admin']);
         $admin->givePermissionTo('admin');
+
+        /** @var Role $client */
+        $client = Role::create(['name' => 'client']);
+        $client->givePermissionTo('client');
     }
 }

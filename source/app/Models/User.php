@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Althinect\FilamentSpatieRolesPermissions\Concerns\HasSuperAdmin;
 use Filament\Models\Contracts\FilamentUser;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
@@ -57,5 +58,15 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessFilament(): bool
     {
         return $this->canAny(['super admin', 'admin']);
+    }
+
+    public function companies(): BelongsToMany
+    {
+        return $this->belongsToMany(Company::class);
+    }
+
+    public function isClient(): bool
+    {
+        return $this->can('client') && !$this->canAny(['super admin', 'admin']);
     }
 }

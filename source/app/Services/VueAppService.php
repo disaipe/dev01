@@ -52,7 +52,9 @@ class VueAppService
         return [
             ...$user?->only('name'),
             'avatar' => $avatar,
+            'isClient' => $user->isClient(),
             'hasAdminAccess' => $user->canAccessFilament(),
+            'companies' => $user->companies()->pluck('name', 'id'),
         ];
     }
 }
