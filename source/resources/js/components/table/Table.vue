@@ -8,8 +8,13 @@
     .flex.flex-col.space-y-2(v-else)
         .flex.items-center.justify-between
             el-button-group
-                el-button(v-if='canCreate' icon='CirclePlus' @click='create') Создать
-                el-button(icon='Refresh' @click='load') Обновить
+                el-button(v-if='canCreate' @click='create') Создать
+                    template(#icon)
+                        icon(icon='tabler:circle-plus')
+
+                el-button(@click='load') Обновить
+                    template(#icon)
+                        icon(icon='tabler:refresh')
 
             .space-x-2
                 el-button(
@@ -18,7 +23,7 @@
                     @click='handleResetFilters'
                 )
                     .flex.space-x-1
-                        icon(icon='clarity:filter-off-solid')
+                        icon(icon='tabler:filter-off')
                         span Сбросить фильтры
 
                 TableColumnsSettings

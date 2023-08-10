@@ -3,7 +3,8 @@ el-dropdown(
     trigger='click'
     placement='bottom-end'
 )
-    el-button(icon='Grid')
+    el-button
+        icon(icon='tabler:columns-3' height='16')
 
     template(#dropdown)
         .max-h-64

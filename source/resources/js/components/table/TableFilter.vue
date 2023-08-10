@@ -9,7 +9,7 @@ el-popover(
             :type='isSet ? "primary" : "default"'
             @click='toggleFilter'
         )
-            icon(:icon='isSet ? "clarity:filter-off-line" : "clarity:filter-line"')
+            icon(:icon='isSet ? "tabler:filter-cancel" : "tabler:filter"')
 
     .flex.flex-col.space-y-1(v-click-outside='{ handler: close, isActive: isVisible }')
 
