@@ -98,8 +98,9 @@
             .py-2(v-if='selectedRow')
                 .text-lg.font-bold.text-gray-600 {{ selectedRow.$getName() }}
                 .text-xs.text-gray-500
-                    div(v-if='selectedRow.$isSaved()') Редактирование
-                    div(v-else) Создание
+                    div(v-if='selectedRow.$isSaved() && canUpdate') Редактирование
+                    div(v-else-if='!selectedRow.$isSaved() && canCreate') Создание
+                    div(v-else) Просмотр
 
         el-scrollbar.pr-4
             record-form(
