@@ -37,6 +37,7 @@ class ReportTemplateReference extends ReferenceEntry
 
             'service_provider' => ReferenceFieldSchema::make()
                 ->label('Провайдер услуг')
+                ->required()
                 ->eagerLoad()
                 ->pinia(PiniaAttribute::belongsTo('ServiceProvider', 'service_provider_id')),
 
