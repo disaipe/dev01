@@ -25,27 +25,33 @@ class ADEntryReference extends ReferenceEntry
 
             'company_name' => ReferenceFieldSchema::make()
                 ->label('Организация')
-                ->pinia(PiniaAttribute::string()),
+                ->pinia(PiniaAttribute::string())
+                ->visible(),
 
             'username' => ReferenceFieldSchema::make()
                 ->label('Логин')
-                ->pinia(PiniaAttribute::string()),
+                ->pinia(PiniaAttribute::string())
+                ->visible(),
 
             'name' => ReferenceFieldSchema::make()
                 ->label('Наименование')
-                ->pinia(PiniaAttribute::string()),
+                ->pinia(PiniaAttribute::string())
+                ->visible(),
 
             'department' => ReferenceFieldSchema::make()
                 ->label('Подразделение')
-                ->pinia(PiniaAttribute::string()),
+                ->pinia(PiniaAttribute::string())
+                ->visible(),
 
             'post' => ReferenceFieldSchema::make()
                 ->label('Должность')
-                ->pinia(PiniaAttribute::string()),
+                ->pinia(PiniaAttribute::string())
+                ->visible(),
 
             'email' => ReferenceFieldSchema::make()
                 ->label('E-mail')
-                ->pinia(PiniaAttribute::string()),
+                ->pinia(PiniaAttribute::string())
+                ->visible(),
 
             'ou_path' => ReferenceFieldSchema::make()
                 ->label('OU')
@@ -73,7 +79,8 @@ class ADEntryReference extends ReferenceEntry
 
             'blocked' => ReferenceFieldSchema::make()
                 ->label('Заблокирован')
-                ->pinia(PiniaAttribute::boolean()),
+                ->pinia(PiniaAttribute::boolean())
+                ->visible(),
         ];
     }
 

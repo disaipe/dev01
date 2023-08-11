@@ -126,6 +126,8 @@ class ReferenceEntry
             }
         }
 
+        $hidden = $entry->model->getHidden();
+
         foreach ($fields as $field) {
             $pk = Arr::get($field, 'pk');
             $name = Arr::get($field, 'name');
@@ -133,6 +135,10 @@ class ReferenceEntry
             $type = Arr::get($field, 'type');
             $required = Arr::get($field, 'required');
             $readonly = Arr::get($field, 'readonly');
+
+            if (in_array($name, $hidden)) {
+                continue;
+            }
 
             $fieldSchema = ReferenceFieldSchema::make();
 

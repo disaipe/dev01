@@ -11,6 +11,10 @@ class ReferenceModel extends Model
 {
     use SoftDeletes, Protocolable;
 
+    protected $hidden = [
+        'deleted_at',
+    ];
+
     protected static function booted(): void
     {
         static::addGlobalScope(new CompanyScope());
