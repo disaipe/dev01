@@ -16,6 +16,7 @@
         ref='spread'
         :settings='settings'
         :cell-modifier='cellModifier'
+        fit='.spreadsheet-page'
     )
         template(#actions-menu-items)
             el-dropdown-item(@click='load') Обновить
@@ -177,10 +178,10 @@ export default {
     @apply !bg-green-100;
 }
 .cell-service-count {
-    @apply !bg-blue-100;
+    @apply !bg-blue-100 text-center;
 }
 .cell-service-price {
-    @apply !bg-yellow-100;
+    @apply !bg-yellow-100 text-right;
 }
 
 .cell-contract-number {

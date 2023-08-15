@@ -1,5 +1,5 @@
 <template lang='pug'>
-.spreadsheet-wrapper.h-full
+.spreadsheet-wrapper.h-full(ref='wrapper')
     .relative.z-10
         el-config-provider(size='small')
             slot(name='toolbar')
@@ -128,12 +128,13 @@
         :show-file-list='false'
     )
 
-    .spreadsheet-container(:class='{ "pt-8": showToolbar, "pb-8": showToolbar }')
-        hot-table.bg-gray-100(ref='spread' :settings='hotSettings')
+    .spreadsheet-container(:class='{ "pts-8": showToolbar, "pbs-8": showToolbar }')
+        hot-table.hot-table.bg-gray-100(ref='spread' :settings='hotSettings')
 </template>
 
 <script>
-import { ref, toRef, reactive } from 'vue';
+import { ref, toRef, reactive, onMounted } from 'vue';
+import debounce from 'lodash/debounce';
 import { HotTable } from '@handsontable/vue3';
 import 'handsontable/dist/handsontable.full.css';
 
@@ -172,12 +173,21 @@ export default {
         cellModifier: {
             type: Function,
             default: null
+        },
+        /**
+         * Pass query selector value to fit spreadsheet to container.
+         */
+        fit: {
+            type: String,
+            default: null
         }
     },
     setup(props) {
         const settingsProp = toRef(props, 'settings');
         const cellModifier = toRef(props, 'cellModifier');
+        const fit = toRef(props, 'fit');
 
+        const wrapper = ref();
         const spread = ref();
         const uploader = ref();
         const borderDrop = ref();
@@ -189,6 +199,22 @@ export default {
             fontFamilyInput: null,
             fontSizeInput: null
         });
+
+        if (fit.value) {
+            const fitSpreadsheet = () => {
+                const target = document.querySelector(fit.value);
+
+                if (target) {
+                    wrapper.value.style.height = `${target.clientHeight - wrapper.value.offsetTop}px`;
+                }
+            };
+
+            onMounted(() => {
+                fitSpreadsheet();
+            });
+
+            window.addEventListener('resize', () => debounce(fitSpreadsheet, 1000));
+        }
 
         const {
             store,
@@ -244,6 +270,7 @@ export default {
             hotSettings,
 
             // $refs
+            wrapper,
             spread,
             uploader,
             borderDrop,
@@ -275,9 +302,13 @@ export default {
 }
 </script>
 
-<style lang='postcss'>
+<style lang='postcss' scoped>
 .spreadsheet-wrapper {
-    @apply relative;
+    @apply relative pb-4;
+
+    * {
+        box-sizing: border-box;
+    }
 
     .el-button {
         &.active {
@@ -286,64 +317,67 @@ export default {
     }
 }
 
-.spreadsheet-container {
-    @apply
-        absolute top-0 bottom-0 left-0 right-0
-        text-xs;
+:deep(.spreadsheet-container) {
+    @apply relative h-full;
 
-    & .ht_clone_top {
-        z-index: 200;
-    }
-}
-
-.table {
-    font-family: 'Calibri';
-    font-size: 11pt;
-
-    th, td {
-        position: relative;
-        white-space: nowrap;
-        overflow: hidden;
-    }
-
-    td.borderLeft,
-    td.borderTop,
-    td.borderRight,
-    td.borderBottom {
-        overflow: visible;
-
-        &:before {
-            content: '';
-            position: absolute;
-            left: -1px;
-            top: -1px;
-            right: -1px;
-            bottom: -1px;
-            border-style: solid;
-            border-color: black;
-
-            /*
-                z-index of cell selector editor = 200, borders must be below
-                to avoid conflicts
-             */
-            z-index: 199;
+    .hot-table {
+        .ht_clone_top,
+        .ht_clone_left {
+            z-index: 200;
         }
-    }
 
-    td.borderLeft:before {
-        border-left-width: 1px;
-    }
+        .ht_clone_top_left_corner {
+            z-index: 201;
+        }
 
-    td.borderTop:before {
-        border-top-width: 1px;
-    }
+        .table {
+            font-family: 'Calibri';
+            font-size: 11pt;
 
-    td.borderRight:before {
-        border-right-width: 1px;
-    }
+            th, td {
+                position: relative;
+            }
 
-    td.borderBottom:before {
-        border-bottom-width: 1px;
+            td.borderLeft,
+            td.borderTop,
+            td.borderRight,
+            td.borderBottom {
+                overflow: visible;
+
+                &:before {
+                    content: '';
+                    position: absolute;
+                    left: -1px;
+                    top: -1px;
+                    right: -1px;
+                    bottom: -1px;
+                    border-style: solid;
+                    border-color: black;
+
+                    /*
+                        z-index of cell selector editor = 200, borders must be below
+                        to avoid conflicts
+                     */
+                    z-index: 10;
+                }
+            }
+
+            td.borderLeft:before {
+                border-left-width: 1px;
+            }
+
+            td.borderTop:before {
+                border-top-width: 1px;
+            }
+
+            td.borderRight:before {
+                border-right-width: 1px;
+            }
+
+            td.borderBottom:before {
+                border-bottom-width: 1px;
+            }
+        }
     }
 }
 </style>

@@ -28,7 +28,7 @@ export function serviceNameCellRenderer(instance, td, row, column, prop, value, 
 }
 
 export function serviceCountCellRenderer(instance, td, row, column, prop, value, cellProperties) {
-    td.innerText = 1;
+    td.innerText = 'КОЛ-ВО';
 
     const { className } = cellProperties;
 
@@ -38,7 +38,7 @@ export function serviceCountCellRenderer(instance, td, row, column, prop, value,
 }
 
 export function servicePriceCellRenderer(instance, td, row, column, prop, value, cellProperties) {
-    td.innerText = 1;
+    td.innerText = 'ЦЕНА';
 
     const { className } = cellProperties;
 

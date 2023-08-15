@@ -180,6 +180,7 @@ class ReferenceService
                     'view' => 'InvoiceReport',
                     'icon' => 'teenyicons:invoice-outline',
                     'order' => 2,
+                    'scroll' => false,
                 ],
             ];
         }

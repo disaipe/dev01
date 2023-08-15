@@ -1,45 +1,49 @@
 <template lang='pug'>
-.options-bar.pb-4
-    el-select(
-        v-model='company'
-        placeholder='Организация'
-    )
-        el-option(
-            v-for='company of companies'
-            :label='company.name'
-            :value='company.code'
-        )
-
-    el-select(
-        v-model='reportTemplate'
-        placeholder='Шаблон отчета'
-    )
-        el-option-group(
-            v-for='provider of providers'
-            :label='provider.name'
+.relative.h-full
+    .flex.items-center.space-x-2.pb-4
+        el-select(
+            v-model='company'
+            placeholder='Организация'
         )
             el-option(
-                v-for='reportTemplate of provider.reportTemplates'
-                :label='reportTemplate.name'
-                :value='reportTemplate.$getKey()'
+                v-for='company of companies'
+                :label='company.name'
+                :value='company.code'
             )
 
-    el-date-picker(
-        v-model='period'
-        type='month'
-        placeholder='Период'
-    )
+        el-select(
+            v-model='reportTemplate'
+            placeholder='Шаблон отчета'
+        )
+            template(#prefix)
+                icon(icon='tabler:template')
 
-    el-button(
-        type='primary'
-        :loading='loading'
-        :disabled='!company || !reportTemplate'
-        @click='fetchReport'
-    ) Сформировать
-    el-button(v-if='loaded' @click='downloadReport') Скачать
+            el-option-group(
+                v-for='provider of providers'
+                :label='provider.name'
+            )
+                el-option(
+                    v-for='reportTemplate of provider.reportTemplates'
+                    :label='reportTemplate.name'
+                    :value='reportTemplate.$getKey()'
+                )
 
-.errors.py-4
-    el-alert(
+        el-date-picker.w-16(
+            v-model='period'
+            type='month'
+            placeholder='Период'
+        )
+
+        el-button(
+            type='primary'
+            :loading='loading'
+            :disabled='!company || !reportTemplate'
+            @click='fetchReport'
+        ) Сформировать
+        el-button(v-if='loaded' @click='downloadReport') Скачать
+
+
+    el-alert.errors.py-4(
         v-if='reportErrors && reportErrors.length'
         :closable='false'
         type='error'
@@ -51,13 +55,13 @@
                 span.font-bold {{ error.service_name }}
                 div {{ error.message }}
 
-.spread(class='h-[600px]')
-    spreadsheet(
-        v-show='loaded'
-        ref='spread'
-        :cell-modifier='cellModifier'
-        :show-toolbar='false'
-    )
+    .spread.h-full.pb-8
+        spreadsheet(
+            v-show='loaded'
+            ref='spread'
+            :cell-modifier='cellModifier'
+            :show-toolbar='false'
+        )
 </template>
 
 <script>
@@ -185,9 +189,3 @@ export default {
     }
 }
 </script>
-
-<style lang='postcss' scoped>
-.options-bar {
-    @apply flex items-center space-x-2;
-}
-</style>

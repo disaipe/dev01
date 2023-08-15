@@ -105,7 +105,7 @@ export function configure(settings = {}) {
         }
     };
 
-    // set column widths and row heights
+    // set column widths and row heights (xlsx to Handsontable)
     const syncSizes = () => {
         const toSync = {};
 
@@ -118,14 +118,32 @@ export function configure(settings = {}) {
         instance.value.updateSettings(toSync);
     };
 
+    /**
+     * Manually set row headers height to avoid artifacts with multiline cells
+     */
+    const updateRulerCellsHeight = () => {
+        const table = instance.value.table;
+        const tableRowThs = table.querySelectorAll('tbody tr th');
+
+        const leftRowHeaders = instance.value.rootElement.querySelector('.ht_clone_left');
+        const leftRowHeaderThs = leftRowHeaders.querySelectorAll('table tbody tr th');
+
+        if (tableRowThs?.length && leftRowHeaderThs?.length) {
+            for (let row = 0; row < tableRowThs.length; row++) {
+                leftRowHeaderThs[row].style.height = `${tableRowThs[row].clientHeight}px`;
+                leftRowHeaderThs[row].dataset.height = `${tableRowThs[row].clientHeight}px`;
+            }
+        }
+    };
+
     return {
-        // autoRowSize: true,
+        autoRowSize: true,
         rowHeaders: true,
         colHeaders: true,
         fillHandle: true,
         contextMenu: true,
         comments: true,
-        wordWrap: false,
+        // wordWrap: false,
         manualRowResize: true,
         manualColumnResize: true,
         mergeCells: true,
@@ -255,6 +273,8 @@ export function configure(settings = {}) {
          */
         afterColumnResize(newSize, column, isDoubleClick) {
             worksheet.value.getColumn(column + 1).width = round(newSize / 7.12, 2);
+
+            updateRulerCellsHeight();
         },
         /**
          * Fired by ManualRowResize plugin after rendering the table with modified row sizes.
@@ -288,7 +308,6 @@ export function configure(settings = {}) {
             syncData();
             syncSizes();
         },
-
         /**
          * Fired before aligning the cell contents.
          *
