@@ -3,8 +3,14 @@
 namespace App\Models;
 
 use App\Core\Enums\JobProtocolState;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property Carbon created_at
+ * @property Carbon started_at
+ * @property Carbon ended_at
+ */
 class JobProtocol extends Model
 {
     protected $fillable = [

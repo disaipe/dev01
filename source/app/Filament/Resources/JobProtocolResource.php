@@ -9,6 +9,7 @@ use App\Filament\Resources\JobProtocolResource\Pages;
 use App\Filament\Resources\JobProtocolResource\Widgets\FailedJobsCount;
 use App\Filament\Resources\JobProtocolResource\Widgets\QueueJobsCount;
 use App\Models\JobProtocol;
+use Carbon\CarbonInterface;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
@@ -68,6 +69,14 @@ class JobProtocolResource extends Resource
 
                 Tables\Columns\TextColumn::make('ended_at')
                     ->label(__('admin.ended at'))
+                    ->formatStateUsing(function (string $state, JobProtocol $record) {
+                        $diff = $record->started_at->diffForHumans(
+                            $record->ended_at,
+                            CarbonInterface::DIFF_ABSOLUTE
+                        );
+
+                        return "{$state} ({$diff})";
+                    })
                     ->size('sm'),
             ])
             ->filters([
