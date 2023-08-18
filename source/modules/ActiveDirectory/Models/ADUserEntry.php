@@ -8,11 +8,11 @@ use App\Models\Company;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ADEntry extends ReferenceModel
+class ADUserEntry extends ReferenceModel
 {
     use CompanyScope;
 
-    protected $table = 'ad_entries';
+    protected $table = 'ad_user_entries';
 
     protected ?string $companyCodeColumn = 'company_prefix';
 

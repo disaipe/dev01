@@ -4,7 +4,7 @@ namespace App\Modules\ActiveDirectory\Job;
 
 use App\Core\Module\ModuleScheduledJob;
 use App\Models\Domain;
-use App\Modules\ActiveDirectory\Models\ADEntry;
+use App\Modules\ActiveDirectory\Models\ADUserEntry;
 use App\Modules\ActiveDirectory\Utils\LdapQueryConditionsBuilder;
 use App\Services\LdapService;
 use Illuminate\Support\Arr;
@@ -13,7 +13,7 @@ use LdapRecord\Models\ActiveDirectory\User;
 use LdapRecord\Models\Attributes\Guid;
 use LdapRecord\Models\Collection;
 
-class ADSyncJob extends ModuleScheduledJob
+class ADSyncUsersJob extends ModuleScheduledJob
 {
     protected int $loadedCount = 0;
 
@@ -54,7 +54,7 @@ class ADSyncJob extends ModuleScheduledJob
         }
 
         // Truncate table to remove records not presented after filter changes
-        ADEntry::query()->truncate();
+        ADUserEntry::query()->truncate();
 
         foreach ($baseOUs as $ou) {
             $query->in($ou);
@@ -71,11 +71,14 @@ class ADSyncJob extends ModuleScheduledJob
 
     public function getDescription(): ?string
     {
-        return __('ad::messages.job.ldap sync.title');
+        return __('ad::messages.job.users.title');
     }
 
     protected function processChunk(Collection $entries): int
     {
+
+        $records = [];
+
         foreach ($entries as $user) {
             /** @var User $user */
             $username = $user->getFirstAttribute('sAMAccountName');
@@ -98,7 +101,7 @@ class ADSyncJob extends ModuleScheduledJob
                 'post' => $user->getFirstAttribute('title'),
                 'email' => $user->getFirstAttribute('mail'),
                 'ou_path' => $user->getParentDn(),
-                'groups' => $user->getAttribute('memberOf'),
+                'groups' => json_encode($user->getAttribute('memberOf'), JSON_UNESCAPED_UNICODE),
                 'last_logon' => $lastLogonDate,
                 'logon_count' => intval($user->getFirstAttribute('logonCount')),
                 'state' => $state,
@@ -107,10 +110,12 @@ class ADSyncJob extends ModuleScheduledJob
                 'blocked' => $blocked,
             ];
 
-            ADEntry::query()->updateOrCreate([
-                'username' => $username,
-            ], $record);
+            $records []= $record;
         }
+
+        ADUserEntry::withoutEvents(fn () =>
+            ADUserEntry::query()->upsert($records, 'username')
+        );
 
         return $entries->count();
     }

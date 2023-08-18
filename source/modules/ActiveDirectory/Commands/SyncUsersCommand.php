@@ -2,31 +2,31 @@
 
 namespace App\Modules\ActiveDirectory\Commands;
 
-use App\Modules\ActiveDirectory\Job\ADSyncJob;
+use App\Modules\ActiveDirectory\Job\ADSyncUsersJob;
 use Illuminate\Console\Command;
 
-class LdapSync extends Command
+class SyncUsersCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'ad:sync';
+    protected $signature = 'ad:sync-users';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Start user records syncing job from Active Directory';
 
     /**
      * Execute the console command.
      */
     public function handle(): int
     {
-        ADSyncJob::dispatchSync();
+        ADSyncUsersJob::dispatchSync();
 
         return Command::SUCCESS;
     }

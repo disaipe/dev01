@@ -2,7 +2,7 @@
 
 namespace App\Modules\MSExchangeMonitor\Models;
 
-use App\Modules\ActiveDirectory\Models\ADEntry;
+use App\Modules\ActiveDirectory\Models\ADUserEntry;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,7 +20,7 @@ class MSExchangeMailboxStat extends Model
 
     public function person(): BelongsTo
     {
-        return $this->belongsTo(ADEntry::class, 'guid', 'mailbox_guid');
+        return $this->belongsTo(ADUserEntry::class, 'guid', 'mailbox_guid');
     }
 
     public function scopeCompany(Builder $query, string $code): void

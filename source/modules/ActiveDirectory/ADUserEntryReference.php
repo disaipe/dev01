@@ -7,11 +7,11 @@ use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceModel;
 use App\Models\User;
-use App\Modules\ActiveDirectory\Models\ADEntry;
+use App\Modules\ActiveDirectory\Models\ADUserEntry;
 
-class ADEntryReference extends ReferenceEntry
+class ADUserEntryReference extends ReferenceEntry
 {
-    protected string|ReferenceModel $model = ADEntry::class;
+    protected string|ReferenceModel $model = ADUserEntry::class;
 
     public function getSchema(): array
     {
@@ -101,6 +101,6 @@ class ADEntryReference extends ReferenceEntry
 
     protected function getLabelKey(): string
     {
-        return 'ad::messages.ad_entry';
+        return 'ad::messages.ad_user_entry';
     }
 }

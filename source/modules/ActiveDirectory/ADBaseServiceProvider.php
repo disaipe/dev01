@@ -13,10 +13,12 @@ use App\Filament\Components\FormButton;
 use App\Forms\Components\RawHtmlContent;
 use App\Models\Domain;
 use App\Models\JobProtocol;
-use App\Modules\ActiveDirectory\Commands\LdapSync;
+use App\Modules\ActiveDirectory\Commands\SyncComputersCommand;
+use App\Modules\ActiveDirectory\Commands\SyncUsersCommand;
 use App\Modules\ActiveDirectory\Filament\Components\LdapFilterBuilder;
-use App\Modules\ActiveDirectory\Job\ADSyncJob;
-use App\Modules\ActiveDirectory\Models\ADEntry;
+use App\Modules\ActiveDirectory\Job\ADSyncComputersJob;
+use App\Modules\ActiveDirectory\Job\ADSyncUsersJob;
+use App\Modules\ActiveDirectory\Models\ADUserEntry;
 use App\Modules\ActiveDirectory\Utils\LdapQueryConditionsBuilder;
 use App\Services\LdapService;
 use Cron\CronExpression;
@@ -26,12 +28,13 @@ use Filament\Facades\Filament;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Textarea;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use LdapRecord\Container;
-use LdapRecord\Models\ActiveDirectory\User;
+use LdapRecord\Models\ActiveDirectory\Entry;
 
 class ADBaseServiceProvider extends ModuleBaseServiceProvider
 {
@@ -42,12 +45,14 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
         $this->loadMigrations();
 
         $this->commands([
-            LdapSync::class,
+            SyncUsersCommand::class,
+            SyncComputersCommand::class
         ]);
 
         /** @var ReferenceManager $references */
         $references = app('references');
-        $references->register(ADEntryReference::class);
+        $references->register(ADUserEntryReference::class);
+        $references->register(ADComputerEntryReference::class);
 
         /** @var IndicatorManager $indicators */
         $indicators = app('indicators');
@@ -56,7 +61,7 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
                 'module' => 'AD',
                 'code' => 'AD_ENTRY_COUNT',
                 'name' => 'Количество учетных записей',
-                'model' => ADEntry::class,
+                'model' => ADUserEntry::class,
                 'query' => fn ($query) => $query->active(),
                 'expression' => new CountExpression(),
             ]),
@@ -64,7 +69,7 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
                 'module' => 'AD',
                 'code' => 'AD_LYNC_COUNT',
                 'name' => 'Количество учетных записей Lync',
-                'model' => ADEntry::class,
+                'model' => ADUserEntry::class,
                 'query' => fn ($query) => $query->active()->where('sip_enabled', '=', true),
                 'expression' => new CountExpression(),
             ]),
@@ -77,91 +82,105 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
             'name' => __('ad::messages.name'),
             'description' => __('ad::messages.description'),
             'casts' => [
-                'filters' => 'json',
+                'users.filters' => 'json',
+                'computers.filters' => 'json'
             ],
             'view' => [
                 'config' => [
-                    RawHtmlContent::make(function ($get) {
-                        $out = '';
-
-                        $lastSync = JobProtocol::query()
-                            ->where('name', '=', ADSyncJob::class)
-                            ->where('state', '=', JobProtocolState::Ready->value)
-                            ->orderByDesc('ended_at')
-                            ->first();
-
-                        if ($lastSync) {
-                            $out = '<div class="text-right text-sm">'.
-                                __('admin.last sync date', ['date' => $lastSync->ended_at]).
-                                '</div>';
-                        }
-
-                        $syncEnabled = $get('LdapSync.enabled');
-                        $schedule = $get('LdapSync.schedule');
-
-                        if ($syncEnabled && $schedule) {
-                            $expr = new CronExpression($schedule);
-                            $nextDate = $expr->getNextRunDate();
-                            $nextDateStr = $nextDate->format('Y-m-d H:i:s');
-
-                            $out .= '<div class="text-right text-sm">'.
-                                __('admin.next sync date', ['date' => $nextDateStr]).
-                                '</div>';
-                        }
-
-                        return $out;
-                    })
-                        ->columnSpanFull(),
-
                     Section::make(__('ad::messages.section_sync'))
-                        ->schema([
-                            Select::make('domain_id')
-                                ->label(trans_choice('admin.domain', 1))
-                                ->options(Domain::all()->pluck('name', 'id'))
-                                ->required(),
+                    ->schema([
+                        Select::make('domain_id')
+                            ->label(trans_choice('admin.domain', 1))
+                            ->options(Domain::all()->pluck('name', 'id'))
+                            ->required(),
+                    ]),
 
-                            Textarea::make('base_dn')
-                                ->label(__('ad::messages.base dn or ou'))
-                                ->helperText(__('ad::messages.base dn or ou helper')),
+                    Tabs::make('integrations')->tabs([
+                        Tabs\Tab::make(__('ad::messages.job.users.title'))
+                            ->statePath('users')
+                            ->schema($this->getIntegrationOptions('users', ADSyncUsersJob::class)),
 
-                            LdapFilterBuilder::make('filters')
-                                ->label(__('ad::messages.filter')),
-
-                            RawHtmlContent::make(__('ad::messages.action.test filters.description')),
-
-                            FormButton::make('runFiltersTest')
-                                ->label(__('ad::messages.action.test filters.title'))
-                                ->action(fn ($state) => $this->runFiltersTest($state)),
-                        ]),
-
-                    Section::make(__('ad::messages.job.ldap sync.title'))
-                        ->schema([
-                            RawHtmlContent::make(__('ad::messages.job.ldap sync.description')),
-
-                            CronExpressionInput::make('LdapSync.schedule')
-                                ->disableLabel(),
-
-                            Checkbox::make('LdapSync.enabled')
-                                ->label(__('admin.enabled')),
-
-                            FormButton::make('runJob')
-                                ->label(__('admin.run'))
-                                ->action(fn () => $this->runJob()),
-                        ]),
+                        Tabs\Tab::make(__('ad::messages.job.computers.title'))
+                            ->statePath('computers')
+                            ->schema($this->getIntegrationOptions('computers', ADSyncComputersJob::class)),
+                    ]),
                 ],
             ],
         ];
     }
 
-    public function schedule(Schedule $schedule): void
+    public function getIntegrationOptions(string $type, string $syncJob): array
     {
-        $this->scheduleJob($schedule, new ADSyncJob(), 'LdapSync');
+        return [
+            RawHtmlContent::make(function ($get) use ($syncJob) {
+                $out = '';
+
+                $lastSync = JobProtocol::query()
+                    ->where('name', '=', $syncJob)
+                    ->where('state', '=', JobProtocolState::Ready->value)
+                    ->orderByDesc('ended_at')
+                    ->first();
+
+                if ($lastSync) {
+                    $out = '<div class="text-right text-sm">'.
+                        __('admin.last sync date', ['date' => $lastSync->ended_at]).
+                        '</div>';
+                }
+
+                $syncEnabled = $get('enabled');
+                $schedule = $get('schedule');
+
+                if ($syncEnabled && $schedule) {
+                    $expr = new CronExpression($schedule);
+                    $nextDate = $expr->getNextRunDate();
+                    $nextDateStr = $nextDate->format('Y-m-d H:i:s');
+
+                    $out .= '<div class="text-right text-sm">'.
+                        __('admin.next sync date', ['date' => $nextDateStr]).
+                        '</div>';
+                }
+
+                return $out;
+            })
+                ->columnSpanFull(),
+
+            Checkbox::make('enabled')
+                ->label(__('admin.enabled')),
+
+            Textarea::make('base_dn')
+                ->label(__('ad::messages.base dn or ou'))
+                ->helperText(__('ad::messages.base dn or ou helper')),
+
+            LdapFilterBuilder::make('filters')
+                ->label(__('ad::messages.filter')),
+
+            RawHtmlContent::make(__('ad::messages.action.test filters.description')),
+
+            FormButton::make("runFiltersTest-{$type}")
+                ->label(__('ad::messages.action.test filters.title'))
+                ->action(fn ($state) => $this->runFiltersTest($state)),
+
+            RawHtmlContent::make(__("ad::messages.job.{$type}.description")),
+
+            CronExpressionInput::make('schedule')
+                ->disableLabel(),
+
+            FormButton::make("runJob-{$type}")
+                ->label(__('admin.run'))
+                ->action(fn () => $this->runJob($syncJob)),
+        ];
     }
 
-    public function runJob(): void
+    public function schedule(Schedule $schedule): void
+    {
+        $this->scheduleJob($schedule, new ADSyncUsersJob(), 'users');
+        $this->scheduleJob($schedule, new ADSyncComputersJob(), 'computers');
+    }
+
+    public function runJob(string $jobType): void
     {
         try {
-            ADSyncJob::dispatch();
+            app($jobType)::dispatch();
             Filament::notify('success', __('admin.job started'));
         } catch (Exception|Error $e) {
             Filament::notify('danger', __('admin.job staring error'), $e->getMessage());
@@ -169,9 +188,9 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
         }
     }
 
-    public function runFiltersTest($config): void
+    public function runFiltersTest(array $config): void
     {
-        $domainId = Arr::get($config, 'domain_id');
+        $domainId = $this->module->getConfig('domain_id');
         $filters = Arr::get($config, 'filters');
 
         try {
@@ -183,7 +202,7 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
             $baseDN = Arr::get($config, 'base_dn', $domain->base_dn);
             $baseOUs = explode("\n", $baseDN);
 
-            $query = User::query()->select('dn')->limit(1000);
+            $query = Entry::query()->select('dn')->limit(1000);
 
             if ($filters) {
                 LdapQueryConditionsBuilder::applyToQuery($query, $filters);
@@ -197,7 +216,7 @@ class ADBaseServiceProvider extends ModuleBaseServiceProvider
                 $results = array_merge($results, $query->get()->toArray());
             }
 
-            $uniques = collect($results)->unique(fn (User $entry) => $entry->getDn());
+            $uniques = collect($results)->unique(fn (Entry $entry) => $entry->getDn());
             $count = $uniques->count();
 
             if ($count) {
