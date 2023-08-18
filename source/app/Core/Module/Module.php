@@ -106,11 +106,13 @@ class Module
                 $value = Arr::get($data, $field);
 
                 if ($value) {
-                    $data[$field] = match ($type) {
+                    $castedValue = match ($type) {
                         'json' => json_decode($value, true),
                         'password' => Config::decryptValue($value),
                         default => $value
                     };
+
+                    Arr::set($data, $field, $castedValue);
                 }
             }
         }
@@ -128,14 +130,16 @@ class Module
             foreach ($casts as $field => $type) {
                 $value = Arr::get($data, $field);
 
-                if ($value) {
-                    $data[$field] = match ($type) {
+                if (isset($value)) {
+                    $castedValue = match ($type) {
                         'json' => json_encode($value),
                         'password' => Str::contains($field, ['password'], true)
                             ? $value                         // password will be encrypted
                             : \Crypt::encryptString($value), // automatically if name contains "password"
                         default => $value
                     };
+
+                    Arr::set($data, $field, $castedValue);
                 }
             }
         }
