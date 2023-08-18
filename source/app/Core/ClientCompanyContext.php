@@ -64,7 +64,11 @@ class ClientCompanyContext
 
     public function isHasCompanyContext(): bool
     {
-        return $this->user->isClient();
+        if ($this->user) {
+            return $this->user->isClient();
+        }
+
+        return false;
     }
 
     public function getCompanyContextCode(): ?string
