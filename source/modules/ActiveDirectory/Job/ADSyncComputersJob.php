@@ -94,9 +94,11 @@ class ADSyncComputersJob extends ModuleScheduledJob
             $records []= $record;
         }
 
+        $fillable = (new ADComputerEntry())->getFillable();
+
         ADComputerEntry::withoutEvents(fn () =>
             ADComputerEntry::withoutTimestamps(fn () =>
-                ADComputerEntry::withTrashed()->upsert($records, 'name')
+                ADComputerEntry::withTrashed()->upsert($records, 'name', $fillable)
             )
         );
 

@@ -24,4 +24,9 @@ class ADComputerEntry extends ReferenceModel
         'synced_at',
         'deleted_at',
     ];
+
+    public function getDns(): ?string
+    {
+        return $this->dns_name;
+    }
 }
