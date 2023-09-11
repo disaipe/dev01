@@ -28,8 +28,9 @@
                     :value='reportTemplate.$getKey()'
                 )
 
-        el-date-picker.w-16(
+        el-date-picker(
             v-model='period'
+            class='!w-32'
             type='month'
             placeholder='Период'
         )
@@ -40,20 +41,35 @@
             :disabled='!company || !reportTemplate'
             @click='fetchReport'
         ) Сформировать
-        el-button(v-if='loaded' @click='downloadReport') Скачать
 
+        el-button(
+            v-if='loaded'
+            @click='downloadReport'
+        ) Скачать
 
-    el-alert.errors.py-4(
-        v-if='reportErrors && reportErrors.length'
+        el-button(
+            v-if='reportErrors && reportErrors.length'
+            text
+            @click='showErrorsDialog = true'
+        )
+            icon.text-red-500(
+                icon='tabler:alert-triangle-filled'
+                height='24'
+            )
+
+    el-dialog(
+        v-model='showErrorsDialog'
         :closable='false'
-        type='error'
         title='Внимание! При расчете отчета возникли ошибки'
-        show-icon
     )
-        ul.list-disc.list-inside
-            li(v-for='error of reportErrors')
-                span.font-bold {{ error.service_name }}
-                div {{ error.message }}
+        el-alert(
+            type='error'
+            :closable='false'
+        )
+            ul.list-disc.list-inside
+                li(v-for='error of reportErrors')
+                    span.font-bold {{ error.service_name }}
+                    div {{ error.message }}
 
     .spread.h-full.pb-8
         spreadsheet(
@@ -79,6 +95,7 @@ export default {
         const spread = ref();
         const loading = ref(false);
         const loaded = ref(false);
+        const showErrorsDialog = ref(false);
 
         const savedSettings = useReportSettingsStore();
 
@@ -174,6 +191,7 @@ export default {
             spread,
             loaded,
             loading,
+            showErrorsDialog,
 
             company,
             companies,
