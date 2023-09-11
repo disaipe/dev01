@@ -170,10 +170,10 @@ class ReportService
             ];
 
             if ($indicator) {
-                /** @var Indicator $indicator */
-                $scopedQuery = $this->getScopedBaseQuery($indicator->model, $this->companyCode);
-
                 try {
+                    /** @var Indicator $indicator */
+                    $scopedQuery = $this->getScopedBaseQuery($indicator->model, $this->companyCode);
+
                     $result = $indicator->exec($scopedQuery, $this->getContext());
 
                     $results[$serviceKey]['value'] = $result;
@@ -200,7 +200,7 @@ class ReportService
             return $model->query();
         }
 
-        throw new \Exception('Wrong service model');
+        throw new \Exception("Модель данных '{$model}' не определена");
     }
 
     protected function getScopedBaseQuery(string $model, string $companyCode): Builder
