@@ -52,9 +52,10 @@
                 slot(name='columns-before')
                 vxe-column(
                     v-for='({ field, label }, i) of visibleColumns'
-                    :prop='field'
+                    :field='field'
                     :label='label'
                     :tree-node='tree && i === 0'
+                    :cell-render='{ name: "model-field", fields }'
                 )
                     template(#header='{ column }')
                         .flex.items-center.justify-between.space-x-2.leading-3
@@ -65,13 +66,6 @@
                                 :schema='fields[field]'
                                 @filter-change='handleFilter'
                             )
-
-                    template(#default='{ row }')
-                        table-field-column-renderer(
-                            :row='row'
-                            :field='field'
-                            :fields='fields'
-                        )
 
             template(#empty)
                 el-empty(description='Данные не пришли...')
@@ -142,12 +136,14 @@ import { useTableStore, useProfilesSettingsStore } from '../../store/modules';
 
 import TableFilter from './TableFilter.vue';
 import TableColumnsSettings from './TableColumnsSettings.vue';
-import TableFieldColumnRenderer from './TableFieldColumnRenderer.vue';
+
+import './renderers';
+
 import { ElMessage, ElMessageBox } from 'element-plus';
 
 export default {
     name: 'ItTable',
-    components: { TableFilter, TableColumnsSettings, TableFieldColumnRenderer },
+    components: { TableFilter, TableColumnsSettings },
     mixins: [tableFilters, tableContextMenu],
     provide() {
         return {
