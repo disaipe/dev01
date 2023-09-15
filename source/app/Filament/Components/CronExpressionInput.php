@@ -2,8 +2,11 @@
 
 namespace App\Filament\Components;
 
+use Closure;
+use Cron\CronExpression;
 use Filament\Forms\Components\Concerns\HasPlaceholder;
 use Filament\Forms\Components\Field;
+use Throwable;
 
 class CronExpressionInput extends Field
 {
@@ -20,5 +23,19 @@ class CronExpressionInput extends Field
         if (! $this->placeholder) {
             $this->placeholder = '- - - - -';
         }
+
+        $this->rules([
+           function () {
+            return function (string $attribute, $value, Closure $fail) {
+                if ($value) {
+                    try {
+                        new CronExpression($value);
+                    } catch (Throwable $e) {
+                        $fail($e->getMessage());
+                    }
+                }
+            };
+           }
+        ]);
     }
 }

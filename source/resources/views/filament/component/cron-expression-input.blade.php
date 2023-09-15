@@ -80,7 +80,12 @@
                 </div>
             </div>
 
-            <div x-text="description" class="text-sm pt-2"></div>
+            <div
+                class="w-8 h-8 leading-8 mt-2 bg-danger-600 text-center rounded-full text-white text-lg font-bold"
+                x-bind:class="{ hidden: valid }"
+            >!</div>
+
+            <div x-text="description" class="text-sm"></div>
         </div>
     </div>
 </x-dynamic-component>
