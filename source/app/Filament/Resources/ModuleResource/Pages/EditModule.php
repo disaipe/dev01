@@ -5,9 +5,11 @@ namespace App\Filament\Resources\ModuleResource\Pages;
 use App\Core\Module\Module;
 use App\Filament\Resources\ModuleResource;
 use Filament\Facades\Filament;
+use Filament\Forms\Components\Component;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Finder\Finder;
@@ -56,7 +58,14 @@ class EditModule extends EditRecord
         $this->assertModule();
         $configData = $this->module->getConfig();
 
-        return parent::mutateFormDataBeforeFill($configData);
+        $formFields = $this->form->getFlatFields();
+        $defaultStates = Arr::mapWithKeys($formFields, function (Component $item, string $key) {
+            return [$key => $item->getDefaultState()];
+        }) ?? [];
+
+        $dd = collect()->merge(Arr::undot($defaultStates))->merge($configData)->toArray();
+
+        return parent::mutateFormDataBeforeFill($dd);
     }
 
     protected function mutateFormDataBeforeSave(array $data): array
