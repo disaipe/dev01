@@ -48,6 +48,7 @@ class ConditionBuilder extends Builder
                             '=<' => '=<',
                             '<>' => '<>',
                             'like' => 'LIKE',
+                            'not like' => 'NOT LIKE',
                         ])
                         ->required()
                         ->reactive()
