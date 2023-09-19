@@ -8,7 +8,6 @@ use App\Modules\ActiveDirectory\Models\ADComputerEntry;
 use App\Modules\ActiveDirectory\Utils\LdapQueryConditionsBuilder;
 use App\Services\LdapService;
 use Carbon\Carbon;
-use Illuminate\Support\Arr;
 use LdapRecord\Container;
 use LdapRecord\Models\ActiveDirectory\Computer;
 use LdapRecord\Models\Collection;
@@ -19,17 +18,17 @@ class ADSyncComputersJob extends ModuleScheduledJob
 
     public function work(): ?array
     {
-        $config = $this->getModuleConfig();
+        $module = $this->getModule();
 
-        $domainId = Arr::get($config, 'domain_id');
-        $filters = Arr::get($config, 'filters');
+        $domainId = $module->getConfig('domain_id');
+        $filters = $module->getConfig('computers.filters');
 
         /** @var Domain $domain */
         $domain = Domain::query()->find($domainId);
         LdapService::addDomainConnection($domain);
         Container::setDefault($domain->code);
 
-        $baseDN = Arr::get($config, 'base_dn', $domain->base_dn);
+        $baseDN = $module->getConfig('computers.base_dn') ?? $domain->base_dn;
         $baseOUs = explode("\n", $baseDN);
 
         $query = Computer::query()
