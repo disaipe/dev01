@@ -36,7 +36,7 @@ use Illuminate\Support\Facades\Log;
 use LdapRecord\Container;
 use LdapRecord\Models\ActiveDirectory\Entry;
 
-class ADBaseServiceProvider extends ModuleBaseServiceProvider
+class ADServiceProvider extends ModuleBaseServiceProvider
 {
     protected string $namespace = 'ad';
 
