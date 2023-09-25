@@ -13,4 +13,9 @@ trait CompanyScope
     {
         $query->where($this->companyCodeColumn ?? 'company_code', '=', $code);
     }
+
+    public function getCompanyColumn(): ?string
+    {
+        return $this->companyCodeColumn;
+    }
 }
