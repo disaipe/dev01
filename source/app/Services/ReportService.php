@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Core\Enums\ReportContextConstant;
 use App\Core\Indicator\Indicator;
 use App\Core\Indicator\IndicatorManager;
 use App\Core\Reference\ReferenceManager;
@@ -172,9 +173,12 @@ class ReportService
             if ($indicator) {
                 try {
                     /** @var Indicator $indicator */
-                    $scopedQuery = $this->getScopedBaseQuery($indicator->model, $this->companyCode);
+                    $query = $this->getBaseQuery($indicator->model);
 
-                    $result = $indicator->exec($scopedQuery, $this->getContext());
+                    $result = $indicator
+                        ->addContext($this->getContext())
+                        ->applyScopes($query)
+                        ->exec($query);
 
                     $results[$serviceKey]['value'] = $result;
                 } catch (\Exception $e) {
@@ -201,24 +205,6 @@ class ReportService
         }
 
         throw new \Exception("Модель данных '{$model}' не определена");
-    }
-
-    protected function getScopedBaseQuery(string $model, string $companyCode): Builder
-    {
-        $query = $this->getBaseQuery($model)->company($companyCode);
-
-        if ($query->hasNamedScope('period') && $this->period) {
-            $date = Carbon::parse($this->period);
-
-            if ($date->isValid()) {
-                $from = $date->copy()->startOfMonth();
-                $to = $date->copy()->endOfMonth();
-
-                $query->period($from, $to);
-            }
-        }
-
-        return $query;
     }
 
     /**
@@ -269,11 +255,12 @@ class ReportService
         $period = Carbon::make($this->period);
 
         return [
-            'PERIOD' => $this->period,
-            'PERIOD_YEAR' => $period->year,
-            'PERIOD_MONTH' => $period->month,
-            'COMPANY_ID' => $this->company->getKey(),
-            'COMPANY_CODE' => $this->company->code,
+            ReportContextConstant::PERIOD->name => $period,
+            ReportContextConstant::PERIOD_RAW->name => $this->period,
+            ReportContextConstant::PERIOD_YEAR->name => $period->year,
+            ReportContextConstant::PERIOD_MONTH->name => $period->month,
+            ReportContextConstant::COMPANY_ID->name => $this->company->getKey(),
+            ReportContextConstant::COMPANY_CODE->name => $this->company->code,
         ];
     }
 
