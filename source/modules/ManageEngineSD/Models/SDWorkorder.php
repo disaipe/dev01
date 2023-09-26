@@ -75,16 +75,26 @@ class SDWorkorder extends ReferenceModel
         $query->whereRelation('organization', 'description', '=', $code);
     }
 
-    public function scopePeriod(Builder $query, Carbon $from, Carbon $to): Builder
+    public function scopePeriod(Builder $query, Carbon $from, Carbon $to): void
     {
         $fromStr = $from->format('Y-m-d H:i:s');
         $toStr = $to->format('Y-m-d H:i:s');
 
-        return $query
+        $query
             ->whereHas('charges', function (Builder $query) use ($fromStr, $toStr) {
                 $query
                     ->whereRaw("TO_TIMESTAMP(ts_endtime / 1000) >= '$fromStr'::timestamp")
                     ->whereRaw("TO_TIMESTAMP(ts_endtime / 1000) <= '$toStr'::timestamp");
             });
+    }
+
+    public function scopeCreationPeriod(Builder $query, Carbon $from, Carbon $to)
+    {
+        $fromStr = $from->format('Y-m-d H:i:s');
+        $toStr = $to->format('Y-m-d H:i:s');
+
+        $query
+            ->whereRaw("TO_TIMESTAMP(createdtime / 1000) >= '$fromStr'::timestamp")
+            ->whereRaw("TO_TIMESTAMP(createdtime / 1000) <= '$toStr'::timestamp");
     }
 }
