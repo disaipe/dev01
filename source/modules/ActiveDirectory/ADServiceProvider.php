@@ -34,7 +34,9 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use LdapRecord\Container;
+use LdapRecord\Models\ActiveDirectory\Computer;
 use LdapRecord\Models\ActiveDirectory\Entry;
+use LdapRecord\Models\ActiveDirectory\User;
 
 class ADServiceProvider extends ModuleBaseServiceProvider
 {
@@ -158,7 +160,7 @@ class ADServiceProvider extends ModuleBaseServiceProvider
 
             FormButton::make("runFiltersTest-{$type}")
                 ->label(__('ad::messages.action.test filters.title'))
-                ->action(fn ($state) => $this->runFiltersTest($state)),
+                ->action(fn ($state) => $this->runFiltersTest($state, $type)),
 
             RawHtmlContent::make(__("ad::messages.job.{$type}.description")),
 
@@ -188,7 +190,7 @@ class ADServiceProvider extends ModuleBaseServiceProvider
         }
     }
 
-    public function runFiltersTest(array $config): void
+    public function runFiltersTest(array $config, string $type): void
     {
         $domainId = $this->module->getConfig('domain_id');
         $filters = Arr::get($config, 'filters');
@@ -202,7 +204,13 @@ class ADServiceProvider extends ModuleBaseServiceProvider
             $baseDN = Arr::get($config, 'base_dn', $domain->base_dn);
             $baseOUs = explode("\n", $baseDN);
 
-            $query = Entry::query()->select('dn')->limit(1000);
+            $query = match ($type) {
+                'users' => User::query(),
+                'computers' => Computer::query(),
+                default => Entry::query()
+            };
+
+            $query->select('dn')->limit(1000);
 
             if ($filters) {
                 LdapQueryConditionsBuilder::applyToQuery($query, $filters);
