@@ -27,14 +27,23 @@
                 el-button(type='primary') Вставить
                 template(#dropdown)
                     el-dropdown-menu
+                        el-dropdown-item(disabled) Данные услуг
                         +cellTypeMenuItem('Наименование услуги', 'serviceName', 'cell-service-name')
                         +cellTypeMenuItem('Количество оказанной услуги', 'serviceCount', 'cell-service-count')
                         +cellTypeMenuItem('Стоимость услуги', 'servicePrice', 'cell-service-price')
 
-                        +cellTypeMenuItem('Номер договора', 'contractNumber', 'cell-contract-number')(divided='true')
+                        el-dropdown-item(divided disabled) Данные договора
+                        +cellTypeMenuItem('Номер договора', 'contractNumber', 'cell-contract-number')
                         +cellTypeMenuItem('Дата договора', 'contractDate', 'cell-contract-date')
 
-                        el-dropdown-item(divided @click='resetCellFormat') Сбросить
+                        el-dropdown-item(divided disabled) Итоговые суммы
+                        +cellTypeMenuItem('Итого', 'totalSum', 'cell-total')
+                        +cellTypeMenuItem('Итого НДС', 'totalVat', 'cell-total')
+                        +cellTypeMenuItem('Итого с НДС', 'totalWithVat', 'cell-total')
+
+                        el-dropdown-item(divided @click='resetCellFormat')
+                            icon.mr-1(icon='tabler:circle-off')
+                            span Сбросить
 
         template(#toolbar-extra-actions)
             el-button(:loading='data.saving' @click='save')
@@ -129,6 +138,8 @@ export default {
                            selectOptions: undefined,
                            className: undefined
                         });
+
+                        instance.value.setDataAtCell(row, col, null);
                     }
                 }
             }
@@ -183,13 +194,14 @@ export default {
 .cell-service-price {
     @apply !bg-yellow-100 text-right;
 }
-
 .cell-contract-number {
     @apply !bg-emerald-100;
 }
-
 .cell-contract-date {
     @apply !bg-indigo-100;
+}
+.cell-total {
+    @apply !bg-rose-400;
 }
 .helper {
     @apply block w-4 h-4 border border-gray-300;

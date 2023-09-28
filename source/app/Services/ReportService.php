@@ -56,6 +56,7 @@ class ReportService
 
         $cellReplacements = [];
         $errors = [];
+        $total = 0;
 
         // Process values cells
         $values = $this->generate($templateId, $companyCode);
@@ -70,10 +71,22 @@ class ReportService
                 ];
             }
 
+            $count = Arr::get($value, 'value') ?? 0;
+            $price = Arr::get($value, 'price') ?? 0;
+
             $cellReplacements["SERVICE#$serviceId#NAME"] = $serviceName;
-            $cellReplacements["SERVICE#$serviceId#COUNT"] = Arr::get($value, 'value') ?? 0;
-            $cellReplacements["SERVICE#$serviceId#PRICE"] = Arr::get($value, 'price') ?? 0;
+            $cellReplacements["SERVICE#$serviceId#COUNT"] = $count;
+            $cellReplacements["SERVICE#$serviceId#PRICE"] = $price;
+
+            $total += $count * $price;
         }
+
+        // Process totals
+        $vat = ($this->priceList->service_provider->vat ?? 0)/100 * $total;
+
+        $cellReplacements['TOTAL'] = $total;
+        $cellReplacements['TOTAL_VAT'] = $vat;
+        $cellReplacements['TOTAL_WITH_VAT'] = $total + $vat;
 
         // Process contract cells
         $contract = $this->getContract();

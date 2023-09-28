@@ -35,6 +35,11 @@ class ServiceProviderReference extends ReferenceEntry
                 ->visible()
                 ->pinia(PiniaAttribute::string()),
 
+            'vat' => ReferenceFieldSchema::make()
+                ->label('НДС')
+                ->visible()
+                ->pinia(PiniaAttribute::number()),
+
             'description' => ReferenceFieldSchema::make()
                 ->label('Описание')
                 ->pinia(PiniaAttribute::string()),

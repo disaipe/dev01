@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
  * @property string fullname
  * @property string identity
  * @property string description
+ * @property float vat
  * @property Collection<Service> services
  */
 class ServiceProvider extends ReferenceModel
@@ -20,6 +21,7 @@ class ServiceProvider extends ReferenceModel
         'fullname',
         'identity',
         'description',
+        'vat'
     ];
 
     public function services(): HasMany

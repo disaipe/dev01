@@ -12,7 +12,7 @@ export function setCellFormat(instance, row, col, type, context) {
         });
 
         if (data) {
-            instance.value.setSourceDataAtCell(row + 1, col + 1, data);
+            instance.value.setSourceDataAtCell(row, col, data);
         }
 
         instance.value.render();

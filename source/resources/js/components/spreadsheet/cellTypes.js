@@ -3,7 +3,10 @@ import {
     serviceCountCellRenderer,
     servicePriceCellRenderer,
     contractNumberRenderer,
-    contractDateRenderer
+    contractDateRenderer,
+    totalSumRenderer,
+    totalVatRenderer,
+    totalWithVatRenderer
 } from './cellRenderers';
 
 import { SelectEditor } from 'handsontable/editors';
@@ -66,6 +69,33 @@ export default ({ services, contract }) => ({
         data: 'CONTRACT#DATE',
         meta: {
             className: 'cell-contract-date'
+        }
+    },
+
+    totalSum: {
+        pattern: /TOTAL/,
+        renderer: totalSumRenderer,
+        data: 'TOTAL',
+        meta: {
+            className: 'cell-total'
+        }
+    },
+
+    totalVat: {
+        pattern: /TOTAL_VAT/,
+        renderer: totalVatRenderer,
+        data: 'TOTAL_VAT',
+        meta: {
+            className: 'cell-total'
+        }
+    },
+
+    totalWithVat: {
+        pattern: /TOTAL_WITH_VAT/,
+        renderer: totalWithVatRenderer,
+        data: 'TOTAL_WITH_VAT',
+        meta: {
+            className: 'cell-total'
         }
     }
 });
