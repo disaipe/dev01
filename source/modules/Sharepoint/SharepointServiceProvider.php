@@ -6,12 +6,10 @@ use App\Core\Module\ModuleBaseServiceProvider;
 use App\Modules\Sharepoint\Filament\Resources\SharepointListResource;
 use App\Modules\Sharepoint\Jobs\SyncSharepointListJob;
 use App\Modules\Sharepoint\Models\SharepointList;
+use App\Support\Forms\SqlConnectionSettingsForm;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\View;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Arr;
@@ -62,57 +60,11 @@ class SharepointServiceProvider extends ModuleBaseServiceProvider
                 'config' => [
                     Tabs::make('configurationTabs')->tabs([
                         Tabs\Tab::make(__('admin.configuration'))->schema([
-                            Section::make(__('sharepoint::messages.connection settings'))->columns()->schema([
-                                Select::make('db_driver')
-                                    ->label(__('sharepoint::messages.driver'))
-                                    ->default('sqlsrv')
-                                    ->required()
-                                    ->options([
-                                        'sqlsrv' => 'SQL Server',
-                                    ])
-                                    ->columnSpanFull(),
-
-                                TextInput::make('db_host')
-                                    ->label(__('sharepoint::messages.host'))
-                                    ->reactive()
-                                    ->required()
-                                    ->afterStateUpdated(function ($get) {
-                                        $this->setupDatabaseConnection($get);
-                                    }),
-
-                                TextInput::make('db_port')
-                                    ->label(__('sharepoint::messages.port'))
-                                    ->numeric()
-                                    ->required(),
-
-                                TextInput::make('db_username')
-                                    ->label(__('sharepoint::messages.login'))
-                                    ->required(),
-
-                                TextInput::make('db_password')
-                                    ->label(__('sharepoint::messages.password'))
-                                    ->password()
-                                    ->required(),
-
-                                TextInput::make('db_name')
-                                    ->label(__('sharepoint::messages.database'))
-                                    ->required(),
-
-                                Select::make('sslmode')
-                                    ->label('SSL')
-                                    ->options([
-                                        'disable' => 'Disable',
-                                        'allow' => 'Allow',
-                                        'prefer' => 'Prefer',
-                                        'require' => 'Require',
-                                    ]),
-
-                                Textarea::make('driver_options')
-                                    ->label(__('sharepoint::messages.driver options'))
-                                    ->helperText(__('sharepoint::messages.driver options help'))
-                                    ->rows(2)
-                                    ->columnSpanFull(),
-                            ]),
+                            Section::make(__('sharepoint::messages.connection settings'))
+                                ->columns()
+                                ->schema(SqlConnectionSettingsForm::make('', function ($get) {
+                                    $this->setupDatabaseConnection($get);
+                                }))
                         ]),
 
                         Tabs\Tab::make(__('admin.description'))->schema([
@@ -134,7 +86,10 @@ class SharepointServiceProvider extends ModuleBaseServiceProvider
             }
         }
 
-        SharepointConnection::Setup($config);
+        $savedConfig = SharepointConnection::Config();
+        $config = array_merge($savedConfig, $config);
+
+        SharepointConnection::Setup('sharepoint', $config);
     }
 
     public function schedule(Schedule $schedule): void
