@@ -116,8 +116,8 @@ export default class CoreModel extends ApiModel {
         return attr;
     }
 
-    static uid(size= null) {
-        const attr = super.uid(size);
+    static uid(options= { alphabet: '0123456789abcdef', size: 7 }) {
+        const attr = super.uid(options);
         attr.name = 'Uid';
         return attr;
     }
