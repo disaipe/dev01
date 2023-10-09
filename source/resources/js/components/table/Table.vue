@@ -12,7 +12,7 @@
                     template(#icon)
                         icon(icon='tabler:circle-plus')
 
-                el-button(@click='load') Обновить
+                el-button(v-if='canLoad' @click='load') Обновить
                     template(#icon)
                         icon(icon='tabler:refresh')
 
@@ -159,9 +159,17 @@ export default {
             type: Array,
             default: () => ([])
         },
+        items: {
+            type: Array,
+            default: () => null
+        },
         tree: {
             type: Boolean,
             default: false
+        },
+        canLoad: {
+            type: Boolean,
+            default: true,
         },
         canCreate: {
             type: Boolean,
@@ -273,7 +281,11 @@ export default {
         }
     },
     mounted() {
-        this.load();
+        if (this.items) {
+            this.data = this.items;
+        } else {
+            this.load();
+        }
     },
     methods: {
         load() {
