@@ -161,6 +161,7 @@ import {
 export default {
     name: 'Spreadsheet',
     components: { HotTable },
+    emits: ['debug'],
     props: {
         showToolbar: {
             type: Boolean,
@@ -182,7 +183,7 @@ export default {
             default: null
         }
     },
-    setup(props) {
+    setup(props, { emit }) {
         const settingsProp = toRef(props, 'settings');
         const cellModifier = toRef(props, 'cellModifier');
         const fit = toRef(props, 'fit');
@@ -230,6 +231,9 @@ export default {
             width: '100%',
             height: '100%',
             tableClassName: 'table',
+            afterInit: () => {
+                instance.value.addHook('debug', (...args) => emit('debug', ...args));
+            },
             afterSelection: (row, column, row2, column2, preventScrolling, selectionLayerLevel) => {
                 const cell = instance.value.getCell(row, column);
                 const styles = cell.computedStyleMap();

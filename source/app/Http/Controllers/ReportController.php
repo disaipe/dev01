@@ -2,21 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ReportService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
-    public function __invoke(Request $request)
+    public function makeReport(Request $request)
     {
         $companyCode = $request->input('company');
         $reportTemplateId = $request->input('template');
         $period = $request->input('period');
 
-        $report = new \App\Services\ReportService();
+        $report = new ReportService();
 
         try {
-            $data = $report->make($reportTemplateId, $companyCode, $period);
+            $data = $report
+                ->make($companyCode, $period)
+                ->setTemplate($reportTemplateId)
+                ->generate()
+                ->getTemplateData();
 
             return new JsonResponse([
                 'status' => true,
@@ -28,5 +33,23 @@ class ReportController extends Controller
                 'data' => $e->getMessage(),
             ]);
         }
+    }
+
+    public function debugService(Request $request): JsonResponse
+    {
+        $companyCode = $request->input('company');
+        $period = $request->input('period');
+        $service = $request->input('service');
+
+        $report = new ReportService();
+
+        $data = $report
+            ->make($companyCode, $period)
+            ->debugServiceIndicator($service);
+
+        return new JsonResponse([
+            'status' => true,
+            'data' => $data,
+        ]);
     }
 }

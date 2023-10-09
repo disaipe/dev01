@@ -1,26 +1,33 @@
 <?php
 
+use App\Http\Controllers;
+use App\Reference;
 use Illuminate\Support\Facades\Route;
 
-Route::reference(\App\Reference\CompanyReference::class);
-Route::reference(\App\Reference\ServiceReference::class);
-Route::reference(\App\Reference\ServiceProviderReference::class);
-Route::reference(\App\Reference\ContractReference::class);
-Route::reference(\App\Reference\ReportTemplateReference::class);
-Route::reference(\App\Reference\PriceListReference::class);
-Route::reference(\App\Reference\PriceListValueReference::class);
+Route::reference(Reference\CompanyReference::class);
+Route::reference(Reference\ServiceReference::class);
+Route::reference(Reference\ServiceProviderReference::class);
+Route::reference(Reference\ContractReference::class);
+Route::reference(Reference\ReportTemplateReference::class);
+Route::reference(Reference\PriceListReference::class);
+Route::reference(Reference\PriceListValueReference::class);
 
 Route::references();
 
-Route::post('batch', \App\Http\Controllers\BatchController::class);
+Route::post('batch', Controllers\BatchController::class);
 
-Route::post('indicator', \App\Http\Controllers\IndicatorController::class);
+Route::post('indicator', Controllers\IndicatorController::class);
 
 Route::prefix('price_list/{priceList}')
-    ->controller(\App\Http\Controllers\PriceListController::class)
+    ->controller(Controllers\PriceListController::class)
     ->group(function () {
         Route::get('', 'list');
         Route::post('', 'update');
     });
 
-Route::match(['GET', 'POST'], 'report', \App\Http\Controllers\ReportController::class);
+Route::prefix('report')
+    ->controller(Controllers\ReportController::class)
+    ->group(function () {
+       Route::match(['GET', 'POST'], '', 'makeReport');
+       Route::post('debug', 'debugService');
+    });

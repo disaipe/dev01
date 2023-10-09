@@ -9,6 +9,7 @@ use App\Core\Reference\ReferenceManager;
 use App\Models\Company;
 use App\Models\Contract;
 use App\Models\PriceList;
+use App\Models\PriceListValue;
 use App\Models\ReportTemplate;
 use App\Models\Service;
 use Carbon\Carbon;
@@ -36,31 +37,47 @@ class ReportService
 
     protected ReportTemplate $template;
 
-    protected PriceList $priceList;
+    protected Collection $priceListValues;
 
     protected Collection $services;
 
     protected Spreadsheet $spreadsheet;
 
-    protected array $foundCells;
+    protected array $values;
 
     public function __construct()
     {
         $this->referenceManager = app('references');
     }
 
-    public function make(string $templateId, string $companyCode, string $period = null): array
+    public function make(string $companyCode, string $period = null): self
     {
-        $this->company = Company::query()->where('code', '=', $companyCode)->first();
+        $this->companyCode = $companyCode;
         $this->period = $period;
 
+        $this->company = Company::query()->where('code', '=', $companyCode)->first();
+        $this->services = Service::query()->get()->keyBy('id')->collect();
+
+        return $this;
+    }
+
+    public function setTemplate(string $templateId): self
+    {
+        $this->templateId = $templateId;
+        $this->template = ReportTemplate::query()->find($this->templateId);
+
+        $this->getPriceListFromTemplate();
+
+        return $this;
+    }
+
+    public function getTemplateData(): array
+    {
         $cellReplacements = [];
         $errors = [];
         $total = 0;
 
-        // Process values cells
-        $values = $this->generate($templateId, $companyCode);
-        foreach ($values as $serviceId => $value) {
+        foreach ($this->values as $serviceId => $value) {
             $serviceName = Arr::get($value, 'service.name');
 
             if ($error = Arr::get($value, 'error')) {
@@ -107,25 +124,47 @@ class ReportService
         return $this->getTemplateWithData(true);
     }
 
-    protected function generate(string $templateId, string $companyCode): array
+    public function generate(): self
     {
-        $this->companyCode = $companyCode;
-        $this->templateId = $templateId;
-        $this->services = Service::query()->get()->keyBy('id')->collect();
-
-        $this->prepareTemplate();
-        $this->getPriceList();
-        $indicators = $this->getTemplateServices();
+        $indicators = $this->getTemplateIndicators();
         $values = $this->calculateIndicators($indicators);
         $this->addPrices($values);
 
-        return $values;
+        $this->values = $values;
+
+        return $this;
     }
 
+    public function debugServiceIndicator(int|string $serviceId): array
+    {
+        $service = $this->services->get($serviceId);
+
+        /** @var Indicator $indicator */
+        $indicator = $this->getServiceIndicators($service)[$serviceId];
+
+        $query = $this->getBaseQuery($indicator->model);
+
+        $data = $indicator
+            ->addContext($this->getContext())
+            ->applyScopes($query)
+            ->makeQuery($query)
+            ->get()
+            ->toArray();
+
+        return [
+            'reference' => class_basename($indicator->model),
+            'data' => $data,
+        ];
+    }
+
+    /**
+     * Load template with the XLSX reader
+     *
+     * @return void
+     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+     */
     protected function prepareTemplate(): void
     {
-        $this->template = ReportTemplate::query()->find($this->templateId);
-
         $templateFileName = tempnam('/tmp', 'rep_');
         file_put_contents($templateFileName, base64_decode($this->template->content));
 
@@ -133,9 +172,16 @@ class ReportService
         $this->spreadsheet = $reader->load($templateFileName);
     }
 
+    /**
+     * Scan template for service insertions
+     *
+     * @return array
+     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+     */
     protected function getTemplateServices(): array
     {
-        $this->foundCells = [];
+        $this->prepareTemplate();
+
         $foundServices = [];
 
         $worksheet = $this->spreadsheet->getActiveSheet();
@@ -157,14 +203,33 @@ class ReportService
             }
         }
 
+        return $foundServices;
+    }
+
+    /**
+     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+     */
+    protected function getTemplateIndicators(): array
+    {
+        $templateServices = $this->getTemplateServices();
+        return $this->getServiceIndicators($templateServices);
+    }
+
+    /**
+     * @param Service|Service[] $service
+     * @return array
+     */
+    protected function getServiceIndicators(Service|array $service): array
+    {
+        $services = Arr::wrap($service);
+
         /** @var IndicatorManager $indicatorsManager */
         $indicatorsManager = app('indicators');
         $registeredIndicators = $indicatorsManager->getIndicators();
 
         $indicators = [];
 
-        foreach ($foundServices as $service) {
-            /** @var Service $service */
+        foreach ($services as $service) {
             $indicator = Arr::get($registeredIndicators, $service->indicator_code);
             $indicators[$service->getKey()] = $indicator;
         }
@@ -185,15 +250,7 @@ class ReportService
 
             if ($indicator) {
                 try {
-                    /** @var Indicator $indicator */
-                    $query = $this->getBaseQuery($indicator->model);
-
-                    $result = $indicator
-                        ->addContext($this->getContext())
-                        ->applyScopes($query)
-                        ->exec($query);
-
-                    $results[$serviceKey]['value'] = $result;
+                    $results[$serviceKey]['value'] = $this->calculateIndicator($indicator);
                 } catch (\Exception $e) {
                     $results[$serviceKey]['error'] = $e->getMessage();
                 }
@@ -203,6 +260,16 @@ class ReportService
         }
 
         return $results;
+    }
+
+    protected function calculateIndicator(Indicator $indicator): float
+    {
+        $query = $this->getBaseQuery($indicator->model);
+
+        return $indicator
+            ->addContext($this->getContext())
+            ->applyScopes($query)
+            ->exec($query);
     }
 
     protected function getBaseQuery(string $model): Builder
@@ -223,10 +290,11 @@ class ReportService
     /**
      * @throws \Exception
      */
-    protected function getPriceList(): void
+    protected function getPriceListFromTemplate(): self
     {
         $serviceProviderId = $this->template->service_provider_id;
 
+        /** @var ?PriceList $priceList */
         $priceList = PriceList::query()
             ->where('service_provider_id', '=', $serviceProviderId)
             ->where(fn (Builder $query) => $query
@@ -239,12 +307,14 @@ class ReportService
             throw new \Exception('Прайс лист не найден');
         }
 
-        $this->priceList = $priceList;
+        $this->priceListValues = $priceList->values->collect();
+
+        return $this;
     }
 
     protected function addPrices(array &$values): void
     {
-        $priceByService = $this->priceList->values->pluck('value', 'service_id');
+        $priceByService = $this->priceListValues->pluck('value', 'service_id');
 
         foreach ($values as &$value) {
             if (! Arr::has($value, 'error')) {

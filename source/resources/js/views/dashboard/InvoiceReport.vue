@@ -71,31 +71,53 @@
                     span.font-bold {{ error.service_name }}
                     div {{ error.message }}
 
+    el-dialog(
+        v-model='showDebugDialog'
+        title='Отладка'
+        width='90%'
+        :close-on-click-modal='false'
+    )
+        ItTable(
+            :reference='debugReference'
+            :items='debugData'
+            :can-create='false'
+            :can-update='false'
+            :can-delete='false'
+            :can-load='false'
+        )
+
     .spread.h-full.pb-8
         spreadsheet(
             v-show='loaded'
             ref='spread'
             :cell-modifier='cellModifier'
             :show-toolbar='false'
+            @debug='onDebug'
         )
 </template>
 
 <script>
-import { ref, nextTick, watch } from 'vue';
+import { ref, computed, nextTick, watch } from 'vue';
 import { ElMessageBox } from 'element-plus'
 import dayjs from 'dayjs';
 import { useReportSettingsStore } from '../../store/modules';
 import { useRepos } from '../../store/repository';
 import { useApi } from '../../utils/axiosClient';
 import batchApi from '../../utils/batchApi';
+import ItTable from "../../components/table/Table.vue";
 
 export default {
     name: 'InvoiceReport',
+    components: {ItTable},
     setup() {
         const spread = ref();
         const loading = ref(false);
         const loaded = ref(false);
         const showErrorsDialog = ref(false);
+        const showDebugDialog = ref(false);
+
+        const debugReference = ref(null);
+        const debugData = ref(null);
 
         const savedSettings = useReportSettingsStore();
 
@@ -124,6 +146,8 @@ export default {
 
         const cellModifier = (cell) => {
             if (replacements[cell.value] !== undefined) {
+                spread.value.instance.setCellMeta(cell.row - 1, cell.col - 1, 'original', cell.value);
+
                 const replacement = replacements[cell.value];
 
                 if (typeof(replacement) === 'number') {
@@ -134,21 +158,23 @@ export default {
             }
         };
 
-        const fetchReport = () => {
+        const reportBody = computed(() => {
             const _period = period.value
                 ? dayjs(period.value).tz('UTC', true).toISOString()
                 : null;
 
-            const body = {
+            return {
                 company: company.value,
                 template: reportTemplate.value,
                 period: _period
             };
+        });
 
+        const fetchReport = () => {
             loading.value = true;
 
             api
-                .post('report', body)
+                .post('report', reportBody.value)
                 .then((response) => {
                     let message = 'Необработанная ошибка';
 
@@ -187,6 +213,23 @@ export default {
             spread.value.download();
         };
 
+        const onDebug = (service) => {
+            api
+                .post('report/debug', { ...reportBody.value, service })
+                .then((response) => {
+                    if (response.ok) {
+                        const { status, data } = response.data;
+
+                        if (status) {
+                            showDebugDialog.value = true;
+
+                            debugReference.value = data.reference;
+                            debugData.value = data.data;
+                        }
+                    }
+                });
+        };
+
         return {
             spread,
             loaded,
@@ -202,8 +245,13 @@ export default {
 
             cellModifier,
             fetchReport,
-            downloadReport
-        }
+            downloadReport,
+
+            onDebug,
+            showDebugDialog,
+            debugReference,
+            debugData
+        };
     }
 }
 </script>

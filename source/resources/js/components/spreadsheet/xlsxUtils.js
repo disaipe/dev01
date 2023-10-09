@@ -16,6 +16,8 @@ import { registerAllModules } from 'handsontable/registry';
 import { makeMatrix } from '../../utils/arrayUtils';
 import { base64ToBuffer } from '../../utils/base64';
 
+import contextMenu from './contextMenu';
+
 registerLanguageDictionary(ruRU);
 registerAllModules();
 
@@ -141,7 +143,7 @@ export function configure(settings = {}) {
         rowHeaders: true,
         colHeaders: true,
         fillHandle: true,
-        contextMenu: true,
+        contextMenu,
         comments: true,
         // wordWrap: false,
         manualRowResize: true,

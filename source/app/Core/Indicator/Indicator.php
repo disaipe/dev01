@@ -206,6 +206,17 @@ class Indicator
      */
     public function exec(Builder $query): mixed
     {
+        $result = $this->expression?->exec($this->makeQuery($query));
+
+        if (isset($this->mutator)) {
+            $result = call_user_func($this->mutator, $result);
+        }
+
+        return $result;
+    }
+
+    public function makeQuery(Builder $query): Builder
+    {
         $expressionQuery = $this->query
             ? ($this->query)($query)
             : $query;
@@ -214,13 +225,7 @@ class Indicator
             QueryConditionsBuilder::applyToQuery($expressionQuery, $this->conditions, $this->context);
         }
 
-        $result = $this->expression?->exec($expressionQuery);
-
-        if (isset($this->mutator)) {
-            $result = call_user_func($this->mutator, $result);
-        }
-
-        return $result;
+        return $expressionQuery;
     }
 
     public function toArray(): array
