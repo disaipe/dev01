@@ -14,6 +14,11 @@ const state = () => ({
         //   }
         // }
     },
+    sorts: {
+      // [tableId]: {
+      //   [field]: [order]
+      //}
+    },
     columns: {
         // [tableId]: {
         //      visible: [],
@@ -46,7 +51,7 @@ const actions = {
             }
 
             if (value === undefined) {
-                delete this.filters[tableId][field];
+                delete state.filters[tableId][field];
             } else {
                 state.filters[tableId][field] = { value };
             }
@@ -55,6 +60,28 @@ const actions = {
 
     resetFilters(tableId) {
         delete this.filters[tableId];
+    },
+
+    //---------------------------------------------------------
+    //  COLUMN SORTS
+    //---------------------------------------------------------
+
+    loadColumnSorts(tableId) {
+        return this.sorts[tableId];
+    },
+
+    saveColumnSorts({ tableId, sortList }) {
+        if (!tableId) {
+            return;
+        }
+
+        this.$patch((state) => {
+            if (!sortList || !Object.keys(sortList).length ) {
+                delete state.sorts[tableId];
+            } else {
+                state.sorts[tableId] = sortList;
+            }
+        });
     },
 
     //---------------------------------------------------------
@@ -126,6 +153,6 @@ export const useTableStore = defineStore('table', {
     state,
     actions,
     persist: {
-        paths: ['filters', 'columns', 'expanded']
+        paths: ['filters', 'sorts', 'columns', 'expanded']
     }
 });

@@ -64,6 +64,11 @@ class ReferenceEntry
     protected int $order = 0;
 
     /**
+     * Field to sort reference records by default
+     */
+    protected ?string $primaryDisplayField = null;
+
+    /**
      * Determine the schema contains bindings for the Pinia-orm model
      */
     protected bool $piniaBindings = true;
@@ -318,6 +323,14 @@ class ReferenceEntry
     public function getOrder(): int
     {
         return $this->order;
+    }
+
+    /**
+     * Get model field name to display to user, e.g. "name", "display_name", etc
+     */
+    public function getPrimaryDisplayField(): ?string
+    {
+        return $this->primaryDisplayField;
     }
 
     /**

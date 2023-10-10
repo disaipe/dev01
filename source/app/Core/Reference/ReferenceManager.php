@@ -28,7 +28,18 @@ class ReferenceManager
 
     public function getByName(string $name): ?ReferenceEntry
     {
-        return Arr::first($this->references, fn (ReferenceEntry $entry) => $entry->getName() === $name);
+        return Arr::first(
+            $this->references,
+            fn (ReferenceEntry $entry) => $entry->getName() === $name
+        );
+    }
+
+    public function getByTableName(string $table): ?ReferenceEntry
+    {
+        return Arr::first(
+            $this->references,
+            fn (ReferenceEntry $entry) => $entry->getModelInstance()->getTable() === $table
+        );
     }
 
     public function register(string|ReferenceEntry $reference): void

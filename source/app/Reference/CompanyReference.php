@@ -13,6 +13,8 @@ class CompanyReference extends ReferenceEntry
 
     protected bool $piniaBindings = false;
 
+    protected ?string $primaryDisplayField = 'name';
+
     public function getSchema(): array
     {
         return [

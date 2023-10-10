@@ -13,6 +13,8 @@ class ServiceProviderReference extends ReferenceEntry
 {
     protected string|ReferenceModel $model = ServiceProvider::class;
 
+    protected ?string $primaryDisplayField = 'name';
+
     public function getSchema(): array
     {
         return [

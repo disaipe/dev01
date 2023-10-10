@@ -38,11 +38,13 @@
             :loading-config='loadingConfig'
             :data='verifiedData'
             :row-config='rowConfig'
+            :sort-config='sortConfig'
             :tree-config='treeConfig'
             :menu-config='menuConfig'
             @cell-dblclick='handleRowDblClick'
             @toggle-tree-expand='handleRowExpand'
             @menu-click='onContextMenuClick'
+            @sort-change='handleSortChange'
         )
             template(#default)
                 vxe-column(
@@ -52,6 +54,7 @@
                 slot(name='columns-before')
                 vxe-column(
                     v-for='({ field, label }, i) of visibleColumns'
+                    sortable
                     :field='field'
                     :label='label'
                     :tree-node='tree && i === 0'
@@ -59,13 +62,24 @@
                 )
                     template(#header='{ column }')
                         .flex.items-center.justify-between.space-x-2.leading-3
-                            span(style='word-break: break-word') {{ label }}
+                            span.cursor-pointer(
+                              style='word-break: break-word'
+                              @click='toggleColumnSort(column)'
+                            ) {{ label }}
 
-                            TableFilter(
-                                :field='field'
-                                :schema='fields[field]'
-                                @filter-change='handleFilter'
-                            )
+                            .flex.items-center
+                              icon(
+                                v-show='column.order'
+                                :icon='{ asc: "tabler:arrow-up", desc: "tabler:arrow-down"}[column.order]'
+                                height='16'
+                              )
+
+                              TableFilter(
+                                  :field='field'
+                                  :schema='fields[field]'
+                                  @filter-change='handleFilter'
+                                  @click.stop
+                              )
 
             template(#empty)
                 el-empty(description='Данные не пришли...')
@@ -129,6 +143,7 @@ import { useRoute } from 'vue-router';
 import { useRepos } from '../../store/repository';
 import { snake } from '../../utils/stringsUtils';
 
+import tableSorts from './mixins/tableSorts';
 import tableFilters from './mixins/tableFilters';
 import tableContextMenu from './mixins/tableContextMenu';
 
@@ -144,7 +159,7 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 export default {
     name: 'ItTable',
     components: { TableFilter, TableColumnsSettings },
-    mixins: [tableFilters, tableContextMenu],
+    mixins: [tableSorts, tableFilters, tableContextMenu],
     provide() {
         return {
             TableInstance: this
@@ -313,6 +328,10 @@ export default {
                 query.filters = this.filterStore.filters;
             }
 
+            if (Object.keys(this.sortsStore || {}).length) {
+                query.order = this.sortsStore;
+            }
+
             return this.repository.fetch(query).then(({ response, items }) => {
                 const { status, total } = response.data;
 
@@ -467,6 +486,8 @@ export default {
             }
             this.saveExpanded();
         },
+
+
 
         onContextRowEdit(row) {
             this.selectedRow = this.repository.make(row);

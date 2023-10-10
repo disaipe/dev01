@@ -7,6 +7,7 @@ use App\Http\Requests\ReferencePushRequest;
 use App\Http\Resources\ProtocolRecordResource;
 use App\Models\ProtocolRecord;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -43,6 +44,9 @@ class ReferenceController extends BaseController
         // filters input
         $filters = $request->input('filters');
 
+        // orders input
+        $sorts = $request->input('order');
+
         // pagination options
         $page = $request->input('page');
         $perPage = $request->input('perPage', 100);
@@ -63,6 +67,10 @@ class ReferenceController extends BaseController
 
         if ($filters) {
             $this->applyFilters($query, $filters);
+        }
+
+        if ($sorts) {
+            $this->applySort($query, $sorts);
         }
 
         if ($isTreeQuery) {
@@ -89,7 +97,7 @@ class ReferenceController extends BaseController
 
         $paginator = $query->paginate(
             $perPage,
-            '*',
+            $model->getTable().'.*',
             'page',
             $page
         );
@@ -217,7 +225,7 @@ class ReferenceController extends BaseController
         return $this->model;
     }
 
-    protected function applyFilters(Builder $query, array $filters)
+    protected function applyFilters(Builder $query, array $filters): void
     {
         $query->where(function (Builder $group) use ($filters) {
             foreach ($filters as $field => $value) {
@@ -232,5 +240,45 @@ class ReferenceController extends BaseController
                 }
             }
         });
+    }
+
+    protected function applySort(Builder $query, array $sort): void
+    {
+        /** @var ReferenceManager $references */
+        $references = app('references');
+
+        $model = $this->getModel();
+
+        foreach ($sort as $field => $order) {
+            $isRelation = $model->isRelation($field);
+
+            if ($isRelation) {
+                /** @var Relation $relation */
+                $relation = $model->$field();
+
+                $relatedModel = $relation->getModel();
+                $relatedTable = $relatedModel->getTable();
+
+                /*
+                 * Here we can get reference only by table name, because
+                 * custom references has one class name and no other
+                 * properties to identify the model/reference
+                 */
+                $reference = $references->getByTableName($relatedTable);
+                $orderBy = $reference->getPrimaryDisplayField() ?? $relatedModel->getKeyName();
+
+                $query
+                    ->leftJoin(
+                        "$relatedTable",
+                        $relation->getQualifiedOwnerKeyName(),
+                        '=',
+                        $relation->getQualifiedForeignKeyName()
+                    )
+                    ->orderBy("$relatedTable.$orderBy", $order)
+                    ->select($model->getTable().".*");
+            } else {
+                $query->orderBy($field, $order);
+            }
+        }
     }
 }

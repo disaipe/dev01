@@ -23,6 +23,8 @@ class PriceListReference extends ReferenceEntry
 
     protected string|null $sidebarMenuParent = null;
 
+    protected ?string $primaryDisplayField = 'name';
+
     public function getSchema(): array
     {
         return [

@@ -13,6 +13,8 @@ class ContractReference extends ReferenceEntry
 {
     protected string|ReferenceModel $model = Contract::class;
 
+    protected ?string $primaryDisplayField = 'number';
+
     public function getSchema(): array
     {
         return [
