@@ -44,11 +44,7 @@ class FileStorage extends ReferenceModel
 
     public function company(): BelongsTo
     {
-        return $this->belongsTo(
-            Company::class,
-            'company_prefix',
-            'code'
-        );
+        return $this->belongsTo(Company::class,$this->getCompanyColumn(), 'code');
     }
 
     public function scopeEnabled(Builder $query): void

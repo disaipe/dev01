@@ -19,7 +19,7 @@ class ReportTemplate extends ReferenceModel
         'content',
     ];
 
-    public function serviceProvider(): BelongsTo
+    public function service_provider(): BelongsTo
     {
         return $this->belongsTo(ServiceProvider::class, 'service_provider_id');
     }

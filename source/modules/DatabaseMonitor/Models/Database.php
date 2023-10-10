@@ -4,6 +4,8 @@ namespace App\Modules\DatabaseMonitor\Models;
 
 use App\Core\Reference\ReferenceModel;
 use App\Core\Traits\CompanyScope;
+use App\Models\Company;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int database_server_id
@@ -23,4 +25,9 @@ class Database extends ReferenceModel
         'size',
         'company_code',
     ];
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class, $this->getCompanyColumn(), 'code');
+    }
 }

@@ -4,6 +4,8 @@ namespace App\Modules\ActiveDirectory\Models;
 
 use App\Core\Reference\ReferenceModel;
 use App\Core\Traits\CompanyScope;
+use App\Models\Company;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ADComputerEntry extends ReferenceModel
 {
@@ -24,4 +26,9 @@ class ADComputerEntry extends ReferenceModel
         'synced_at',
         'deleted_at',
     ];
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class, $this->getCompanyColumn(), 'code');
+    }
 }

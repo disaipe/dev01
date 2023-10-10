@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Core\Reference\ReferenceModel;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int parent_id
@@ -26,4 +27,9 @@ class Service extends ReferenceModel
     protected $casts = [
         'tags' => 'array',
     ];
+
+    public function service_provider(): BelongsTo
+    {
+        return $this->belongsTo(ServiceProvider::class);
+    }
 }

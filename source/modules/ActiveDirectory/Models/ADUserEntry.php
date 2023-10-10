@@ -43,11 +43,7 @@ class ADUserEntry extends ReferenceModel
 
     public function company(): BelongsTo
     {
-        return $this->belongsTo(
-            Company::class,
-            'company_prefix',
-            'code'
-        );
+        return $this->belongsTo(Company::class, $this->getCompanyColumn(), 'code');
     }
 
     public function scopeActive(Builder $query): void

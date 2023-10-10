@@ -30,7 +30,7 @@ class PriceListValue extends ReferenceModel
         'deleted_at',
     ];
 
-    public function priceList(): BelongsTo
+    public function price_list(): BelongsTo
     {
         return $this->belongsTo(PriceList::class, 'price_list_id');
     }
