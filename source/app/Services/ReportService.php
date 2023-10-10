@@ -9,7 +9,6 @@ use App\Core\Reference\ReferenceManager;
 use App\Models\Company;
 use App\Models\Contract;
 use App\Models\PriceList;
-use App\Models\PriceListValue;
 use App\Models\ReportTemplate;
 use App\Models\Service;
 use Carbon\Carbon;
@@ -99,7 +98,7 @@ class ReportService
         }
 
         // Process totals
-        $vat = ($this->priceList->service_provider->vat ?? 0)/100 * $total;
+        $vat = ($this->priceList->service_provider->vat ?? 0) / 100 * $total;
 
         $cellReplacements['TOTAL'] = $total;
         $cellReplacements['TOTAL_VAT'] = $vat;
@@ -160,7 +159,6 @@ class ReportService
     /**
      * Load template with the XLSX reader
      *
-     * @return void
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     protected function prepareTemplate(): void
@@ -175,7 +173,6 @@ class ReportService
     /**
      * Scan template for service insertions
      *
-     * @return array
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     protected function getTemplateServices(): array
@@ -212,12 +209,12 @@ class ReportService
     protected function getTemplateIndicators(): array
     {
         $templateServices = $this->getTemplateServices();
+
         return $this->getServiceIndicators($templateServices);
     }
 
     /**
-     * @param Service|Service[] $service
-     * @return array
+     * @param  Service|Service[]  $service
      */
     protected function getServiceIndicators(Service|array $service): array
     {

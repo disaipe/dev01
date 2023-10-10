@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ReferenceModel extends Model
 {
-    use SoftDeletes, Protocolable;
+    use Protocolable, SoftDeletes;
 
     protected $hidden = [
         'deleted_at',

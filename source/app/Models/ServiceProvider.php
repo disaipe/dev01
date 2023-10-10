@@ -21,7 +21,7 @@ class ServiceProvider extends ReferenceModel
         'fullname',
         'identity',
         'description',
-        'vat'
+        'vat',
     ];
 
     public function services(): HasMany

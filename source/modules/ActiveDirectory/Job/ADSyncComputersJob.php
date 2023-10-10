@@ -90,7 +90,7 @@ class ADSyncComputersJob extends ModuleScheduledJob
                 'deleted_at' => null,
             ];
 
-            $records []= $record;
+            $records[] = $record;
         }
 
         $fillable = (new ADComputerEntry())->getFillable();

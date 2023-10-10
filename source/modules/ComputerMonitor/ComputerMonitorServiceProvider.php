@@ -71,8 +71,8 @@ class ComputerMonitorServiceProvider extends ModuleBaseServiceProvider
                         ->groupBy("{$adComputerTable}.name")
                         ->distinct();
                 },
-                'expression' => new CountExpression("ad_computer_entries.name"),
-            ])
+                'expression' => new CountExpression('ad_computer_entries.name'),
+            ]),
         ]);
     }
 
@@ -183,7 +183,7 @@ class ComputerMonitorServiceProvider extends ModuleBaseServiceProvider
                                     Toggle::make('parallel')
                                         ->label(__('pcmon::messages.parallel'))
                                         ->helperText(__('pcmon::messages.parallel help'))
-                                        ->inline(false)
+                                        ->inline(false),
                                 ])
                                     ->columns(2),
 

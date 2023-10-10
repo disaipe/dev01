@@ -54,8 +54,8 @@ class ManageEngineSDServiceProvider extends ModuleBaseServiceProvider
 
                         $query->creationPeriod($from, $to);
                     }
-                }
-            ]
+                },
+            ],
         ]));
     }
 

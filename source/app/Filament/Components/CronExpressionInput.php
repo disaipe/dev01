@@ -25,17 +25,17 @@ class CronExpressionInput extends Field
         }
 
         $this->rules([
-           function () {
-            return function (string $attribute, $value, Closure $fail) {
-                if ($value) {
-                    try {
-                        new CronExpression($value);
-                    } catch (Throwable $e) {
-                        $fail($e->getMessage());
+            function () {
+                return function (string $attribute, $value, Closure $fail) {
+                    if ($value) {
+                        try {
+                            new CronExpression($value);
+                        } catch (Throwable $e) {
+                            $fail($e->getMessage());
+                        }
                     }
-                }
-            };
-           }
+                };
+            },
         ]);
     }
 }

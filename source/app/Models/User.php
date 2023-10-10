@@ -18,7 +18,7 @@ use Spatie\Permission\Traits\HasRoles;
  */
 class User extends Authenticatable implements FilamentUser
 {
-    use AuthenticatesWithLdap, HasRoles, Notifiable, HasSuperAdmin;
+    use AuthenticatesWithLdap, HasRoles, HasSuperAdmin, Notifiable;
 
     /**
      * The attributes that are mass assignable.

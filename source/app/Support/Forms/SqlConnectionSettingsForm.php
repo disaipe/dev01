@@ -6,8 +6,9 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 
-class SqlConnectionSettingsForm {
-    static function make(string $prefix = '', \Closure $afterUpdate = null): array
+class SqlConnectionSettingsForm
+{
+    public static function make(string $prefix = '', \Closure $afterUpdate = null): array
     {
         return [
             Select::make("{$prefix}db_driver")

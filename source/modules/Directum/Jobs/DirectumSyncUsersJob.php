@@ -28,7 +28,7 @@ class DirectumSyncUsersJob extends ModuleScheduledJob
         $recordsToUpsert = $users
             ->map(fn (MBUser $user) => [
                 'name' => $user->UserLogin,
-                'domain' => $user->Domain
+                'domain' => $user->Domain,
             ])
             ->toArray();
 

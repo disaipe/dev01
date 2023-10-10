@@ -36,7 +36,7 @@ class ComputersSyncJob extends ModuleScheduledJob
         }
 
         $chunkSize = $module->getConfig('chunk_size');
-        $parallel = (bool)$module->getConfig('parallel');
+        $parallel = (bool) $module->getConfig('parallel');
         $dnsField = $module->getConfig('dns_field');
         $filters = $module->getConfig('filters');
 
@@ -71,7 +71,6 @@ class ComputersSyncJob extends ModuleScheduledJob
 
         foreach ($chunks as $chunk) {
             /** @var Collection $chunk */
-
             $body = [
                 'Parallel' => $parallel,
                 'Host' => null,

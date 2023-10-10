@@ -275,7 +275,7 @@ class ReferenceController extends BaseController
                         $relation->getQualifiedForeignKeyName()
                     )
                     ->orderBy("$relatedTable.$orderBy", $order)
-                    ->select($model->getTable().".*");
+                    ->select($model->getTable().'.*');
             } else {
                 $query->orderBy($field, $order);
             }

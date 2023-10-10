@@ -10,7 +10,7 @@ class LdapFilterBuilder extends Builder
 {
     protected array|Closure|null $fieldsOptions = null;
 
-    protected LdapFilterBuilder|null $parent = null;
+    protected ?LdapFilterBuilder $parent = null;
 
     protected function setUp(): void
     {
@@ -70,7 +70,7 @@ class LdapFilterBuilder extends Builder
         return parent::getBlocks();
     }
 
-    protected function setParent(LdapFilterBuilder|null $parent): static
+    protected function setParent(?LdapFilterBuilder $parent): static
     {
         $this->parent = $parent;
 

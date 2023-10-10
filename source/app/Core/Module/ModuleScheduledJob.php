@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 
 abstract class ModuleScheduledJob implements ShouldQueue //, ShouldBeUniqueUntilProcessing
 {
-    use Dispatchable, Queueable, InteractsWithQueue;
+    use Dispatchable, InteractsWithQueue, Queueable;
 
     protected Module $module;
 

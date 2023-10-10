@@ -45,7 +45,7 @@ Route::post('/api/module/pcmon/post-result', function (Request $request) {
                 'username' => $userName,
             ];
         }
-    } else if ($_id == 'batched' && is_array($hosts)) {
+    } elseif ($_id == 'batched' && is_array($hosts)) {
         foreach ($hosts as $host) {
             $hostId = Arr::get($host, 'Id');
             $userName = Arr::get($host, 'UserName');

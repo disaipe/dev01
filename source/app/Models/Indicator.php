@@ -45,7 +45,7 @@ class Indicator extends Model
         $query->where('published', 1);
     }
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 

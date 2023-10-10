@@ -13,7 +13,7 @@ class MarkdownContent extends Component
 {
     protected string $view = 'htmlable';
 
-    public string|Htmlable|Closure  $content;
+    public string|Htmlable|Closure $content;
 
     public function __construct(string|Htmlable|Closure $content = null)
     {

@@ -89,8 +89,8 @@ class DirectumServiceProvider extends ModuleBaseServiceProvider
                             View::make('directum::help'),
                         ]),
                     ]),
-                ]
-            ]
+                ],
+            ],
         ];
     }
 

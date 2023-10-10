@@ -12,7 +12,7 @@ class ConditionBuilder extends Builder
 {
     protected array|Closure|null $fieldsOptions = null;
 
-    protected ConditionBuilder|null $parent = null;
+    protected ?ConditionBuilder $parent = null;
 
     protected function setUp(): void
     {
@@ -92,7 +92,7 @@ class ConditionBuilder extends Builder
         return parent::getBlocks();
     }
 
-    protected function setParent(ConditionBuilder|null $parent): static
+    protected function setParent(?ConditionBuilder $parent): static
     {
         $this->parent = $parent;
 

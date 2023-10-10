@@ -48,7 +48,7 @@ class ADServiceProvider extends ModuleBaseServiceProvider
 
         $this->commands([
             SyncUsersCommand::class,
-            SyncComputersCommand::class
+            SyncComputersCommand::class,
         ]);
 
         /** @var ReferenceManager $references */
@@ -85,17 +85,17 @@ class ADServiceProvider extends ModuleBaseServiceProvider
             'description' => __('ad::messages.description'),
             'casts' => [
                 'users.filters' => 'json',
-                'computers.filters' => 'json'
+                'computers.filters' => 'json',
             ],
             'view' => [
                 'config' => [
                     Section::make(__('ad::messages.section_sync'))
-                    ->schema([
-                        Select::make('domain_id')
-                            ->label(trans_choice('admin.domain', 1))
-                            ->options(Domain::all()->pluck('name', 'id'))
-                            ->required(),
-                    ]),
+                        ->schema([
+                            Select::make('domain_id')
+                                ->label(trans_choice('admin.domain', 1))
+                                ->options(Domain::all()->pluck('name', 'id'))
+                                ->required(),
+                        ]),
 
                     Tabs::make('integrations')->tabs([
                         Tabs\Tab::make(__('ad::messages.job.users.title'))

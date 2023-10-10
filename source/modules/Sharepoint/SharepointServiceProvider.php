@@ -64,7 +64,7 @@ class SharepointServiceProvider extends ModuleBaseServiceProvider
                                 ->columns()
                                 ->schema(SqlConnectionSettingsForm::make('', function ($get) {
                                     $this->setupDatabaseConnection($get);
-                                }))
+                                })),
                         ]),
 
                         Tabs\Tab::make(__('admin.description'))->schema([

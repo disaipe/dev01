@@ -17,7 +17,7 @@ class ServiceReference extends ReferenceEntry
 
     protected int $order = 4;
 
-    protected string|null $sidebarMenuParent = null;
+    protected ?string $sidebarMenuParent = null;
 
     protected ?string $primaryDisplayField = 'name';
 

@@ -109,7 +109,7 @@ class ADSyncUsersJob extends ModuleScheduledJob
                 'blocked' => $blocked,
             ];
 
-            $records []= $record;
+            $records[] = $record;
         }
 
         ADUserEntry::withoutEvents(fn () =>

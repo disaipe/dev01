@@ -21,7 +21,7 @@ class PriceListReference extends ReferenceEntry
 
     protected string|bool|null $recordView = 'PriceListRecord';
 
-    protected string|null $sidebarMenuParent = null;
+    protected ?string $sidebarMenuParent = null;
 
     protected ?string $primaryDisplayField = 'name';
 

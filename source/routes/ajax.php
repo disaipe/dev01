@@ -28,6 +28,6 @@ Route::prefix('price_list/{priceList}')
 Route::prefix('report')
     ->controller(Controllers\ReportController::class)
     ->group(function () {
-       Route::match(['GET', 'POST'], '', 'makeReport');
-       Route::post('debug', 'debugService');
+        Route::match(['GET', 'POST'], '', 'makeReport');
+        Route::post('debug', 'debugService');
     });

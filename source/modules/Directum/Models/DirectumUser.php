@@ -27,9 +27,9 @@ class DirectumUser extends Model
     {
         $query->whereHas('user', fn (Builder $q) => $q->company($code));
     }
+
     public function scopeActive(Builder $query): void
     {
         $query->whereHas('user', fn (Builder $q) => $q->active());
     }
-
 }

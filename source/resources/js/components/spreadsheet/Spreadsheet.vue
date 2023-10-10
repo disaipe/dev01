@@ -161,7 +161,6 @@ import {
 export default {
     name: 'Spreadsheet',
     components: { HotTable },
-    emits: ['debug'],
     props: {
         showToolbar: {
             type: Boolean,
@@ -183,6 +182,7 @@ export default {
             default: null
         }
     },
+    emits: ['debug'],
     setup(props, { emit }) {
         const settingsProp = toRef(props, 'settings');
         const cellModifier = toRef(props, 'cellModifier');

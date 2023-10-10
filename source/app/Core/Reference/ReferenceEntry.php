@@ -51,7 +51,7 @@ class ReferenceEntry
     /**
      * Sidebar menu parent item
      */
-    protected string|null $sidebarMenuParent = 'references';
+    protected ?string $sidebarMenuParent = 'references';
 
     /**
      * Reference icon
@@ -288,7 +288,7 @@ class ReferenceEntry
     /**
      * Get Vue sidebar menu parent item
      */
-    public function getSidebarMenuParent(): string|null
+    public function getSidebarMenuParent(): ?string
     {
         return $this->sidebarMenuParent;
     }

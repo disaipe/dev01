@@ -51,11 +51,11 @@ class ComputerSyncJob extends ModuleScheduledJob
     {
         if (! $this->record) {
             throw new Exception(__(
-               'pcmon::messages.job.computer sync.errors.source not found',
-               [
-                   'source' => $this->source,
-                   'id' => $this->sourceId,
-               ]
+                'pcmon::messages.job.computer sync.errors.source not found',
+                [
+                    'source' => $this->source,
+                    'id' => $this->sourceId,
+                ]
             ));
         }
 

@@ -67,8 +67,6 @@ class Indicator
      * Context of the indicator. Can consist report service data
      * or any additional variables to manipulate with sockets,
      * expressions, etc.
-     *
-     * @var array
      */
     protected array $context = [];
 
@@ -95,7 +93,7 @@ class Indicator
 
                     $query->period($from, $to);
                 }
-            }
+            },
         ];
     }
 
@@ -185,7 +183,7 @@ class Indicator
             if ($scope) {
                 if (is_string($name) && is_bool($scope) && $query->hasNamedScope($name)) {
                     $query->$name();
-                } else if (is_callable($scope)) {
+                } elseif (is_callable($scope)) {
                     call_user_func($scope, $query, $this->context);
                 }
             }

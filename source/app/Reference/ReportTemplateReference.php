@@ -21,7 +21,7 @@ class ReportTemplateReference extends ReferenceEntry
 
     protected string|bool|null $recordView = 'ReportTemplateRecord';
 
-    protected string|null $sidebarMenuParent = null;
+    protected ?string $sidebarMenuParent = null;
 
     protected ?string $primaryDisplayField = 'name';
 
