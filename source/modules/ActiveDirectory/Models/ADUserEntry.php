@@ -5,9 +5,27 @@ namespace App\Modules\ActiveDirectory\Models;
 use App\Core\Reference\ReferenceModel;
 use App\Core\Traits\CompanyScope;
 use App\Models\Company;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property string company_prefix
+ * @property string company_name
+ * @property string username
+ * @property string name
+ * @property string department
+ * @property string post
+ * @property string email
+ * @property string ou_path
+ * @property array groups
+ * @property Carbon last_logon
+ * @property string logon_count
+ * @property int state
+ * @property bool sip_enabled
+ * @property string mailbox_guid
+ * @property bool blocked
+ */
 class ADUserEntry extends ReferenceModel
 {
     use CompanyScope;

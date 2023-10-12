@@ -5,6 +5,7 @@ namespace App\Modules\ActiveDirectory\Job;
 use App\Core\Module\ModuleScheduledJob;
 use App\Models\Domain;
 use App\Modules\ActiveDirectory\Models\ADComputerEntry;
+use App\Modules\ActiveDirectory\Utils\Helpers;
 use App\Modules\ActiveDirectory\Utils\LdapQueryConditionsBuilder;
 use App\Services\LdapService;
 use Carbon\Carbon;
@@ -29,7 +30,7 @@ class ADSyncComputersJob extends ModuleScheduledJob
         Container::setDefault($domain->code);
 
         $baseDN = $module->getConfig('computers.base_dn') ?? $domain->base_dn;
-        $baseOUs = explode("\n", $baseDN);
+        $baseOUs = Helpers::ParseOUs($baseDN);
 
         $query = Computer::query()
             ->select([
