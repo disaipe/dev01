@@ -3,6 +3,7 @@
 namespace App\Modules\ManageEngineSD\Models;
 
 use App\Core\Reference\ReferenceModel;
+use App\Core\Traits\WithoutSoftDeletes;
 use App\Modules\ManageEngineSD\SDConnection;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -10,24 +11,19 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 /**
  * @property float hours
  */
 class SDWorkorder extends ReferenceModel
 {
+    use WithoutSoftDeletes;
+
     protected $connection = SDConnection::NAME;
 
     protected $table = 'workorder';
 
     protected $primaryKey = 'workorderid';
-
-    public static function query(): Builder
-    {
-        // disable soft delete scope because SD does not have `deleted_at` column
-        return parent::query()->withoutGlobalScope(SoftDeletingScope::class);
-    }
 
     public function organization(): BelongsTo
     {
