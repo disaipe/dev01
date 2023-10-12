@@ -6,6 +6,8 @@ return [
 
     'connection settings' => 'Настройки подключения',
 
+    'user entry' => 'Пользователь Directum|Пользователи Directum',
+
     'job' => [
         'users' => [
             'title' => 'Синхронизация пользователей Directum',

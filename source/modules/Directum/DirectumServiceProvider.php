@@ -5,6 +5,7 @@ namespace App\Modules\Directum;
 use App\Core\Indicator\Indicator;
 use App\Core\Indicator\IndicatorManager;
 use App\Core\Module\ModuleBaseServiceProvider;
+use App\Core\Reference\ReferenceManager;
 use App\Core\Report\Expression\CountExpression;
 use App\Filament\Components\CronExpressionInput;
 use App\Filament\Components\FormButton;
@@ -49,6 +50,10 @@ class DirectumServiceProvider extends ModuleBaseServiceProvider
             'query' => fn (Builder $query) => $query->active(),
             'expression' => new CountExpression(),
         ]));
+
+        /** @var ReferenceManager $references */
+        $references = app('references');
+        $references->register(DirectumUserReference::class);
     }
 
     public function getOptions(): array
