@@ -8,6 +8,7 @@ use App\Core\Indicator\IndicatorManager;
 use App\Core\Module\ModuleBaseServiceProvider;
 use App\Core\Report\Expression\CountExpression;
 use App\Core\Report\Expression\SumExpression;
+use App\Core\Report\ExpressionType\QueryExpressionType;
 use App\Filament\Components\CronExpressionInput;
 use App\Filament\Components\FormButton;
 use App\Forms\Components\RawHtmlContent;
@@ -46,32 +47,44 @@ class MSExchangeMonitorServiceProvider extends ModuleBaseServiceProvider
             Indicator::fromArray([
                 'module' => 'MSEXMONITOR',
                 'code' => 'MSEXMONITOR_MAILBOX_SIZE_SUM',
+                'type' => QueryExpressionType::class,
                 'name' => __('msexmonitor::messages.indicators.MSEXMONITOR_MAILBOX_SIZE_SUM'),
-                'model' => MSExchangeMailboxStat::class,
                 'expression' => new SumExpression('total_item_size'),
+                'options' => [
+                    'model' => MSExchangeMailboxStat::class,
+                ],
                 'mutator' => fn ($value) => Size::ToGigabytes($value),
             ]),
             Indicator::fromArray([
                 'module' => 'MSEXMONITOR',
                 'code' => 'MSEXMONITOR_MAILBOX_COUNT',
+                'type' => QueryExpressionType::class,
                 'name' => __('msexmonitor::messages.indicators.MSEXMONITOR_MAILBOX_COUNT'),
-                'model' => MSExchangeMailboxStat::class,
                 'expression' => new CountExpression(),
+                'options' => [
+                    'model' => MSExchangeMailboxStat::class,
+                ],
             ]),
             Indicator::fromArray([
                 'module' => 'MSEXMONITOR',
                 'code' => 'MSEXMONITOR_MAILBOX_OVERSIZE_COUNT',
+                'type' => QueryExpressionType::class,
                 'name' => __('msexmonitor::messages.indicators.MSEXMONITOR_MAILBOX_OVERSIZE_COUNT'),
-                'model' => MSExchangeMailboxStat::class,
-                'query' => fn ($query) => $query->where('total_item_size', '>', Size::Gigabyte(3)),
                 'expression' => new CountExpression(),
+                'options' => [
+                    'model' => MSExchangeMailboxStat::class,
+                    'query' => fn ($query) => $query->where('total_item_size', '>', Size::Gigabyte(3)),
+                ],
             ]),
             Indicator::fromArray([
                 'module' => 'MSEXMONITOR',
                 'code' => 'MSEXMONITOR_MAILBOX_OVERSIZE_SUM',
+                'type' => QueryExpressionType::class,
                 'name' => __('msexmonitor::messages.indicators.MSEXMONITOR_MAILBOX_OVERSIZE_SUM'),
-                'model' => MSExchangeMailboxStat::class,
                 'expression' => new OversizeSumExpression(),
+                'options' => [
+                    'model' => MSExchangeMailboxStat::class,
+                ],
             ]),
         ]);
 

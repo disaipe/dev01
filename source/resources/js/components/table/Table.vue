@@ -29,7 +29,7 @@
                 TableColumnsSettings
 
         vxe-table(
-            v-if='fields'
+            v-if='fields || columns'
             ref='vxe'
             id='tableId'
             border
@@ -58,7 +58,7 @@
                     :field='field'
                     :label='label'
                     :tree-node='tree && i === 0'
-                    :cell-render='{ name: "model-field", fields }'
+                    :cell-render='fields ? { name: "model-field", fields } : null'
                 )
                     template(#header='{ column }')
                         .flex.items-center.justify-between.space-x-2.leading-3
@@ -75,6 +75,7 @@
                               )
 
                               TableFilter(
+                                  v-if='fields'
                                   :field='field'
                                   :schema='fields[field]'
                                   @filter-change='handleFilter'
@@ -166,6 +167,10 @@ export default {
         }
     },
     props: {
+        id: {
+            type: String,
+            default: Math.random().toString(36).substring(7)
+        },
         reference: {
             type: String,
             default: null
@@ -201,11 +206,12 @@ export default {
     },
     setup(props) {
         const errors = ref([]);
+        const id = toRef(props, 'id');
         const reference = toRef(props, 'reference');
         const columns = toRef(props, 'columns');
 
         const route = useRoute();
-        const tableId = [route.name, snake(reference.value)].join('_');
+        const tableId = [route.name, snake(id.value || reference.value)].join('_');
 
         const repository = useRepos()[reference.value];
 
@@ -228,6 +234,12 @@ export default {
             repository.getFieldsSchema().then((schema) => {
                 fields.value = schema;
             });
+        } else if (columns.value) {
+            // fields.value = columns.value.reduce((cur, acc) => {
+            //   acc[cur.field] = { label: cur.label };
+            //
+            //   return acc;
+            // }, {});
         } else {
             errors.value.push('Не задана модель данных Pinia. Без схемы полей данных дальнейшая работа невозможна');
         }

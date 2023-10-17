@@ -8,6 +8,7 @@ use App\Core\Indicator\IndicatorManager;
 use App\Core\Module\ModuleBaseServiceProvider;
 use App\Core\Reference\ReferenceManager;
 use App\Core\Report\Expression\SumExpression;
+use App\Core\Report\ExpressionType\QueryExpressionType;
 use App\Filament\Components\CronExpressionInput;
 use App\Filament\Components\FormButton;
 use App\Forms\Components\RawHtmlContent;
@@ -45,9 +46,12 @@ class DatabaseMonitorServiceProvider extends ModuleBaseServiceProvider
             Indicator::fromArray([
                 'module' => 'DBMON',
                 'code' => 'DBMON_DATABASE_SIZE_SUM',
+                'type' => QueryExpressionType::class,
                 'name' => 'Размер баз данных',
-                'model' => Database::class,
                 'expression' => new SumExpression('size'),
+                'options' => [
+                    'model' => Database::class,
+                ],
                 'mutator' => fn ($value) => round($value / 1024 / 1024, 2),
             ]),
         ]);

@@ -8,6 +8,7 @@ use App\Core\Indicator\IndicatorManager;
 use App\Core\Module\ModuleBaseServiceProvider;
 use App\Core\Reference\ReferenceManager;
 use App\Core\Report\Expression\SumExpression;
+use App\Core\Report\ExpressionType\QueryExpressionType;
 use App\Filament\Components\CronExpressionInput;
 use App\Filament\Components\FormButton;
 use App\Forms\Components\RawHtmlContent;
@@ -47,10 +48,13 @@ class FileStorageMonitorServiceProvider extends ModuleBaseServiceProvider
             Indicator::fromArray([
                 'module' => 'FSMONITOR',
                 'code' => 'FSMONITOR_STORAGE_SIZE_SUM',
+                'type' => QueryExpressionType::class,
                 'name' => 'Размер файлового хранилища',
-                'model' => FileStorage::class,
-                'query' => fn ($query) => $query->reportable(),
                 'expression' => new SumExpression('size'),
+                'options' => [
+                    'model' => FileStorage::class,
+                    'query' => fn ($query) => $query->reportable(),
+                ],
                 'mutator' => fn ($value) => round($value / 1000 / 1000 / 1000, 2),
             ]),
         ]);

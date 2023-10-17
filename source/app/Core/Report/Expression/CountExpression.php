@@ -2,10 +2,11 @@
 
 namespace App\Core\Report\Expression;
 
+use App\Core\Report\IQueryExpression;
 use App\Forms\Components\RawHtmlContent;
 use Illuminate\Database\Eloquent\Builder;
 
-class CountExpression implements Expression
+class CountExpression implements IQueryExpression
 {
     protected string $column;
 

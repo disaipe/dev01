@@ -2,6 +2,7 @@
 
 namespace App\Core\Report\Expression;
 
+use App\Core\Report\IExpression;
 use Illuminate\Support\Arr;
 
 class ExpressionManager
@@ -26,7 +27,7 @@ class ExpressionManager
         return $this->expressions;
     }
 
-    public function getByKey($key): Expression|string|null
+    public function getByKey($key): IExpression|string|null
     {
         return Arr::get($this->expressions, $key);
     }

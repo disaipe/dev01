@@ -73,12 +73,14 @@
 
     el-dialog(
         v-model='showDebugDialog'
-        title='Отладка'
+        title='Отладка (BETA)'
         width='90%'
+        destroy-on-close
         :close-on-click-modal='false'
     )
-        ItTable(
+        it-table(
             :reference='debugReference'
+            :columns='debugColumns'
             :items='debugData'
             :can-create='false'
             :can-update='false'
@@ -116,6 +118,7 @@ export default {
         const showErrorsDialog = ref(false);
         const showDebugDialog = ref(false);
 
+        const debugColumns = ref(null);
         const debugReference = ref(null);
         const debugData = ref(null);
 
@@ -223,6 +226,7 @@ export default {
                         if (status) {
                             showDebugDialog.value = true;
 
+                            debugColumns.value = data.columns;
                             debugReference.value = data.reference;
                             debugData.value = data.data;
                         }
@@ -250,6 +254,7 @@ export default {
             onDebug,
             showDebugDialog,
             debugReference,
+            debugColumns,
             debugData
         };
     }

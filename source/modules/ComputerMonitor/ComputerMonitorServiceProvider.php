@@ -9,6 +9,7 @@ use App\Core\Module\ModuleBaseServiceProvider;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceManager;
 use App\Core\Report\Expression\CountExpression;
+use App\Core\Report\ExpressionType\QueryExpressionType;
 use App\Filament\Components\ConditionBuilder;
 use App\Filament\Components\CronExpressionInput;
 use App\Filament\Components\FormButton;
@@ -54,24 +55,27 @@ class ComputerMonitorServiceProvider extends ModuleBaseServiceProvider
             Indicator::fromArray([
                 'module' => $this->namespace,
                 'code' => 'PCMON_COMPUTER_COUNT_BY_AD_USER',
+                'type' => QueryExpressionType::class,
                 'name' => '[PCMON] Количество персональных ПК (по активности пользователей)',
-                'model' => ADComputerEntryStatus::class,
-                'query' => function (Builder $query) {
-                    $adComputerEntry = new ADComputerEntry();
-                    $adComputerTable = $adComputerEntry->getTable();
-
-                    return $query
-                        ->join(
-                            $adComputerTable,
-                            "{$adComputerTable}.id",
-                            '=',
-                            "{$query->getModel()->getTable()}.ad_computer_entry_id"
-                        )
-                        ->select("{$adComputerTable}.name")
-                        ->groupBy("{$adComputerTable}.name")
-                        ->distinct();
-                },
                 'expression' => new CountExpression('ad_computer_entries.name'),
+                'options' => [
+                    'model' => ADComputerEntryStatus::class,
+                    'query' => function (Builder $query) {
+                        $adComputerEntry = new ADComputerEntry();
+                        $adComputerTable = $adComputerEntry->getTable();
+
+                        return $query
+                            ->join(
+                                $adComputerTable,
+                                "{$adComputerTable}.id",
+                                '=',
+                                "{$query->getModel()->getTable()}.ad_computer_entry_id"
+                            )
+                            ->select("{$adComputerTable}.name")
+                            ->groupBy("{$adComputerTable}.name")
+                            ->distinct();
+                    },
+                ]
             ]),
         ]);
     }

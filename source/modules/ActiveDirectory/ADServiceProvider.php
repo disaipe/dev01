@@ -8,6 +8,7 @@ use App\Core\Indicator\IndicatorManager;
 use App\Core\Module\ModuleBaseServiceProvider;
 use App\Core\Reference\ReferenceManager;
 use App\Core\Report\Expression\CountExpression;
+use App\Core\Report\ExpressionType\QueryExpressionType;
 use App\Filament\Components\CronExpressionInput;
 use App\Filament\Components\FormButton;
 use App\Forms\Components\RawHtmlContent;
@@ -63,18 +64,24 @@ class ADServiceProvider extends ModuleBaseServiceProvider
             Indicator::fromArray([
                 'module' => 'AD',
                 'code' => 'AD_ENTRY_COUNT',
+                'type' => QueryExpressionType::class,
                 'name' => 'Количество учетных записей',
-                'model' => ADUserEntry::class,
-                'query' => fn ($query) => $query->active(),
                 'expression' => new CountExpression(),
+                'options' => [
+                    'model' => ADUserEntry::class,
+                    'query' => fn ($query) => $query->active(),
+                ],
             ]),
             Indicator::fromArray([
                 'module' => 'AD',
                 'code' => 'AD_LYNC_COUNT',
+                'type' => QueryExpressionType::class,
                 'name' => 'Количество учетных записей Lync',
-                'model' => ADUserEntry::class,
-                'query' => fn ($query) => $query->active()->where('sip_enabled', '=', true),
                 'expression' => new CountExpression(),
+                'options' => [
+                    'model' => ADUserEntry::class,
+                    'query' => fn ($query) => $query->active()->where('sip_enabled', '=', true),
+                ],
             ]),
         ]);
     }

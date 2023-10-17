@@ -9,6 +9,7 @@ return [
     'job protocol' => 'Фоновая задача|Фоновые задачи',
 
     'code' => 'Код',
+    'type' => 'Тип',
     'name' => 'Наименование',
     'short name' => 'Короткое наименование',
     'login' => 'Логин',
@@ -87,6 +88,11 @@ return [
 
     '$indicator' => [
         'common' => 'Базовая конфигурация',
+
+        'type' => [
+            'query expression' => 'Выборка данных из справочника',
+            'indicators sum expression' => 'Сумма индикаторов',
+        ],
 
         'schema' => 'Схема',
         'column' => 'Колонка',

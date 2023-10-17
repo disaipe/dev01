@@ -3,11 +3,11 @@
 namespace App\Modules\MSExchangeMonitor;
 
 use App\Core\Module\ModuleManager;
-use App\Core\Report\Expression\Expression;
+use App\Core\Report\IExpression;
 use App\Utils\Size;
 use Illuminate\Database\Eloquent\Builder;
 
-class OversizeSumExpression implements Expression
+class OversizeSumExpression implements IExpression
 {
     public function exec(Builder $query): float
     {

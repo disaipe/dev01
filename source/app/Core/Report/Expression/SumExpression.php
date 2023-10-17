@@ -2,11 +2,12 @@
 
 namespace App\Core\Report\Expression;
 
+use App\Core\Report\IQueryExpression;
 use App\Forms\Components\RawHtmlContent;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 
-class SumExpression implements Expression
+class SumExpression implements IQueryExpression
 {
     protected string $column;
 

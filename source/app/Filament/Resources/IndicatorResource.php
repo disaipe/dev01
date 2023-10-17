@@ -2,22 +2,16 @@
 
 namespace App\Filament\Resources;
 
-use App\Core\Reference\ReferenceEntry;
-use App\Core\Reference\ReferenceFieldSchema;
-use App\Core\Reference\ReferenceManager;
-use App\Core\Report\Expression\Expression;
-use App\Core\Report\Expression\ExpressionManager;
-use App\Filament\Components\ConditionBuilder;
+use App\Core\Report\ExpressionType\IndicatorSumExpressionType;
+use App\Core\Report\ExpressionType\QueryExpressionType;
 use App\Filament\Resources\IndicatorResource\Pages;
-use App\Forms\Components\RawHtmlContent;
+use App\Models\ExpressionType;
 use App\Models\Indicator;
 use Filament\Forms;
-use Filament\Forms\Components\Builder;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Support\Arr;
 
 class IndicatorResource extends Resource
 {
@@ -27,12 +21,6 @@ class IndicatorResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $referencesOptions = static::getReferencesOptions();
-
-        /** @var ExpressionManager $expressions */
-        $expressionsManager = app('expressions');
-        $expressions = $expressionsManager->getExpressions();
-
         return $form
             ->schema([
                 Forms\Components\Section::make(__('admin.$indicator.common'))
@@ -49,14 +37,16 @@ class IndicatorResource extends Resource
                             ->maxLength(32)
                             ->disabled(fn ($record) => isset($record)),
 
-                        Forms\Components\Select::make('schema.reference')
-                            ->label(trans_choice('admin.reference', 1))
-                            ->options($referencesOptions)
-                            ->columnSpanFull()
+                        Forms\Components\Select::make('type')
+                            ->label(__('admin.type'))
+                            ->options([
+                                class_basename(QueryExpressionType::class) => QueryExpressionType::label(),
+                                class_basename(IndicatorSumExpressionType::class) => IndicatorSumExpressionType::label(),
+                            ])
+                            ->default(QueryExpressionType::class)
                             ->required()
                             ->reactive()
-                            ->afterStateHydrated(static::updateReferenceFields(...))
-                            ->afterStateUpdated(static::updateReferenceFields(...)),
+                            ->columnSpanFull(),
 
                         Forms\Components\Checkbox::make('published')
                             ->label(__('admin.enabled')),
@@ -64,37 +54,16 @@ class IndicatorResource extends Resource
 
                 Forms\Components\Section::make(__('admin.$indicator.schema'))
                     ->collapsible()
-                    ->schema([
-                        Builder::make('schema.values')
-                            ->label('')
-                            ->required()
-                            ->createItemButtonLabel(__('admin.$indicator.schema add'))
-                            ->blocks(Arr::map($expressions, function (Expression|string $expression) {
-                                return Builder\Block::make(class_basename($expression))
-                                    ->label($expression::label())
-                                    ->schema($expression::form());
-                            }))
-                            ->minItems(1)
-                            ->maxItems(1),
-                    ]),
+                    ->schema(function ($get) {
+                        $type = $get('type');
 
-                Forms\Components\Section::make(__('admin.$indicator.conditions'))
-                    ->collapsible()
-                    ->schema([
-                        RawHtmlContent::make(__('admin.$indicator.conditions helper')),
+                        if ($type) {
+                            return ExpressionType::from($type)::form();
+                        }
 
-                        ConditionBuilder::make('schema.conditions')
-                            ->disableLabel()
-                            ->reactive()
-                            ->fields(fn ($get) => $get('__referenceFields')),
-
-                        Forms\Components\Section::make(__('admin.$indicator.placeholders'))
-                            ->collapsed()
-                            ->schema([
-                                Forms\Components\ViewField::make('placeholdersHelp')
-                                    ->view('admin.help.indicatorPlaceholders'),
-                            ]),
-                    ]),
+                        return [];
+                    })
+                    ->visible(fn ($get) => $get('type') !== null),
             ]);
     }
 
@@ -137,48 +106,5 @@ class IndicatorResource extends Resource
     public static function getPluralLabel(): ?string
     {
         return trans_choice('reference.Indicator', 2);
-    }
-
-    protected static function getReferencesOptions(): array
-    {
-        $references = app('references')->getReferences();
-
-        $referencesOptions = [];
-
-        foreach ($references as $reference) {
-            /** @var ReferenceEntry $reference */
-            if ($reference->canAttachIndicators()) {
-                $referencesOptions[$reference->getName()] = $reference->getLabel();
-            }
-        }
-
-        return Arr::sort($referencesOptions);
-    }
-
-    protected static function updateReferenceFields($state, $set): void
-    {
-        if (! $state) {
-            $set('__referenceFields', []);
-
-            return;
-        }
-
-        /** @var ReferenceManager $references */
-        $references = app('references');
-        $reference = $references->getByName($state);
-
-        $schema = $reference->getSchema();
-        $model = $reference->getModelInstance();
-        $filteredFields = Arr::where($schema, function (ReferenceFieldSchema $field, string $key) use ($model) {
-            return ! $model->isRelation($key);
-        });
-
-        $fields = Arr::map($filteredFields, function (ReferenceFieldSchema $field, $key) {
-            $label = $field->getAttribute('label');
-
-            return $label ? "$key ({$label})" : $key;
-        }, []);
-
-        $set('__referenceFields', $fields);
     }
 }

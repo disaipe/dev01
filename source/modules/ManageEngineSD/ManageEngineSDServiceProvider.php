@@ -9,6 +9,7 @@ use App\Core\Module\ModuleBaseServiceProvider;
 use App\Core\Reference\ReferenceManager;
 use App\Core\Report\Expression\CountExpression;
 use App\Core\Report\Expression\ExpressionManager;
+use App\Core\Report\ExpressionType\QueryExpressionType;
 use App\Facades\Config;
 use App\Modules\ManageEngineSD\Models\SDStatusDefinition;
 use App\Modules\ManageEngineSD\Models\SDWorkorder;
@@ -41,20 +42,23 @@ class ManageEngineSDServiceProvider extends ModuleBaseServiceProvider
         $indicators->register(Indicator::fromArray([
             'module' => $this->namespace,
             'code' => 'MESD_TOTAL_REQUESTS_COUNT',
+            'type' => QueryExpressionType::class,
             'name' => '[MESD] Общее количество созданных заявок от организации',
-            'model' => SDWorkorder::class,
             'expression' => new CountExpression(),
-            'scopes' => [
-                'period' => function (Builder $query, array $context) {
-                    $period = Arr::get($context, ReportContextConstant::PERIOD->name);
+            'options' => [
+                'model' => SDWorkorder::class,
+                'scopes' => [
+                    'period' => function (Builder $query, array $context) {
+                        $period = Arr::get($context, ReportContextConstant::PERIOD->name);
 
-                    if (get_class($period) === Carbon::class) {
-                        $from = $period->copy()->startOfMonth();
-                        $to = $period->copy()->endOfMonth();
+                        if (get_class($period) === Carbon::class) {
+                            $from = $period->copy()->startOfMonth();
+                            $to = $period->copy()->endOfMonth();
 
-                        $query->creationPeriod($from, $to);
-                    }
-                },
+                            $query->creationPeriod($from, $to);
+                        }
+                    },
+                ],
             ],
         ]));
     }

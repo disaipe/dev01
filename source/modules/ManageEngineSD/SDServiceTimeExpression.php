@@ -3,12 +3,12 @@
 namespace App\Modules\ManageEngineSD;
 
 use App\Core\Module\ModuleManager;
-use App\Core\Report\Expression\Expression;
+use App\Core\Report\IQueryExpression;
 use Filament\Forms\Components\Select;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 
-class SDServiceTimeExpression extends SDServiceExpression implements Expression
+class SDServiceTimeExpression extends SDServiceExpression implements IQueryExpression
 {
     protected array $serviceId;
 

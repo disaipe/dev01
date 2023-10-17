@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 
 /**
  * @property string code
+ * @property string type
  * @property string name
  * @property array schema
  * @property bool published
@@ -18,6 +19,7 @@ class Indicator extends Model
 {
     protected $fillable = [
         'code',
+        'type',
         'name',
         'schema',
         'published',

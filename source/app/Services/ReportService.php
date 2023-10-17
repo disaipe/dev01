@@ -13,7 +13,6 @@ use App\Models\ReportTemplate;
 use App\Models\Service;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -141,19 +140,9 @@ class ReportService
         /** @var Indicator $indicator */
         $indicator = $this->getServiceIndicators($service)[$serviceId];
 
-        $query = $this->getBaseQuery($indicator->model);
-
-        $data = $indicator
-            ->addContext($this->getContext())
-            ->applyScopes($query)
-            ->makeQuery($query)
-            ->get()
-            ->toArray();
-
-        return [
-            'reference' => class_basename($indicator->model),
-            'data' => $data,
-        ];
+        return $indicator
+            ->setContext($this->getContext())
+            ->debug();
     }
 
     /**
@@ -261,27 +250,9 @@ class ReportService
 
     protected function calculateIndicator(Indicator $indicator): float
     {
-        $query = $this->getBaseQuery($indicator->model);
-
         return $indicator
-            ->addContext($this->getContext())
-            ->applyScopes($query)
-            ->exec($query);
-    }
-
-    protected function getBaseQuery(string $model): Builder
-    {
-        if (is_subclass_of($model, Model::class)) {
-            return $model::query();
-        }
-
-        if ($reference = $this->referenceManager->getByName($model)) {
-            $model = $reference->getModelInstance();
-
-            return $model->query();
-        }
-
-        throw new \Exception("Модель данных '{$model}' не определена");
+            ->setContext($this->getContext())
+            ->exec();
     }
 
     /**

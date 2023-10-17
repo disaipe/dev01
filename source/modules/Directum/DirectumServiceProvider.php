@@ -7,6 +7,7 @@ use App\Core\Indicator\IndicatorManager;
 use App\Core\Module\ModuleBaseServiceProvider;
 use App\Core\Reference\ReferenceManager;
 use App\Core\Report\Expression\CountExpression;
+use App\Core\Report\ExpressionType\QueryExpressionType;
 use App\Filament\Components\CronExpressionInput;
 use App\Filament\Components\FormButton;
 use App\Forms\Components\RawHtmlContent;
@@ -45,10 +46,13 @@ class DirectumServiceProvider extends ModuleBaseServiceProvider
         $indicators->register(Indicator::fromArray([
             'module' => $this->namespace,
             'code' => 'DIRECTUM_USERS_COUNT',
+            'type' => QueryExpressionType::class,
             'name' => 'Количество активных пользователей Directum',
-            'model' => DirectumUser::class,
-            'query' => fn (Builder $query) => $query->active(),
             'expression' => new CountExpression(),
+            'options' => [
+                'model' => DirectumUser::class,
+                'query' => fn (Builder $query) => $query->active(),
+            ],
         ]));
 
         /** @var ReferenceManager $references */
