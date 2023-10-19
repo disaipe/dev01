@@ -7,8 +7,8 @@ use App\Core\Indicator\Indicator;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceManager;
-use App\Core\Report\IExpression;
 use App\Core\Report\Expression\ExpressionManager;
+use App\Core\Report\IExpression;
 use App\Core\Report\IExpressionType;
 use App\Core\Utils\QueryConditionsBuilder;
 use App\Filament\Components\ConditionBuilder;
@@ -209,6 +209,7 @@ class QueryExpressionType implements IExpressionType
 
         if (! $reference) {
             Filament::notify('danger', __('error.reference not found', ['reference' => $state]));
+
             return;
         }
 
@@ -233,6 +234,7 @@ class QueryExpressionType implements IExpressionType
     public function calculate(Indicator $indicator)
     {
         $query = $this->getPreparedQuery($indicator);
+
         return $indicator->expression?->exec($query);
     }
 
@@ -270,8 +272,6 @@ class QueryExpressionType implements IExpressionType
     /**
      * Get model or reference query
      *
-     * @param string $model
-     * @return Builder
      * @throws Exception
      */
     protected function getModelQuery(string $model): Builder
@@ -294,9 +294,6 @@ class QueryExpressionType implements IExpressionType
 
     /**
      * Apply scopes to query
-     *
-     * @param Builder $query
-     * @return Builder
      */
     protected function applyScopes(Builder $query): Builder
     {

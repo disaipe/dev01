@@ -113,9 +113,9 @@ class ADSyncUsersJob extends ModuleScheduledJob
             $records[] = $record;
         }
 
-        ADUserEntry::withoutEvents(fn () =>
-            ADUserEntry::query()->upsert($records, 'username')
-        );
+        ADUserEntry::withoutEvents(function () use ($records) {
+            ADUserEntry::query()->upsert($records, 'username');
+        });
 
         return $entries->count();
     }

@@ -14,6 +14,7 @@ class ExpressionType
     public static function from(string $type, array $options = []): IExpressionType
     {
         $fullClass = Str::start($type, 'App\Core\Report\ExpressionType\\');
+
         return app()->make($fullClass, ['options' => $options]);
     }
 }

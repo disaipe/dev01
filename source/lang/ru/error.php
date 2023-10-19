@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'reference not found' => 'Справочник ":reference" не найден'
+    'reference not found' => 'Справочник ":reference" не найден',
 ];

@@ -16,7 +16,6 @@ class Indicator
      */
     public string $code;
 
-
     protected IExpressionType $type;
 
     /**
@@ -61,6 +60,7 @@ class Indicator
      *     options: array,
      *     mutator?: callable(float): float,
      *   } $options options array
+     *
      * @throws BindingResolutionException
      */
     public static function fromArray(array $options): Indicator

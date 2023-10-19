@@ -4,8 +4,8 @@ namespace App\Core\Report\ExpressionType;
 
 use App\Core\Indicator\Indicator;
 use App\Core\Indicator\IndicatorManager;
-use App\Core\Report\IExpression;
 use App\Core\Report\Expression\IndicatorSumExpression;
+use App\Core\Report\IExpression;
 use App\Core\Report\IExpressionType;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -32,6 +32,7 @@ class IndicatorSumExpressionType implements IExpressionType
     public function calculate(Indicator $indicator)
     {
         $indicatorsData = $this->getIndicatorsValues($indicator);
+
         return $indicatorsData->sum('value');
     }
 

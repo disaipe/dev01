@@ -20,9 +20,9 @@ class DirectumUserReference extends ReferenceEntry
                 ->id(),
 
             'name' => ReferenceFieldSchema::make()
-            ->label('Логин')
-            ->visible()
-            ->pinia(PiniaAttribute::string()),
+                ->label('Логин')
+                ->visible()
+                ->pinia(PiniaAttribute::string()),
 
             'fullname' => ReferenceFieldSchema::make()
                 ->label('Имя')

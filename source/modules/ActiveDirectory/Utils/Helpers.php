@@ -9,9 +9,6 @@ class Helpers
 {
     /**
      * Parse multiline OU list to array
-     *
-     * @param string $ou
-     * @return array
      */
     public static function ParseOUs(string $ou): array
     {
@@ -20,7 +17,7 @@ class Helpers
         return Arr::where($ous, function (string $ou) {
             $trimmed = trim($ou);
 
-            if (!strlen($trimmed)) {
+            if (! strlen($trimmed)) {
                 return false;
             }
 

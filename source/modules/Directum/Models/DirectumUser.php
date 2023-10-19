@@ -43,7 +43,7 @@ class DirectumUser extends ReferenceModel
             ->addSelect($usersInstance->qualifyColumns([
                 'company_prefix',
                 'name as fullname',
-                'post'
+                'post',
             ]));
     }
 

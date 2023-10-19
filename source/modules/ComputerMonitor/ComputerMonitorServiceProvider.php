@@ -75,7 +75,7 @@ class ComputerMonitorServiceProvider extends ModuleBaseServiceProvider
                             ->groupBy("{$adComputerTable}.name")
                             ->distinct();
                     },
-                ]
+                ],
             ]),
         ]);
     }
