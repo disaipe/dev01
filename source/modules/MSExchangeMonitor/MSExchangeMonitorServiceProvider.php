@@ -17,6 +17,7 @@ use App\Modules\FileStorageMonitor\Jobs\FileStoragesSyncJob;
 use App\Modules\MSExchangeMonitor\Commands\MSExchangeStatsCommand;
 use App\Modules\MSExchangeMonitor\Jobs\MSExchangeStatsSyncJob;
 use App\Modules\MSExchangeMonitor\Models\MSExchangeMailboxStat;
+use App\Support\Forms\RpcConnectionSettingsForm;
 use App\Utils\Size;
 use Cron\CronExpression;
 use Filament\Facades\Filament;
@@ -27,8 +28,6 @@ use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\View;
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class MSExchangeMonitorServiceProvider extends ModuleBaseServiceProvider
@@ -135,18 +134,7 @@ class MSExchangeMonitorServiceProvider extends ModuleBaseServiceProvider
                     Tabs::make('configurationTabs')->tabs([
                         Tabs\Tab::make(__('admin.configuration'))->schema([
                             Section::make(__('admin.common'))->schema([
-                                TextInput::make('base_url')
-                                    ->label(__('msexmonitor::messages.base url'))
-                                    ->helperText(__('msexmonitor::messages.base url help'))
-                                    ->required(),
-
-                                TextInput::make('secret')
-                                    ->label(__('msexmonitor::messages.secret'))
-                                    ->helperText(__('msexmonitor::messages.secret help')),
-
-                                FormButton::make('testConnection')
-                                    ->label(__('msexmonitor::messages.action.test service.title'))
-                                    ->action(fn ($state) => $this->testConnection($state)),
+                                ...RpcConnectionSettingsForm::make('', 'get'),
 
                                 Grid::make()->schema([
                                     TextInput::make('default_limit')
@@ -189,33 +177,6 @@ class MSExchangeMonitorServiceProvider extends ModuleBaseServiceProvider
     public function schedule(Schedule $schedule): void
     {
         $this->scheduleJob($schedule, new MSExchangeStatsSyncJob(), 'MSExchangeStatsSync');
-    }
-
-    public function testConnection($state): void
-    {
-        $appUrl = Arr::get($state, 'base_url');
-        $secret = Arr::get($state, 'secret');
-
-        $notifyType = 'danger';
-
-        try {
-            $resp = Http::withHeaders(['X-SECRET' => $secret])
-                ->asJson()
-                ->post("$appUrl/get");
-
-            if ($resp->status() == 400) {
-                $notifyType = 'success';
-                $notifyMessage = __('msexmonitor::messages.action.test service.success');
-            } elseif ($resp->unauthorized()) {
-                $notifyMessage = __('msexmonitor::messages.action.test service.wrong secret');
-            } else {
-                $notifyMessage = __('msexmonitor::messages.action.test service.request failed').$resp->reason();
-            }
-        } catch (\Exception $e) {
-            $notifyMessage = __('admin.error').': '.$e->getMessage();
-        }
-
-        Filament::notify($notifyType, $notifyMessage);
     }
 
     public function runJob(): void

@@ -20,6 +20,7 @@ use App\Modules\ActiveDirectory\Models\ADComputerEntry;
 use App\Modules\ComputerMonitor\Commands\CheckComputerCommand;
 use App\Modules\ComputerMonitor\Jobs\ComputersSyncJob;
 use App\Modules\ComputerMonitor\Models\ADComputerEntryStatus;
+use App\Support\Forms\RpcConnectionSettingsForm;
 use Cron\CronExpression;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Checkbox;
@@ -33,7 +34,6 @@ use Filament\Forms\Components\View;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class ComputerMonitorServiceProvider extends ModuleBaseServiceProvider
@@ -125,18 +125,7 @@ class ComputerMonitorServiceProvider extends ModuleBaseServiceProvider
                     Tabs::make('configurationTabs')->tabs([
                         Tabs\Tab::make(__('admin.configuration'))->schema([
                             Section::make(__('admin.common'))->schema([
-                                TextInput::make('base_url')
-                                    ->label(__('pcmon::messages.base url'))
-                                    ->helperText(__('pcmon::messages.base url help'))
-                                    ->required(),
-
-                                TextInput::make('secret')
-                                    ->label(__('pcmon::messages.secret'))
-                                    ->helperText(__('pcmon::messages.secret help')),
-
-                                FormButton::make('testConnection')
-                                    ->label(__('pcmon::messages.action.test service.title'))
-                                    ->action(fn ($state) => $this->testConnection($state)),
+                                ...RpcConnectionSettingsForm::make('', 'computer_sync_job'),
 
                                 Group::make([
                                     Select::make('source')
@@ -232,33 +221,6 @@ class ComputerMonitorServiceProvider extends ModuleBaseServiceProvider
     public function schedule(Schedule $schedule): void
     {
         $this->scheduleJob($schedule, new ComputersSyncJob(), 'ComputerSync');
-    }
-
-    public function testConnection($state): void
-    {
-        $appUrl = Arr::get($state, 'base_url');
-        $secret = Arr::get($state, 'secret');
-
-        $notifyType = 'danger';
-
-        try {
-            $resp = Http::withHeaders(['X-SECRET' => $secret])
-                ->asJson()
-                ->post("$appUrl/computer_sync_job");
-
-            if ($resp->status() == 400) {
-                $notifyType = 'success';
-                $notifyMessage = __('pcmon::messages.action.test service.success');
-            } elseif ($resp->unauthorized()) {
-                $notifyMessage = __('pcmon::messages.action.test service.wrong secret');
-            } else {
-                $notifyMessage = __('pcmon::messages.action.test service.request failed').$resp->reason();
-            }
-        } catch (\Exception $e) {
-            $notifyMessage = __('admin.error').': '.$e->getMessage();
-        }
-
-        Filament::notify($notifyType, $notifyMessage);
     }
 
     public function runAllComputersJob(): void

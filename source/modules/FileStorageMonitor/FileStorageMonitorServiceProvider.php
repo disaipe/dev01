@@ -16,16 +16,14 @@ use App\Models\JobProtocol;
 use App\Modules\FileStorageMonitor\Commands\FileStorageSizeCommand;
 use App\Modules\FileStorageMonitor\Jobs\FileStoragesSyncJob;
 use App\Modules\FileStorageMonitor\Models\FileStorage;
+use App\Support\Forms\RpcConnectionSettingsForm;
 use Cron\CronExpression;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Tabs;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\View;
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class FileStorageMonitorServiceProvider extends ModuleBaseServiceProvider
@@ -105,20 +103,9 @@ class FileStorageMonitorServiceProvider extends ModuleBaseServiceProvider
 
                     Tabs::make('configurationTabs')->tabs([
                         Tabs\Tab::make(__('admin.configuration'))->schema([
-                            Section::make(__('admin.common'))->schema([
-                                TextInput::make('base_url')
-                                    ->label(__('fsmonitor::messages.base url'))
-                                    ->helperText(__('fsmonitor::messages.base url help'))
-                                    ->required(),
-
-                                TextInput::make('secret')
-                                    ->label(__('fsmonitor::messages.secret'))
-                                    ->helperText(__('fsmonitor::messages.secret help')),
-
-                                FormButton::make('testConnection')
-                                    ->label(__('fsmonitor::messages.action.test service.title'))
-                                    ->action(fn ($state) => $this->testConnection($state)),
-                            ]),
+                            Section::make(__('admin.common'))->schema(
+                                RpcConnectionSettingsForm::make('', 'get')
+                            ),
 
                             Section::make(__('fsmonitor::messages.job.storages sync.title'))
                                 ->schema([
@@ -148,33 +135,6 @@ class FileStorageMonitorServiceProvider extends ModuleBaseServiceProvider
     public function schedule(Schedule $schedule): void
     {
         $this->scheduleJob($schedule, new FileStoragesSyncJob(), 'FileStorageSync');
-    }
-
-    public function testConnection($state): void
-    {
-        $appUrl = Arr::get($state, 'base_url');
-        $secret = Arr::get($state, 'secret');
-
-        $notifyType = 'danger';
-
-        try {
-            $resp = Http::withHeaders(['X-SECRET' => $secret])
-                ->asJson()
-                ->post("$appUrl/get");
-
-            if ($resp->status() == 400) {
-                $notifyType = 'success';
-                $notifyMessage = __('fsmonitor::messages.action.test service.success');
-            } elseif ($resp->unauthorized()) {
-                $notifyMessage = __('fsmonitor::messages.action.test service.wrong secret');
-            } else {
-                $notifyMessage = __('fsmonitor::messages.action.test service.request failed').$resp->reason();
-            }
-        } catch (\Exception $e) {
-            $notifyMessage = __('admin.error').': '.$e->getMessage();
-        }
-
-        Filament::notify($notifyType, $notifyMessage);
     }
 
     public function runAllStoragesJob(): void
