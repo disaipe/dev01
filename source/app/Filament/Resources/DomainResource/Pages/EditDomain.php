@@ -5,8 +5,9 @@ namespace App\Filament\Resources\DomainResource\Pages;
 use App\Filament\Resources\DomainResource;
 use App\Models\Domain;
 use App\Services\LdapService;
+use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
 use Filament\Notifications\Notification;
-use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Contracts\Support\Htmlable;
 use LdapRecord\Container;
@@ -15,24 +16,24 @@ class EditDomain extends EditRecord
 {
     protected static string $resource = DomainResource::class;
 
-    protected function getTitle(): string
+    public function getTitle(): string
     {
         return $this->record->name;
     }
 
-    protected function getSubheading(): string|Htmlable|null
+    public function getSubheading(): string|Htmlable|null
     {
         return trans_choice('admin.domain', 1);
     }
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('test')
+            Action::make('test')
                 ->label(__('admin.$domain.test connection'))
                 ->action('testConnection'),
 
-            Actions\DeleteAction::make(),
+            DeleteAction::make(),
         ];
     }
 

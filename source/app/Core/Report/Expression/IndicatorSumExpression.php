@@ -32,7 +32,7 @@ class IndicatorSumExpression implements IExpression
                 ->label(trans_choice('reference.Indicator', 2))
                 ->schema([
                     Select::make('code')
-                        ->disableLabel()
+                        ->hiddenLabel()
                         ->options($indicatorOptions),
                 ]),
         ];

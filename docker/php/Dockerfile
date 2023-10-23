@@ -8,7 +8,7 @@ ARG PHP_VERSION
 # Fix debconf warnings upon build
 ARG DEBIAN_FRONTEND=noninteractive
 ARG USER_ID=1000
-ARG NODE_VERSION=19
+ARG NODE_VERSION=18
 
 # https://learn.microsoft.com/en-us/sql/connect/php/microsoft-php-drivers-for-sql-server-support-matrix?view=sql-server-ver16#sql-server-version-certified-compatibility
 ARG SQLSRV_VERSION=5.10.1
@@ -22,6 +22,7 @@ RUN apt update
 RUN apt install php-pear
 RUN apt -y --no-install-recommends install \
   $PHP-dev \
+  $PHP-intl \
   $PHP-mysql \
   $PHP-pgsql \
   $PHP-xdebug \
@@ -43,12 +44,15 @@ RUN curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list > /etc/apt
   && ACCEPT_EULA=Y apt install -y msodbcsql18
 
 # Install tools
-RUN apt -y install git cron supervisor mysql-client
+RUN apt -y install git cron supervisor mysql-client procps ca-certificates gnupg
+
+RUN mkdir -p /etc/apt/keyrings
 
 # Install Nodejs, Yarn
-RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
-  && apt -y install nodejs \
-  && npm install -g yarn
+RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_VERSION.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
+RUN apt-get update
+RUN apt-get -y install nodejs && npm install -g npm yarn
 
 RUN apt clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 

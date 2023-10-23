@@ -10,8 +10,12 @@ class Helpers
     /**
      * Parse multiline OU list to array
      */
-    public static function ParseOUs(string $ou): array
+    public static function ParseOUs(?string $ou): array
     {
+        if (! $ou) {
+            return [];
+        }
+
         $ous = explode("\n", $ou);
 
         return Arr::where($ous, function (string $ou) {

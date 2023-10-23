@@ -8,16 +8,16 @@ use App\Filament\Resources\IndicatorResource\Pages;
 use App\Models\ExpressionType;
 use App\Models\Indicator;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 
 class IndicatorResource extends Resource
 {
     protected static ?string $model = Indicator::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-variable';
 
     public static function form(Form $form): Form
     {
@@ -93,7 +93,7 @@ class IndicatorResource extends Resource
         ];
     }
 
-    protected static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): ?string
     {
         return __('admin.menu.common');
     }

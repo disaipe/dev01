@@ -11,8 +11,8 @@ use App\Filament\Resources\JobProtocolResource\Widgets\QueueJobsCount;
 use App\Models\JobProtocol;
 use Carbon\CarbonInterface;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
@@ -47,8 +47,8 @@ class JobProtocolResource extends Resource
                     ->size('md')
                     ->options([
                         'heroicon-o-clock' => JobProtocolState::Create->value,
-                        'heroicon-o-terminal' => JobProtocolState::Work->value,
-                        'heroicon-o-exclamation' => JobProtocolState::Failed->value,
+                        'heroicon-o-command-line' => JobProtocolState::Work->value,
+                        'heroicon-o-exclamation-triangle' => JobProtocolState::Failed->value,
                         'heroicon-o-check-circle' => JobProtocolState::Ready->value,
                     ])
                     ->colors([
@@ -131,7 +131,7 @@ class JobProtocolResource extends Resource
         ];
     }
 
-    protected static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): ?string
     {
         return __('admin.menu.common');
     }

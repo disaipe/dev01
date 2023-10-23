@@ -19,9 +19,9 @@ class ConditionBuilder extends Builder
         parent::setUp();
 
         $this
-            ->createItemButtonLabel(__('admin.add'))
+            ->addActionLabel(__('admin.add'))
             ->columnSpanFull()
-            ->disableItemMovement();
+            ->reorderable();
     }
 
     public function fields(array|Closure|null $options): static
@@ -67,7 +67,7 @@ class ConditionBuilder extends Builder
                     ConditionBuilder::make('and')
                         ->setParent($this->parent ?? $this)
                         ->fields($this->fieldsOptions)
-                        ->disableLabel()
+                        ->hiddenLabel()
                         ->afterStateUpdated(fn () => $this->callAfterStateUpdated()),
                 ]),
 
@@ -77,7 +77,7 @@ class ConditionBuilder extends Builder
                     ConditionBuilder::make('or')
                         ->setParent($this->parent ?? $this)
                         ->fields($this->fieldsOptions)
-                        ->disableLabel()
+                        ->hiddenLabel()
                         ->afterStateUpdated(fn () => $this->callAfterStateUpdated()),
                 ]),
 

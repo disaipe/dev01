@@ -26,15 +26,16 @@ use App\Services\LdapService;
 use Cron\CronExpression;
 use Error;
 use Exception;
-use Filament\Facades\Filament;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Textarea;
+use Filament\Notifications\Notification;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\HtmlString;
 use LdapRecord\Container;
 use LdapRecord\Models\ActiveDirectory\Computer;
 use LdapRecord\Models\ActiveDirectory\Entry;
@@ -159,7 +160,7 @@ class ADServiceProvider extends ModuleBaseServiceProvider
 
             Textarea::make('base_dn')
                 ->label(__('ad::messages.base dn or ou'))
-                ->helperText(__('ad::messages.base dn or ou helper')),
+                ->helperText(new HtmlString(__('ad::messages.base dn or ou helper'))),
 
             LdapFilterBuilder::make('filters')
                 ->label(__('ad::messages.filter')),
@@ -173,7 +174,7 @@ class ADServiceProvider extends ModuleBaseServiceProvider
             RawHtmlContent::make(__("ad::messages.job.{$type}.description")),
 
             CronExpressionInput::make('schedule')
-                ->disableLabel(),
+                ->hiddenLabel(),
 
             FormButton::make("runJob-{$type}")
                 ->label(__('admin.run'))
@@ -191,9 +192,9 @@ class ADServiceProvider extends ModuleBaseServiceProvider
     {
         try {
             app($jobType)::dispatch();
-            Filament::notify('success', __('admin.job started'));
+            Notification::make()->success()->title(__('admin.job started'))->send();
         } catch (Exception|Error $e) {
-            Filament::notify('danger', __('admin.job staring error'), $e->getMessage());
+            Notification::make()->danger()->title(__('admin.job staring error'))->body($e->getMessage())->send();
             Log::error($e);
         }
     }
@@ -236,15 +237,18 @@ class ADServiceProvider extends ModuleBaseServiceProvider
             $count = $uniques->count();
 
             if ($count) {
-                Filament::notify(
-                    'success',
-                    __('ad::messages.action.test filters.found N records', ['count' => $count])
-                );
+                Notification::make()
+                    ->success()
+                    ->title(__('ad::messages.action.test filters.found N records', ['count' => $count]))
+                    ->send();
             } else {
-                Filament::notify('warning', __('ad::messages.action.test filters.records not found'));
+                Notification::make()
+                    ->warning()
+                    ->title(__('ad::messages.action.test filters.records not found'))
+                    ->send();
             }
         } catch (Exception $e) {
-            Filament::notify('danger', $e->getMessage());
+            Notification::make()->danger()->title($e->getMessage())->send();
         }
     }
 }

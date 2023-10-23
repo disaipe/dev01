@@ -11,10 +11,10 @@ use App\Modules\Sharepoint\Models\SharepointList;
 use App\Modules\Sharepoint\Services\SharepointService;
 use Cron\CronExpression;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Schema;
 
@@ -22,9 +22,9 @@ class SharepointListResource extends Resource
 {
     protected static ?string $model = SharepointList::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-view-list';
+    protected static ?string $navigationIcon = 'heroicon-s-bars-4';
 
-    protected static function shouldRegisterNavigation(): bool
+    public static function shouldRegisterNavigation(): bool
     {
         if (! Schema::hasTable('sharepoint_lists')) {
             return false;
@@ -146,7 +146,7 @@ class SharepointListResource extends Resource
                     ->visible(fn ($get) => (bool) $get('custom_reference_id'))
                     ->schema([
                         Forms\Components\Repeater::make('options.fields')
-                            ->disableLabel()
+                            ->hiddenLabel()
                             ->columns()
                             ->schema([
                                 Forms\Components\Select::make('ref')
@@ -174,7 +174,7 @@ class SharepointListResource extends Resource
                                         return $options ?? [];
                                     }),
                             ])
-                            ->createItemButtonLabel(__('sharepoint::messages.fields schema.add'))
+                            ->addActionLabel(__('sharepoint::messages.fields schema.add'))
                             ->columnSpanFull(),
                     ]),
             ]);
@@ -223,7 +223,7 @@ class SharepointListResource extends Resource
         return trans_choice('sharepoint::messages.sharepoint list', 2);
     }
 
-    protected static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): ?string
     {
         return __('admin.menu.common');
     }

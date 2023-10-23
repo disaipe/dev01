@@ -3,7 +3,7 @@
 namespace App\Modules\ManageEngineSD;
 
 use App\Modules\ManageEngineSD\Models\SDServiceDefinition;
-use Filament\Facades\Filament;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
 
 class SDServiceExpression
@@ -20,7 +20,7 @@ class SDServiceExpression
                 ->pluck('name', 'serviceid')
                 ->toArray();
         } catch (\Exception $e) {
-            Filament::notify('danger', $e->getMessage());
+            Notification::make()->danger()->title($e->getMessage())->send();
         }
 
         return [];

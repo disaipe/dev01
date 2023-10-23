@@ -18,11 +18,11 @@ use App\Modules\FileStorageMonitor\Jobs\FileStoragesSyncJob;
 use App\Modules\FileStorageMonitor\Models\FileStorage;
 use App\Support\Forms\RpcConnectionSettingsForm;
 use Cron\CronExpression;
-use Filament\Facades\Filament;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\View;
+use Filament\Notifications\Notification;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Log;
 
@@ -141,9 +141,9 @@ class FileStorageMonitorServiceProvider extends ModuleBaseServiceProvider
     {
         try {
             FileStoragesSyncJob::dispatch();
-            Filament::notify('success', __('admin.job started'));
+            Notification::make()->success()->title(__('admin.job started'))->send();
         } catch (\Exception|\Error $e) {
-            Filament::notify('danger', __('admin.job staring error'), $e->getMessage());
+            Notification::make()->danger()->title(__('admin.job staring error'))->body($e->getMessage())->send();
             Log::error($e);
         }
     }

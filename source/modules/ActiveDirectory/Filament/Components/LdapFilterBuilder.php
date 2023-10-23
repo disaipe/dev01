@@ -5,6 +5,7 @@ namespace App\Modules\ActiveDirectory\Filament\Components;
 use Closure;
 use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\TextInput;
+use Illuminate\Support\HtmlString;
 
 class LdapFilterBuilder extends Builder
 {
@@ -17,12 +18,12 @@ class LdapFilterBuilder extends Builder
         parent::setUp();
 
         $this
-            ->createItemButtonLabel(__('admin.add'))
+            ->addActionLabel(__('admin.add'))
             ->columnSpanFull()
-            ->disableItemMovement();
+            ->reorderable();
 
         if (! $this->parent) {
-            $this->helperText(__('ad::messages.filters helper'));
+            $this->helperText(new HtmlString(__('ad::messages.filters helper')));
         }
     }
 
@@ -41,7 +42,7 @@ class LdapFilterBuilder extends Builder
                 ->columns(1)
                 ->schema([
                     TextInput::make('value')
-                        ->disableLabel()
+                        ->hiddenLabel()
                         ->reactive()
                         ->afterStateUpdated(fn () => $this->callAfterStateUpdated()),
                 ]),
@@ -52,7 +53,7 @@ class LdapFilterBuilder extends Builder
                     LdapFilterBuilder::make('and')
                         ->setParent($this->parent ?? $this)
                         ->fields($this->fieldsOptions)
-                        ->disableLabel()
+                        ->hiddenLabel()
                         ->afterStateUpdated(fn () => $this->callAfterStateUpdated()),
                 ]),
 
@@ -62,7 +63,7 @@ class LdapFilterBuilder extends Builder
                     LdapFilterBuilder::make('or')
                         ->setParent($this->parent ?? $this)
                         ->fields($this->fieldsOptions)
-                        ->disableLabel()
+                        ->hiddenLabel()
                         ->afterStateUpdated(fn () => $this->callAfterStateUpdated()),
                 ]),
         ]);

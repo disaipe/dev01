@@ -15,10 +15,8 @@ class ServicesWidget extends Widget
         'laravel-queue:*' => 'admin.$service.queue',
     ];
 
-    public function __construct($id = null)
+    public function __construct()
     {
-        parent::__construct($id);
-
         $this->systemService = new SystemService();
     }
 

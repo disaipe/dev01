@@ -6,16 +6,16 @@ use App\Filament\Resources\DomainResource\Pages;
 use App\Forms\Components\MarkdownContent;
 use App\Models\Domain;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 
 class DomainResource extends Resource
 {
     protected static ?string $model = Domain::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-at-symbol';
 
     public static function form(Form $form): Form
     {
@@ -66,7 +66,7 @@ class DomainResource extends Resource
                                 Forms\Components\Repeater::make('filters')
                                     ->label(__('admin.$domain.filters'))
                                     ->columnSpanFull()
-                                    ->createItemButtonLabel(__('admin.$domain.filter add'))
+                                    ->addActionLabel(__('admin.$domain.filter add'))
                                     ->schema([
                                         Forms\Components\TextInput::make('value')
                                             ->label(__('admin.$domain.rule'))
@@ -149,7 +149,7 @@ class DomainResource extends Resource
         return trans_choice('admin.domain', 2);
     }
 
-    protected static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): ?string
     {
         return __('admin.menu.access');
     }

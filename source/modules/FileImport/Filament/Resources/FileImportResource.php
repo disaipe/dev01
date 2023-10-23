@@ -9,10 +9,10 @@ use App\Modules\FileImport\Filament\Resources\FileImportResource\Pages;
 use App\Modules\FileImport\Models\FileImport;
 use Cron\CronExpression;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Schema;
 
@@ -22,7 +22,7 @@ class FileImportResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-s-document-text';
 
-    protected static function shouldRegisterNavigation(): bool
+    public static function shouldRegisterNavigation(): bool
     {
         if (! Schema::hasTable('file_imports')) {
             return false;
@@ -104,7 +104,7 @@ class FileImportResource extends Resource
                     ->visible(fn ($get) => (bool) $get('custom_reference_id'))
                     ->schema([
                         Forms\Components\Repeater::make('options.fields')
-                            ->disableLabel()
+                            ->hiddenLabel()
                             ->columns()
                             ->schema([
                                 Forms\Components\Select::make('ref')
@@ -128,7 +128,7 @@ class FileImportResource extends Resource
                                     ->helperText(__('fileimport::messages.fields schema.file help'))
                                     ->required(),
                             ])
-                            ->createItemButtonLabel(__('fileimport::messages.fields schema.add'))
+                            ->addActionLabel(__('fileimport::messages.fields schema.add'))
                             ->columnSpanFull(),
                     ]),
             ]);
@@ -177,12 +177,12 @@ class FileImportResource extends Resource
         return trans_choice('fileimport::messages.file import', 2);
     }
 
-    protected static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): ?string
     {
         return __('admin.menu.common');
     }
 
-    protected static function getCustomReference($state, $set)
+    protected static function getCustomReference($state, $set): void
     {
         if ($state) {
             /** @var CustomReference $cr */

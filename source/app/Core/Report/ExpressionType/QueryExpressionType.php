@@ -15,8 +15,8 @@ use App\Filament\Components\ConditionBuilder;
 use App\Forms\Components\RawHtmlContent;
 use Carbon\Carbon;
 use Exception;
-use Filament\Facades\Filament;
 use Filament\Forms\Components;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -102,7 +102,7 @@ class QueryExpressionType implements IExpressionType
             Components\Builder::make('schema.values')
                 ->label('')
                 ->required()
-                ->createItemButtonLabel(__('admin.$indicator.schema add'))
+                ->addActionLabel(__('admin.$indicator.schema add'))
                 ->blocks(Arr::map($expressions, function (IExpression|string $expression) {
                     return Components\Builder\Block::make(class_basename($expression))
                         ->label($expression::label())
@@ -112,13 +112,13 @@ class QueryExpressionType implements IExpressionType
                 ->maxItems(1),
 
             Components\Section::make(__('admin.$indicator.conditions'))
-                ->icon('heroicon-o-filter')
+                ->icon('heroicon-o-funnel')
                 ->collapsed()
                 ->schema([
                     RawHtmlContent::make(__('admin.$indicator.conditions helper')),
 
                     ConditionBuilder::make('schema.conditions')
-                        ->disableLabel()
+                        ->hiddenLabel()
                         ->reactive()
                         ->fields(fn ($get) => $get('__referenceFields')),
 
@@ -208,7 +208,7 @@ class QueryExpressionType implements IExpressionType
         $reference = $references->getByName($state);
 
         if (! $reference) {
-            Filament::notify('danger', __('error.reference not found', ['reference' => $state]));
+            Notification::make()->danger()->title(__('error.reference not found', ['reference' => $state]))->send();
 
             return;
         }

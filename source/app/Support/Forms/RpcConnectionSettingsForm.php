@@ -3,18 +3,20 @@
 namespace App\Support\Forms;
 
 use App\Filament\Components\FormButton;
-use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\HtmlString;
 
 class RpcConnectionSettingsForm
 {
-    public static function make(string $prefix = '', string $endpoint = ''): array {
+    public static function make(string $prefix = '', string $endpoint = ''): array
+    {
         return [
             TextInput::make('base_url')
                 ->label(__('admin.rpc service.base url'))
-                ->helperText(__('admin.rpc service.base url help'))
+                ->helperText(new HtmlString(__('admin.rpc service.base url help')))
                 ->required(),
 
             TextInput::make('secret')
@@ -23,7 +25,7 @@ class RpcConnectionSettingsForm
 
             FormButton::make('testConnection')
                 ->label(__('admin.rpc service.test service.title'))
-                ->action(fn($state) => self::testConnection($state, $endpoint)),
+                ->action(fn ($state) => self::testConnection($state, $endpoint)),
         ];
     }
 
@@ -51,6 +53,6 @@ class RpcConnectionSettingsForm
             $notifyMessage = __('admin.error').': '.$e->getMessage();
         }
 
-        Filament::notify($notifyType, $notifyMessage);
+        Notification::make()->$notifyType()->title($notifyMessage)->send();
     }
 }

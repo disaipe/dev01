@@ -16,11 +16,11 @@ use App\Modules\Directum\Jobs\DirectumSyncUsersJob;
 use App\Modules\Directum\Models\DirectumUser;
 use App\Support\Forms\SqlConnectionSettingsForm;
 use App\Support\SqlServerConnection;
-use Filament\Facades\Filament;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\View;
+use Filament\Notifications\Notification;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
@@ -125,9 +125,9 @@ class DirectumServiceProvider extends ModuleBaseServiceProvider
     {
         try {
             DirectumSyncUsersJob::dispatch();
-            Filament::notify('success', __('admin.job started'));
+            Notification::make()->success()->title(__('admin.job started'))->send();
         } catch (\Exception|\Error $e) {
-            Filament::notify('danger', __('admin.job staring error'), $e->getMessage());
+            Notification::make()->danger()->title(__('admin.job staring error'))->body($e->getMessage())->send();
             Log::error($e);
         }
     }

@@ -51,9 +51,11 @@ export default defineConfig({
                 'resources/js/app.js',
 
                 'resources/css/auth.css',
-                'resources/js/auth.js'
+                'resources/js/auth.js',
+
+                'resources/css/admin.css'
             ],
-            refresh: false
+            refresh: true
         })
     ]
 });

@@ -53,7 +53,7 @@
 
                         <x-filament::icon-button
                             wire:click="restart('{{ $name }}')"
-                            icon="heroicon-o-refresh"
+                            icon="heroicon-o-arrow-path"
                             :disabled="!$status"
                         />
                     </td>

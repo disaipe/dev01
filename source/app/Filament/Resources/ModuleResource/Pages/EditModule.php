@@ -4,9 +4,11 @@ namespace App\Filament\Resources\ModuleResource\Pages;
 
 use App\Core\Module\Module;
 use App\Filament\Resources\ModuleResource;
-use Filament\Facades\Filament;
+use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\Component;
-use Filament\Pages\Actions;
+use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Arr;
@@ -23,14 +25,19 @@ class EditModule extends EditRecord
 
     protected static string $resource = ModuleResource::class;
 
-    protected function getTitle(): string
+    public function getTitle(): string
     {
         return $this->module->getName();
     }
 
-    protected function getSubheading(): string|Htmlable|null
+    public function getSubheading(): string|Htmlable|null
     {
         return trans_choice('admin.module', 1);
+    }
+
+    public function form(Form $form): Form
+    {
+        return $form->schema($this->getFormSchema())->columns(1);
     }
 
     protected function getFormSchema(): array
@@ -42,14 +49,14 @@ class EditModule extends EditRecord
         );
     }
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('applyMigrations')
+            Action::make('applyMigrations')
                 ->label(__('admin.$module.migrate'))
                 ->action('applyMigrations'),
 
-            Actions\DeleteAction::make(),
+            DeleteAction::make(),
         ];
     }
 
@@ -135,6 +142,6 @@ class EditModule extends EditRecord
             '--force' => true,
         ]);
 
-        Filament::notify('success', __('admin.$module.migrations started'));
+        Notification::make()->success()->title(__('admin.$module.migrations started'))->send();
     }
 }

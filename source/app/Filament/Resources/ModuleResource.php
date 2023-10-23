@@ -6,15 +6,15 @@ use App\Filament\Resources\ModuleResource\Pages;
 use App\Filament\Tables\Columns\ModuleNameColumn;
 use App\Models\Module;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
 class ModuleResource extends Resource
 {
     protected static ?string $model = Module::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-squares-plus';
 
     protected static ?int $navigationSort = -100;
 
@@ -24,10 +24,9 @@ class ModuleResource extends Resource
             ->columns([
                 ModuleNameColumn::make('name')
                     ->label(__('admin.name')),
-                Tables\Columns\CheckboxColumn::make('enabled')
-                    ->label(__('admin.enabled'))
-                    ->toggle(),
-                Tables\Columns\CheckboxColumn::make('system')
+                Tables\Columns\ToggleColumn::make('enabled')
+                    ->label(__('admin.enabled')),
+                Tables\Columns\ToggleColumn::make('system')
                     ->label(__('admin.system'))
                     ->disabled(),
             ])
@@ -45,7 +44,7 @@ class ModuleResource extends Resource
         ];
     }
 
-    protected static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): ?string
     {
         return __('admin.menu.common');
     }

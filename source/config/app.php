@@ -192,11 +192,11 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\ConfigServiceProvider::class,
         App\Providers\ModuleServiceProvider::class,
-        App\Providers\FilamentServiceProvider::class,
         App\Providers\LdapConnectionProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\Filament\AdminPanelProvider::class,
         App\Providers\RouteServiceProvider::class,
     ],
 

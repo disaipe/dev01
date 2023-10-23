@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Facades\Auth;
 use App\Models\User;
+use Filament\Facades\Filament;
 use Illuminate\Contracts\View\View;
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Facades\Storage;
@@ -53,7 +54,7 @@ class VueAppService
             ...$user?->only('name'),
             'avatar' => $avatar,
             'isClient' => $user->isClient(),
-            'hasAdminAccess' => $user->canAccessFilament(),
+            'hasAdminAccess' => $user->canAccessPanel(Filament::getCurrentPanel()),
             'companies' => $user->companies()->pluck('name', 'id'),
         ];
     }

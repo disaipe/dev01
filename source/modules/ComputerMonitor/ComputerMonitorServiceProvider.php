@@ -22,7 +22,6 @@ use App\Modules\ComputerMonitor\Jobs\ComputersSyncJob;
 use App\Modules\ComputerMonitor\Models\ADComputerEntryStatus;
 use App\Support\Forms\RpcConnectionSettingsForm;
 use Cron\CronExpression;
-use Filament\Facades\Filament;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
@@ -31,6 +30,8 @@ use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\View;
+use Filament\Forms\Get;
+use Filament\Notifications\Notification;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
@@ -90,7 +91,7 @@ class ComputerMonitorServiceProvider extends ModuleBaseServiceProvider
             ],
             'view' => [
                 'config' => [
-                    RawHtmlContent::make(function ($get) {
+                    RawHtmlContent::make(function (Get $get) {
                         $out = '';
 
                         $lastSync = JobProtocol::query()
@@ -144,7 +145,7 @@ class ComputerMonitorServiceProvider extends ModuleBaseServiceProvider
 
                                     Select::make('dns_field')
                                         ->label(__('pcmon::messages.dns field'))
-                                        ->options(function (\Closure $get) {
+                                        ->options(function (Get $get) {
                                             $source = $get('source');
 
                                             if ($source) {
@@ -227,9 +228,9 @@ class ComputerMonitorServiceProvider extends ModuleBaseServiceProvider
     {
         try {
             ComputersSyncJob::dispatch();
-            Filament::notify('success', __('admin.job started'));
+            Notification::make()->success()->title(__('admin.job started'))->send();
         } catch (\Exception|\Error $e) {
-            Filament::notify('danger', __('admin.job staring error'), $e->getMessage());
+            Notification::make()->danger()->title(__('admin.job staring error'))->body($e->getMessage())->send();
             Log::error($e);
         }
     }

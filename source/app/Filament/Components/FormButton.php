@@ -58,7 +58,7 @@ class FormButton extends Component
         return $this->isPageEvent() ? $this->action : $this->innerEventName;
     }
 
-    public function execute()
+    public function execute(): void
     {
         if (isset($this->action)) {
             $this->evaluate($this->action);
