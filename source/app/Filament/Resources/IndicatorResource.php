@@ -48,7 +48,7 @@ class IndicatorResource extends Resource
                             ->reactive()
                             ->columnSpanFull(),
 
-                        Forms\Components\Checkbox::make('published')
+                        Forms\Components\Toggle::make('published')
                             ->label(__('admin.enabled')),
                     ]),
 

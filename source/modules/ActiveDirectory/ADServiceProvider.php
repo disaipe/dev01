@@ -26,11 +26,11 @@ use App\Services\LdapService;
 use Cron\CronExpression;
 use Error;
 use Exception;
-use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Arr;
@@ -155,7 +155,7 @@ class ADServiceProvider extends ModuleBaseServiceProvider
             })
                 ->columnSpanFull(),
 
-            Checkbox::make('enabled')
+            Toggle::make('enabled')
                 ->label(__('admin.enabled')),
 
             Textarea::make('base_dn')

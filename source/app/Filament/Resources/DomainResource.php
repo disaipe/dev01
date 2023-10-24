@@ -83,17 +83,17 @@ class DomainResource extends Resource
                                     ->numeric()
                                     ->default(5),
 
-                                Forms\Components\Checkbox::make('ssl')
+                                Forms\Components\Toggle::make('ssl')
                                     ->label('SSL')
                                     ->default(false)
                                     ->columnSpanFull(),
 
-                                Forms\Components\Checkbox::make('tls')
+                                Forms\Components\Toggle::make('tls')
                                     ->label('TLS')
                                     ->default(false)
                                     ->columnSpanFull(),
 
-                                Forms\Components\Checkbox::make('enabled')
+                                Forms\Components\Toggle::make('enabled')
                                     ->label(__('admin.enabled'))
                                     ->default(false)
                                     ->columnSpanFull(),
@@ -118,7 +118,7 @@ class DomainResource extends Resource
                 Tables\Columns\TextColumn::make('code')
                     ->label(__('admin.identity')),
 
-                Tables\Columns\CheckboxColumn::make('enabled')
+                Tables\Columns\ToggleColumn::make('enabled')
                     ->label(__('admin.enabled'))
                     ->disabled(),
             ])

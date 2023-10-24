@@ -18,9 +18,9 @@ use App\Modules\FileStorageMonitor\Jobs\FileStoragesSyncJob;
 use App\Modules\FileStorageMonitor\Models\FileStorage;
 use App\Support\Forms\RpcConnectionSettingsForm;
 use Cron\CronExpression;
-use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\View;
 use Filament\Notifications\Notification;
 use Illuminate\Console\Scheduling\Schedule;
@@ -114,7 +114,7 @@ class FileStorageMonitorServiceProvider extends ModuleBaseServiceProvider
                                     CronExpressionInput::make('FileStorageSync.schedule')
                                         ->label(__('admin.schedule')),
 
-                                    Checkbox::make('FileStorageSync.enabled')
+                                    Toggle::make('FileStorageSync.enabled')
                                         ->label(__('admin.enabled')),
 
                                     FormButton::make('runAllStoragesJob')

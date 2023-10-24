@@ -20,11 +20,11 @@ use App\Modules\MSExchangeMonitor\Models\MSExchangeMailboxStat;
 use App\Support\Forms\RpcConnectionSettingsForm;
 use App\Utils\Size;
 use Cron\CronExpression;
-use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\View;
 use Filament\Notifications\Notification;
 use Illuminate\Console\Scheduling\Schedule;
@@ -156,7 +156,7 @@ class MSExchangeMonitorServiceProvider extends ModuleBaseServiceProvider
                                     CronExpressionInput::make('MSExchangeStatsSync.schedule')
                                         ->label(__('admin.schedule')),
 
-                                    Checkbox::make('MSExchangeStatsSync.enabled')
+                                    Toggle::make('MSExchangeStatsSync.enabled')
                                         ->label(__('admin.enabled')),
 
                                     FormButton::make('runJob')

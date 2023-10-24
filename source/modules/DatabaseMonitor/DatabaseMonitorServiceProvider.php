@@ -18,10 +18,10 @@ use App\Modules\DatabaseMonitor\Commands\CheckDatabaseServersCommand;
 use App\Modules\DatabaseMonitor\Jobs\DatabaseServersSyncJob;
 use App\Modules\DatabaseMonitor\Models\Database;
 use Cron\CronExpression;
-use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\View;
 use Filament\Notifications\Notification;
 use Illuminate\Console\Scheduling\Schedule;
@@ -118,7 +118,7 @@ class DatabaseMonitorServiceProvider extends ModuleBaseServiceProvider
                                     CronExpressionInput::make('DatabaseServerSync.schedule')
                                         ->label(__('admin.schedule')),
 
-                                    Checkbox::make('DatabaseServerSync.enabled')
+                                    Toggle::make('DatabaseServerSync.enabled')
                                         ->label(__('admin.enabled')),
 
                                     FormButton::make('runAllServersJob')

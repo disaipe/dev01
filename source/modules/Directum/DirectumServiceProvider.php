@@ -16,9 +16,9 @@ use App\Modules\Directum\Jobs\DirectumSyncUsersJob;
 use App\Modules\Directum\Models\DirectumUser;
 use App\Support\Forms\SqlConnectionSettingsForm;
 use App\Support\SqlServerConnection;
-use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\View;
 use Filament\Notifications\Notification;
 use Illuminate\Console\Scheduling\Schedule;
@@ -85,7 +85,7 @@ class DirectumServiceProvider extends ModuleBaseServiceProvider
                                     CronExpressionInput::make('SyncUsers.schedule')
                                         ->label(__('admin.schedule')),
 
-                                    Checkbox::make('SyncUsers.enabled')
+                                    Toggle::make('SyncUsers.enabled')
                                         ->label(__('admin.enabled')),
 
                                     FormButton::make('runAllServersJob')

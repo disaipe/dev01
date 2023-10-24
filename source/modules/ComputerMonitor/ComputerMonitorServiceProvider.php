@@ -22,7 +22,6 @@ use App\Modules\ComputerMonitor\Jobs\ComputersSyncJob;
 use App\Modules\ComputerMonitor\Models\ADComputerEntryStatus;
 use App\Support\Forms\RpcConnectionSettingsForm;
 use Cron\CronExpression;
-use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -201,7 +200,7 @@ class ComputerMonitorServiceProvider extends ModuleBaseServiceProvider
                                     CronExpressionInput::make('ComputerSync.schedule')
                                         ->label(__('admin.schedule')),
 
-                                    Checkbox::make('ComputerSync.enabled')
+                                    Toggle::make('ComputerSync.enabled')
                                         ->label(__('admin.enabled')),
 
                                     FormButton::make('runAllComputersJob')
