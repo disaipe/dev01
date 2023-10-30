@@ -3,6 +3,25 @@ el-form-item(
     :label='field.label'
     :prop='prop'
 )
+    //- LABEL
+    template(#label)
+        .inline-flex.items-center.space-x-1.w-full
+            .text-red-500(v-if='field.required') *
+
+            .flex-1 {{ field.label }}
+
+            //- DESCRIPTION
+            el-popover(
+                v-if='!!field.description'
+                :content='field.description'
+                :persistent='false'
+                width='250px'
+                effect='dark'
+            )
+                template(#reference)
+                    el-link(:underline='false')
+                        icon(icon='tabler:question-circle')
+
     //- NUMBER INPUT
     template(v-if='field.type === "numeric"')
         el-input-number(

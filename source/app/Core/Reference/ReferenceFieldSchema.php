@@ -44,6 +44,19 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
     }
 
     /**
+     * Set field description
+     *
+     * @param string $description helper text to display near the field
+     * @return $this
+     */
+    public function description(string $description): static
+    {
+        Arr::set($this->attributes, 'description', $description);
+
+        return $this;
+    }
+
+    /**
      * Make field visible by default
      *
      * @return $this

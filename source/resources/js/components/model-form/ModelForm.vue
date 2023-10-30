@@ -3,6 +3,7 @@ el-form(
     ref='form'
     v-bind='$props'
     :model='modelValue'
+    :hide-required-asterisk='true'
 )
     slot
 </template>
