@@ -48,10 +48,13 @@
         )
             template(#default)
                 vxe-column(
-                    :visible='!visibleColumns.length'
+                    :visible='!hasVisibleColumns'
                 )
                     el-alert(type='warning' title='Не выбраны видимые колонки')
-                slot(name='columns-before')
+
+                template(v-if='hasVisibleColumns')
+                    slot(name='columns-before')
+
                 vxe-column(
                     v-for='({ field, label }, i) of visibleColumns'
                     sortable
@@ -211,7 +214,7 @@ export default {
         const columns = toRef(props, 'columns');
 
         const route = useRoute();
-        const tableId = [route.name, snake(id.value || reference.value)].join('_');
+        const tableId = [route.name, snake(reference.value || id.value)].join('_');
 
         const repository = useRepos()[reference.value];
 
@@ -227,6 +230,7 @@ export default {
         const expanded = ref(loadExpanded(tableId));
 
         const visibleColumns = ref(columns.value);
+        const hasVisibleColumns = computed(() => visibleColumns.value?.length > 0);
 
         // Get model fields schema
         const fields = ref();
@@ -253,6 +257,7 @@ export default {
             fields,
 
             visibleColumns,
+            hasVisibleColumns,
 
             drawerComponent,
 
