@@ -50,6 +50,15 @@ class DatabaseServerReference extends ReferenceEntry
                 ->label('Порт')
                 ->pinia(PiniaAttribute::number()),
 
+            'aliases' => ReferenceFieldSchema::make()
+                ->label('Дополнительные имена хоста')
+                ->description(
+                    'Укажите дополнительные имена для распознования сервера между различными'
+                    . ' системами платформы. Например, полное доменное имя и сокращенное...'
+                )
+                ->pinia(PiniaAttribute::string())
+                ->textarea(),
+
             'username' => ReferenceFieldSchema::make()
                 ->label('Имя пользователя')
                 ->max(64)

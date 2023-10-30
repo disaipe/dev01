@@ -15,6 +15,7 @@ use Illuminate\Support\Arr;
  * @property string port
  * @property string username
  * @property string password
+ * @property string aliases
  * @property bool monitor
  * @property string options
  * @property string last_check
@@ -29,6 +30,7 @@ class DatabaseServer extends ReferenceModel
         'name',
         'host',
         'port',
+        'aliases',
         'username',
         'password',
         'monitor',
