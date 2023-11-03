@@ -43,9 +43,9 @@ class Contract extends ReferenceModel
         return $this->belongsTo(ServiceProvider::class, 'service_provider_id');
     }
 
-    public function scopeCompany(Builder $builder, string $code): void
+    public function scopeCompany(Builder $query, string $code): void
     {
-        $builder->whereHas(
+        $query->whereHas(
             'company',
             fn (Builder $company) => $company->where('code', '=', $code)
         );
