@@ -143,6 +143,8 @@
 <script>
 import { ref, toRef, computed } from 'vue';
 import { useRoute } from 'vue-router';
+import merge from 'lodash/merge';
+import cloneDeep from 'lodash/cloneDeep';
 
 import { useRepos } from '../../store/repository';
 import { snake } from '../../utils/stringsUtils';
@@ -185,6 +187,10 @@ export default {
         items: {
             type: Array,
             default: () => null
+        },
+        context: {
+            type: Object,
+            default: null,
         },
         tree: {
             type: Boolean,
@@ -331,7 +337,9 @@ export default {
         loadPages() {
             this.loading = true;
 
-            const query = {};
+            const query = {
+                filters: cloneDeep(this.context || {})
+            };
 
             if (this.pagination.page) {
                 query.page = this.pagination.page;
@@ -342,7 +350,7 @@ export default {
             }
 
             if (Object.keys(this.filterStore.filters || {}).length) {
-                query.filters = this.filterStore.filters;
+                merge(query.filters, this.filterStore.filters)
             }
 
             if (Object.keys(this.sortsStore || {}).length) {

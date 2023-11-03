@@ -1,12 +1,6 @@
 <template lang='pug'>
 .database-server-record-page
-    ItTable(
-        :reference='reference'
-        :filters='filters'
-        :can-create='canCreate'
-        :can-update='canUpdate'
-        :can-delete='canDelete'
-    )
+    it-table(v-bind='tableProps')
 </template>
 
 <script>
@@ -19,11 +13,13 @@ export default {
         const parentId = route.params?.id;
 
         return {
-            reference: 'Database',
-            filters: { database_server_id: parentId },
-            canCreate: false,
-            canUpdate: true,
-            canDelete: false
+            tableProps: {
+                reference: 'Database',
+                context: { database_server_id: parseInt(parentId, 10) },
+                canCreate: false,
+                canUpdate: true,
+                canDelete: false
+            }
         };
     }
 }
