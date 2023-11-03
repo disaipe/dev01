@@ -38,7 +38,7 @@ export default class Repository extends RepositoryApi {
     getRelatedModels() {
         return this.getFieldsSchema().then((schema) => {
             return Object.values(schema).reduce((acc, cur) => {
-                if (cur.relation) {
+                if (cur.relation && !cur.lazy) {
                     const model = cur.relation.model;
 
                     if (

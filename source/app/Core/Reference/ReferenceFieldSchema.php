@@ -220,6 +220,17 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
     }
 
     /**
+     * Mark relation as lazy - related reference will
+     * not be automatically loaded
+     */
+    public function lazy(): static
+    {
+        Arr::set($this->attributes, 'lazy', true);
+
+        return $this;
+    }
+
+    /**
      * Get attribute value by name
      */
     public function getAttribute(string $attribute): mixed
