@@ -89,7 +89,7 @@ class SharepointServiceProvider extends ModuleBaseServiceProvider
         $savedConfig = SharepointConnection::Config();
         $config = array_merge($savedConfig, $config);
 
-        SharepointConnection::Setup('sharepoint', $config);
+        SharepointConnection::setup('sharepoint', $config);
     }
 
     public function schedule(Schedule $schedule): void

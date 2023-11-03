@@ -4,9 +4,9 @@ namespace App\Modules\DatabaseMonitor\Models;
 
 use App\Core\Reference\ReferenceModel;
 use App\Modules\DatabaseMonitor\Enums\DatabaseServerStatus;
+use App\Support\SqlServerConnection;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Arr;
 
 /**
  * @property string type
@@ -53,16 +53,7 @@ class DatabaseServer extends ReferenceModel
 
     public function getOptions(): ?array
     {
-        $matches = null;
-        preg_match_all('/(?<key>.+?)=(?<value>.+?)/', $this->options, $matches, PREG_SET_ORDER);
-
-        if ($matches) {
-            return collect($matches)
-                ->mapWithKeys(fn ($match) => [Arr::get($match, 'key') => Arr::get($match, 'value')])
-                ->toArray();
-        }
-
-        return null;
+        return SqlServerConnection::getDriverOptions($this->options);
     }
 
     /**

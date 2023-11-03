@@ -7,10 +7,22 @@ use Illuminate\Support\Facades\Config;
 
 class SqlServerConnection
 {
-    public static function Setup(string $name, array $config = []): void
+    /**
+     * @param string $name connection name
+     * @param array{
+     *     db_driver?: string,
+     *     db_host: string,
+     *     db_port?: string,
+     *     db_name: string,
+     *     db_username: string,
+     *     db_password: string,
+     * } $config connection params
+     * @return void
+     */
+    public static function setup(string $name, array $config = []): void
     {
         $connection = [
-            'driver' => Arr::get($config, 'db_driver'),
+            'driver' => Arr::get($config, 'db_driver', 'sqlsrv'),
             'host' => Arr::get($config, 'db_host'),
             'port' => Arr::get($config, 'db_port'),
             'database' => Arr::get($config, 'db_name'),
@@ -29,7 +41,7 @@ class SqlServerConnection
         Config::set("database.connections.{$name}", $connection);
     }
 
-    protected static function getDriverOptions(?string $options): array
+    public static function getDriverOptions(?string $options): array
     {
         if (! $options) {
             return [];

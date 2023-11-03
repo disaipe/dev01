@@ -113,7 +113,7 @@ class DirectumServiceProvider extends ModuleBaseServiceProvider
             }
         }
 
-        SqlServerConnection::Setup(static::CONNECTION_NAME, $config);
+        SqlServerConnection::setup(static::CONNECTION_NAME, $config);
     }
 
     public function schedule(Schedule $schedule): void
