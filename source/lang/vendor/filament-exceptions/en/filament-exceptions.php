@@ -22,7 +22,7 @@ return [
     'columns' => [
         'method' => 'Метод',
         'path' => 'URL',
-        'type' => 'Типк',
+        'type' => 'Тип',
         'code' => 'Код',
         'ip' => 'IP',
         'occurred_at' => 'Дата',
