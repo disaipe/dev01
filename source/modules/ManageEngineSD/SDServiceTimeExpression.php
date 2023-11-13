@@ -52,7 +52,8 @@ class SDServiceTimeExpression extends SDServiceExpression implements IQueryExpre
                 ->multiple()
                 ->searchable()
                 ->getSearchResultsUsing(fn ($search) => self::getServices($search))
-                ->options(self::getServices()),
+                ->options(fn () => self::getServices())
+                ->lazy(),
         ];
     }
 }

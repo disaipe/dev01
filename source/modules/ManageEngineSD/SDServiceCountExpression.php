@@ -50,7 +50,8 @@ class SDServiceCountExpression extends SDServiceExpression implements IQueryExpr
                 ->multiple()
                 ->searchable()
                 ->getSearchResultsUsing(fn ($search) => self::getServices($search))
-                ->options(self::getServices()),
+                ->options(fn () => self::getServices())
+                ->lazy(),
         ];
     }
 }
