@@ -1,16 +1,7 @@
 <template lang='pug'>
 .app-wrapper
     el-container
-        el-aside.flex.flex-col.overflow-hidden(width='240px')
-            el-menu(router)
-                side-bar-menu-item(
-                    v-for='item of routes'
-                    :index='item.name'
-                    :route='item'
-                    :icon='item.icon'
-                    :label='item.label'
-                    :children='item.children'
-                )
+        side-bar-menu
 
         el-container
             el-header
@@ -103,30 +94,15 @@
 <script>
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import groupBy from 'lodash/groupBy';
-import orderBy from 'lodash/orderBy';
 
 import { useTabsStore, useProfilesSettingsStore } from '../store/modules';
 import usePage from '../utils/usePage';
-import SideBarMenuItem from './components/SideBarMenuItem.vue';
 import BreadCrumbs from '../components/breadcrumbs/BreadCrumbs.vue';
-
-function makeMenuTree(data) {
-    const grouped = groupBy(data, (item) => item.parent || null);
-
-    function childrenOf(parentId) {
-        const arr = (grouped[parentId] || [])
-            .map((item) => ({ ...item, children: childrenOf(item.name) }));
-
-        return orderBy(arr, ['order', 'label']);
-    }
-
-    return childrenOf(null);
-}
+import SideBarMenu from './components/SideBarMenu.vue';
 
 export default {
     name: 'BaseLayout',
-    components: { BreadCrumbs, SideBarMenuItem },
+    components: { SideBarMenu, BreadCrumbs },
     setup() {
         const { cachedViews } = useTabsStore();
         const profileSettings = useProfilesSettingsStore();
@@ -135,45 +111,6 @@ export default {
         const company = ref(profileSettings.companyContext);
 
         const router = useRouter();
-
-        // get routes with sidebar menu item
-        const menuRoutes = [];
-        for (const route of router.getRoutes()) {
-            if (route.meta?.isReference) {
-                menuRoutes.push(route);
-            } else if (route.meta?.isRecord) {
-                //
-            } else if (route.meta?.view) {
-                menuRoutes.push(route);
-            }
-        }
-
-        const flatRoutes = [
-            {
-                name: 'dashboard',
-                label: 'Главная',
-                icon: 'fluent-mdl2:home',
-                route: { name: 'dashboard' },
-                order: 1
-            },
-            {
-                name: 'references',
-                label: 'Справочники',
-                icon: 'fluent-mdl2:product-catalog',
-                order: 99
-            },
-
-            ...menuRoutes.map((r) => ({
-                name: r.name,
-                label: r.meta.title,
-                icon: r.meta.icon,
-                order: r.meta.order,
-                parent: r.meta.menuParent,
-                route: { name: r.name }
-            }))
-        ];
-
-        const routes = makeMenuTree(flatRoutes);
 
         const { user } = usePage();
 
@@ -186,7 +123,6 @@ export default {
             isRouteScroll: computed(() => router.currentRoute.value.meta?.scroll !== false),
 
             cachedViews,
-            routes,
             user,
 
             drawer,
