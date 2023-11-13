@@ -72,8 +72,6 @@ const flatRoutes = [
 ];
 
 const routes = makeMenuTree(flatRoutes);
-
-console.log(routes);
 </script>
 
 <style scoped lang="postcss">
