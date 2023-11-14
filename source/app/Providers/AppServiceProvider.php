@@ -20,8 +20,7 @@ class AppServiceProvider extends ServiceProvider
         $this->registerMacros();
         $this->registerDirectives();
         $this->registerSingletons();
-
-        $this->app->singleton(ClientCompanyContext::class, fn () => new ClientCompanyContext());
+        $this->registerFixedSqlServerConnector();
     }
 
     /**
@@ -46,5 +45,11 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton('expressions', fn () => new ExpressionManager());
         $this->app->singleton('indicators', fn () => new IndicatorManager());
+        $this->app->singleton(ClientCompanyContext::class, fn () => new ClientCompanyContext());
+    }
+
+    private function registerFixedSqlServerConnector(): void
+    {
+        $this->app->bind('db.connector.sqlsrv', \App\Database\SqlServerConnector::class);
     }
 }
