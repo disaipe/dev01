@@ -57,9 +57,11 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label(__('admin.$user.name')),
+                    ->label(__('admin.$user.name'))
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->label(__('admin.email')),
+                    ->label(__('admin.email'))
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('domain')
                     ->label(trans_choice('admin.domain', 1)),
             ])

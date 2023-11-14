@@ -58,10 +58,12 @@ class JobProtocolResource extends Resource
 
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('admin.name'))
-                    ->formatStateUsing(fn (string $state) => class_basename($state)),
+                    ->formatStateUsing(fn (string $state) => class_basename($state))
+                    ->searchable(),
 
                 Tables\Columns\TextColumn::make('description')
-                    ->label(__('admin.description')),
+                    ->label(__('admin.description'))
+                    ->searchable(),
 
                 Tables\Columns\TextColumn::make('module')
                     ->label(trans_choice('admin.module', 1))
@@ -92,7 +94,7 @@ class JobProtocolResource extends Resource
                 Tables\Filters\SelectFilter::make('module')
                     ->label(trans_choice('admin.module', 1))
                     ->options($modulesOptions),
-            ])
+            ], Tables\Enums\FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\Action::make('result')
                     ->icon('heroicon-s-eye')
@@ -109,7 +111,7 @@ class JobProtocolResource extends Resource
                             ]
                         );
                     })
-                    ->modalActions([]),
+                    ->modalFooterActions([]),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

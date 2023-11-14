@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property bool sip_enabled
  * @property string mailbox_guid
  * @property bool blocked
+ * @property Company company
  */
 class ADUserEntry extends ReferenceModel
 {

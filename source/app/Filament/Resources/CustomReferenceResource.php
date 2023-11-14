@@ -7,6 +7,7 @@ use App\Filament\Resources\CustomReferenceResource\Pages;
 use App\Models\CustomReference;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -30,57 +31,60 @@ class CustomReferenceResource extends Resource
         $isSystem = fn ($get) => in_array($get('name'), $disabled);
 
         return $form
-            ->columns(1)
             ->schema([
-                Forms\Components\Section::make('Базовая конфигурация')->schema([
-                    Forms\Components\TextInput::make('display_name')
-                        ->label(__('admin.name'))
-                        ->helperText(new HtmlString('Наименование справочника для отображения пользователям, например <i>"Виртуальные машины"</i>'))
-                        ->maxLength(128)
-                        ->required(),
+                Forms\Components\Section::make('Базовая конфигурация')
+                    ->columns()
+                    ->schema([
+                        Forms\Components\TextInput::make('display_name')
+                            ->label(__('admin.name'))
+                            ->helperText(new HtmlString('Наименование справочника для отображения пользователям, например <i>"Виртуальные машины"</i>'))
+                            ->maxLength(128)
+                            ->required(),
 
-                    Forms\Components\TextInput::make('name')
-                        ->label(__('admin.short name'))
-                        ->helperText(new HtmlString('Техническое наименование справочника, например <i>"VirtualMachine"</a>. <b>После создания изменить нельзя!</b>'))
-                        ->maxLength(32)
-                        ->disabled(fn ($record) => isset($record))
-                        ->required(),
+                        Forms\Components\TextInput::make('name')
+                            ->label(__('admin.short name'))
+                            ->helperText(new HtmlString('Техническое наименование справочника, например <i>"VirtualMachine"</i>. <b>После создания изменить нельзя!</b>'))
+                            ->maxLength(32)
+                            ->disabled(fn ($record) => isset($record))
+                            ->required(),
 
-                    Forms\Components\TextInput::make('label')
-                        ->label('Наименование записи (единственное число)')
-                        ->helperText(new HtmlString('Например <i>"Виртуальная машина"</i>'))
-                        ->maxLength(64)
-                        ->required(),
+                        Forms\Components\TextInput::make('label')
+                            ->label('Наименование записи (единственное число)')
+                            ->helperText(new HtmlString('Например <i>"Виртуальная машина"</i>'))
+                            ->maxLength(64)
+                            ->required(),
 
-                    Forms\Components\TextInput::make('plural_label')
-                        ->label('Наименование записи (множественное число)')
-                        ->helperText(new HtmlString('Например <i>"Виртуальные машины"</i>'))
-                        ->maxLength(64)
-                        ->required(),
+                        Forms\Components\TextInput::make('plural_label')
+                            ->label('Наименование записи (множественное число)')
+                            ->helperText(new HtmlString('Например <i>"Виртуальные машины"</i>'))
+                            ->maxLength(64)
+                            ->required(),
 
-                    Forms\Components\Toggle::make('company_context')
-                        ->label('Контекст организации')
-                        ->helperText('Добавить колонку организации для создания привязки записи справочника к организации')
-                        ->default(true),
+                        Forms\Components\Toggle::make('company_context')
+                            ->label('Контекст организации')
+                            ->helperText('Добавить колонку организации для создания привязки записи справочника к организации')
+                            ->reactive()
+                            ->default(true),
 
-                    Forms\Components\Select::make('context_type')
-                        ->label('Значение организации')
-                        ->helperText(
-                            'Укажите тип хранения контекста организации - по коду или идентификатору. Предпочтительнее использовать'
-                            .' идентификатор, но при необходимости (например, при интеграции из сторонних систем)'
-                            .' можете использовать префикс организации.'
-                        )
-                        ->selectablePlaceholder(false)
-                        ->options([
-                            CustomReferenceContextType::Id->value => 'По id (company_id)',
-                            CustomReferenceContextType::Code->value => 'По коду (company_code)',
-                        ]),
+                        Forms\Components\Select::make('context_type')
+                            ->label('Значение организации')
+                            ->helperText(
+                                'Укажите тип хранения контекста организации - по коду или идентификатору. Предпочтительнее использовать'
+                                .' идентификатор, но при необходимости (например, при интеграции из сторонних систем)'
+                                .' можете использовать префикс организации.'
+                            )
+                            ->selectablePlaceholder(false)
+                            ->options([
+                                CustomReferenceContextType::Id->value => 'По id (company_id)',
+                                CustomReferenceContextType::Code->value => 'По коду (company_code)',
+                            ])
+                            ->visible(fn (Get $get) => !!$get('company_context')),
 
-                    Forms\Components\Toggle::make('enabled')
-                        ->label('Активно')
-                        ->helperText('Справочник настроен и готов к работе')
-                        ->default(false)
-                        ->columnSpanFull(),
+                        Forms\Components\Toggle::make('enabled')
+                            ->label('Активно')
+                            ->helperText('Справочник настроен и готов к работе')
+                            ->default(false)
+                            ->columnSpanFull(),
                 ]),
 
                 Forms\Components\Section::make('Конфигурация полей')
@@ -143,7 +147,8 @@ class CustomReferenceResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('display_name')
-                    ->label(__('admin.name')),
+                    ->label(__('admin.name'))
+                    ->searchable(),
 
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('admin.short name')),

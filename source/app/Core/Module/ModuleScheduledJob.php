@@ -35,7 +35,7 @@ abstract class ModuleScheduledJob implements ShouldQueue //, ShouldBeUniqueUntil
         $this->jobId = Str::uuid();
     }
 
-    final public function handle()
+    final public function handle(): void
     {
         $uuid = $this->job?->uuid();
 
