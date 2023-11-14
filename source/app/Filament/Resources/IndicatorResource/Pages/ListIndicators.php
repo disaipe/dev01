@@ -3,8 +3,11 @@
 namespace App\Filament\Resources\IndicatorResource\Pages;
 
 use App\Filament\Resources\IndicatorResource;
+use App\Models\IndicatorGroup;
 use Filament\Actions\CreateAction;
+use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Database\Eloquent\Builder;
 
 class ListIndicators extends ListRecords
 {
@@ -15,5 +18,24 @@ class ListIndicators extends ListRecords
         return [
             CreateAction::make(),
         ];
+    }
+
+    public function getTabs(): array
+    {
+        $groups = IndicatorGroup::query()->whereHas('indicators')->get();
+
+        $tabs = [
+            'all' => Tab::make(__('admin.all')),
+        ];
+
+        foreach ($groups as $group) {
+            $tab = Tab::make($group->name)->modifyQueryUsing(
+                fn (Builder $query) => $query->where('indicator_group_id', '=', $group->getKey())
+            );
+
+            $tabs[$group->getKey()] = $tab;
+        }
+
+        return $tabs;
     }
 }

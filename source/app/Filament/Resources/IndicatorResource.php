@@ -45,8 +45,19 @@ class IndicatorResource extends Resource
                             ])
                             ->default(QueryExpressionType::class)
                             ->required()
-                            ->reactive()
-                            ->columnSpanFull(),
+                            ->reactive(),
+
+                        Forms\Components\Select::make('indicator_group_id')
+                            ->relationship('group', 'name')
+                            ->label(__('admin.group'))
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('name')
+                                    ->label(__('admin.name'))
+                                    ->required(),
+
+                                Forms\Components\ColorPicker::make('color')
+                                    ->label(__('admin.color')),
+                            ]),
 
                         Forms\Components\Toggle::make('published')
                             ->label(__('admin.enabled')),
@@ -72,16 +83,28 @@ class IndicatorResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label(__('admin.name')),
+                    ->label(__('admin.name'))
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('code')
                     ->label(__('admin.code')),
+
+                Tables\Columns\TextColumn::make('$used')
+                    ->label(trans_choice('reference.Service', 2))
+                    ->getStateUsing(fn (Indicator $indicator) => $indicator->services()->count()),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
-            ]);
+            ])
+            ->groups([
+                Tables\Grouping\Group::make('group.name')
+                    ->label(__('admin.group'))
+                    ->collapsible(),
+            ])
+            ->defaultGroup('group.name');
     }
 
     public static function getPages(): array

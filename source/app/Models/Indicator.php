@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Core\Indicator\IndicatorManager;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -14,6 +16,8 @@ use Illuminate\Support\Str;
  * @property string name
  * @property array schema
  * @property bool published
+ * @property ?IndicatorGroup group
+ * @property Service[] services
  */
 class Indicator extends Model
 {
@@ -29,6 +33,15 @@ class Indicator extends Model
         'schema' => 'json',
         'published' => 'bool',
     ];
+
+    public function group(): BelongsTo {
+        return $this->belongsTo(IndicatorGroup::class, 'indicator_group_id');
+    }
+
+    public function services(): HasMany
+    {
+        return $this->hasMany(Service::class, 'indicator_code', 'code');
+    }
 
     public function asRelated(): array
     {
