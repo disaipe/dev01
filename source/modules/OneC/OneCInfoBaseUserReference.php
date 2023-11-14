@@ -15,6 +15,11 @@ class OneCInfoBaseUserReference extends ReferenceEntry
 
     protected string|bool|null $referenceView = false;
 
+    protected function getLabelKey(): string
+    {
+        return 'onec::messages.info base user';
+    }
+
     public function getSchema(): array
     {
         return [
