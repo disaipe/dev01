@@ -57,6 +57,11 @@ class QueryExpressionType implements IExpressionType
     public function __construct(array $options = [])
     {
         $this->scopes = [
+            'active' => function (Builder $query) {
+                if ($query->hasNamedScope('active')) {
+                    $query->active();
+                }
+            },
             'company' => function (Builder $query) {
                 if (! $query->hasNamedScope('company')) {
                     return;
