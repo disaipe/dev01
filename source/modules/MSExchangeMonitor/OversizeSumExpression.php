@@ -4,8 +4,10 @@ namespace App\Modules\MSExchangeMonitor;
 
 use App\Core\Module\ModuleManager;
 use App\Core\Report\IExpression;
+use App\Modules\MSExchangeMonitor\Models\MSExchangeMailboxStat;
 use App\Utils\Size;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 
 class OversizeSumExpression implements IExpression
 {
@@ -42,5 +44,12 @@ class OversizeSumExpression implements IExpression
     {
         // internal indicator, no label required
         return [];
+    }
+
+    public static function disabled(array $state): bool
+    {
+        $reference = Arr::get($state, 'reference');
+
+        return $reference !== class_basename(MSExchangeMailboxStat::class);
     }
 }

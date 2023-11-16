@@ -3,11 +3,12 @@
 namespace App\Core\Report\Expression;
 
 use App\Core\Indicator\IndicatorManager;
+use App\Core\Report\Expression;
 use App\Core\Report\IExpression;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 
-class IndicatorSumExpression implements IExpression
+class IndicatorSumExpression extends Expression implements IExpression
 {
     public function exec(): float
     {
@@ -36,5 +37,10 @@ class IndicatorSumExpression implements IExpression
                         ->options($indicatorOptions),
                 ]),
         ];
+    }
+
+    public static function disabled(array $state): bool
+    {
+        return false;
     }
 }

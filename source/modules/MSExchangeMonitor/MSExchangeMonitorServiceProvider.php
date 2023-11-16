@@ -48,7 +48,7 @@ class MSExchangeMonitorServiceProvider extends ModuleBaseServiceProvider
                 'code' => 'MSEXMONITOR_MAILBOX_SIZE_SUM',
                 'type' => QueryExpressionType::class,
                 'name' => __('msexmonitor::messages.indicators.MSEXMONITOR_MAILBOX_SIZE_SUM'),
-                'expression' => new SumExpression('total_item_size'),
+                'expression' => new SumExpression(['column' => 'total_item_size']),
                 'options' => [
                     'model' => MSExchangeMailboxStat::class,
                 ],

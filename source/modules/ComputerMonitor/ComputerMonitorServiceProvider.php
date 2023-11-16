@@ -57,7 +57,7 @@ class ComputerMonitorServiceProvider extends ModuleBaseServiceProvider
                 'code' => 'PCMON_COMPUTER_COUNT_BY_AD_USER',
                 'type' => QueryExpressionType::class,
                 'name' => '[PCMON] Количество персональных ПК (по активности пользователей)',
-                'expression' => new CountExpression('ad_computer_entries.name'),
+                'expression' => new CountExpression(['column' => 'ad_computer_entries.name']),
                 'options' => [
                     'model' => ADComputerEntryStatus::class,
                     'query' => function (Builder $query) {

@@ -2,18 +2,22 @@
 
 namespace App\Core\Report\Expression;
 
+use App\Core\Report\Expression;
 use App\Core\Report\IQueryExpression;
 use App\Forms\Components\RawHtmlContent;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 
-class SumExpression implements IQueryExpression
+class SumExpression extends Expression implements IQueryExpression
 {
-    protected string $column;
+    protected ?string $column;
 
-    public function __construct(string $column)
+    public function __construct(array $options = [])
     {
-        $this->column = $column;
+        parent::__construct($options);
+
+        $this->column = Arr::get($options, 'column', '*');
     }
 
     public function exec(Builder $query): float
@@ -34,5 +38,10 @@ class SumExpression implements IQueryExpression
                 ->label(__('admin.$indicator.column'))
                 ->required(),
         ];
+    }
+
+    public static function disabled(array $state): bool
+    {
+        return false;
     }
 }

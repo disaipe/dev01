@@ -48,7 +48,7 @@ class DatabaseMonitorServiceProvider extends ModuleBaseServiceProvider
                 'code' => 'DBMON_DATABASE_SIZE_SUM',
                 'type' => QueryExpressionType::class,
                 'name' => 'Размер баз данных',
-                'expression' => new SumExpression('size'),
+                'expression' => new SumExpression(['column' => 'size']),
                 'options' => [
                     'model' => Database::class,
                 ],

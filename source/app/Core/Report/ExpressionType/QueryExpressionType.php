@@ -16,7 +16,9 @@ use App\Forms\Components\RawHtmlContent;
 use Carbon\Carbon;
 use Exception;
 use Filament\Forms\Components;
+use Filament\Forms\Get;
 use Filament\Notifications\Notification;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -103,11 +105,18 @@ class QueryExpressionType implements IExpressionType
                 ->label('')
                 ->required()
                 ->addActionLabel(__('admin.$indicator.schema add'))
-                ->blocks(Arr::map($expressions, function (IExpression|string $expression) {
-                    return Components\Builder\Block::make(class_basename($expression))
-                        ->label($expression::label())
-                        ->schema($expression::form());
-                }))
+                ->blocks(function (Get $get) use ($expressions) {
+                    $state = $get('schema');
+
+                    return collect($expressions)
+                        ->filter(fn (IExpression|string $expression) => $expression::disabled($state) === false)
+                        ->map(function (IExpression|string $expression) {
+                            return Components\Builder\Block::make(class_basename($expression))
+                                ->label($expression::label())
+                                ->schema($expression::form());
+                        })
+                        ->toArray();
+                })
                 ->minItems(1)
                 ->maxItems(1),
 
@@ -159,20 +168,25 @@ class QueryExpressionType implements IExpressionType
         return $this;
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     public function getExpression(Indicator $indicator): ?IExpression
     {
         [$expression] = Arr::get($indicator->schema(), 'values') ?? [null];
 
         if ($expression) {
             $type = Arr::get($expression, 'type');
-            $data = Arr::get($expression, 'data') ?? [];
+            $options = Arr::get($expression, 'data') ?? [];
 
             /** @var ExpressionManager $expressions */
             $expressions = app('expressions');
             $expression = $expressions->getByKey($type);
 
             if (class_exists($expression)) {
-                return new $expression(...$data);
+                /** @var IExpression $instance */
+                $instance = app()->make($expression, ['options' => $options]);
+                return $instance;
             }
         }
 

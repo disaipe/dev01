@@ -48,7 +48,7 @@ class FileStorageMonitorServiceProvider extends ModuleBaseServiceProvider
                 'code' => 'FSMONITOR_STORAGE_SIZE_SUM',
                 'type' => QueryExpressionType::class,
                 'name' => 'Размер файлового хранилища',
-                'expression' => new SumExpression('size'),
+                'expression' => new SumExpression(['column' => 'size']),
                 'options' => [
                     'model' => FileStorage::class,
                     'query' => fn ($query) => $query->reportable(),

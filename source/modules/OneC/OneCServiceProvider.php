@@ -57,7 +57,7 @@ class OneCServiceProvider extends ModuleBaseServiceProvider
             'code' => 'ONEC_USER_COUNT',
             'type' => QueryExpressionType::class,
             'name' => 'Количество пользователей 1С',
-            'expression' => new CountExpression('login'),
+            'expression' => new CountExpression(['column' => 'login']),
             'options' => [
                 'model' => OneCInfoBaseUser::class,
                 'query' => fn ($query) => $query->distinct()->select('login'),

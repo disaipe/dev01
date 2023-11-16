@@ -2,11 +2,14 @@
 
 namespace App\Modules\ManageEngineSD;
 
+use App\Core\Report\Expression;
 use App\Modules\ManageEngineSD\Models\SDServiceDefinition;
+use App\Modules\ManageEngineSD\Models\SDWorkorder;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 
-class SDServiceExpression
+class SDServiceExpression extends Expression
 {
     public static function getServices(string $search = null): array
     {
@@ -24,5 +27,12 @@ class SDServiceExpression
         }
 
         return [];
+    }
+
+    public static function disabled(array $state): bool
+    {
+        $reference = Arr::get($state, 'reference');
+
+        return $reference !== class_basename(SDWorkorder::class);
     }
 }
