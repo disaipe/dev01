@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Sharepoint;
+namespace App\Modules\Sharepoint\Utils;
 
 use App\Core\Module\ModuleManager;
 use App\Support\SqlServerConnection;

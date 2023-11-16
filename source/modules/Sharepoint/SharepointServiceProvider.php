@@ -6,6 +6,7 @@ use App\Core\Module\ModuleBaseServiceProvider;
 use App\Modules\Sharepoint\Filament\Resources\SharepointListResource;
 use App\Modules\Sharepoint\Jobs\SyncSharepointListJob;
 use App\Modules\Sharepoint\Models\SharepointList;
+use App\Modules\Sharepoint\Utils\SharepointConnection;
 use App\Support\Forms\SqlConnectionSettingsForm;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Section;
