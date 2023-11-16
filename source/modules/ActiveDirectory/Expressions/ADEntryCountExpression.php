@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\ActiveDirectory;
+namespace App\Modules\ActiveDirectory\Expressions;
 
 use App\Core\Report\Expression\CountExpression;
 use App\Modules\ActiveDirectory\Models\ADComputerEntry;

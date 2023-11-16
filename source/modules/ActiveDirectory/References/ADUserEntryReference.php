@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\ActiveDirectory;
+namespace App\Modules\ActiveDirectory\References;
 
 use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;
