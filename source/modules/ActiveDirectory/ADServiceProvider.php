@@ -3,12 +3,9 @@
 namespace App\Modules\ActiveDirectory;
 
 use App\Core\Enums\JobProtocolState;
-use App\Core\Indicator\Indicator;
-use App\Core\Indicator\IndicatorManager;
 use App\Core\Module\ModuleBaseServiceProvider;
 use App\Core\Reference\ReferenceManager;
-use App\Core\Report\Expression\CountExpression;
-use App\Core\Report\ExpressionType\QueryExpressionType;
+use App\Core\Report\Expression\ExpressionManager;
 use App\Filament\Components\CronExpressionInput;
 use App\Filament\Components\FormButton;
 use App\Forms\Components\RawHtmlContent;
@@ -19,7 +16,6 @@ use App\Modules\ActiveDirectory\Commands\SyncUsersCommand;
 use App\Modules\ActiveDirectory\Filament\Components\LdapFilterBuilder;
 use App\Modules\ActiveDirectory\Job\ADSyncComputersJob;
 use App\Modules\ActiveDirectory\Job\ADSyncUsersJob;
-use App\Modules\ActiveDirectory\Models\ADUserEntry;
 use App\Modules\ActiveDirectory\Utils\LdapQueryConditionsBuilder;
 use App\Services\LdapService;
 use App\Utils\DomainUtils;
@@ -58,33 +54,12 @@ class ADServiceProvider extends ModuleBaseServiceProvider
         $references = app('references');
         $references->register(ADUserEntryReference::class);
         $references->register(ADComputerEntryReference::class);
-
-        /** @var IndicatorManager $indicators */
-        $indicators = app('indicators');
-        $indicators->register([
-            Indicator::fromArray([
-                'module' => 'AD',
-                'code' => 'AD_ENTRY_COUNT',
-                'type' => QueryExpressionType::class,
-                'name' => 'Количество учетных записей',
-                'expression' => new CountExpression(),
-                'options' => [
-                    'model' => ADUserEntry::class,
-                    'query' => fn ($query) => $query->active(),
-                ],
-            ]),
-            Indicator::fromArray([
-                'module' => 'AD',
-                'code' => 'AD_LYNC_COUNT',
-                'type' => QueryExpressionType::class,
-                'name' => 'Количество учетных записей Lync',
-                'expression' => new CountExpression(),
-                'options' => [
-                    'model' => ADUserEntry::class,
-                    'query' => fn ($query) => $query->active()->where('sip_enabled', '=', true),
-                ],
-            ]),
-        ]);
+    }
+    public function onBooting(): void
+    {
+        /** @var ExpressionManager $expressions */
+        $expressions = app('expressions');
+        $expressions->register(ADEntryCountExpression::class);
     }
 
     public function getOptions(): array
@@ -160,7 +135,8 @@ class ADServiceProvider extends ModuleBaseServiceProvider
 
             Textarea::make('base_dn')
                 ->label(__('ad::messages.base dn or ou'))
-                ->helperText(new HtmlString(__('ad::messages.base dn or ou helper'))),
+                ->helperText(new HtmlString(__('ad::messages.base dn or ou helper')))
+                ->autosize(),
 
             LdapFilterBuilder::make('filters')
                 ->label(__('ad::messages.filter')),
