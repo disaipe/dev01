@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\MSExchangeMonitor;
+namespace App\Modules\MSExchangeMonitor\Expressions;
 
 use App\Core\Module\ModuleManager;
 use App\Core\Report\IExpression;
