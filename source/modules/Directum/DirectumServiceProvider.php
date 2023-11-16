@@ -14,6 +14,7 @@ use App\Forms\Components\RawHtmlContent;
 use App\Modules\Directum\Commands\DirectumSyncUsersCommand;
 use App\Modules\Directum\Jobs\DirectumSyncUsersJob;
 use App\Modules\Directum\Models\DirectumUser;
+use App\Modules\Directum\References\DirectumUserReference;
 use App\Support\Forms\SqlConnectionSettingsForm;
 use App\Support\SqlServerConnection;
 use Filament\Forms\Components\Section;

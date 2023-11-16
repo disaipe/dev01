@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Directum;
+namespace App\Modules\Directum\References;
 
 use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;
