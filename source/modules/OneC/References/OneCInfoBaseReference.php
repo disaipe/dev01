@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\OneC;
+namespace App\Modules\OneC\References;
 
 use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;

@@ -18,6 +18,8 @@ use App\Modules\OneC\Jobs\SyncOneCListsJob;
 use App\Modules\OneC\Jobs\SyncOneCServersListsJob;
 use App\Modules\OneC\Jobs\SyncOneCServersUsers;
 use App\Modules\OneC\Models\OneCInfoBaseUser;
+use App\Modules\OneC\References\OneCInfoBaseReference;
+use App\Modules\OneC\References\OneCInfoBaseUserReference;
 use App\Support\Forms\RpcConnectionSettingsForm;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Group;
