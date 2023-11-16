@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\DatabaseMonitor;
+namespace App\Modules\DatabaseMonitor\References;
 
 use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;

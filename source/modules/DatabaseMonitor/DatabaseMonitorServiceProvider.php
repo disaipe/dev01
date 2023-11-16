@@ -17,6 +17,8 @@ use App\Modules\DatabaseMonitor\Commands\CheckDatabaseServerCommand;
 use App\Modules\DatabaseMonitor\Commands\CheckDatabaseServersCommand;
 use App\Modules\DatabaseMonitor\Jobs\DatabaseServersSyncJob;
 use App\Modules\DatabaseMonitor\Models\Database;
+use App\Modules\DatabaseMonitor\References\DatabaseReference;
+use App\Modules\DatabaseMonitor\References\DatabaseServerReference;
 use Cron\CronExpression;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Tabs;
