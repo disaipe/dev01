@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\FileStorageMonitor;
+namespace App\Modules\FileStorageMonitor\References;
 
 use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;
