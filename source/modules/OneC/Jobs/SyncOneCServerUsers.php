@@ -7,7 +7,7 @@ use App\Modules\DatabaseMonitor\Models\DatabaseServer;
 use App\Modules\OneC\Enums\DatabaseType;
 use App\Modules\OneC\Models\OneCInfoBaseUser;
 use App\Modules\OneC\Models\OneCInfoBase;
-use App\Utils\Domain;
+use App\Utils\DomainUtils;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Exception;
@@ -137,7 +137,7 @@ class SyncOneCServerUsers extends ModuleScheduledJob
             });
 
             foreach ($users as $user) {
-                [$domain, $username] = Domain::parseUserName(Arr::get($user, 'OSName'));
+                [$domain, $username] = DomainUtils::parseUserName(Arr::get($user, 'OSName'));
 
                 if (! $user && ! $username) {
                     continue;

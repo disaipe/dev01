@@ -20,9 +20,9 @@ use App\Modules\ActiveDirectory\Filament\Components\LdapFilterBuilder;
 use App\Modules\ActiveDirectory\Job\ADSyncComputersJob;
 use App\Modules\ActiveDirectory\Job\ADSyncUsersJob;
 use App\Modules\ActiveDirectory\Models\ADUserEntry;
-use App\Modules\ActiveDirectory\Utils\Helpers;
 use App\Modules\ActiveDirectory\Utils\LdapQueryConditionsBuilder;
 use App\Services\LdapService;
+use App\Utils\DomainUtils;
 use Cron\CronExpression;
 use Error;
 use Exception;
@@ -211,7 +211,7 @@ class ADServiceProvider extends ModuleBaseServiceProvider
             Container::setDefault($domain->code);
 
             $baseDN = Arr::get($config, 'base_dn', $domain->base_dn);
-            $baseOUs = Helpers::ParseOUs($baseDN);
+            $baseOUs = DomainUtils::parseOUs($baseDN);
 
             $query = match ($type) {
                 'users' => User::query(),

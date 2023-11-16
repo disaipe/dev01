@@ -1,16 +1,22 @@
 <?php
 
-namespace App\Modules\ActiveDirectory\Utils;
+namespace App\Utils;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
-class Helpers
+class DomainUtils
 {
-    /**
-     * Parse multiline OU list to array
-     */
-    public static function ParseOUs(?string $ou): array
+    public static function parseUserName(?string $username): array
+    {
+        if ($username) {
+            return explode('\\', trim($username, '\\'));
+        }
+
+        return [null, $username];
+    }
+
+    public static function parseOUs(?string $ou): array
     {
         if (! $ou) {
             return [];

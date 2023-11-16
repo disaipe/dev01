@@ -5,9 +5,9 @@ namespace App\Modules\ActiveDirectory\Job;
 use App\Core\Module\ModuleScheduledJob;
 use App\Models\Domain;
 use App\Modules\ActiveDirectory\Models\ADUserEntry;
-use App\Modules\ActiveDirectory\Utils\Helpers;
 use App\Modules\ActiveDirectory\Utils\LdapQueryConditionsBuilder;
 use App\Services\LdapService;
+use App\Utils\DomainUtils;
 use LdapRecord\Container;
 use LdapRecord\Models\ActiveDirectory\User;
 use LdapRecord\Models\Attributes\Guid;
@@ -30,7 +30,7 @@ class ADSyncUsersJob extends ModuleScheduledJob
         Container::setDefault($domain->code);
 
         $baseDN = $module->getConfig('users.base_dn') ?? $domain->base_dn;
-        $baseOUs = Helpers::ParseOUs($baseDN);
+        $baseOUs = DomainUtils::parseOUs($baseDN);
 
         $query = User::query()
             ->select([
