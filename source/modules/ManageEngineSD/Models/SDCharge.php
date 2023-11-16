@@ -2,7 +2,7 @@
 
 namespace App\Modules\ManageEngineSD\Models;
 
-use App\Modules\ManageEngineSD\SDConnection;
+use App\Modules\ManageEngineSD\Utils\SDConnection;
 use Illuminate\Database\Eloquent\Model;
 
 class SDCharge extends Model

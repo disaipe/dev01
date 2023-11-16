@@ -4,7 +4,7 @@ namespace App\Modules\ManageEngineSD\Models;
 
 use App\Core\Reference\ReferenceModel;
 use App\Core\Traits\WithoutSoftDeletes;
-use App\Modules\ManageEngineSD\SDConnection;
+use App\Modules\ManageEngineSD\Utils\SDConnection;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;

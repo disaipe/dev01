@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\ManageEngineSD;
+namespace App\Modules\ManageEngineSD\Utils;
 
 use App\Core\Module\ModuleManager;
 use Illuminate\Support\Arr;

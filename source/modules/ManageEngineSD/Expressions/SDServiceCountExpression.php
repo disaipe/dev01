@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\ManageEngineSD;
+namespace App\Modules\ManageEngineSD\Expressions;
 
 use App\Core\Module\ModuleManager;
 use App\Core\Report\IQueryExpression;

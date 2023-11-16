@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\ManageEngineSD;
+namespace App\Modules\ManageEngineSD\Expressions;
 
 use App\Core\Report\Expression;
 use App\Modules\ManageEngineSD\Models\SDServiceDefinition;
