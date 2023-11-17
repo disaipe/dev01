@@ -159,7 +159,7 @@ class QueryExpressionType implements IExpressionType
         }
 
         $this->query = Arr::get($options, 'query');
-        $this->conditions = Arr::get($options, 'conditions');
+        $this->conditions = Arr::get($options, 'schema.conditions');
 
         $this->addScopes(Arr::get($options, 'scopes') ?? []);
     }
