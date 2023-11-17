@@ -27,6 +27,7 @@ class Indicator extends Model
         'name',
         'schema',
         'published',
+        'indicator_group_id',
     ];
 
     protected $casts = [
