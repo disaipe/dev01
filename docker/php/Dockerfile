@@ -25,6 +25,7 @@ RUN apt -y --no-install-recommends install \
   $PHP-intl \
   $PHP-mysql \
   $PHP-pgsql \
+  $PHP-sqlite3 \
   $PHP-xdebug \
   $PHP-ldap \
   $PHP-gd

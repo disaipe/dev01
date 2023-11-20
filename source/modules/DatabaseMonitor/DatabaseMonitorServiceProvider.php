@@ -46,7 +46,7 @@ class DatabaseMonitorServiceProvider extends ModuleBaseServiceProvider
         $indicators = app('indicators');
         $indicators->register([
             Indicator::fromArray([
-                'module' => 'DBMON',
+                'module' => $this->getKey(),
                 'code' => 'DBMON_DATABASE_SIZE_SUM',
                 'type' => QueryExpressionType::class,
                 'name' => 'Размер баз данных',

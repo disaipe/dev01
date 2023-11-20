@@ -12,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class IndicatorResource extends Resource
 {
@@ -87,24 +88,22 @@ class IndicatorResource extends Resource
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('code')
-                    ->label(__('admin.code')),
+                    ->label(__('admin.code'))
+                    ->searchable(),
 
-                Tables\Columns\TextColumn::make('$used')
-                    ->label(trans_choice('reference.Service', 2))
-                    ->getStateUsing(fn (Indicator $indicator) => $indicator->services()->count()),
+                Tables\Columns\TextColumn::make('module')
+                    ->label(trans_choice('admin.module', 1)),
+
+                Tables\Columns\ToggleColumn::make('published')
+                    ->label(__('admin.enabled'))
+                    ->disabled(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
-            ])
-            ->groups([
-                Tables\Grouping\Group::make('group.name')
-                    ->label(__('admin.group'))
-                    ->collapsible(),
-            ])
-            ->defaultGroup('group.name');
+            ]);
     }
 
     public static function getPages(): array
@@ -129,5 +128,10 @@ class IndicatorResource extends Resource
     public static function getPluralLabel(): ?string
     {
         return trans_choice('reference.Indicator', 2);
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return !$record->getAttribute('module');
     }
 }

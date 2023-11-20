@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\IndicatorResource\Pages;
 
 use App\Filament\Resources\IndicatorResource;
+use App\Models\StaticIndicator;
 use App\Models\IndicatorGroup;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Components\Tab;
@@ -26,6 +27,8 @@ class ListIndicators extends ListRecords
 
         $tabs = [
             'all' => Tab::make(__('admin.all')),
+            'module' => Tab::make(trans_choice('admin.$indicator.module indicator', 2))
+                ->query(fn () => StaticIndicator::query()),
         ];
 
         foreach ($groups as $group) {

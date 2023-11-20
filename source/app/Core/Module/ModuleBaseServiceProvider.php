@@ -165,7 +165,7 @@ class ModuleBaseServiceProvider extends ServiceProvider
     /**
      * Returns module key
      */
-    private function getKey(): string
+    protected function getKey(): string
     {
         if ($this->key) {
             return $this->key;

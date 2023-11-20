@@ -45,7 +45,7 @@ class DirectumServiceProvider extends ModuleBaseServiceProvider
         /** @var IndicatorManager $indicators */
         $indicators = app('indicators');
         $indicators->register(Indicator::fromArray([
-            'module' => $this->namespace,
+            'module' => $this->getKey(),
             'code' => 'DIRECTUM_USERS_COUNT',
             'type' => QueryExpressionType::class,
             'name' => 'Количество активных пользователей Directum',

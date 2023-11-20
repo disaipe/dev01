@@ -12,6 +12,7 @@
         "ext-zlib": "*",
         "althinect/filament-spatie-roles-permissions": "^1.2",
         "bezhansalleh/filament-exceptions": "^2.0",
+        "calebporzio/sushi": "^2.4",
         "directorytree/ldaprecord-laravel": "^2.7",
         "doctrine/dbal": "^3.6",
         "filament/filament": "^3.0",

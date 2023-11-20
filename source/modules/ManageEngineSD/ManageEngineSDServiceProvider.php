@@ -44,7 +44,7 @@ class ManageEngineSDServiceProvider extends ModuleBaseServiceProvider
         /** @var IndicatorManager $indicators */
         $indicators = app('indicators');
         $indicators->register(Indicator::fromArray([
-            'module' => $this->namespace,
+            'module' => $this->getKey(),
             'code' => 'MESD_TOTAL_REQUESTS_COUNT',
             'type' => QueryExpressionType::class,
             'name' => '[MESD] Общее количество созданных заявок от организации',

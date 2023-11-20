@@ -109,6 +109,8 @@ return [
     '$indicator' => [
         'common' => 'Базовая конфигурация',
 
+        'module indicator' => 'Индикатор модуля|Индикаторы модулей',
+
         'type' => [
             'query expression' => 'Выборка данных из справочника',
             'indicators sum expression' => 'Сумма индикаторов',

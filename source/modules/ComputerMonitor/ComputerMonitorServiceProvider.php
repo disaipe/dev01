@@ -53,7 +53,7 @@ class ComputerMonitorServiceProvider extends ModuleBaseServiceProvider
         $indicators = app('indicators');
         $indicators->register([
             Indicator::fromArray([
-                'module' => $this->namespace,
+                'module' => $this->getKey(),
                 'code' => 'PCMON_COMPUTER_COUNT_BY_AD_USER',
                 'type' => QueryExpressionType::class,
                 'name' => '[PCMON] Количество персональных ПК (по активности пользователей)',

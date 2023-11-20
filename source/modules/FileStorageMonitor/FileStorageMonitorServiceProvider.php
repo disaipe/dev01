@@ -45,7 +45,7 @@ class FileStorageMonitorServiceProvider extends ModuleBaseServiceProvider
         $indicators = app('indicators');
         $indicators->register([
             Indicator::fromArray([
-                'module' => 'FSMONITOR',
+                'module' => $this->getKey(),
                 'code' => 'FSMONITOR_STORAGE_SIZE_SUM',
                 'type' => QueryExpressionType::class,
                 'name' => 'Размер файлового хранилища',

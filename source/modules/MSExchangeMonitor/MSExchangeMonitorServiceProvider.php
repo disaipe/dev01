@@ -45,7 +45,7 @@ class MSExchangeMonitorServiceProvider extends ModuleBaseServiceProvider
         $indicators = app('indicators');
         $indicators->register([
             Indicator::fromArray([
-                'module' => 'MSEXMONITOR',
+                'module' => $this->getKey(),
                 'code' => 'MSEXMONITOR_MAILBOX_SIZE_SUM',
                 'type' => QueryExpressionType::class,
                 'name' => __('msexmonitor::messages.indicators.MSEXMONITOR_MAILBOX_SIZE_SUM'),
@@ -56,7 +56,7 @@ class MSExchangeMonitorServiceProvider extends ModuleBaseServiceProvider
                 'mutator' => fn ($value) => Size::ToGigabytes($value),
             ]),
             Indicator::fromArray([
-                'module' => 'MSEXMONITOR',
+                'module' => $this->getKey(),
                 'code' => 'MSEXMONITOR_MAILBOX_COUNT',
                 'type' => QueryExpressionType::class,
                 'name' => __('msexmonitor::messages.indicators.MSEXMONITOR_MAILBOX_COUNT'),
@@ -66,7 +66,7 @@ class MSExchangeMonitorServiceProvider extends ModuleBaseServiceProvider
                 ],
             ]),
             Indicator::fromArray([
-                'module' => 'MSEXMONITOR',
+                'module' => $this->getKey(),
                 'code' => 'MSEXMONITOR_MAILBOX_OVERSIZE_COUNT',
                 'type' => QueryExpressionType::class,
                 'name' => __('msexmonitor::messages.indicators.MSEXMONITOR_MAILBOX_OVERSIZE_COUNT'),
@@ -77,7 +77,7 @@ class MSExchangeMonitorServiceProvider extends ModuleBaseServiceProvider
                 ],
             ]),
             Indicator::fromArray([
-                'module' => 'MSEXMONITOR',
+                'module' => $this->getKey(),
                 'code' => 'MSEXMONITOR_MAILBOX_OVERSIZE_SUM',
                 'type' => QueryExpressionType::class,
                 'name' => __('msexmonitor::messages.indicators.MSEXMONITOR_MAILBOX_OVERSIZE_SUM'),

@@ -55,7 +55,7 @@ class OneCServiceProvider extends ModuleBaseServiceProvider
         /** @var IndicatorManager $indicators */
         $indicators = app('indicators');
         $indicators->register(Indicator::fromArray([
-            'module' => 'ONEC',
+            'module' => $this->getKey(),
             'code' => 'ONEC_USER_COUNT',
             'type' => QueryExpressionType::class,
             'name' => 'Количество пользователей 1С',
