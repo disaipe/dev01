@@ -37,9 +37,9 @@ class DirectumUser extends ReferenceModel
             $usersTable,
             $usersInstance->qualifyColumn('username'),
             '=',
-            $this->getTable().'.name'
+            $this->qualifyColumn('name')
         )
-            ->select($this->getTable().'.*')
+            ->select($this->qualifyColumn('*'))
             ->addSelect($usersInstance->qualifyColumns([
                 'company_prefix',
                 'name as fullname',
