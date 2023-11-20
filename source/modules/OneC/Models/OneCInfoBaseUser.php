@@ -4,8 +4,8 @@ namespace App\Modules\OneC\Models;
 
 use App\Core\Reference\ReferenceModel;
 use App\Modules\ActiveDirectory\Models\ADUserEntry;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string username
  * @property string login
  * @property string domain
- * @property string company_code
+ * @property string company_prefix
  * @property ADUserEntry ad_user
  */
 class OneCInfoBaseUser extends ReferenceModel
@@ -25,22 +25,31 @@ class OneCInfoBaseUser extends ReferenceModel
         'domain',
     ];
 
-    protected $appends = [
-        'company_code',
-    ];
-
     protected $hidden = [
         'ad_user',
     ];
 
+    public function newQuery(): Builder|QueryBuilder
+    {
+        /** @var ADUserEntry $usersInstance */
+        $usersInstance = app(ADUserEntry::class);
+        $usersTable = $usersInstance->getTable();
+
+        return parent::newQuery()->leftJoin(
+            $usersTable,
+            $usersInstance->qualifyColumn('username'),
+            '=',
+            $this->qualifyColumn('login')
+        )
+            ->select($this->qualifyColumn('*'))
+            ->addSelect($usersInstance->qualifyColumns([
+                'company_prefix',
+            ]));
+    }
+
     public function ad_user(): BelongsTo
     {
         return $this->belongsTo(ADUserEntry::class, 'login', 'username');
-    }
-
-    public function companyCode(): Attribute
-    {
-        return Attribute::get(fn () => $this->ad_user?->company?->code);
     }
 
     public function scopeCompany(Builder $query, string $code): void

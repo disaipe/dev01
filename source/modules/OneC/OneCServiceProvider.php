@@ -20,6 +20,7 @@ use App\Modules\OneC\Jobs\SyncOneCServersUsers;
 use App\Modules\OneC\Models\OneCInfoBaseUser;
 use App\Modules\OneC\References\OneCInfoBaseReference;
 use App\Modules\OneC\References\OneCInfoBaseUserReference;
+use App\Modules\OneC\References\OneCDomainUserReference;
 use App\Support\Forms\RpcConnectionSettingsForm;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Group;
@@ -49,6 +50,7 @@ class OneCServiceProvider extends ModuleBaseServiceProvider
 
         /** @var ReferenceManager $references */
         $references = app('references');
+        $references->register(OneCDomainUserReference::class);
         $references->register(OneCInfoBaseReference::class);
         $references->register(OneCInfoBaseUserReference::class);
 

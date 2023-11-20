@@ -7,17 +7,21 @@ use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceModel;
 use App\Models\User;
-use App\Modules\OneC\Models\OneCInfoBaseUser;
+use App\Modules\OneC\Models\OneCDomainUser;
+use Illuminate\Database\Eloquent\Builder;
 
-class OneCInfoBaseUserReference extends ReferenceEntry
+class OneCDomainUserReference extends ReferenceEntry
 {
-    protected string|ReferenceModel $model = OneCInfoBaseUser::class;
-
-    protected string|bool|null $referenceView = false;
+    protected string|ReferenceModel $model = OneCDomainUser::class;
 
     protected function getLabelKey(): string
     {
-        return 'onec::messages.info base user';
+        return 'onec::messages.domain user';
+    }
+
+    public function query(): Builder
+    {
+        return parent::query()->distinct();
     }
 
     public function getSchema(): array
@@ -40,10 +44,6 @@ class OneCInfoBaseUserReference extends ReferenceEntry
                 ->visible()
                 ->pinia(PiniaAttribute::string()),
 
-            'domain' => ReferenceFieldSchema::make()
-                ->label('Домен')
-                ->pinia(PiniaAttribute::string()),
-
             'company_prefix' => ReferenceFieldSchema::make()
                 ->hidden()
                 ->pinia(PiniaAttribute::string()),
@@ -53,6 +53,11 @@ class OneCInfoBaseUserReference extends ReferenceEntry
                 ->visible()
                 ->pinia(PiniaAttribute::belongsTo('Company', 'company_prefix', 'code'))
                 ->eagerLoad(),
+
+            'info_base_count' => ReferenceFieldSchema::make()
+                ->label('Кол-во баз')
+                ->visible()
+                ->pinia(PiniaAttribute::number()),
         ];
     }
 
