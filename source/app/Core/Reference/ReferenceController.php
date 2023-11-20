@@ -22,15 +22,14 @@ class ReferenceController extends BaseController
 
     protected string|ReferenceModel $model;
 
-    protected ?ReferenceEntry $reference;
+    protected ReferenceEntry $reference;
 
-    public static function fromModel($model, $reference = null): ReferenceController
+    public static function fromReference($reference): ReferenceController
     {
-        return new class($model, $reference) extends ReferenceController
+        return new class($reference) extends ReferenceController
         {
-            public function __construct($model, $reference)
+            public function __construct($reference)
             {
-                $this->model = $model;
                 $this->reference = $reference;
             }
         };
@@ -51,15 +50,8 @@ class ReferenceController extends BaseController
         $page = $request->input('page');
         $perPage = $request->input('perPage', 100);
 
-        // tree options
-        $isTreeQuery = $request->has('root');
-        $root = $request->input('root');
-        $treeKey = $request->input('treeKey');
-        $treeParentKey = $request->input('treeParentKey');
-
         // make query
-        $model = $this->getModel();
-        $query = $model->newQuery();
+        $query = $this->reference->query();
 
         if ($id) {
             $query->whereKey($id);
@@ -73,31 +65,9 @@ class ReferenceController extends BaseController
             $this->applySort($query, $sorts);
         }
 
-        if ($isTreeQuery) {
-            $table = $model->getTable();
-            $key = $treeKey ?? $model->getKeyName();
-            $parentKey = $treeParentKey ?? 'parent_id';
-
-            $query
-                ->where($parentKey, $root)
-                ->selectRaw("*, (SELECT COUNT(1) FROM `{$table}` AS Q WHERE Q.{$parentKey} = `{$table}`.{$key}) as children_count");
-
-            $data = $query->get();
-
-            $keys = $data
-                ->where('children_count', '>', 0)
-                ->pluck('children_count', $model->getKeyName());
-
-            return new JsonResponse([
-                'status' => true,
-                'data' => $data,
-                'keys' => $keys,
-            ]);
-        }
-
         $paginator = $query->paginate(
             $perPage,
-            $model->getTable().'.*',
+            $query->qualifyColumn('*'),
             'page',
             $page
         );
@@ -117,7 +87,7 @@ class ReferenceController extends BaseController
         $keyName = $model->getKeyName();
         $key = Arr::get($body, $keyName);
 
-        $record = $model->newQuery()->updateOrCreate(
+        $record = $this->getModel()->newQuery()->updateOrCreate(
             [$keyName => $key],
             $body
         );
@@ -162,9 +132,7 @@ class ReferenceController extends BaseController
 
     public function schema(): JsonResponse
     {
-        $schema = $this->reference
-            ? $this->reference->getSchema()
-            : [];
+        $schema = $this->reference->getSchema();
 
         return new JsonResponse([
             'status' => true,
@@ -178,7 +146,7 @@ class ReferenceController extends BaseController
         $data = [];
 
         if ($id) {
-            $shortModel = class_basename($this->model);
+            $shortModel = class_basename($this->getModel());
 
             $data = ProtocolRecord::query()
                 ->where('object_id', '=', $id)
@@ -218,11 +186,7 @@ class ReferenceController extends BaseController
 
     public function getModel(): ReferenceModel
     {
-        if (is_string($this->model)) {
-            return app()->make($this->model);
-        }
-
-        return $this->model;
+        return $this->reference->getModelInstance();
     }
 
     protected function applyFilters(Builder $query, array $filters): void
@@ -269,13 +233,13 @@ class ReferenceController extends BaseController
 
                 $query
                     ->leftJoin(
-                        "$relatedTable",
+                        $relatedTable,
                         $relation->getQualifiedOwnerKeyName(),
                         '=',
                         $relation->getQualifiedForeignKeyName()
                     )
-                    ->orderBy("$relatedTable.$orderBy", $order)
-                    ->select($model->getTable().'.*');
+                    ->orderBy($relatedModel->qualifyColumn($orderBy), $order)
+                    ->select($model->qualifyColumn('*'));
             } else {
                 $query->orderBy($field, $order);
             }

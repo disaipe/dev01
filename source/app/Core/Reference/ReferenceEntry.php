@@ -7,6 +7,7 @@ use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Models\CustomReference;
 use App\Models\User;
 use App\Services\ReferenceService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Str;
@@ -192,6 +193,14 @@ class ReferenceEntry
     }
 
     /**
+     * Get new model query
+     */
+    public function query(): Builder
+    {
+        return $this->getModelInstance()->newQuery();
+    }
+
+    /**
      * Get reference name
      */
     public function getName(): string
@@ -204,7 +213,7 @@ class ReferenceEntry
      */
     public function controller(): ReferenceController
     {
-        return ReferenceController::fromModel($this->getModel(), $this);
+        return ReferenceController::fromReference($this);
     }
 
     /**
