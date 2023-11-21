@@ -132,23 +132,27 @@ export function configure(settings = {}) {
 
         if (tableRowThs?.length && leftRowHeaderThs?.length) {
             for (let row = 0; row < tableRowThs.length; row++) {
-                leftRowHeaderThs[row].style.height = `${tableRowThs[row].clientHeight}px`;
-                leftRowHeaderThs[row].dataset.height = `${tableRowThs[row].clientHeight}px`;
+                let height = tableRowThs[row].clientHeight;
+                leftRowHeaderThs[row].style.height = `${height}px`;
+                leftRowHeaderThs[row].dataset.height = `${height}px`;
+
+                tableRowThs[row].style.height = `${height}px`;
             }
         }
     };
 
     return {
-        autoRowSize: true,
+        // autoRowSize: true, // broken on merged cells
         rowHeaders: true,
         colHeaders: true,
         fillHandle: true,
         contextMenu,
         comments: true,
-        // wordWrap: false,
+        wordWrap: true,
         manualRowResize: true,
         manualColumnResize: true,
         mergeCells: true,
+        renderAllRows: true, // required for correct ruler height calculation
         outsideClickDeselects: false,
         language: ruRU.languageCode,
         licenseKey: 'non-commercial-and-evaluation',
@@ -158,6 +162,7 @@ export function configure(settings = {}) {
         ...settings,
         afterRender() {
             syncData();
+            updateRulerCellsHeight();
         },
         beforeRenderer: defaultRenderer,
         /**
@@ -351,7 +356,7 @@ export function loadFromBuffer(buffer) {
         store.value.worksheet = worksheet;
 
         // set cells
-        const data = makeMatrix(Math.max(50, worksheet.rowCount), Math.max(30, worksheet.columnCount));
+        const data = makeMatrix(Math.max(50, worksheet.rowCount + 10), Math.max(30, worksheet.columnCount));
 
         for (let row = 0; row < worksheet.rowCount; row++) {
             for (let col = 0; col < worksheet.columnCount; col++) {
