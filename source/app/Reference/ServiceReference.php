@@ -61,6 +61,7 @@ class ServiceReference extends ReferenceEntry
 
             'indicator' => ReferenceFieldSchema::make()
                 ->label('Индикатор')
+                ->eagerLoad()
                 ->pinia(PiniaAttribute::belongsTo('Indicator', 'indicator_code', 'code')),
 
             'parent' => ReferenceFieldSchema::make()
