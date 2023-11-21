@@ -2,13 +2,9 @@
 
 namespace App\Modules\OneC;
 
-use App\Core\Indicator\Indicator;
-use App\Core\Indicator\IndicatorManager;
 use App\Core\Module\ModuleBaseServiceProvider;
 use App\Core\Module\ModuleScheduledJob;
 use App\Core\Reference\ReferenceManager;
-use App\Core\Report\Expression\CountExpression;
-use App\Core\Report\ExpressionType\QueryExpressionType;
 use App\Filament\Components\CronExpressionInput;
 use App\Filament\Components\FormButton;
 use App\Modules\OneC\Commands\OneCSyncDatabaseUsersCommand;
@@ -17,7 +13,6 @@ use App\Modules\OneC\Commands\OneCSyncServerListCommand;
 use App\Modules\OneC\Jobs\SyncOneCListsJob;
 use App\Modules\OneC\Jobs\SyncOneCServersListsJob;
 use App\Modules\OneC\Jobs\SyncOneCServersUsers;
-use App\Modules\OneC\Models\OneCInfoBaseUser;
 use App\Modules\OneC\References\OneCInfoBaseReference;
 use App\Modules\OneC\References\OneCInfoBaseUserReference;
 use App\Modules\OneC\References\OneCDomainUserReference;
@@ -53,20 +48,6 @@ class OneCServiceProvider extends ModuleBaseServiceProvider
         $references->register(OneCDomainUserReference::class);
         $references->register(OneCInfoBaseReference::class);
         $references->register(OneCInfoBaseUserReference::class);
-
-        /** @var IndicatorManager $indicators */
-        $indicators = app('indicators');
-        $indicators->register(Indicator::fromArray([
-            'module' => $this->getKey(),
-            'code' => 'ONEC_USER_COUNT',
-            'type' => QueryExpressionType::class,
-            'name' => 'Количество пользователей 1С',
-            'expression' => new CountExpression(['column' => 'login']),
-            'options' => [
-                'model' => OneCInfoBaseUser::class,
-                'query' => fn ($query) => $query->distinct()->select('login'),
-            ]
-        ]));
     }
 
     public function getOptions(): array

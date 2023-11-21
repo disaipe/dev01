@@ -3,6 +3,7 @@
 namespace App\Modules\OneC\Models;
 
 use App\Core\Reference\ReferenceModel;
+use App\Core\Traits\CompanyScope;
 use App\Modules\ActiveDirectory\Models\ADUserEntry;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,7 +17,15 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class OneCDomainUser extends ReferenceModel
 {
+    use CompanyScope;
+
+    protected ?string $companyCodeColumn = 'company_prefix';
+
     protected $table = 'one_c_info_base_users';
+
+    protected $casts = [
+        'blocked' => 'boolean',
+    ];
 
     public function newQuery(): Builder|QueryBuilder
     {
@@ -45,11 +54,17 @@ class OneCDomainUser extends ReferenceModel
                         'username as login',
                         'name as username',
                         'company_prefix',
+                        'blocked',
                     ]))
                     ->addSelect('info_base_count')
                 ,
                 'one_c_domain_users'
             )
             ->select();
+    }
+
+    public function scopeActive(Builder $query): void
+    {
+        $query->where('blocked', '=', false);
     }
 }

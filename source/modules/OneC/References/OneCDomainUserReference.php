@@ -58,6 +58,11 @@ class OneCDomainUserReference extends ReferenceEntry
                 ->label('Кол-во баз')
                 ->visible()
                 ->pinia(PiniaAttribute::number()),
+
+            'blocked' => ReferenceFieldSchema::make()
+                ->label('Заблокирован')
+                ->visible()
+                ->pinia(PiniaAttribute::boolean()),
         ];
     }
 
