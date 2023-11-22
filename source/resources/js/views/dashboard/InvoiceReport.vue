@@ -4,6 +4,7 @@
         el-select(
             v-model='company'
             placeholder='Организация'
+            filterable
         )
             el-option(
                 v-for='company of companies'
@@ -102,6 +103,7 @@
 import { ref, computed, nextTick, watch } from 'vue';
 import { ElMessageBox } from 'element-plus'
 import dayjs from 'dayjs';
+import orderBy from 'lodash/orderBy';
 import { useReportSettingsStore } from '../../store/modules';
 import { useRepos } from '../../store/repository';
 import { useApi } from '../../utils/axiosClient';
@@ -143,7 +145,7 @@ export default {
         let replacements = {};
 
         batchApi.batch('ServiceProvider,Company,ReportTemplate,Indicator').then((result) => {
-            companies.value = result.Company;
+            companies.value = orderBy(result.Company, 'name');
             providers.value = ServiceProvider.query().whereHas('reportTemplates').with('reportTemplates').get();
         });
 
