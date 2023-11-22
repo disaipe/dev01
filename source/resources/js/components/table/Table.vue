@@ -100,7 +100,6 @@
             v-model:current-page='pagination.page'
             v-model:page-size='pagination.pageSize'
             layout='prev, pager, next, sizes, ->, total'
-            hide-on-single-page
             :page-sizes='[100, 200, 300]'
             :total='pagination.total'
             @current-change='handlePageChange'
