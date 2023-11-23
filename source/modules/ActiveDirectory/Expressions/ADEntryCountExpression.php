@@ -23,7 +23,7 @@ class ADEntryCountExpression extends CountExpression
             if (count($ous)) {
                 $query->where(function (Builder $q) use ($ous) {
                     foreach ($ous as $ou) {
-                        $q->where('ou_path', '=', $ou);
+                        $q->orWhere('ou_path', '=', $ou);
                     }
                 });
             }
