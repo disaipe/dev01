@@ -7,11 +7,13 @@ use App\Filament\Components\CronExpressionInput;
 use App\Forms\Components\RawHtmlContent;
 use App\Models\CustomReference;
 use App\Modules\Sharepoint\Filament\Resources\SharepointListResource\Pages;
+use App\Modules\Sharepoint\Jobs\SyncSharepointListJob;
 use App\Modules\Sharepoint\Models\SharepointList;
 use App\Modules\Sharepoint\Services\SharepointService;
 use Cron\CronExpression;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -199,7 +201,7 @@ class SharepointListResource extends Resource
                         ->label(__('sharepoint::messages.action.sync list.title'))
                         ->tooltip(__('sharepoint::messages.action.sync list.tooltip'))
                         ->icon('heroicon-s-play')
-                        ->action('syncList'),
+                        ->action(fn (SharepointList $record) => self::syncList($record)),
                 ]),
             ]);
     }
@@ -237,5 +239,11 @@ class SharepointListResource extends Resource
         } else {
             $set('__hasCompanyContext', false);
         }
+    }
+
+    protected static function syncList(SharepointList $record): void
+    {
+        SyncSharepointListJob::dispatch($record->getKey());
+        Notification::make()->success()->title(__('sharepoint::messages.action.sync list.success'))->send();
     }
 }
