@@ -147,6 +147,7 @@ import cloneDeep from 'lodash/cloneDeep';
 
 import { useRepos } from '../../store/repository';
 import { snake } from '../../utils/stringsUtils';
+import { raiseErrorMessage } from '../../utils/exceptions';
 
 import tableSorts from './mixins/tableSorts';
 import tableFilters from './mixins/tableFilters';
@@ -327,9 +328,14 @@ export default {
     methods: {
         load() {
             if (this.repository) {
-                this.repository.fetchRelatedModels().then(() => {
-                    this.tree ? this.loadTree() : this.loadPages();
-                });
+                this.repository.fetchRelatedModels()
+                    .then(() => {
+                        this.tree ? this.loadTree() : this.loadPages();
+                    })
+                    .catch((response) => {
+                        const message = `(${response.status}) ${response.statusText}`;
+                        raiseErrorMessage(message, 'Ошибка загрузки связанных записей');
+                    });
             }
         },
 
@@ -356,30 +362,36 @@ export default {
                 query.order = this.sortsStore;
             }
 
-            return this.repository.fetch(query).then(({ response, items }) => {
-                const { status, total } = response.data;
+            return this.repository.fetch(query)
+                .then(({ response, items }) => {
+                    const { status, total } = response.data;
 
-                if (status) {
-                    const eagerLoad = this.repository.getEagerLoad();
+                    if (status) {
+                        const eagerLoad = this.repository.getEagerLoad();
 
-                    if (eagerLoad && eagerLoad.length) {
-                        let query = this.repository;
+                        if (eagerLoad && eagerLoad.length) {
+                            let query = this.repository;
 
-                        for (const eager of eagerLoad) {
-                            query = query.with(eager);
+                            for (const eager of eagerLoad) {
+                                query = query.with(eager);
+                            }
+
+                            query.load(items);
                         }
 
-                        query.load(items);
+                        this.data = items;
+                        this.pagination.total = total;
                     }
-
-                    this.data = items;
-                    this.pagination.total = total;
-                }
-
-                this.$nextTick(() => {
-                    this.loading = false;
+                })
+                .catch((response) => {
+                    const message = `(${response.status}) ${response.statusText}`;
+                    raiseErrorMessage(message);
+                })
+                .finally(() => {
+                    this.$nextTick(() => {
+                        this.loading = false;
+                    });
                 });
-            });
         },
 
         loadTree(root = null) {
@@ -510,8 +522,6 @@ export default {
             }
             this.saveExpanded();
         },
-
-
 
         onContextRowEdit(row) {
             this.selectedRow = this.repository.make(row);
