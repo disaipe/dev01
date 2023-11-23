@@ -118,6 +118,8 @@ export function configure(settings = {}) {
         toSync.rowHeights = store.value.worksheet._rows.map((row) => row.height * 1.33);
 
         instance.value.updateSettings(toSync);
+
+        updateRulerCellsHeight();
     };
 
     /**
@@ -162,7 +164,6 @@ export function configure(settings = {}) {
         ...settings,
         afterRender() {
             syncData();
-            updateRulerCellsHeight();
         },
         beforeRenderer: defaultRenderer,
         /**
@@ -292,6 +293,8 @@ export function configure(settings = {}) {
          */
         afterRowResize(newSize, row, isDoubleClick) {
             worksheet.value.getRow(row + 1).height = round(newSize / 1.33, 2);
+
+            updateRulerCellsHeight();
         },
         /**
          * Fired after Handsontable's data gets modified by the loadData() method or the updateSettings() method
@@ -303,6 +306,10 @@ export function configure(settings = {}) {
         afterLoadData(sourceData, initialLoad, source) {
             store.value.workbook.removeWorksheet(store.value.worksheet.id);
             store.value.worksheet = store.value.workbook.addWorksheet('Data');
+
+            setTimeout(() => {
+                updateRulerCellsHeight();
+            }, 500);
         },
         /**
          * Fired after the updateData() method modifies Handsontable's data.
