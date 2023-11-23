@@ -4,9 +4,12 @@ namespace App\Modules\OneC\Models;
 
 use App\Core\Reference\ReferenceModel;
 use App\Core\Traits\CompanyScope;
+use App\Core\Traits\WithoutSoftDeletes;
+use App\Models\Company;
 use App\Modules\ActiveDirectory\Models\ADUserEntry;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property string username
@@ -17,20 +20,30 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class OneCDomainUser extends ReferenceModel
 {
-    use CompanyScope;
+    use CompanyScope, WithoutSoftDeletes;
 
     protected ?string $companyCodeColumn = 'company_prefix';
 
-    protected $table = 'one_c_info_base_users';
+    protected $table = 'one_c_domain_users';
 
     protected $casts = [
         'blocked' => 'boolean',
+    ];
+
+    protected array $sortable = [
+        'login',
+        'username',
+        'info_base_count',
+        'blocked',
     ];
 
     public function newQuery(): Builder|QueryBuilder
     {
         /** @var ADUserEntry $usersInstance */
         $usersInstance = app(ADUserEntry::class);
+
+        /** @var OneCInfoBaseUser $onecInfoBaseUser */
+        $onecInfoBaseUser = app(OneCInfoBaseUser::class);
 
         return parent::newQuery()
             ->withoutGlobalScopes()
@@ -41,6 +54,7 @@ class OneCDomainUser extends ReferenceModel
                             ->distinct()
                             ->select('login')
                             ->selectRaw('count(1) as info_base_count')
+                            ->from($onecInfoBaseUser->getTable())
                             ->whereNotNull('login')
                             ->whereNotNull('domain')
                             ->groupBy('login'),
@@ -61,6 +75,11 @@ class OneCDomainUser extends ReferenceModel
                 'one_c_domain_users'
             )
             ->select();
+    }
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class, 'company_prefix', 'code');
     }
 
     public function scopeActive(Builder $query): void

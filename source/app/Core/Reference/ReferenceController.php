@@ -239,9 +239,11 @@ class ReferenceController extends BaseController
                         $relation->getQualifiedForeignKeyName()
                     )
                     ->orderBy($relatedModel->qualifyColumn($orderBy), $order)
-                    ->select($model->qualifyColumn('*'));
+                    ->select($query->qualifyColumns($query->getQuery()->getColumns()));
             } else {
-                $query->orderBy($field, $order);
+                if ($model->isSortable($field)) {
+                    $query->orderBy($field, $order);
+                }
             }
         }
     }
