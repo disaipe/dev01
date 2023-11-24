@@ -6,10 +6,14 @@
         :settings='settings'
     )
         template(#toolbar)
-            .flex.items-center.gap-x-4
+            .flex.items-center.gap-x-4.pb-4
                 el-button-group
-                    el-button(@click='load') Обновить
-                    el-button(@click='save') Сохранить
+                    el-button(@click='load')
+                        icon.mr-1(icon='tabler:refresh')
+                        span Обновить
+                    el-button(@click='save')
+                        icon.mr-1(icon='material-symbols:save-outline')
+                        span Сохранить
 
                 el-select.flex-1(
                     :model-value='id'
@@ -36,8 +40,10 @@ import { ref, reactive, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ElMessageBox } from 'element-plus'
 import keyBy from 'lodash/keyBy';
+import orderBy from 'lodash/orderBy';
 
 import { useApi } from '../../../utils/axiosClient';
+import { raiseErrorMessage } from '../../../utils/exceptions';
 import { useRepos } from '../../../store/repository';
 import { priceValueRenderer } from '../../../components/spreadsheet/cellRenderers';
 import batchApi from '../../../utils/batchApi';
@@ -81,11 +87,17 @@ export default {
                providers.value = ServiceProvider.query().with('priceLists').get();
             });
 
-            return api.get(`price_list/${id.value}`).then((response) => {
-                parseDataResponse(response);
-            }).finally(() => {
-                priceListData.loading = false;
-            });
+            return api.get(`price_list/${id.value}`)
+                .then((response) => {
+                    parseDataResponse(response);
+                })
+                .catch((response) => {
+                    const message = `(${response.status}) ${response.statusText}`;
+                    raiseErrorMessage(message, 'Ошибка загрузки данных прайс-листа');
+                })
+                .finally(() => {
+                    priceListData.loading = false;
+                });
         };
 
         const parseDataResponse = (response) => {
@@ -114,7 +126,9 @@ export default {
 
             const rows = [];
 
-            for (const service of priceListData.services) {
+            const sortedServices = orderBy(priceListData.services, 'name');
+
+            for (const service of sortedServices) {
                 const dataObject = {
                     id: undefined,
                     price_list_id: id,
