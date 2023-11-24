@@ -24,9 +24,6 @@ const state = () => ({
         //      visible: [],
         //      order: []
         // }
-    },
-    expanded: {
-        // [tableId]: []
     }
 });
 
@@ -124,28 +121,6 @@ const actions = {
 
             state.columns[tableId].order = order;
         });
-    },
-
-    //---------------------------------------------------------
-    //  EXPANDED
-    //---------------------------------------------------------
-
-    loadExpanded(tableId) {
-        return this.expanded[tableId] || [];
-    },
-
-    saveExpanded({ tableId, expanded }) {
-        if (!tableId) {
-            return;
-        }
-
-        this.$patch((state) => {
-            if (Array.isArray(expanded) && expanded.length) {
-                state.expanded[tableId] = expanded;
-            } else {
-                delete state.expanded[tableId];
-            }
-        });
     }
 };
 
@@ -153,6 +128,6 @@ export const useTableStore = defineStore('table', {
     state,
     actions,
     persist: {
-        paths: ['filters', 'sorts', 'columns', 'expanded']
+        paths: ['filters', 'sorts', 'columns']
     }
 });

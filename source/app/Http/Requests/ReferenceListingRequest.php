@@ -25,11 +25,6 @@ class ReferenceListingRequest extends FormRequest
             // pagination options
             'page' => 'numeric|min:0',
             'perPage' => 'numeric|min:100|max:1000',
-
-            // tree options
-            'root' => 'nullable',
-            'treeKey' => 'string',
-            'treeParentKey' => 'string',
         ];
     }
 

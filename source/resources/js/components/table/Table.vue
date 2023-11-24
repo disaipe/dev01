@@ -39,10 +39,8 @@
             :data='verifiedData'
             :row-config='rowConfig'
             :sort-config='sortConfig'
-            :tree-config='treeConfig'
             :menu-config='menuConfig'
             @cell-dblclick='handleRowDblClick'
-            @toggle-tree-expand='handleRowExpand'
             @menu-click='onContextMenuClick'
             @sort-change='handleSortChange'
         )
@@ -60,7 +58,6 @@
                     sortable
                     :field='field'
                     :label='label'
-                    :tree-node='tree && i === 0'
                     :cell-render='fields ? { name: "model-field", fields } : null'
                 )
                     template(#header='{ column }')
@@ -153,7 +150,7 @@ import tableSorts from './mixins/tableSorts';
 import tableFilters from './mixins/tableFilters';
 import tableContextMenu from './mixins/tableContextMenu';
 
-import { useTableStore, useProfilesSettingsStore } from '../../store/modules';
+import { useProfilesSettingsStore } from '../../store/modules';
 
 import TableFilter from './TableFilter.vue';
 import TableColumnsSettings from './TableColumnsSettings.vue';
@@ -192,10 +189,6 @@ export default {
             type: Object,
             default: null,
         },
-        tree: {
-            type: Boolean,
-            default: false
-        },
         canLoad: {
             type: Boolean,
             default: true,
@@ -231,10 +224,6 @@ export default {
             : 'el-drawer'
         );
 
-        // Tree table functionality
-        const { loadExpanded, saveExpanded } = useTableStore();
-        const expanded = ref(loadExpanded(tableId));
-
         const visibleColumns = ref(columns.value);
         const hasVisibleColumns = computed(() => visibleColumns.value?.length > 0);
 
@@ -265,10 +254,7 @@ export default {
             visibleColumns,
             hasVisibleColumns,
 
-            drawerComponent,
-
-            expanded,
-            saveExpanded: () => saveExpanded({ tableId, expanded: expanded.value })
+            drawerComponent
         };
     },
     data: function () {
@@ -295,17 +281,6 @@ export default {
             rowConfig: {
                 useKey: true,
                 keyField: this.repository?.model.$getKeyName()
-            },
-            treeConfig: {
-                indent: 4,
-                rowField: 'id',
-                parentField: 'parent_id',
-                lazy: true,
-                hasChild: '$hasChildren',
-                children: 'children',
-                loadMethod: this.loadChildren,
-                reserve: true,
-                expandRowKeys: this.expanded
             }
         }
     },
@@ -330,7 +305,7 @@ export default {
             if (this.repository) {
                 this.repository.fetchRelatedModels()
                     .then(() => {
-                        this.tree ? this.loadTree() : this.loadPages();
+                        this.loadPages();
                     })
                     .catch((response) => {
                         const message = `(${response.status}) ${response.statusText}`;
@@ -394,40 +369,6 @@ export default {
                 });
         },
 
-        loadTree(root = null) {
-            const query = { root };
-
-            if (Object.keys(this.filterStore.filters || {}).length) {
-                query.filters = this.filterStore.filters;
-            }
-
-            return this.repository.fetch(query).then(({ response, items }) => {
-                const { keys } = response.data;
-                const eagerLoad = this.repository.getEagerLoad();
-
-                if (eagerLoad) {
-                    this.repository.with(eagerLoad).load(items);
-                }
-
-                // TODO
-                for (const item of items) {
-                    if (keys[item.$getKey()]) {
-                        item.$hasChildren = true;
-                    }
-                }
-
-                if (root === null) {
-                    this.data = items;
-                }
-
-                return items;
-            });
-        },
-
-        loadChildren({ row }) {
-            return this.loadTree(row.$getKey());
-        },
-
         create() {
             const record = this.repository.make();
 
@@ -449,13 +390,8 @@ export default {
                     Object.assign(record, saved);
                 } else {
                     // create new row if no record exists
-                    if (this.tree) {
-                        const parentKey = saved[this.treeConfig.parentField];
-                        this.$refs.vxe.getRowById(parentKey)?.[this.treeConfig.children]?.push(saved);
-                    } else {
-                        this.$refs.vxe.insertAt(saved, 0);
-                        this.data.unshift(saved);
-                    }
+                    this.$refs.vxe.insertAt(saved, 0);
+                    this.data.unshift(saved);
                 }
 
                 this.selectedRow = saved;
@@ -509,18 +445,6 @@ export default {
         handleRowDblClick({ row }) {
             this.selectedRow = this.repository.make(row);
             this.drawer = true;
-        },
-
-        handleRowExpand({ row, expanded }) {
-            const key = row.$getKey()
-            if (expanded) {
-                if (!this.expanded.includes(key)) {
-                    this.expanded.push(key);
-                }
-            } else {
-                this.expanded = this.expanded.filter((v) => v !== key);
-            }
-            this.saveExpanded();
         },
 
         onContextRowEdit(row) {
