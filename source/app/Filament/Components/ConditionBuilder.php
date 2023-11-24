@@ -2,11 +2,13 @@
 
 namespace App\Filament\Components;
 
+use App\Core\Enums\QueryConditionOperator;
 use Closure;
 use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Get;
 
 class ConditionBuilder extends Builder
 {
@@ -33,6 +35,11 @@ class ConditionBuilder extends Builder
 
     public function getBlocks(): array
     {
+        $operatorsWithoutValue = [
+            QueryConditionOperator::IS_NULL->value,
+            QueryConditionOperator::IS_NOT_NULL->value,
+        ];
+
         $this->blocks([
             Builder\Block::make('where')
                 ->label(__('admin.where'))
@@ -42,14 +49,7 @@ class ConditionBuilder extends Builder
 
                     Select::make('condition')
                         ->label(__('admin.condition'))
-                        ->options([
-                            '=' => '=',
-                            '>=' => '>=',
-                            '=<' => '=<',
-                            '<>' => '<>',
-                            'like' => 'LIKE',
-                            'not like' => 'NOT LIKE',
-                        ])
+                        ->options(QueryConditionOperator::toValuesArray())
                         ->required()
                         ->reactive()
                         ->afterStateUpdated(fn () => $this->callAfterStateUpdated()),
@@ -58,6 +58,7 @@ class ConditionBuilder extends Builder
                         ->label(__('admin.value'))
                         ->required()
                         ->reactive()
+                        ->disabled(fn (Get $get) => in_array($get('condition'), $operatorsWithoutValue))
                         ->afterStateUpdated(fn () => $this->callAfterStateUpdated()),
                 ]),
 

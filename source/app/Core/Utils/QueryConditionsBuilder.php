@@ -2,6 +2,7 @@
 
 namespace App\Core\Utils;
 
+use App\Core\Enums\QueryConditionOperator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -31,7 +32,17 @@ class QueryConditionsBuilder
             $operator = Arr::get($condition, 'data.condition');
             $value = Arr::get($condition, 'data.value');
 
-            $query->where($column, $operator, static::replacePlaceholders($value, $context));
+            switch (Str::lower($operator)) {
+                case QueryConditionOperator::IS_NULL->value:
+                    $query->whereNull($column);
+                    break;
+                case QueryConditionOperator::IS_NOT_NULL->value:
+                    $query->whereNotNull($column);
+                    break;
+                default:
+                    $query->where($column, $operator, static::replacePlaceholders($value, $context));
+                    break;
+            }
         } elseif ($type === 'or' or $type === 'and') {
             $conditions = Arr::get($condition, "data.$type");
             static::parseGroups($query, $conditions, $type);
