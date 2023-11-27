@@ -11,6 +11,7 @@ use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
 
 class CustomReferenceResource extends Resource
@@ -75,9 +76,11 @@ class CustomReferenceResource extends Resource
                             )
                             ->selectablePlaceholder(false)
                             ->options([
-                                CustomReferenceContextType::Id->value => 'По id (company_id)',
-                                CustomReferenceContextType::Code->value => 'По коду (company_code)',
+                                CustomReferenceContextType::Id->value => 'По id (будет автоматически создана колонка <span class="font-bold">`company_id`</span>)',
+                                CustomReferenceContextType::Code->value => 'По коду (будет автоматически создана колонка <span class="font-bold">`company_code`</span>)',
                             ])
+                            ->native(false)
+                            ->allowHtml()
                             ->visible(fn (Get $get) => !!$get('company_context')),
 
                         Forms\Components\Toggle::make('enabled')
@@ -97,6 +100,7 @@ class CustomReferenceResource extends Resource
                             ->columnSpanFull()
                             ->columns(5)
                             ->addActionLabel('Добавить поле')
+                            ->itemLabel(fn ($state) => Arr::get($state, 'display_name'))
                             ->schema([
                                 Forms\Components\TextInput::make('display_name')
                                     ->label('Заголовок')
@@ -104,7 +108,8 @@ class CustomReferenceResource extends Resource
 
                                 Forms\Components\TextInput::make('name')
                                     ->label('Наименование поля')
-                                    ->disabled($isSystem)
+                                    ->readOnly($isSystem)
+                                    ->extraInputAttributes(fn ($get) => ['disabled' => $isSystem($get)])
                                     ->required(),
 
                                 Forms\Components\Select::make('type')
@@ -119,13 +124,14 @@ class CustomReferenceResource extends Resource
                                         'datetime' => 'Datetime',
                                     ])
                                     ->reactive()
-                                    ->disabled($isSystem)
+                                    ->native(false)
+                                    ->extraInputAttributes(fn ($get) => ['disabled' => $isSystem($get)])
                                     ->required(),
 
                                 Forms\Components\TextInput::make('length')
                                     ->label('Длина')
                                     ->visible(fn ($get) => $get('type') === 'string')
-                                    ->disabled($isSystem)
+                                    ->readOnly($isSystem)
                                     ->default(255)
                                     ->numeric()
                                     ->minValue(1)

@@ -45,13 +45,13 @@ class CustomReference extends Model
         if ($this->company_context) {
             if ($this->context_type === CustomReferenceContextType::Code->value) {
                 $fields[] = [
-                    'display_name' => trans_choice('reference.Company', 1),
+                    'display_name' => __('admin.company code'),
                     'name' => 'company_code',
                     'type' => 'string',
                 ];
             } else {
                 $fields[] = [
-                    'display_name' => trans_choice('reference.Company', 1),
+                    'display_name' => __('company id'),
                     'name' => 'company_id',
                     'type' => 'int',
                 ];
