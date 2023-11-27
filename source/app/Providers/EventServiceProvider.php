@@ -7,9 +7,11 @@ use App\Core\Module\Module;
 use App\Core\Module\ModuleScheduledJob;
 use App\Listeners\AuthUserLoginListener;
 use App\Models\Contract;
+use App\Models\CustomReference;
 use App\Models\JobProtocol;
 use App\Models\PriceList;
 use App\Observers\ContractObserver;
+use App\Observers\CustomReferenceObserver;
 use App\Observers\PriceListObserver;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
@@ -41,6 +43,7 @@ class EventServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Contract::observe(ContractObserver::class);
+        CustomReference::observe(CustomReferenceObserver::class);
         PriceList::observe(PriceListObserver::class);
 
         $this->observeQueue();
