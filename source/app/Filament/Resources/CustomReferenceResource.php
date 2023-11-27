@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Arr;
@@ -81,12 +82,16 @@ class CustomReferenceResource extends Resource
                             ])
                             ->native(false)
                             ->allowHtml()
-                            ->visible(fn (Get $get) => !!$get('company_context')),
+                            ->default(CustomReferenceContextType::Code->value)
+                            ->visible(fn (Get $get) => !!$get('company_context'))
+                            ->required(fn (Get $get) => !!$get('company_context')),
 
                         Forms\Components\Toggle::make('enabled')
                             ->label('Активно')
                             ->helperText('Справочник настроен и готов к работе')
                             ->default(false)
+                            ->offColor(Color::Red)
+                            ->onColor(Color::Green)
                             ->columnSpanFull(),
                 ]),
 
