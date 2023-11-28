@@ -221,7 +221,12 @@ class ReferenceEntry
      */
     public function getPrefix(): string
     {
-        return $this->prefix ?? Str::snake($this->getName());
+        if (isset($this->prefix)) {
+            return $this->prefix;
+        }
+
+        $snaked = Str::snake($this->getName());
+        return preg_replace('/(\d+)/', '_$1_' ,$snaked);
     }
 
     /**
@@ -332,6 +337,21 @@ class ReferenceEntry
     public function getOrder(): int
     {
         return $this->order;
+    }
+
+    /**
+     * Setup reference additional filters
+     *
+     * Example:
+     * ```
+     * return [
+     *      'my_field' => fn (Builder $query, $value, array $filters) => $query->where('my_field_id', '=', $value)
+     * ];
+     * ```
+     */
+    public function getFilters(): array
+    {
+        return [];
     }
 
     /**
