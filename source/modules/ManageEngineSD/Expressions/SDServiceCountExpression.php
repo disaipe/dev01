@@ -10,13 +10,6 @@ use Illuminate\Support\Arr;
 
 class SDServiceCountExpression extends SDServiceExpression implements IQueryExpression
 {
-    protected array $serviceId;
-
-    public function __construct(...$args)
-    {
-        $this->serviceId = Arr::get($args, 'service_id') ?? [];
-    }
-
     public function exec(Builder $query): float
     {
         /** @var ModuleManager $modules */
@@ -24,12 +17,14 @@ class SDServiceCountExpression extends SDServiceExpression implements IQueryExpr
         $module = $modules->getByKey('ManageEngineSD');
         $closedStatusIds = $module->getConfig('closes_statuses');
 
+        $serviceId = Arr::get($this->options, 'service_id');
+
         $wo = $query
             ->whereHas('status', function (Builder $query) use ($closedStatusIds) {
                 $query->whereKey($closedStatusIds);
             })
-            ->whereHas('service', function (Builder $query) {
-                $query->whereKey($this->serviceId);
+            ->whereHas('service', function (Builder $query) use ($serviceId) {
+                $query->whereKey($serviceId);
             })
             ->get();
 
