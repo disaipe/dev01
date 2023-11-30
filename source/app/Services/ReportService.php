@@ -269,6 +269,7 @@ class ReportService
                 ->where('company_id', '=', $this->company->getKey())
                 ->orWhere('is_default', '=', true)
             )
+            ->orderBy('company_id', 'desc')
             ->first();
 
         if (! $priceList) {
