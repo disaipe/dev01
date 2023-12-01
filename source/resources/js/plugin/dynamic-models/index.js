@@ -1,6 +1,6 @@
 import keyBy from 'lodash/keyBy';
 import predefinedModels from '../../store/models';
-import { defineModel, defineRepo } from '../../store/repository';
+import { defineModel, definePivot, defineRepo } from '../../store/repository';
 
 export default {
     install(app) {
@@ -15,12 +15,26 @@ export default {
                 entity: model.entity,
                 eagerLoad: model.eagerLoad,
             });
+
+            // iterate fields and make define pivots for some relations
+            for (const def of Object.values(model.fields)) {
+                const [method, ...args] = def;
+
+                switch (method) {
+                    case 'belongsToMany':
+                        const [related, pivot, foreignPivotKey, relatedPivotKey] = args;
+                        modelsCache[pivot] = definePivot(pivot, { foreignPivotKey, relatedPivotKey });
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         // iterate models and make fields binding
         for (const [name, model] of Object.entries(modelsCache)) {
             // skip predefined models
-            if (predefinedModels[name]) {
+            if (predefinedModels[name] || model.isPivot) {
                 continue;
             }
 
@@ -47,6 +61,19 @@ export default {
                             } else {
                                 console.warn(`Related model "${related}" for "${model.name}" not found, field definition skipped`);
                             }
+                            break;
+                        }
+                        case 'belongsToMany': {
+                            const [related, pivot, foreignPivotKey, relatedPivotKey] = args;
+                            const relatedModel = modelsCache[related];
+
+                            if (relatedModel) {
+                                fields[key] = this[method](relatedModel, modelsCache[pivot], foreignPivotKey, relatedPivotKey);
+                                fields[`${key}_keys`] = this.attr([]);
+                            } else {
+                                console.warn(`Related model "${related}" for "${model.name}" not found, field definition skipped`);
+                            }
+
                             break;
                         }
                         case 'hasMany': {

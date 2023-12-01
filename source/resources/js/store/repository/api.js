@@ -21,6 +21,9 @@ export default class Api extends Repository {
                     const { status, data } = response.data;
 
                     if (status) {
+                        // flush pivots to remove local records
+                        this.flushRelatedPivots();
+
                         items = this.save(data);
                     }
                 }
@@ -129,5 +132,16 @@ export default class Api extends Repository {
                     }
                 });
         });
+    }
+
+    flushRelatedPivots() {
+        const fields = this.getModel().constructor.fields();
+
+        for (const field of Object.values(fields)) {
+            if (field.constructor.name === 'BelongsToMany') {
+                const pivot = field.pivot.constructor.name;
+                useRepos()[pivot]?.flush();
+            }
+        }
     }
 }

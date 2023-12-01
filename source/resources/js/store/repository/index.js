@@ -1,11 +1,12 @@
-import { useRepo } from 'pinia-orm';
+import { useRepo, Model } from 'pinia-orm';
 import Repository from './repository';
 import Models from '../models';
 import CoreModel from '../model';
+import { snake } from '../../utils/stringsUtils';
 
 const repos = {};
 
-export function defineModel(name, options = {}){
+export function defineModel(name, options = {}) {
     return ({
         [name]: class extends CoreModel {
             static entity = options.entity;
@@ -13,6 +14,23 @@ export function defineModel(name, options = {}){
 
             static fields() {
                 return options.fields?.call?.(this) || {};
+            }
+        }
+    })[name];
+}
+
+export function definePivot(name, options = {}) {
+    return ({
+        [name]: class extends Model {
+            static isPivot = true;
+            static entity = snake(name);
+            static primaryKey = [options.foreignPivotKey, options.relatedPivotKey];
+
+            static fields() {
+                return {
+                    [options.foreignPivotKey]: this.number(),
+                    [options.relatedPivotKey]: this.number()
+                };
             }
         }
     })[name];

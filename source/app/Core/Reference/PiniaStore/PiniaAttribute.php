@@ -44,6 +44,11 @@ class PiniaAttribute
         return ['belongsTo', $related, $foreignKey, $ownerKey];
     }
 
+    public static function belongsToMany($related, $pivot, $foreignPivotKey, $relatedPivotKey): array
+    {
+        return ['belongsToMany', $related, $pivot, $foreignPivotKey, $relatedPivotKey];
+    }
+
     public static function hasMany($related, $foreignKey, $localKey = null): array
     {
         return ['hasMany', $related, $foreignKey, $localKey];

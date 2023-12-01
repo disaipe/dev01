@@ -7,7 +7,7 @@ function isAttribute(type) {
 }
 
 function isRelation(type) {
-    return ['BelongsTo', 'HasMany'].includes(type);
+    return ['BelongsTo', 'BelongsToMany', 'HasMany'].includes(type);
 }
 
 export default class CoreModel extends ApiModel {
@@ -64,12 +64,30 @@ export default class CoreModel extends ApiModel {
                     case 'BelongsTo':
                         type = 'relation';
                         relation = {
+                            type: fieldType,
                             key: field.foreignKey,
                             ownerKey: field.ownerKey,
-                            model: field.related.constructor.name
+                            model: field.related.constructor.name,
+                            multiple: false
+                        };
+                        break;
+                    case 'BelongsToMany':
+                        type = 'relation';
+                        relation = {
+                            type: fieldType,
+                            key: `${key}_keys`,
+                            model: field.related.constructor.name,
+                            multiple: true,
                         };
                         break;
                     case 'HasMany':
+                        type = 'relation';
+                        relation = {
+                            key,
+                            ownerKey: field.ownerKey,
+                            model: field.related.constructor.name,
+                            multiple: true
+                        };
                         break;
                     default:
                         break;
@@ -87,7 +105,6 @@ export default class CoreModel extends ApiModel {
                 rules: rules[key]
             };
         }
-
 
         return schema;
     }
@@ -133,6 +150,12 @@ export default class CoreModel extends ApiModel {
     static belongsTo(related, foreignKey, ownerKey = null)  {
         const attr = super.belongsTo(related, foreignKey, ownerKey);
         attr.name = 'BelongsTo';
+        return attr;
+    }
+
+    static belongsToMany(related, pivot, foreignPivotKey, relatedPivotKey, parentKey = null, relatedKey= null) {
+        const attr = super.belongsToMany(related, pivot, foreignPivotKey, relatedPivotKey, parentKey, relatedKey);
+        attr.name = 'BelongsToMany';
         return attr;
     }
 

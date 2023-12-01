@@ -6,7 +6,17 @@ export function rawRenderer(value) {
 }
 
 export function relationRenderer(value) {
-    return h('span', {}, value?.$getName?.());
+    if (value) {
+        const values = Array.isArray(value) ? value : [value];
+
+        return values.map((value) => h(
+            'div',
+            {},
+            value?.$getName?.()
+        ));
+    }
+
+    return undefined;
 }
 
 export function switchRenderer(value) {

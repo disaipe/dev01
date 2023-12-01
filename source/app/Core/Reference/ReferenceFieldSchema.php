@@ -16,6 +16,8 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
 
     protected bool $eagerLoad = false;
 
+    protected ?string $relation = null;
+
     protected function __construct()
     {
         $this->attributes = [];
@@ -228,6 +230,29 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
         Arr::set($this->attributes, 'lazy', true);
 
         return $this;
+    }
+
+    /**
+     * Link field to relation field
+     *
+     * @param string $relation
+     * @return $this
+     */
+    public function relatedTo(string $relation): static
+    {
+        $this->relation = $relation;
+
+        return $this;
+    }
+
+    /**
+     * Get linked relation field name
+     *
+     * @return string|null
+     */
+    public function getRelation(): ?string
+    {
+        return $this->relation;
     }
 
     /**

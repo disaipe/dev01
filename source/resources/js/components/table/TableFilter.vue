@@ -17,14 +17,14 @@ el-popover(
         el-select(
             v-if='schema && schema.relation'
             v-model='filterStore.inputs[remoteField]'
+            :multiple='relation.multiple'
             filterable
-            @visible-change='(visible) => visible && loadRelatedOptions()'
         )
             el-option(
                 v-for='relatedOption of relatedOptions'
                 :key='relatedOption.$getKey()'
                 :label='relatedOption.$getName()'
-                :value='relatedOption[relation.ownerKey] || relatedOption.$getKey()'
+                :value='relatedOption.$getKey()'
             )
 
         //- BOOLEAN INPUT
@@ -126,6 +126,8 @@ export default {
                 if (!filterStore.inputs[remoteField.value]) {
                     filterStore.inputs[remoteField.value] = filterStore.filters[remoteField.value];
                 }
+
+                loadRelatedOptions();
             },
             toggleFilter() {
                 filterStore.visibility[remoteField.value] = !filterStore.visibility[remoteField.value];

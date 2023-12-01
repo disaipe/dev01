@@ -87,10 +87,13 @@ class ReferenceController extends BaseController
         $keyName = $model->getKeyName();
         $key = Arr::get($body, $keyName);
 
+        /** @var ReferenceModel $record */
         $record = $this->getModel()->newQuery()->updateOrCreate(
             [$keyName => $key],
             $body
         );
+
+        $this->updateRelations($record, $body);
 
         return new JsonResponse([
             'status' => true,
@@ -191,9 +194,13 @@ class ReferenceController extends BaseController
 
     protected function applyFilters(Builder $query, array $filters): void
     {
-        $query->where(function (Builder $group) use ($filters) {
+        $referenceFilters = $this->reference->getFilters();
+
+        $query->where(function (Builder $group) use ($filters, $referenceFilters) {
             foreach ($filters as $field => $value) {
-                if (is_array($value)) {
+                if ($filterQuery = Arr::get($referenceFilters, $field)) {
+                    $filterQuery($group, $value, $filters);
+                } else if (is_array($value)) {
                     $group->whereBetween($field, $value);
                 } else {
                     if (is_string($value)) {
@@ -244,6 +251,22 @@ class ReferenceController extends BaseController
                 if ($model->isSortable($field)) {
                     $query->orderBy($field, $order);
                 }
+            }
+        }
+    }
+
+    protected function updateRelations(ReferenceModel $record, array $body): void
+    {
+        $schema = $this->reference->getSchema();
+
+        foreach ($body as $field => $value) {
+            /** @var ReferenceFieldSchema $fieldSchema */
+            $fieldSchema = Arr::get($schema, $field);
+
+            $relation = $fieldSchema->getRelation();
+
+            if ($relation) {
+                $record->$relation()?->sync($value);
             }
         }
     }

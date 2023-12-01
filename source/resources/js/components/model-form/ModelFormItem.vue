@@ -68,6 +68,7 @@ el-form-item(
             :model-value='model[field.relation.key]'
             :disabled='field.readonly'
             :clearable='!field.required'
+            :multiple='field.relation.multiple'
             filterable
             @change='model[field.relation.key] = $event; $emit("update:modelValue", $event)'
         )

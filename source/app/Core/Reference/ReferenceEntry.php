@@ -349,9 +349,20 @@ class ReferenceEntry
      * ];
      * ```
      */
-    public function getFilters(): array
+    public function makeFilters(): array
     {
         return [];
+    }
+
+    /**
+     * Get reference filters
+     */
+    public function getFilters(): array
+    {
+        $filters = $this->makeFilters();
+        $relatedFilters = $this->getRelatedFilters();
+
+        return array_merge($filters, $relatedFilters);
     }
 
     /**
@@ -427,5 +438,23 @@ class ReferenceEntry
         $key = "reference.{$base}";
 
         return Lang::has($key) ? $key : $base;
+    }
+
+    protected function getRelatedFilters(): array
+    {
+        $filters = [];
+        $fieldsSchema = $this->getSchema();
+
+        foreach ($fieldsSchema as $field => $schema) {
+            /** @var ReferenceFieldSchema $schema */
+
+            if ($relation = $schema->getRelation()) {
+                $filters[$field] = function (Builder $query, $value) use ($relation) {
+                    $query->whereHas($relation, fn (Builder $relatedQuery) => $relatedQuery->whereKey($value));
+                };
+            }
+        }
+
+        return $filters;
     }
 }
