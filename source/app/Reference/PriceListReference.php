@@ -42,11 +42,21 @@ class PriceListReference extends ReferenceEntry
                 ->hidden()
                 ->pinia(PiniaAttribute::number()),
 
-            'company' => ReferenceFieldSchema::make()
-                ->label('Организация')
+            'companies' => ReferenceFieldSchema::make()
+                ->label('Организации')
                 ->visible()
                 ->eagerLoad()
-                ->pinia(PiniaAttribute::belongsTo('Company', 'company_id')),
+                ->pinia(PiniaAttribute::belongsToMany(
+                    'Company',
+                    'PriceListCompany',
+                    'company_id',
+                    'price_list_it'
+                )),
+
+            'companies_keys' => ReferenceFieldSchema::make()
+                ->hidden()
+                ->relatedTo('companies')
+                ->pinia(PiniaAttribute::attr()),
 
             'service_provider_id' => ReferenceFieldSchema::make()
                 ->hidden()

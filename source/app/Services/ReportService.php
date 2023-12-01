@@ -265,11 +265,14 @@ class ReportService
         /** @var ?PriceList $priceList */
         $priceList = PriceList::query()
             ->where('service_provider_id', '=', $serviceProviderId)
-            ->where(fn (Builder $query) => $query
-                ->where('company_id', '=', $this->company->getKey())
-                ->orWhere('is_default', '=', true)
-            )
-            ->orderBy('company_id', 'desc')
+            ->where(function (Builder $subQuery) {
+                $subQuery
+                    ->whereHas('companies', fn (Builder $query) => $query->whereKey($this->company->getKey()))
+                    ->orWhere('is_default', '=', true);
+            })
+            ->get()
+            ->collect()
+            ->sortBy('is_default')
             ->first();
 
         if (! $priceList) {
