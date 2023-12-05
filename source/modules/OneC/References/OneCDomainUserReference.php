@@ -14,6 +14,8 @@ class OneCDomainUserReference extends ReferenceEntry
 {
     protected string|ReferenceModel $model = OneCDomainUser::class;
 
+    protected string|bool|null $recordView = 'OneCDomainUserRecord';
+
     protected function getLabelKey(): string
     {
         return 'onec::messages.domain user';

@@ -4,6 +4,7 @@ namespace App\Modules\OneC\Models;
 
 use App\Core\Reference\ReferenceModel;
 use App\Core\Traits\WithoutSoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @property string list_path
@@ -29,4 +30,14 @@ class OneCInfoBase extends ReferenceModel
         'db_server',
         'db_base',
     ];
+
+    public function domainUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            OneCDomainUser::class,
+            'one_c_user_info_base',
+            'one_c_info_base_id',
+            'one_c_domain_user_id'
+        );
+    }
 }

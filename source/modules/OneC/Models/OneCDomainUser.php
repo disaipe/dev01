@@ -6,8 +6,6 @@ use App\Core\Reference\ReferenceModel;
 use App\Core\Traits\CompanyScope;
 use App\Core\Traits\WithoutSoftDeletes;
 use App\Models\Company;
-use App\Modules\ActiveDirectory\Models\ADUserEntry;
-use Doctrine\DBAL\Query\QueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -29,53 +27,6 @@ class OneCDomainUser extends ReferenceModel
     protected $casts = [
         'blocked' => 'boolean',
     ];
-
-    protected array $sortable = [
-        'login',
-        'username',
-        'info_base_count',
-        'blocked',
-    ];
-
-    public function newQuery(): Builder|QueryBuilder
-    {
-        /** @var ADUserEntry $usersInstance */
-        $usersInstance = app(ADUserEntry::class);
-
-        /** @var OneCInfoBaseUser $onecInfoBaseUser */
-        $onecInfoBaseUser = app(OneCInfoBaseUser::class);
-
-        return parent::newQuery()
-            ->withoutGlobalScopes()
-            ->fromSub(
-                $usersInstance->newQuery()
-                    ->joinSub(
-                        parent::newQuery()
-                            ->distinct()
-                            ->select('login')
-                            ->selectRaw('count(1) as info_base_count')
-                            ->from($onecInfoBaseUser->getTable())
-                            ->whereNotNull('login')
-                            ->whereNotNull('domain')
-                            ->groupBy('login'),
-                        $this->getTable(),
-                        $usersInstance->qualifyColumn('username'),
-                        '=',
-                        $this->qualifyColumn('login')
-                    )
-                    ->select($usersInstance->qualifyColumns([
-                        $usersInstance->getKeyName(),
-                        'username as login',
-                        'name as username',
-                        'company_prefix',
-                        'blocked',
-                    ]))
-                    ->addSelect('info_base_count')
-                ,
-                'one_c_domain_users'
-            )
-            ->select();
-    }
 
     public function company(): BelongsTo
     {
