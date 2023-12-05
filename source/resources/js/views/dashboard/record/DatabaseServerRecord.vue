@@ -1,5 +1,7 @@
 <template lang='pug'>
 .database-server-record-page
+    record-page-header
+
     it-table(v-bind='tableProps')
 </template>
 
@@ -10,12 +12,12 @@ export default {
     name: 'DatabaseServerRecord',
     setup() {
         const route = useRoute();
-        const parentId = route.params?.id;
+        const recordId = parseInt(route.params?.id, 10);
 
         return {
             tableProps: {
                 reference: 'Database',
-                context: { database_server_id: parseInt(parentId, 10) },
+                context: { database_server_id: recordId },
                 canCreate: false,
                 canUpdate: true,
                 canDelete: false

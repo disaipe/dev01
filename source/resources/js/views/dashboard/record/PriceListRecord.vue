@@ -1,5 +1,7 @@
 <template lang='pug'>
 .price-list-record-page
+    record-page-header
+
     spreadsheet(
         ref='spread'
         v-loading='priceListData.loading'

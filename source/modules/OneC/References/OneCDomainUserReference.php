@@ -16,6 +16,8 @@ class OneCDomainUserReference extends ReferenceEntry
 
     protected string|bool|null $recordView = 'OneCDomainUserRecord';
 
+    protected ?string $primaryDisplayField = 'username';
+
     protected function getLabelKey(): string
     {
         return 'onec::messages.domain user';

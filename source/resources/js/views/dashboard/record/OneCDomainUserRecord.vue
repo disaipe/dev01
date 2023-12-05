@@ -1,5 +1,7 @@
 <template lang='pug'>
 .onec-domain-user-record-page
+    record-page-header
+
     it-table(v-bind='tableProps')
         template(#columns-before)
             vxe-column(width='40px')
@@ -16,7 +18,7 @@ export default {
     setup() {
         const route = useRoute();
         const router = useRouter();
-        const parentId = route.params?.id;
+        const recordId = parseInt(route.params?.id, 10);
 
         const openRecord = (id) => {
           router.push({ name: 'OneCInfoBaseRecord', params: { id } });
@@ -25,7 +27,7 @@ export default {
         return {
             tableProps: {
                 reference: 'OneCInfoBase',
-                context: { one_c_domain_user_id: parseInt(parentId, 10) },
+                context: { one_c_domain_user_id: recordId },
                 canCreate: false,
                 canUpdate: false,
                 canDelete: false
