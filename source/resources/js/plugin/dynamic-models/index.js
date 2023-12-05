@@ -14,6 +14,7 @@ export default {
             modelsCache[name] = defineModel(name, {
                 entity: model.entity,
                 eagerLoad: model.eagerLoad,
+                displayField: model.displayField
             });
 
             // iterate fields and make define pivots for some relations

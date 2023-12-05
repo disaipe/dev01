@@ -74,6 +74,7 @@ class ReferenceService
 
                 return [
                     'name' => $entry->getName(),
+                    'displayField' => $entry->getPrimaryDisplayField(),
                     'eagerLoad' => array_keys($eagerLoad),
                     'entity' => Str::kebab(Str::plural($entry->getName())),
                     'fields' => $fields,

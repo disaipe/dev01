@@ -169,7 +169,13 @@ export default class CoreModel extends ApiModel {
         return !isNaN(this.$getKey());
     }
 
-    $getName() {
-        return this.name;
+    $getDisplayField() {
+        return 'name';
     }
+
+    $getName() {
+        return this[this.$getDisplayField()];
+    }
+
+
 }

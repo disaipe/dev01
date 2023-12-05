@@ -15,6 +15,10 @@ export function defineModel(name, options = {}) {
             static fields() {
                 return options.fields?.call?.(this) || {};
             }
+
+            $getDisplayField() {
+                return options.displayField || super.$getDisplayField();
+            }
         }
     })[name];
 }
