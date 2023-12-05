@@ -85,7 +85,11 @@ function toggleSubMenu() {
         }
     }
 
-    .side-bar-menu__item__arrow {
+    &__icon {
+      @apply shrink-0;
+    }
+
+    &__arrow {
         @apply transition-all;
     }
 }
