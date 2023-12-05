@@ -22,7 +22,7 @@ class CompanyReference extends ReferenceEntry
                 ->id(),
 
             'code' => ReferenceFieldSchema::make()
-                ->label('Префикс')
+                ->label('Код')
                 ->required()
                 ->max(16)
                 ->visible(),

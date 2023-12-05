@@ -45,7 +45,7 @@ class OneCInfoBaseUserReference extends ReferenceEntry
                 ->pinia(PiniaAttribute::string()),
 
             'company_prefix' => ReferenceFieldSchema::make()
-                ->hidden()
+                ->label('Код организации')
                 ->pinia(PiniaAttribute::string()),
 
             'company' => ReferenceFieldSchema::make()

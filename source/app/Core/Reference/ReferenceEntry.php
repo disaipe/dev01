@@ -110,7 +110,7 @@ class ReferenceEntry
             if ($customReference->context_type === CustomReferenceContextType::Code->value) {
                 $entry->schema['company_code'] = ReferenceFieldSchema::make()
                     ->pinia(PiniaAttribute::string())
-                    ->hidden();
+                    ->label('Код организации');
 
                 $entry->schema['company'] = ReferenceFieldSchema::make()
                     ->label('Организация')

@@ -16,7 +16,7 @@ return [
 
     'company linking' => 'Связь с организацией',
     'company prefix field' => 'Поле с данными организации',
-    'company prefix field help' => 'Укажите поле, в котором находится префикс (код) организации',
+    'company prefix field help' => 'Укажите поле, в котором находится код организации',
 
     'fields schema' => [
         'title' => 'Сопоставление данных',

@@ -20,7 +20,7 @@ class ADUserEntryReference extends ReferenceEntry
                 ->id(),
 
             'company_prefix' => ReferenceFieldSchema::make()
-                ->label('Префикс организации')
+                ->label('Код организации')
                 ->pinia(PiniaAttribute::string()),
 
             'company_name' => ReferenceFieldSchema::make()

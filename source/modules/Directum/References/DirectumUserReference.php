@@ -35,7 +35,7 @@ class DirectumUserReference extends ReferenceEntry
                 ->pinia(PiniaAttribute::string()),
 
             'company_prefix' => ReferenceFieldSchema::make()
-                ->label('Префикс организации')
+                ->label('Код организации')
                 ->pinia(PiniaAttribute::string()),
 
             'company' => ReferenceFieldSchema::make()
