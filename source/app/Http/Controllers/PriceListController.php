@@ -53,4 +53,32 @@ class PriceListController extends Controller
 
         return $this->list($priceList);
     }
+
+    public function copy(Request $request, PriceList $priceList): JsonResponse
+    {
+        $newRecord = $priceList->replicate(['is_default']);
+
+        $saved = $newRecord->save();
+
+        if ($saved) {
+            $values = $priceList->values()
+                ->whereNotNull('value')
+                ->get(['service_id', 'value']);
+
+            if ($priceList->values->count()) {
+                $newRecord->values()->sync($values->toArray());
+            }
+
+            $priceList->load(['companies']);
+
+            if ($priceList->companies->count()) {
+                $newRecord->companies()->sync($priceList->companies()->pluck('id'));
+            }
+        }
+
+        return new JsonResponse([
+            'status' => true,
+            'data' => $newRecord,
+        ]);
+    }
 }

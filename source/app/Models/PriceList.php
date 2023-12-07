@@ -34,11 +34,6 @@ class PriceList extends ReferenceModel
         'companies_keys'
     ];
 
-    public function company(): BelongsTo
-    {
-        return $this->belongsTo(Company::class);
-    }
-
     public function companies(): BelongsToMany
     {
         return $this->belongsToMany(Company::class, 'price_list_companies');
@@ -57,7 +52,7 @@ class PriceList extends ReferenceModel
     public function companiesKeys(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->companies->pluck('id'),
+            get: fn () => $this->companies->pluck('id')->toArray(),
             set: fn ($v) => $this->companies()->sync($v)
         );
     }

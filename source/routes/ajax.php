@@ -23,6 +23,7 @@ Route::prefix('price_list/{priceList}')
     ->group(function () {
         Route::get('', 'list');
         Route::post('', 'update');
+        Route::post('/copy', 'copy');
     });
 
 Route::prefix('report')
