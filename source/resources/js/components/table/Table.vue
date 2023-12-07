@@ -82,6 +82,15 @@
                                   @click.stop
                               )
 
+                vxe-column(
+                    :visible='canDelete && hasVisibleColumns'
+                    fixed='right'
+                    width='36px'
+                )
+                  template(#default='{ row }')
+                    el-link(:underline='false' @click='confirmRowRemoving(row)')
+                      icon.text-gray-300(class='hover:text-red-400' icon='tabler:trash')
+
             template(#empty)
                 el-empty(description='Данные не пришли...')
                     el-button(
@@ -422,6 +431,25 @@ export default {
             this.closeDrawer();
         },
 
+        confirmRowRemoving(row) {
+          ElMessageBox.confirm(
+              'Запись будет удалена. Продолжить?',
+              'Внимание!',
+              {
+                confirmButtonText: 'Да, удалить',
+                cancelButtonText: 'Нет',
+                confirmButtonClass: 'el-button--danger',
+                type: 'warning'
+              }
+          ).then(() => {
+            this.repository.remove(row.$getKey()).then((removed) => {
+              this.remove(removed);
+            });
+          }).catch(() => {
+            // chill
+          });
+        },
+
         handlePageChange() {
             this.load();
         },
@@ -447,25 +475,13 @@ export default {
             this.drawer = true;
         },
 
-        onContextRowEdit(row) {
+        onContextRowOpen(row) {
             this.selectedRow = this.repository.make(row);
             this.drawer = true;
         },
 
         onContextRowRemove(row) {
-            ElMessageBox.confirm(
-                'Запись будет удалена. Продолжить?',
-                'Внимание!',
-                {
-                    confirmButtonText: 'Да, удалить',
-                    cancelButtonText: 'Нет',
-                    type: 'warning'
-                }
-            ).then(() => {
-                this.repository.remove(row.$getKey()).then((removed) => {
-                    this.remove(removed);
-                });
-            });
+            this.confirmRowRemoving(row);
         },
 
         onContextRowHistory(row) {

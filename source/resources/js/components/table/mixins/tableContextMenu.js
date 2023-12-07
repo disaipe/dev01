@@ -5,8 +5,8 @@ export default {
                 body: {
                     options: [
                         [
-                            { code: 'onContextRowEdit', name: 'Редактировать' },
-                            { code: 'onContextRowRemove', name: 'Удалить' },
+                            { code: 'onContextRowOpen', name: 'Открыть' },
+                            { code: 'onContextRowRemove', name: 'Удалить', disabled: !this.canDelete },
                         ],
                         [
                             { code: 'onContextRowHistory', name: 'История изменений' }
