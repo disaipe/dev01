@@ -24,7 +24,7 @@ el-popover(
                 v-for='relatedOption of relatedOptions'
                 :key='relatedOption.$getKey()'
                 :label='relatedOption.$getName()'
-                :value='relatedOption.$getKey()'
+                :value='relatedOption[relation.ownerKey] || relatedOption.$getKey()'
             )
 
         //- BOOLEAN INPUT
