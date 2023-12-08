@@ -18,8 +18,6 @@ const referenceTitle = ref();
 const { model, title } = route.meta;
 referenceTitle.value = title;
 
-console.log(route.meta);
-
 if (model) {
   const reference = useRepos()[model];
   const storedRecord = reference.query().whereId(recordId).first();
