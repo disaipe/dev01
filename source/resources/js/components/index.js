@@ -3,8 +3,9 @@ const files = import.meta.glob('./*/index.js', { eager: true });
 const modules = {};
 
 for (const key in files) {
-    const model = files[key].default;
-    modules[model.name || model.constructor.name] = model;
+    for (const [name, exported] of Object.entries(files[key])) {
+        modules[exported.name || name] = exported;
+    }
 }
 
 export const components = {
