@@ -17,7 +17,7 @@
                         filterable
                         allow-create
                         placeholder=' '
-                        @change='setFontFamily'
+                        @change='setFontFamily($event); syncCellStyling()'
                     )
                         el-option(
                             v-for='fontFamily of defaultFontFamilies'
@@ -30,7 +30,7 @@
                         filterable
                         allow-create
                         placeholder=' '
-                        @change='setFontSize'
+                        @change='setFontSize($event); syncCellStyling()'
                     )
                         el-option(
                             v-for='fontSize of defaultFontSizes'
@@ -43,12 +43,12 @@
                         //- el-button(@click='history.redo()') Redo
                         el-button(
                             :class='{ active: data.fontItalic }'
-                            @click='setItalic(!data.fontItalic)'
+                            @click='setItalic(!data.fontItalic); syncCellStyling()'
                         )
                             icon(icon='material-symbols:format-italic-rounded' height='14')
                         el-button(
                             :class='{ active: data.fontBold }'
-                            @click='setBold(!data.fontBold)'
+                            @click='setBold(!data.fontBold); syncCellStyling()'
                         )
                             icon(icon='material-symbols:format-bold-rounded' height='14')
                         el-button(@click='() => borderDrop.handleOpen()')
@@ -138,7 +138,7 @@ import debounce from 'lodash/debounce';
 import { HotTable } from '@handsontable/vue3';
 import 'handsontable/dist/handsontable.full.css';
 
-import { pxToPt } from '../../utils/cssUtils';
+import { parseSize, pxToPt } from '../../utils/cssUtils';
 
 import {
     configure,
@@ -217,6 +217,42 @@ export default {
             window.addEventListener('resize', () => debounce(fitSpreadsheet, 1000));
         }
 
+        function syncCellStyling(row = null, column = null) {
+            if (!row || !column) {
+                const selection = instance.value?.getSelected();
+
+                if (selection) {
+                    [[row, column]] = selection;
+                }
+            }
+
+            if (!row || !column) {
+                return;
+            }
+
+            const cell = instance.value.getCell(row, column);
+
+            const styles = window.getComputedStyle(cell);
+
+            // set font size selector value
+            {
+                const { value, unit } = parseSize(styles.fontSize);
+                data.fontSizeInput = unit === 'px' ? pxToPt(value) : value;
+            }
+
+            // set font family selector value
+            data.fontFamilyInput = styles.fontFamily;
+
+            // set font bold button active state
+            {
+                const value = parseInt(styles.fontWeight);
+                data.fontBold = value > 400;
+            }
+
+            // set font italic button active state
+            data.fontItalic = styles.fontStyle === 'italic';
+        }
+
         const {
             store,
             instance,
@@ -235,32 +271,7 @@ export default {
                 instance.value.addHook('debug', (...args) => emit('debug', ...args));
             },
             afterSelection: (row, column, row2, column2, preventScrolling, selectionLayerLevel) => {
-                const cell = instance.value.getCell(row, column);
-                const styles = cell.computedStyleMap();
-
-                // set font size selector value
-                {
-                    const { value, unit } = styles.get('font-size');
-                    data.fontSizeInput = unit === 'px' ? pxToPt(value) : value;
-                }
-
-                // set font family selector value
-                {
-                    const fontFamily = styles.get('font-family');
-                    data.fontFamilyInput = fontFamily.toString();
-                }
-
-                // set font bold button active state
-                {
-                    const { value } = styles.get('font-weight');
-                    data.fontBold = value > 400;
-                }
-
-                // set font italic button active state
-                {
-                    const { value } = styles.get('font-style');
-                    data.fontItalic = value === 'italic';
-                }
+              syncCellStyling(row, column);
             },
             ...(settingsProp.value || {})
         });
@@ -300,7 +311,9 @@ export default {
                     uploader.value.clearFiles();
                 });
             },
-            download
+            download,
+
+            syncCellStyling
         };
     }
 }
