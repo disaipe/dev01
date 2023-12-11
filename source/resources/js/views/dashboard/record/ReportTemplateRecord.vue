@@ -54,6 +54,7 @@
 <script>
 import { ref, reactive, computed } from 'vue';
 import { useRoute } from 'vue-router';
+import orderBy from 'lodash/orderBy';
 
 import { useRepos } from '../../../store/repository';
 import { loadFromBase64 } from '../../../components/spreadsheet/xlsxUtils';
@@ -153,7 +154,9 @@ export default {
             .then(() => {
                 return batchApi.batch('ServiceProvider,Service')
                     .then((result) => {
-                        services.value = result.Service.filter((service) => service.service_provider_id === record.value.service_provider_id);
+                        const resultServices = result.Service.filter((service) => service.service_provider_id === record.value.service_provider_id);
+
+                        services.value = orderBy(resultServices, 'name');
                         serviceProviders.value = result.ServiceProvider;
                     })
             })
