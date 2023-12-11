@@ -72,6 +72,12 @@ export function priceValueRenderer(instance, td, row, column, prop, value, cellP
         td.style.backgroundColor = '#FF000011';
     }
 
+    const { className } = cellProperties;
+
+    if (className) {
+        td.classList.add(className);
+    }
+
     td.innerText = value;
 }
 
