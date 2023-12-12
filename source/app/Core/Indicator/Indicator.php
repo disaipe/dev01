@@ -112,7 +112,9 @@ class Indicator
         $result = $this->type->calculate($this);
 
         if (isset($this->mutator)) {
-            $result = call_user_func($this->mutator, $result);
+            $mutatorSchema = Arr::get($this->schema, 'mutator');
+
+            $result = call_user_func($this->mutator, $result, $mutatorSchema, $this->context());
         }
 
         return $result;

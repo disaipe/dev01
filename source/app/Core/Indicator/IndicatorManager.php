@@ -2,15 +2,20 @@
 
 namespace App\Core\Indicator;
 
+use App\Core\IndicatorValueMutator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Schema;
 
 class IndicatorManager
 {
+    private IndicatorValueMutator $mutators;
+
     private array $indicators = [];
 
     public function __construct()
     {
+        $this->mutators = new IndicatorValueMutator();
+
         $this->registerStoredIndicators();
     }
 
@@ -46,13 +51,26 @@ class IndicatorManager
             ->get();
 
         foreach ($indicators as $indicator) {
+            $mutator = null;
+            $mutatorType = Arr::get($indicator->schema, 'mutator.type');
+
+            if ($mutatorType) {
+                $mutator = $this->mutators->getByName($mutatorType);
+            }
+
             $this->register(Indicator::fromArray([
                 'code' => $indicator->code,
                 'type' => $indicator->type,
                 'name' => $indicator->name,
                 'schema' => $indicator->schema,
                 'module' => Arr::get($indicator->schema, 'module'),
+                'mutator' => $mutator,
             ]));
         }
+    }
+
+    public function getMutators(): IndicatorValueMutator
+    {
+        return $this->mutators;
     }
 }
