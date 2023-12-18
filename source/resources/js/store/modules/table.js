@@ -10,7 +10,8 @@ const state = () => ({
     filters: {
         // [tableId]: {
         //   [field]: {
-        //     value: [value]
+        //     value: [value],
+        //     type: [filter type]
         //   }
         // }
     },
@@ -37,7 +38,7 @@ const actions = {
         return this.filters[tableId];
     },
 
-    saveFilter({ tableId, field, value }) {
+    saveFilter({ tableId, field, type, value }) {
         if (!tableId) {
             return;
         }
@@ -47,10 +48,10 @@ const actions = {
                 state.filters[tableId] = {};
             }
 
-            if (value === undefined) {
+            if (value === undefined || (Array.isArray(value) && !value.length)) {
                 delete state.filters[tableId][field];
             } else {
-                state.filters[tableId][field] = { value };
+                state.filters[tableId][field] = { type, value };
             }
         });
     },

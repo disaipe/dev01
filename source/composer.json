@@ -10,6 +10,7 @@
         "ext-pdo": "*",
         "ext-simplexml": "*",
         "ext-zlib": "*",
+        "abbasudo/laravel-purity": "^2.0",
         "althinect/filament-spatie-roles-permissions": "^1.2",
         "bezhansalleh/filament-exceptions": "^2.0",
         "calebporzio/sushi": "^2.4",

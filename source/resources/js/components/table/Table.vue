@@ -74,7 +74,7 @@
                                 height='16'
                               )
 
-                              TableFilter(
+                              table-filter(
                                   v-if='fields'
                                   :field='field'
                                   :schema='fields[field]'
@@ -339,7 +339,7 @@ export default {
             }
 
             if (Object.keys(this.filterStore.filters || {}).length) {
-                merge(query.filters, this.filterStore.filters)
+                merge(query.filters, this.getFiltersForRequest());
             }
 
             if (Object.keys(this.sortsStore || {}).length) {
@@ -454,10 +454,11 @@ export default {
             this.load();
         },
 
-        handleFilter(field, value) {
+        handleFilter(field, value, type) {
             this.saveFilter({
                 tableId: this.tableId,
                 field,
+                type,
                 value
             });
 

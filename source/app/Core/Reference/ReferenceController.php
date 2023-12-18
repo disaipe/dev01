@@ -58,7 +58,7 @@ class ReferenceController extends BaseController
         }
 
         if ($filters) {
-            $this->applyFilters($query, $filters);
+            $query->filter();
         }
 
         if ($sorts) {
@@ -190,27 +190,6 @@ class ReferenceController extends BaseController
     public function getModel(): ReferenceModel
     {
         return $this->reference->getModelInstance();
-    }
-
-    protected function applyFilters(Builder $query, array $filters): void
-    {
-        $referenceFilters = $this->reference->getFilters();
-
-        $query->where(function (Builder $group) use ($filters, $referenceFilters) {
-            foreach ($filters as $field => $value) {
-                if ($filterQuery = Arr::get($referenceFilters, $field)) {
-                    $filterQuery($group, $value, $filters);
-                } else if (is_array($value)) {
-                    $group->whereBetween($field, $value);
-                } else {
-                    if (is_string($value)) {
-                        $group->where($field, 'LIKE', '%'.$value.'%');
-                    } else {
-                        $group->where($field, '=', $value);
-                    }
-                }
-            }
-        });
     }
 
     protected function applySort(Builder $query, array $sort): void

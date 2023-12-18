@@ -75,7 +75,7 @@ export default class CoreModel extends ApiModel {
                         type = 'relation';
                         relation = {
                             type: fieldType,
-                            key: `${key}_keys`,
+                            key: `${key}.${field.related.$getKeyName()}`,
                             model: field.related.constructor.name,
                             multiple: true,
                         };

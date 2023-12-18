@@ -4,8 +4,61 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ce2a1e94512eacfb2ab552ac8aaa1de",
+    "content-hash": "5f775fb1739c3f9925328e4530139c3b",
     "packages": [
+        {
+            "name": "abbasudo/laravel-purity",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/abbasudo/laravel-purity.git",
+                "reference": "a2e8d301e4071f10dd2de878f1d06de5dabe488d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/abbasudo/laravel-purity/zipball/a2e8d301e4071f10dd2de878f1d06de5dabe488d",
+                "reference": "a2e8d301e4071f10dd2de878f1d06de5dabe488d",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^10.0|^9.0|^8.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "8.*",
+                "phpunit/phpunit": "^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Abbasudo\\Purity\\PurityServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Abbasudo\\Purity\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "abbas mkhzomi",
+                    "email": "llabbasmkhll@gmail.com",
+                    "role": "developer"
+                }
+            ],
+            "description": "elegant way to add filter and sort in laravel",
+            "support": {
+                "issues": "https://github.com/abbasudo/laravel-purity/issues",
+                "source": "https://github.com/abbasudo/laravel-purity/tree/v2.0.1"
+            },
+            "time": "2023-10-20T09:45:49+00:00"
+        },
         {
             "name": "althinect/filament-spatie-roles-permissions",
             "version": "v1.3.9",
