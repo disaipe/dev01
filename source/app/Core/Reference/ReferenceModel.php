@@ -3,6 +3,7 @@
 namespace App\Core\Reference;
 
 use Abbasudo\Purity\Traits\Filterable;
+use App\Core\Traits\CanListRelations;
 use App\Core\Traits\Protocolable;
 use App\Models\Scopes\CompanyScope;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Schema;
 
 class ReferenceModel extends Model
 {
-    use Filterable, Protocolable, SoftDeletes;
+    use CanListRelations, Filterable, Protocolable, SoftDeletes;
 
     protected $hidden = [
         'deleted_at',

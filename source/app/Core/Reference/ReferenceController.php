@@ -5,8 +5,12 @@ namespace App\Core\Reference;
 use App\Http\Requests\ReferenceListingRequest;
 use App\Http\Requests\ReferencePushRequest;
 use App\Http\Resources\ProtocolRecordResource;
+use App\Http\Resources\ReferenceRecordResource;
+use App\Http\Resources\ReferenceRecordsCollection;
 use App\Models\ProtocolRecord;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -74,7 +78,7 @@ class ReferenceController extends BaseController
 
         return new JsonResponse([
             'status' => true,
-            'data' => $paginator->items(),
+            'data' => ReferenceRecordsCollection::make($paginator->items()),
             'total' => $paginator->total(),
         ]);
     }
@@ -97,7 +101,7 @@ class ReferenceController extends BaseController
 
         return new JsonResponse([
             'status' => true,
-            'data' => $record,
+            'data' => ReferenceRecordResource::make($record),
         ]);
     }
 
@@ -239,16 +243,31 @@ class ReferenceController extends BaseController
 
     protected function updateRelations(ReferenceModel $record, array $body): void
     {
-        $schema = $this->reference->getSchema();
+        $relations = $record->listRelations();
 
-        foreach ($body as $field => $value) {
-            /** @var ReferenceFieldSchema $fieldSchema */
-            $fieldSchema = Arr::get($schema, $field);
+        foreach ($relations as $name => $type) {
+            switch ($type) {
+                case BelongsToMany::class:
+                    /** @var BelongsTo $relation */
+                    $relation = $record->$name();
+                    $relatedKey = $relation->getRelated()->getKeyName();
+                    $bodyKey = "$name.$relatedKey";
 
-            $relation = $fieldSchema->getRelation();
+                    if (Arr::has($body, $bodyKey)) {
+                        if ($value = Arr::get($body, $bodyKey)) {
+                            $relation->sync($value);
+                        }
+                    }
+                    break;
 
-            if ($relation) {
-                $record->$relation()?->sync($value);
+                case BelongsTo::class:
+                    if (Arr::has($body, $name)) {
+                        $value = Arr::get($body, $name);
+                        $record->$name()?->sync($value);
+                    }
+                    break;
+                default:
+                    break;
             }
         }
     }
