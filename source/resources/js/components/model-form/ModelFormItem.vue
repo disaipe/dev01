@@ -70,7 +70,7 @@ el-form-item(
             :clearable='!field.required'
             :multiple='field.relation.multiple'
             filterable
-            @change='model[field.relation.key] = $event; $emit("update:modelValue", $event)'
+            @change='onRelatedChange'
         )
             el-option(
                 v-for='option of relatedOptions'
@@ -118,51 +118,57 @@ el-form-item(
         )
 </template>
 
-<script>
-import { inject } from 'vue';
+<script setup>
+import { toRef, inject, computed } from 'vue';
 import { useRepos } from '../../store/repository';
 
-export default {
-    name: 'ModelFormItem',
-    props: {
-        modelValue: {
-            type: [String, Number, Array, Object, Boolean],
-            default: null
-        },
-        field: {
-            type: Object,
-            required: true
-        },
-        prop: {
-            type: String,
-            default: null
-        }
+const model = inject('modelForm');
+
+const emit = defineEmits(['update:model-value']);
+
+const props = defineProps({
+    modelValue: {
+        type: [String, Number, Array, Object, Boolean],
+        default: null
     },
-    setup() {
-        const modelForm = inject('modelForm');
-
-        return {
-            model: modelForm
-        };
+    field: {
+        type: Object,
+        required: true
     },
-    computed: {
-        relatedOptions() {
-            if (this.field.type !== 'relation') {
-                return [];
-            }
-
-            const { ownerKey, model } = this.field.relation;
-
-            const repo = useRepos()[model];
-            const valueKey = ownerKey || repo.getModel().$getKeyName();
-
-            return repo.all().map((item) => {
-                return {
-                    value: item[valueKey],
-                    label: item.$getName()
-                };
-            });
-        }
+    prop: {
+        type: String,
+        default: null
     }
+});
+
+const field = toRef(props, 'field');
+
+const relatedOptions = computed(() => {
+    if (field.value.type !== 'relation') {
+        return [];
+    }
+
+    const { ownerKey, model } = field.value.relation;
+
+    const repo = useRepos()[model];
+    const valueKey = ownerKey || repo.getModel().$getKeyName();
+
+    return repo.all().map((item) => {
+        return {
+            value: item[valueKey],
+            label: item.$getName()
+        };
+    });
+});
+
+function onRelatedChange(value) {
+    model.value[field.value.relation.key] = value;
+    emit('update:model-value', value);
+}
+</script>
+
+<script>
+export default {
+    name: 'ModelFormItem'
 }
 </script>
