@@ -37,7 +37,7 @@
                         :label='provider.name'
                     )
                         el-option(
-                            v-for='priceList of provider.priceLists'
+                            v-for='priceList of provider.price_lists'
                             :value='priceList.id'
                             :label='`${priceList.name} (${provider.name})`'
                         ) {{ priceList.name }}
@@ -112,7 +112,7 @@ const load = () => {
     priceListData.loading = true;
 
     batchApi.batch('PriceList,ServiceProvider').then(() => {
-       providers.value = ServiceProvider.query().with('priceLists').get();
+       providers.value = ServiceProvider.query().with('price_lists').get();
     });
 
     return api.get(`price_list/${id.value}`)

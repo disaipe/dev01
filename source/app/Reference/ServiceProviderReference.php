@@ -6,6 +6,7 @@ use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceModel;
+use App\Core\Reference\ReferenceSchema;
 use App\Models\ServiceProvider;
 use App\Models\User;
 
@@ -17,45 +18,47 @@ class ServiceProviderReference extends ReferenceEntry
 
     public function getSchema(): array
     {
-        return [
-            'id' => ReferenceFieldSchema::make()
-                ->id(),
+        return ReferenceSchema::make()
+            ->forModel($this->model)
 
-            'name' => ReferenceFieldSchema::make()
+            ->withKey()
+
+            ->addField('name', ReferenceFieldSchema::make()
                 ->label('Наименование')
                 ->required()
                 ->visible()
-                ->pinia(PiniaAttribute::string()),
+                ->pinia(PiniaAttribute::string()))
 
-            'fullname' => ReferenceFieldSchema::make()
+            ->addField('fullname', ReferenceFieldSchema::make()
                 ->label('Полное наименование')
-                ->pinia(PiniaAttribute::string()),
+                ->pinia(PiniaAttribute::string()))
 
-            'identity' => ReferenceFieldSchema::make()
+            ->addField('identity', ReferenceFieldSchema::make()
                 ->label('ИНН')
                 ->max(32)
                 ->visible()
-                ->pinia(PiniaAttribute::string()),
+                ->pinia(PiniaAttribute::string()))
 
-            'vat' => ReferenceFieldSchema::make()
+            ->addField('vat', ReferenceFieldSchema::make()
                 ->label('НДС')
                 ->visible()
-                ->pinia(PiniaAttribute::number()),
+                ->pinia(PiniaAttribute::number()))
 
-            'description' => ReferenceFieldSchema::make()
+            ->addField('description', ReferenceFieldSchema::make()
                 ->label('Описание')
-                ->pinia(PiniaAttribute::string()),
+                ->pinia(PiniaAttribute::string()))
 
-            'priceLists' => ReferenceFieldSchema::make()
+            ->addField('price_lists', ReferenceFieldSchema::make()
                 ->label('Прайс листы')
                 ->hidden()
-                ->pinia(PiniaAttribute::hasMany('PriceList', 'service_provider_id')),
+                ->pinia(PiniaAttribute::hasMany('PriceList', 'service_provider_id')))
 
-            'reportTemplates' => ReferenceFieldSchema::make()
+            ->addField('report_templates', ReferenceFieldSchema::make()
                 ->label('Шаблоны отчетов')
                 ->hidden()
-                ->pinia(PiniaAttribute::hasMany('ReportTemplate', 'service_provider_id')),
-        ];
+                ->pinia(PiniaAttribute::hasMany('ReportTemplate', 'service_provider_id')))
+
+            ->toArray();
     }
 
     public function canRead(User $user = null): bool

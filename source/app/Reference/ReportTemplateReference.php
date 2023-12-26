@@ -6,6 +6,7 @@ use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceModel;
+use App\Core\Reference\ReferenceSchema;
 use App\Models\ReportTemplate;
 use App\Models\User;
 
@@ -27,30 +28,28 @@ class ReportTemplateReference extends ReferenceEntry
 
     public function getSchema(): array
     {
-        return [
-            'id' => ReferenceFieldSchema::make()
-                ->id(),
+        return ReferenceSchema::make()
+            ->forModel($this->model)
 
-            'name' => ReferenceFieldSchema::make()
+            ->withKey()
+
+            ->addField('name', ReferenceFieldSchema::make()
                 ->label('Наименование')
                 ->required()
                 ->visible()
-                ->pinia(PiniaAttribute::string()),
+                ->pinia(PiniaAttribute::string()))
 
-            'service_provider' => ReferenceFieldSchema::make()
+            ->addField('service_provider', ReferenceFieldSchema::make()
                 ->label('Провайдер услуг')
                 ->required()
                 ->eagerLoad()
-                ->pinia(PiniaAttribute::belongsTo('ServiceProvider', 'service_provider_id')),
+                ->pinia(PiniaAttribute::belongsTo('ServiceProvider', 'service_provider_id')))
 
-            'service_provider_id' => ReferenceFieldSchema::make()
+            ->addField('content', ReferenceFieldSchema::make()
                 ->hidden()
-                ->pinia(PiniaAttribute::number()),
+                ->pinia(PiniaAttribute::attr()))
 
-            'content' => ReferenceFieldSchema::make()
-                ->hidden()
-                ->pinia(PiniaAttribute::attr()),
-        ];
+            ->toArray();
     }
 
     public function getRecordMeta(): array

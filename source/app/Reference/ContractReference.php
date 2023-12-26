@@ -6,6 +6,7 @@ use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceModel;
+use App\Core\Reference\ReferenceSchema;
 use App\Models\Contract;
 use App\Models\User;
 
@@ -17,55 +18,49 @@ class ContractReference extends ReferenceEntry
 
     public function getSchema(): array
     {
-        return [
-            'id' => ReferenceFieldSchema::make()
-                ->id(),
+        return ReferenceSchema::make()
+            ->forModel($this->model)
 
-            'number' => ReferenceFieldSchema::make()
+            ->withKey()
+
+            ->addField('number', ReferenceFieldSchema::make()
                 ->label('Номер договора')
                 ->required()
                 ->max(64)
                 ->visible()
-                ->pinia(PiniaAttribute::string()),
+                ->pinia(PiniaAttribute::string()))
 
-            'date' => ReferenceFieldSchema::make()
+            ->addField('date', ReferenceFieldSchema::make()
                 ->label('Дата договора')
                 ->visible()
-                ->pinia(PiniaAttribute::date()),
+                ->pinia(PiniaAttribute::date()))
 
-            'company_id' => ReferenceFieldSchema::make()
-                ->hidden()
-                ->pinia(PiniaAttribute::number()),
-
-            'company' => ReferenceFieldSchema::make()
+            ->addField('company', ReferenceFieldSchema::make()
                 ->label('Организация')
                 ->visible()
                 ->required()
                 ->eagerLoad()
-                ->pinia(PiniaAttribute::belongsTo('Company', 'company_id')),
+                ->pinia(PiniaAttribute::belongsTo('Company', 'company_id')))
 
-            'service_provider_id' => ReferenceFieldSchema::make()
-                ->hidden()
-                ->pinia(PiniaAttribute::number()),
-
-            'service_provider' => ReferenceFieldSchema::make()
+            ->addField('service_provider', ReferenceFieldSchema::make()
                 ->label('Провайдер услуг')
                 ->visible()
                 ->required()
                 ->eagerLoad()
-                ->pinia(PiniaAttribute::belongsTo('ServiceProvider', 'service_provider_id')),
+                ->pinia(PiniaAttribute::belongsTo('ServiceProvider', 'service_provider_id')))
 
-            'description' => ReferenceFieldSchema::make()
+            ->addField('description', ReferenceFieldSchema::make()
                 ->label('Описание')
                 ->max(2048)
                 ->textarea()
-                ->pinia(PiniaAttribute::string()),
+                ->pinia(PiniaAttribute::string()))
 
-            'is_actual' => ReferenceFieldSchema::make()
+            ->addField('is_actual', ReferenceFieldSchema::make()
                 ->label('Актуальный')
                 ->visible()
-                ->pinia(PiniaAttribute::boolean()),
-        ];
+                ->pinia(PiniaAttribute::boolean()))
+
+            ->toArray();
     }
 
     public function canUpdate(User $user = null): bool

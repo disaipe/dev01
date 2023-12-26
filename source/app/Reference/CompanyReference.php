@@ -5,6 +5,7 @@ namespace App\Reference;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceModel;
+use App\Core\Reference\ReferenceSchema;
 use App\Models\Company;
 
 class CompanyReference extends ReferenceEntry
@@ -17,32 +18,34 @@ class CompanyReference extends ReferenceEntry
 
     public function getSchema(): array
     {
-        return [
-            'id' => ReferenceFieldSchema::make()
-                ->id(),
+        return ReferenceSchema::make()
+            ->forModel($this->model)
 
-            'code' => ReferenceFieldSchema::make()
+            ->withKey()
+
+            ->addField('code', ReferenceFieldSchema::make()
                 ->label('Код')
                 ->required()
                 ->max(16)
-                ->visible(),
+                ->visible())
 
-            'name' => ReferenceFieldSchema::make()
+            ->addField('name', ReferenceFieldSchema::make()
                 ->label('Наименование')
                 ->required()
-                ->visible(),
+                ->visible())
 
-            'fullname' => ReferenceFieldSchema::make()
+            ->addField('fullname', ReferenceFieldSchema::make()
                 ->label('Полное наименование')
-                ->max(512),
+                ->max(512))
 
-            'identity' => ReferenceFieldSchema::make()
+            ->addField('identity', ReferenceFieldSchema::make()
                 ->label('ИНН')
                 ->max(32)
-                ->visible(),
+                ->visible())
 
-            'description' => ReferenceFieldSchema::make()
-                ->label('Описание'),
-        ];
+            ->addField('description', ReferenceFieldSchema::make()
+                ->label('Описание'))
+
+            ->toArray();
     }
 }

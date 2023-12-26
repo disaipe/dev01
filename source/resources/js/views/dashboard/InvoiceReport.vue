@@ -24,7 +24,7 @@
                 :label='provider.name'
             )
                 el-option(
-                    v-for='reportTemplate of provider.reportTemplates'
+                    v-for='reportTemplate of provider.report_templates'
                     :label='reportTemplate.name'
                     :value='reportTemplate.$getKey()'
                 )
@@ -146,7 +146,7 @@ export default {
 
         batchApi.batch('ServiceProvider,Company,ReportTemplate,Indicator').then((result) => {
             companies.value = orderBy(result.Company, 'name');
-            providers.value = ServiceProvider.query().whereHas('reportTemplates').with('reportTemplates').get();
+            providers.value = ServiceProvider.query().whereHas('report_templates').with('report_templates').get();
         });
 
         const cellModifier = (cell) => {

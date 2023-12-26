@@ -6,6 +6,7 @@ use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceModel;
+use App\Core\Reference\ReferenceSchema;
 use App\Models\PriceListValue;
 use App\Models\User;
 
@@ -21,32 +22,26 @@ class PriceListValueReference extends ReferenceEntry
 
     public function getSchema(): array
     {
-        return [
-            'id' => ReferenceFieldSchema::make()
-                ->id(),
+        return ReferenceSchema::make()
+            ->forModel($this->model)
 
-            'price_list_id' => ReferenceFieldSchema::make()
-                ->hidden()
-                ->pinia(PiniaAttribute::number()),
+            ->withKey()
 
-            'price_list' => ReferenceFieldSchema::make()
+            ->addField('price_list', ReferenceFieldSchema::make()
                 ->label('Прайс лист')
                 ->required()
-                ->pinia(PiniaAttribute::belongsTo('PriceList', 'price_list_id')),
+                ->pinia(PiniaAttribute::belongsTo('PriceList', 'price_list_id')))
 
-            'service_id' => ReferenceFieldSchema::make()
-                ->hidden()
-                ->pinia(PiniaAttribute::number()),
-
-            'service' => ReferenceFieldSchema::make()
+            ->addField('service', ReferenceFieldSchema::make()
                 ->label('Услуга')
                 ->required()
-                ->pinia(PiniaAttribute::belongsTo('Service', 'service_id')),
+                ->pinia(PiniaAttribute::belongsTo('Service', 'service_id')))
 
-            'value' => ReferenceFieldSchema::make()
+            ->addField('value', ReferenceFieldSchema::make()
                 ->label('Стоимость')
-                ->pinia(PiniaAttribute::number()),
-        ];
+                ->pinia(PiniaAttribute::number()))
+
+            ->toArray();
     }
 
     public function canRead(User $user = null): bool
