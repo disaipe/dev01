@@ -69,15 +69,15 @@ export default {
                             const relatedModel = modelsCache[related];
 
                             if (relatedModel) {
-                                fields[key] = this[method](relatedModel, modelsCache[pivot], foreignPivotKey, relatedPivotKey);
-                                fields[`${key}_keys`] = this.attr([]);
+                                fields[key] = this[method](relatedModel, modelsCache[pivot], relatedPivotKey, foreignPivotKey);
                             } else {
                                 console.warn(`Related model "${related}" for "${model.name}" not found, field definition skipped`);
                             }
 
                             break;
                         }
-                        case 'hasMany': {
+                        case 'hasMany':
+                        case 'hasManyBy': {
                             const [related, foreignKey, localKey] = args;
                             const relatedModel = modelsCache[related];
 

@@ -53,4 +53,9 @@ class PiniaAttribute
     {
         return ['hasMany', $related, $foreignKey, $localKey];
     }
+
+    public static function hasManyBy($related, $foreignKey, $localKey = null): array
+    {
+        return ['hasManyBy', $related, $foreignKey, $localKey];
+    }
 }

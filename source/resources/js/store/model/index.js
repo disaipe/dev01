@@ -7,7 +7,7 @@ function isAttribute(type) {
 }
 
 function isRelation(type) {
-    return ['BelongsTo', 'BelongsToMany', 'HasMany'].includes(type);
+    return ['BelongsTo', 'BelongsToMany', 'HasMany', 'HasManyBy'].includes(type);
 }
 
 export default class CoreModel extends ApiModel {
@@ -76,6 +76,8 @@ export default class CoreModel extends ApiModel {
                         relation = {
                             type: fieldType,
                             key: `${key}.${field.related.$getKeyName()}`,
+                            pivot: field.pivot,
+                            ownerKey: field.relatedKey || field.related.$getKeyName(),
                             model: field.related.constructor.name,
                             multiple: true,
                         };
@@ -84,6 +86,15 @@ export default class CoreModel extends ApiModel {
                         type = 'relation';
                         relation = {
                             key,
+                            ownerKey: field.ownerKey,
+                            model: field.related.constructor.name,
+                            multiple: true
+                        };
+                        break;
+                    case 'HasManyBy':
+                        type = 'relation';
+                        relation = {
+                            key: field.foreignKey,
                             ownerKey: field.ownerKey,
                             model: field.related.constructor.name,
                             multiple: true
@@ -162,6 +173,12 @@ export default class CoreModel extends ApiModel {
     static hasMany(related, foreignKey, localKey = null) {
         const attr = super.hasMany(related, foreignKey, localKey);
         attr.name = 'HasMany';
+        return attr;
+    }
+
+    static hasManyBy(related, foreignKey, localKey = null) {
+        const attr = super.hasManyBy(related, foreignKey, localKey);
+        attr.name = 'HasManyBy';
         return attr;
     }
 

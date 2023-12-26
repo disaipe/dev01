@@ -21,9 +21,6 @@ export default class Api extends Repository {
                     const { status, data } = response.data;
 
                     if (status) {
-                        // flush pivots to remove local records
-                        this.flushRelatedPivots();
-
                         items = this.save(data);
                     }
                 }
