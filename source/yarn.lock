@@ -2338,10 +2338,10 @@ grapheme-splitter@^1.0.4:
   resolved "https://registry.yarnpkg.com/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz#9cf3a665c6247479896834af35cf1dbb4400767e"
   integrity sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==
 
-handsontable@^13.1.0:
-  version "13.1.0"
-  resolved "https://registry.yarnpkg.com/handsontable/-/handsontable-13.1.0.tgz#a820d331088a9e4a7db9f4974661208f51789771"
-  integrity sha512-KqJtS3rJeOWsFWCffnDlM8fcLMTqmW+Vbc7OCVM4X7dYDpfefgFerjNLIxLfT9xohcQoUOS1jcvXwV8dwSppVQ==
+handsontable@^14.0.0:
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/handsontable/-/handsontable-14.0.0.tgz#c294d1cf8d10b3767f6c020b85c63eb167077942"
+  integrity sha512-/yyxXaC0hN5UoEBfu6FO/Fen+TeYDGz2A75AGvozlD3+KAv7FLcdcAUjcvbd0erw3Huawf1YlitZhDcmqvE2gQ==
   dependencies:
     "@types/pikaday" "1.7.4"
     core-js "^3.31.1"
@@ -2381,10 +2381,19 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-hyperformula@^2.3.0, hyperformula@^2.4.0:
+hyperformula@^2.4.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/hyperformula/-/hyperformula-2.5.0.tgz#b4c88de766ed5f6fb9f811ff4ef02290fbfe3a76"
   integrity sha512-HkP7JZAmG7EQFF5XAhB3aGtTHvafblSRITTMYUsVoT9czIvYY7CvMQFfK1JNHJUVS844t8bnJpKEOqwcgBcHZg==
+  dependencies:
+    chevrotain "^6.5.0"
+    tiny-emitter "^2.1.0"
+    unorm "^1.6.0"
+
+hyperformula@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/hyperformula/-/hyperformula-2.6.0.tgz#6617c0517059a076e3c1b1b0d1b8988b0fe5ba90"
+  integrity sha512-jnEwxG8vFoxVBh7ahx2G6IpUvjH4yB3RNj6C9FX1C3XwQ4Km28dPp6obnRCXk/cZuh6tc/V4pSD9+jwv7r0Xgg==
   dependencies:
     chevrotain "^6.5.0"
     tiny-emitter "^2.1.0"

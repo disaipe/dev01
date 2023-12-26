@@ -118,33 +118,10 @@ export function configure(settings = {}) {
         toSync.rowHeights = store.value.worksheet._rows.map((row) => row.height * 1.33);
 
         instance.value.updateSettings(toSync);
-
-        updateRulerCellsHeight();
-    };
-
-    /**
-     * Manually set row headers height to avoid artifacts with multiline cells
-     */
-    const updateRulerCellsHeight = () => {
-        const table = instance.value.table;
-        const tableRowThs = table.querySelectorAll('tbody tr th');
-
-        const leftRowHeaders = instance.value.rootElement.querySelector('.ht_clone_left');
-        const leftRowHeaderThs = leftRowHeaders.querySelectorAll('table tbody tr th');
-
-        if (tableRowThs?.length && leftRowHeaderThs?.length) {
-            for (let row = 0; row < tableRowThs.length; row++) {
-                let height = tableRowThs[row].clientHeight;
-                leftRowHeaderThs[row].style.height = `${height}px`;
-                leftRowHeaderThs[row].dataset.height = `${height}px`;
-
-                tableRowThs[row].style.height = `${height}px`;
-            }
-        }
     };
 
     return {
-        // autoRowSize: true, // broken on merged cells
+        autoRowSize: true,
         rowHeaders: true,
         colHeaders: true,
         fillHandle: true,
@@ -154,7 +131,6 @@ export function configure(settings = {}) {
         manualRowResize: true,
         manualColumnResize: true,
         mergeCells: true,
-        renderAllRows: true, // required for correct ruler height calculation
         outsideClickDeselects: false,
         language: ruRU.languageCode,
         licenseKey: 'non-commercial-and-evaluation',
@@ -281,8 +257,6 @@ export function configure(settings = {}) {
          */
         afterColumnResize(newSize, column, isDoubleClick) {
             worksheet.value.getColumn(column + 1).width = round(newSize / 7.12, 2);
-
-            updateRulerCellsHeight();
         },
         /**
          * Fired by ManualRowResize plugin after rendering the table with modified row sizes.
@@ -293,8 +267,6 @@ export function configure(settings = {}) {
          */
         afterRowResize(newSize, row, isDoubleClick) {
             worksheet.value.getRow(row + 1).height = round(newSize / 1.33, 2);
-
-            updateRulerCellsHeight();
         },
         /**
          * Fired after Handsontable's data gets modified by the loadData() method or the updateSettings() method
@@ -306,10 +278,6 @@ export function configure(settings = {}) {
         afterLoadData(sourceData, initialLoad, source) {
             store.value.workbook.removeWorksheet(store.value.worksheet.id);
             store.value.worksheet = store.value.workbook.addWorksheet('Data');
-
-            setTimeout(() => {
-                updateRulerCellsHeight();
-            }, 500);
         },
         /**
          * Fired after the updateData() method modifies Handsontable's data.
