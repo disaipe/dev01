@@ -340,32 +340,6 @@ class ReferenceEntry
     }
 
     /**
-     * Setup reference additional filters
-     *
-     * Example:
-     * ```
-     * return [
-     *      'my_field' => fn (Builder $query, $value, array $filters) => $query->where('my_field_id', '=', $value)
-     * ];
-     * ```
-     */
-    public function makeFilters(): array
-    {
-        return [];
-    }
-
-    /**
-     * Get reference filters
-     */
-    public function getFilters(): array
-    {
-        $filters = $this->makeFilters();
-        $relatedFilters = $this->getRelatedFilters();
-
-        return array_merge($filters, $relatedFilters);
-    }
-
-    /**
      * Get model field name to display to user, e.g. "name", "display_name", etc
      */
     public function getPrimaryDisplayField(): ?string
@@ -438,23 +412,5 @@ class ReferenceEntry
         $key = "reference.{$base}";
 
         return Lang::has($key) ? $key : $base;
-    }
-
-    protected function getRelatedFilters(): array
-    {
-        $filters = [];
-        $fieldsSchema = $this->getSchema();
-
-        foreach ($fieldsSchema as $field => $schema) {
-            /** @var ReferenceFieldSchema $schema */
-
-            if ($relation = $schema->getRelation()) {
-                $filters[$field] = function (Builder $query, $value) use ($relation) {
-                    $query->whereHas($relation, fn (Builder $relatedQuery) => $relatedQuery->whereKey($value));
-                };
-            }
-        }
-
-        return $filters;
     }
 }
