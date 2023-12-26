@@ -171,7 +171,10 @@ class ReferenceController extends BaseController
         $results = [];
 
         foreach ($models as $model) {
-            $modelInstance = resolveModel($model);
+            if (! $modelInstance = resolveModel($model)) {
+                continue;
+            }
+
             $relatedMethod = 'asRelated';
 
             if (method_exists($modelInstance, $relatedMethod)) {
