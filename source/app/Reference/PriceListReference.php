@@ -6,6 +6,7 @@ use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceModel;
+use App\Core\Reference\ReferenceSchema;
 use App\Models\PriceList;
 use App\Models\User;
 
@@ -27,53 +28,37 @@ class PriceListReference extends ReferenceEntry
 
     public function getSchema(): array
     {
-        return [
-            'id' => ReferenceFieldSchema::make()
-                ->id(),
+        return ReferenceSchema::make()
+            ->forModel($this->model)
 
-            'name' => ReferenceFieldSchema::make()
+            ->withKey()
+
+            ->addField('name', ReferenceFieldSchema::make()
                 ->label('Наименование')
                 ->visible()
                 ->required()
                 ->max(128)
-                ->pinia(PiniaAttribute::string()),
+                ->pinia(PiniaAttribute::string()))
 
-            'company_id' => ReferenceFieldSchema::make()
-                ->hidden()
-                ->pinia(PiniaAttribute::number()),
-
-            'companies' => ReferenceFieldSchema::make()
+            ->addField('companies', ReferenceFieldSchema::make()
                 ->label('Организации')
                 ->visible()
                 ->eagerLoad()
-                ->pinia(PiniaAttribute::belongsToMany(
-                    'Company',
-                    'PriceListCompany',
-                    'company_id',
-                    'price_list_it'
-                )),
+                ->pinia(PiniaAttribute::hasManyBy('Company', 'companies.id')))
 
-            'companies_keys' => ReferenceFieldSchema::make()
-                ->hidden()
-                ->relatedTo('companies')
-                ->pinia(PiniaAttribute::attr()),
-
-            'service_provider_id' => ReferenceFieldSchema::make()
-                ->hidden()
-                ->pinia(PiniaAttribute::number()),
-
-            'service_provider' => ReferenceFieldSchema::make()
+            ->addField('service_provider', ReferenceFieldSchema::make()
                 ->label('Провайдер услуг')
                 ->required()
                 ->visible()
                 ->pinia(PiniaAttribute::belongsTo('ServiceProvider', 'service_provider_id'))
-                ->eagerLoad(),
+                ->eagerLoad())
 
-            'is_default' => ReferenceFieldSchema::make()
+            ->addField('is_default', ReferenceFieldSchema::make()
                 ->label('Использовать по-умолчанию')
                 ->visible()
-                ->pinia(PiniaAttribute::boolean()),
-        ];
+                ->pinia(PiniaAttribute::boolean()))
+
+            ->toArray();
     }
 
     public function getRecordMeta(): array

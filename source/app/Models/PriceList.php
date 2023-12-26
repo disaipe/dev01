@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Core\Reference\ReferenceModel;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -30,10 +29,6 @@ class PriceList extends ReferenceModel
         'is_default' => 'boolean',
     ];
 
-    protected $appends = [
-        'companies_keys'
-    ];
-
     public function companies(): BelongsToMany
     {
         return $this->belongsToMany(Company::class, 'price_list_companies');
@@ -47,13 +42,5 @@ class PriceList extends ReferenceModel
     public function values(): HasMany
     {
         return $this->hasMany(PriceListValue::class);
-    }
-
-    public function companiesKeys(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->companies->pluck('id')->toArray(),
-            set: fn ($v) => $this->companies()->sync($v)
-        );
     }
 }
