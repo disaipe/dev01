@@ -47,7 +47,7 @@ el-popover(
                         el-checkbox(
                             v-for='relatedOption of filteredRelatedOptions'
                             size='small'
-                            :label='relatedOption.$getKey()'
+                            :label='relatedOption[schema.relation.ownerKey]'
                         ) {{ relatedOption.$getName() }}
 
             //- BOOLEAN INPUT
