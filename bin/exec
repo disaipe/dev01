@@ -1,8 +1,15 @@
 #!/bin/sh
 
+dc=docker-compose
+
+if ! command -v "$dc" &> /dev/null
+then
+  dc="docker compose"
+fi
+
 if [ "$#" -eq 0 ]; then
-  docker-compose exec -u www-data php /bin/bash
+  $dc exec -u www-data php /bin/bash
   exit 0
 fi
 
-docker-compose exec -u www-data php $@
+$dc exec -u www-data php $@
