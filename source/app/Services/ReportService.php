@@ -51,7 +51,7 @@ class ReportService
     public function make(string $companyCode, string $period = null): self
     {
         $this->companyCode = $companyCode;
-        $this->period = $period;
+        $this->period = $period ?? Carbon::today()->format('Y-m');
 
         $this->company = Company::query()->where('code', '=', $companyCode)->first();
         $this->services = Service::query()->get()->keyBy('id')->collect();
