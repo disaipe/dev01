@@ -115,7 +115,6 @@ class ReferenceEntry
                 $entry->schema['company'] = ReferenceFieldSchema::make()
                     ->label('Организация')
                     ->required()
-                    ->visible()
                     ->eagerLoad()
                     ->pinia(PiniaAttribute::belongsTo('Company', 'company_code', 'code'));
             } else {
@@ -126,7 +125,6 @@ class ReferenceEntry
                 $entry->schema['company'] = ReferenceFieldSchema::make()
                     ->label('Организация')
                     ->required()
-                    ->visible()
                     ->eagerLoad()
                     ->pinia(PiniaAttribute::belongsTo('Company', 'company_id'));
             }

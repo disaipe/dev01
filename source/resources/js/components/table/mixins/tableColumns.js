@@ -4,6 +4,13 @@ import defaults from 'lodash/defaults';
 import { useTableStore } from '../../../store/modules';
 import sortBy from 'lodash/sortBy';
 
+const HIDDEN_BY_DEFAULT = [
+    'id',
+    'created_at',
+    'updated_at',
+    'deleted_at'
+];
+
 export default {
     data: () => ({
         columnStore: {}
@@ -93,6 +100,17 @@ export default {
                 for (const field of settings.visible) {
                     if (result[field]) {
                         result[field].visible = true;
+                    }
+                }
+            }
+
+            // check for visible columns and display all columns (almost) if visibility settings are not set
+            const columns = Object.values(result).filter((column) => column.visible);
+
+            if (!columns.length) {
+                for (const column of Object.values(result)) {
+                    if (!column.hidden && !HIDDEN_BY_DEFAULT.includes(column.field)) {
+                        column.visible = true;
                     }
                 }
             }
