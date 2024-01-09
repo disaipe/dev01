@@ -27,7 +27,9 @@ export default {
         return {
             tableProps: {
                 reference: 'OneCInfoBase',
-                context: { one_c_domain_user_id: recordId },
+                context: {
+                    one_c_domain_user_id: { $eq: recordId }
+                },
                 canCreate: false,
                 canUpdate: false,
                 canDelete: false

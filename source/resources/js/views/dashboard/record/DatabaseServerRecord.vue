@@ -17,7 +17,9 @@ export default {
         return {
             tableProps: {
                 reference: 'Database',
-                context: { database_server_id: recordId },
+                context: {
+                    database_server_id: { $eq: recordId }
+                },
                 canCreate: false,
                 canUpdate: true,
                 canDelete: false
