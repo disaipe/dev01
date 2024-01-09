@@ -3,6 +3,7 @@
 namespace App\Modules\OneC\Models;
 
 use App\Core\Reference\ReferenceModel;
+use App\Models\Company;
 use App\Modules\ActiveDirectory\Models\ADUserEntry;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
@@ -35,7 +36,7 @@ class OneCInfoBaseUser extends ReferenceModel
         $usersInstance = app(ADUserEntry::class);
         $usersTable = $usersInstance->getTable();
 
-        return parent::newQuery()->leftJoin(
+        return parent::newQuery()->join(
             $usersTable,
             $usersInstance->qualifyColumn('username'),
             '=',
@@ -50,6 +51,11 @@ class OneCInfoBaseUser extends ReferenceModel
     public function ad_user(): BelongsTo
     {
         return $this->belongsTo(ADUserEntry::class, 'login', 'username');
+    }
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class, 'company_prefix', 'code');
     }
 
     public function scopeCompany(Builder $query, string $code): void
