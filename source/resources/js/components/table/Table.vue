@@ -26,7 +26,8 @@
                         icon(icon='tabler:filter-off')
                         span Сбросить фильтры
 
-                TableColumnsSettings
+                table-export-settings(@on-export='download')
+                table-columns-settings
 
         vxe-table(
             v-if='fields || columns'
@@ -163,6 +164,7 @@ import { useProfilesSettingsStore } from '../../store/modules';
 
 import TableFilter from './TableFilter.vue';
 import TableColumnsSettings from './TableColumnsSettings.vue';
+import TableExportSettings from './TableExportSettings.vue';
 
 import './renderers';
 
@@ -170,7 +172,11 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 
 export default {
     name: 'ItTable',
-    components: { TableFilter, TableColumnsSettings },
+    components: {
+        TableFilter,
+        TableColumnsSettings,
+        TableExportSettings
+    },
     mixins: [tableSorts, tableFilters, tableContextMenu],
     provide() {
         return {
@@ -323,9 +329,7 @@ export default {
             }
         },
 
-        loadPages() {
-            this.loading = true;
-
+        getQueryParams() {
             const query = {
                 filters: cloneDeep(this.context || {})
             };
@@ -345,6 +349,14 @@ export default {
             if (Object.keys(this.sortsStore || {}).length) {
                 query.order = this.sortsStore;
             }
+
+            return query;
+        },
+
+        loadPages() {
+            this.loading = true;
+
+            const query = this.getQueryParams();
 
             return this.repository.fetch(query)
                 .then(({ response, items }) => {
@@ -367,6 +379,26 @@ export default {
                         this.pagination.total = total;
                     }
                 })
+                .catch((response) => {
+                    const message = `(${response.status}) ${response.statusText}`;
+                    raiseErrorMessage(message);
+                })
+                .finally(() => {
+                    this.$nextTick(() => {
+                        this.loading = false;
+                    });
+                });
+        },
+
+        download(options) {
+            this.loading = true;
+
+            const query = this.getQueryParams();
+            query.columns = this.visibleColumns.map((column) => column.field);
+            query.options = options;
+
+            return this.repository
+                .export(query)
                 .catch((response) => {
                     const message = `(${response.status}) ${response.statusText}`;
                     raiseErrorMessage(message);

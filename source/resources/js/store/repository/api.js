@@ -36,6 +36,29 @@ export default class Api extends Repository {
         return this.fetch({ id });
     }
 
+    export(params = {}) {
+        return this.api()
+            .post(`${this.baseURL()}/export`, params)
+            .then((response) => {
+                if (response.ok) {
+                    const { status, data } = response.data;
+
+                    if (status) {
+                        const b64toBlob = (base64, type = 'application/octet-stream') =>
+                            fetch(`data:${type};base64,${base64}`).then(res => res.blob())
+
+                        b64toBlob(data.content).then((blob) => {
+                            const a = document.createElement('a');
+                            a.href = URL.createObjectURL(blob);
+                            a.download = data.name;
+                            a.click();
+                            a.remove();
+                        });
+                    }
+                }
+            });
+    }
+
     push(record) {
         const body = record.$getAttributes();
 

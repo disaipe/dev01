@@ -2,6 +2,7 @@
 
 namespace App\Core\Reference;
 
+use App\Exports\ReferencesExport;
 use App\Http\Requests\ReferenceListingRequest;
 use App\Http\Requests\ReferencePushRequest;
 use App\Http\Resources\ProtocolRecordResource;
@@ -19,6 +20,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Arr;
+use Maatwebsite\Excel\Excel;
 
 class ReferenceController extends BaseController
 {
@@ -134,6 +136,70 @@ class ReferenceController extends BaseController
         return new JsonResponse([
             'status' => count($keys) === count($removed),
             'removed' => $removed,
+        ]);
+    }
+
+    public function export(Request $request): JsonResponse
+    {
+        $options = $request->input('options');
+
+        $format = Arr::get($options, 'format');
+        $onePage = Arr::get($options, 'one_page') === true;
+
+        // filters input
+        $filters = $request->input('filters');
+
+        // orders input
+        $sorts = $request->input('order');
+
+        // visible columns
+        $columns = $request->input('columns', []);
+
+        // make query
+        $query = $this->reference->query();
+
+        if ($onePage) {
+            // pagination options
+            $page = $request->input('page', 1);
+            $perPage = $request->input('perPage', 100);
+
+            $query->limit($perPage)->offset(($page - 1) * $perPage);
+        }
+
+        if ($filters) {
+            $query->filter();
+        }
+
+        if ($sorts) {
+            $this->applySort($query, $sorts);
+        }
+
+        // load used relations
+        $relations = $this->reference->getModelInstance()->listRelations();
+
+        foreach ($columns as $column) {
+            if (array_key_exists($column, $relations)) {
+                $query->with($column);
+            }
+        }
+
+        $rows = $query->get();
+
+        $writerType = match ($format) {
+            'xls' => Excel::XLS,
+            'csv' => Excel::CSV,
+            default => Excel::XLSX,
+        };
+
+        $export = new ReferencesExport($this->reference, $rows, $columns);
+        $data = $export->raw($writerType);
+
+        return new JsonResponse([
+           'status' => true,
+           'data' =>  [
+               'name' => "export.$format",
+               'content' => base64_encode($data)
+           ],
         ]);
     }
 

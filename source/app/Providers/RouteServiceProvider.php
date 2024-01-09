@@ -62,6 +62,7 @@ class RouteServiceProvider extends ServiceProvider
                         Route::post('remove', $controller->remove(...));
                     });
 
+                    Route::post('export', $controller->export(...));
                     Route::get('schema', $controller->schema(...));
                     Route::get('history/{record}', $controller->history(...));
                     Route::post('related', $controller->related(...));

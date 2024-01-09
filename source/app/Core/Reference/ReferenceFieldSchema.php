@@ -46,6 +46,16 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
     }
 
     /**
+     * Returns field label
+     *
+     * @return string|null
+     */
+    public function getLabel(): ?string
+    {
+        return Arr::get($this->attributes, 'label');
+    }
+
+    /**
      * Set field description
      *
      * @param string $description helper text to display near the field
