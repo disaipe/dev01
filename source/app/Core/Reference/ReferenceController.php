@@ -53,7 +53,7 @@ class ReferenceController extends BaseController
         $sorts = $request->input('order');
 
         // pagination options
-        $page = $request->input('page');
+        $page = $request->input('page', 1);
         $perPage = $request->input('perPage', 100);
 
         // make query
@@ -71,17 +71,13 @@ class ReferenceController extends BaseController
             $this->applySort($query, $sorts);
         }
 
-        $paginator = $query->paginate(
-            $perPage,
-            $query->qualifyColumn('*'),
-            'page',
-            $page
-        );
+        $total = $query->count();
+        $items = $query->limit($perPage)->offset(($page - 1) * $perPage)->get();
 
         return new JsonResponse([
             'status' => true,
-            'data' => ReferenceRecordsCollection::make($paginator->items()),
-            'total' => $paginator->total(),
+            'data' => ReferenceRecordsCollection::make($items),
+            'total' => $total,
         ]);
     }
 
