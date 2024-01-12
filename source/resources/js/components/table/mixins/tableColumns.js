@@ -111,6 +111,12 @@ export default {
                 for (const column of Object.values(result)) {
                     if (!column.hidden && !HIDDEN_BY_DEFAULT.includes(column.field)) {
                         column.visible = true;
+
+                        this.saveColumnVisibility({
+                            tableId: this.tableId,
+                            field: column.field,
+                            value: true
+                        });
                     }
                 }
             }
