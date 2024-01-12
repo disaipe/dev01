@@ -77,6 +77,18 @@ class OneCInfoBaseUser extends ReferenceModel
         });
     }
 
+    public function __construct()
+    {
+        parent::__construct();
+
+        // add additional filter fields that are attached from
+        // the ADUserEntry model
+        $this->filterFields = array_merge(
+            $this->availableFields(),
+            ['company_prefix']
+        );
+    }
+
     public function ad_user(): BelongsTo
     {
         return $this->belongsTo(ADUserEntry::class, 'login', 'username');
