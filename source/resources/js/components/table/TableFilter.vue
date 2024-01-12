@@ -107,7 +107,7 @@ const relation = ref(schema.value?.relation);
 const remoteField = computed(() => {
     if (schema.value) {
         if (schema.value.relation) {
-            return schema.value.relation.key || field.value;
+            return `${field.value}.${schema.value.relation.ownerKey}`;
         }
     }
 
