@@ -108,6 +108,7 @@ import { useReportSettingsStore } from '../../store/modules';
 import { useRepos } from '../../store/repository';
 import { useApi } from '../../utils/axiosClient';
 import batchApi from '../../utils/batchApi';
+import { applyBindings } from '../../components/spreadsheet/utils';
 import ItTable from "../../components/table/Table.vue";
 
 export default {
@@ -142,7 +143,7 @@ export default {
 
         const api = useApi();
 
-        let replacements = {};
+        let bindings = {};
 
         batchApi.batch('ServiceProvider,Company,ReportTemplate,Indicator').then((result) => {
             companies.value = orderBy(result.Company, 'name');
@@ -150,16 +151,15 @@ export default {
         });
 
         const cellModifier = (cell) => {
-            if (replacements[cell.value] !== undefined) {
+            if (cell.value === null) {
+                return;
+            }
+
+            const newValue = applyBindings(cell.value, bindings);
+
+            if (newValue !== cell.value) {
                 spread.value.instance.setCellMeta(cell.row - 1, cell.col - 1, 'original', cell.value);
-
-                const replacement = replacements[cell.value];
-
-                if (typeof(replacement) === 'number') {
-                    cell.value = replacement.toFixed(2);
-                } else {
-                    cell.value = replacement;
-                }
+                cell.value = newValue;
             }
         };
 
@@ -189,7 +189,7 @@ export default {
                         if (status) {
                             const { xlsx, values, errors } = data;
 
-                            replacements = values || {};
+                            bindings = values || {};
                             reportErrors.value = errors;
 
                             if (xlsx) {

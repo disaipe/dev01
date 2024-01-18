@@ -33,13 +33,21 @@
                         +cellTypeMenuItem('Стоимость услуги', 'servicePrice', 'cell-service-price')
 
                         el-dropdown-item(divided disabled) Данные договора
-                        +cellTypeMenuItem('Номер договора', 'contractNumber', 'cell-contract-number')
-                        +cellTypeMenuItem('Дата договора', 'contractDate', 'cell-contract-date')
+                        el-dropdown-item(@click='append("{CONTRACT_NUMBER}")') Номер договора
+                        el-dropdown-item(@click='append("{CONTRACT_DATE}")') Дата договора
 
                         el-dropdown-item(divided disabled) Итоговые суммы
-                        +cellTypeMenuItem('Итого', 'totalSum', 'cell-total')
-                        +cellTypeMenuItem('Итого НДС', 'totalVat', 'cell-total')
-                        +cellTypeMenuItem('Итого с НДС', 'totalWithVat', 'cell-total')
+                        el-dropdown-item(@click='append("{TOTAL}")') Итого
+                        el-dropdown-item(@click='append("{TOTAL_VAT}")') Итого НДС
+                        el-dropdown-item(@click='append("{TOTAL_WITH_VAT}")') Итого с НДС
+
+                        el-dropdown-item(divided disabled) Разное
+                        el-dropdown-item(@click='append("{PERIOD_YEAR}")') Год
+                        el-dropdown-item(@click='append("{PERIOD_MONTH}")') Месяц (номер)
+                        el-dropdown-item(@click='append("{PERIOD_MONTH_NAME}")') Месяц (наименование)
+                        el-dropdown-item(@click='append("{COMPANY_CODE}")') Код организации
+                        el-dropdown-item(@click='append("{COMPANY_NAME}")') Наименование организации
+                        el-dropdown-item(@click='append("{COMPANY_NAME_FULL}")') Наименование организации (полное)
 
                         el-dropdown-item(divided @click='resetCellFormat')
                             icon.mr-1(icon='tabler:circle-off')
@@ -128,6 +136,12 @@ export default {
             cellFormatter(instance, cell.value, cell.row - 1, cell.col - 1, { services });
         };
 
+        const append = (str) => {
+            const [[row, col]] = instance.value.getSelected();
+            const data = instance.value.getDataAtCell(row, col) || '';
+            instance.value.setDataAtCell(row, col, `${data}${str}`);
+        }
+
         const resetCellFormat = (render = true) => {
             const ranges = instance.value.getSelectedRange();
             for (const range of ranges) {
@@ -176,6 +190,7 @@ export default {
 
             formatCell,
             resetCellFormat,
+            append,
 
             load,
             save
@@ -196,15 +211,6 @@ export default {
 }
 .cell-service-price {
     @apply !bg-yellow-100 text-right;
-}
-.cell-contract-number {
-    @apply !bg-emerald-100;
-}
-.cell-contract-date {
-    @apply !bg-indigo-100;
-}
-.cell-total {
-    @apply !bg-rose-400;
 }
 .helper {
     @apply block w-4 h-4 border border-gray-300;

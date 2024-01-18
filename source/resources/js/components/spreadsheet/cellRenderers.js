@@ -47,26 +47,6 @@ export function servicePriceCellRenderer(instance, td, row, column, prop, value,
     }
 }
 
-export function contractNumberRenderer(instance, td, row, column, prop, value, cellProperties) {
-    td.innerText = 'ДОГ_НОМ';
-
-    const { className } = cellProperties;
-
-    if (className) {
-        td.classList.add(className);
-    }
-}
-
-export function contractDateRenderer(instance, td, row, column, prop, value, cellProperties) {
-    td.innerText = 'ДОГ_ДАТА';
-
-    const { className } = cellProperties;
-
-    if (className) {
-        td.classList.add(className);
-    }
-}
-
 export function priceValueRenderer(instance, td, row, column, prop, value, cellProperties) {
     if (!value) {
         td.style.backgroundColor = '#FF000011';
@@ -79,34 +59,4 @@ export function priceValueRenderer(instance, td, row, column, prop, value, cellP
     }
 
     td.innerText = value;
-}
-
-export function totalSumRenderer(instance, td, row, column, prop, value, cellProperties) {
-    td.innerText = 'ИТОГО';
-
-    const { className } = cellProperties;
-
-    if (className) {
-        td.classList.add(className);
-    }
-}
-
-export function totalVatRenderer(instance, td, row, column, prop, value, cellProperties) {
-    td.innerText = 'НДС';
-
-    const { className } = cellProperties;
-
-    if (className) {
-        td.classList.add(className);
-    }
-}
-
-export function totalWithVatRenderer(instance, td, row, column, prop, value, cellProperties) {
-    td.innerText = 'Итого с НДС';
-
-    const { className } = cellProperties;
-
-    if (className) {
-        td.classList.add(className);
-    }
 }

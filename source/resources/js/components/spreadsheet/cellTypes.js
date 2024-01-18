@@ -1,12 +1,7 @@
 import {
     serviceNameCellRenderer,
     serviceCountCellRenderer,
-    servicePriceCellRenderer,
-    contractNumberRenderer,
-    contractDateRenderer,
-    totalSumRenderer,
-    totalVatRenderer,
-    totalWithVatRenderer
+    servicePriceCellRenderer
 } from './cellRenderers';
 
 import { SelectEditor } from 'handsontable/editors';
@@ -51,51 +46,6 @@ export default ({ services, contract }) => ({
             selectOptions: () => getServiceSelectOption(services, 'PRICE'),
             type: 'numeric',
             className: 'cell-service-price'
-        }
-    },
-
-    contractNumber: {
-        pattern: /CONTRACT#NUMBER/,
-        renderer: contractNumberRenderer,
-        data: 'CONTRACT#NUMBER',
-        meta: {
-            className: 'cell-contract-number'
-        }
-    },
-
-    contractDate: {
-        pattern: /CONTRACT#DATE/,
-        renderer: contractDateRenderer,
-        data: 'CONTRACT#DATE',
-        meta: {
-            className: 'cell-contract-date'
-        }
-    },
-
-    totalSum: {
-        pattern: /TOTAL/,
-        renderer: totalSumRenderer,
-        data: 'TOTAL',
-        meta: {
-            className: 'cell-total'
-        }
-    },
-
-    totalVat: {
-        pattern: /TOTAL_VAT/,
-        renderer: totalVatRenderer,
-        data: 'TOTAL_VAT',
-        meta: {
-            className: 'cell-total'
-        }
-    },
-
-    totalWithVat: {
-        pattern: /TOTAL_WITH_VAT/,
-        renderer: totalWithVatRenderer,
-        data: 'TOTAL_WITH_VAT',
-        meta: {
-            className: 'cell-total'
         }
     }
 });

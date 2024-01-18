@@ -103,14 +103,9 @@ class ReportService
         $cellReplacements['TOTAL_VAT'] = $vat;
         $cellReplacements['TOTAL_WITH_VAT'] = $total + $vat;
 
-        // Process contract cells
-        $contract = $this->getContract();
-        $cellReplacements['CONTRACT#NUMBER'] = $contract?->number ?? '';
-        $cellReplacements['CONTRACT#DATE'] = $contract?->date?->toDateString() ?? '';
-
         return [
             'errors' => $errors,
-            'values' => $cellReplacements,
+            'values' => array_merge($cellReplacements, $this->getContext()),
             'xlsx' => $this->template->content,
         ];
     }
@@ -308,14 +303,20 @@ class ReportService
     protected function getContext(): array
     {
         $period = Carbon::make($this->period);
+        $contract = $this->getContract();
 
         return [
             ReportContextConstant::PERIOD->name => $period,
             ReportContextConstant::PERIOD_RAW->name => $this->period,
-            ReportContextConstant::PERIOD_YEAR->name => $period->year,
-            ReportContextConstant::PERIOD_MONTH->name => $period->month,
+            ReportContextConstant::PERIOD_YEAR->name => strval($period->year),
+            ReportContextConstant::PERIOD_MONTH->name => strval($period->month),
+            ReportContextConstant::PERIOD_MONTH_NAME->name => $period->getTranslatedMonthName(),
             ReportContextConstant::COMPANY_ID->name => $this->company->getKey(),
             ReportContextConstant::COMPANY_CODE->name => $this->company->code,
+            ReportContextConstant::COMPANY_NAME->name => $this->company->name,
+            ReportContextConstant::COMPANY_NAME_FULL->name => $this->company->fullname ?? $this->company->name,
+            ReportContextConstant::CONTRACT_NUMBER->name => $contract?->number ?? '',
+            ReportContextConstant::CONTRACT_DATE->name => $contract?->date?->toDateString() ?? '',
         ];
     }
 

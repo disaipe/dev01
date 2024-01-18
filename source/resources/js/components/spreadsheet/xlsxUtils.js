@@ -15,17 +15,13 @@ import { registerAllModules } from 'handsontable/registry';
 
 import { makeMatrix } from '../../utils/arrayUtils';
 import { base64ToBuffer } from '../../utils/base64';
+import { getNumberSeparators } from '../../utils/localeUtils';
+import { isFormula } from './utils';
 
 import contextMenu from './contextMenu';
 
 registerLanguageDictionary(ruRU);
 registerAllModules();
-
-function isFormula(value) {
-    return value
-        && typeof(value) === 'string'
-        && value.startsWith('=');
-}
 
 const store = ref({
     spread: null,
@@ -71,9 +67,15 @@ function isMerged(row, col) {
 }
 
 export function configure(settings = {}) {
+    const numberFormat = getNumberSeparators();
+
     const hyperFormulaInstance = HyperFormula.buildEmpty({
         licenseKey: 'internal-use-in-handsontable',
-        chooseAddressMappingPolicy: new AlwaysSparse()
+        chooseAddressMappingPolicy: new AlwaysSparse(),
+
+        decimalSeparator: numberFormat.decimal,
+        thousandSeparator: '',      // disable support of the thousand separator
+        functionArgSeparator: ';'   // default separator ',' conflicts with some locales
     });
 
     const syncData = () => {
