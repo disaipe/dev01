@@ -37,10 +37,21 @@ class IndicatorValueMutator
             return $expressionLanguage->evaluate($optimizedExpression, ['value' => $v]);
         });
 
-        $this->mutators->put('ByteToKB', fn (float $v) => $v / 1000);
-        $this->mutators->put('ByteToMB', fn (float $v) => $v / pow(1000, 2));
-        $this->mutators->put('ByteToGB', fn (float $v) => $v / pow(1000, 3));
-        $this->mutators->put('ByteToTB', fn (float $v) => $v / pow(1000, 4));
+        $base = 1000;
+
+        $this->mutators->put('ByteToKB', fn (float $v) => $v / $base);
+        $this->mutators->put('ByteToMB', fn (float $v) => $v / pow($base, 2));
+        $this->mutators->put('ByteToGB', fn (float $v) => $v / pow($base, 3));
+        $this->mutators->put('ByteToTB', fn (float $v) => $v / pow($base, 4));
+
+        $this->mutators->put('KBToMB', fn (float $v) => $v / $base);
+        $this->mutators->put('KBToGB', fn (float $v) => $v / pow($base, 2));
+        $this->mutators->put('KBToTB', fn (float $v) => $v / pow($base, 3));
+
+        $this->mutators->put('MBToGB', fn (float $v) =>$v / $base);
+        $this->mutators->put('MBToTB', fn (float $v) => $v / pow($base, 2));
+
+        $this->mutators->put('GBToTB', fn (float $v) =>$v / $base);
     }
 
     public function get(): Collection
