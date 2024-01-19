@@ -24,6 +24,8 @@ class FileStorage extends ReferenceModel
 {
     use CompanyScope;
 
+    protected ?string $companyCodeColumn = 'company_code';
+
     protected $fillable = [
         'company_code',
         'name',
