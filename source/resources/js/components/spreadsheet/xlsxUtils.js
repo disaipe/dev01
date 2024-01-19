@@ -135,6 +135,7 @@ export function configure(settings = {}) {
         mergeCells: true,
         outsideClickDeselects: false,
         language: ruRU.languageCode,
+        renderAllRows: true,
         licenseKey: 'non-commercial-and-evaluation',
         formulas: {
             engine: hyperFormulaInstance
