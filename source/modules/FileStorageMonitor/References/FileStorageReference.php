@@ -6,6 +6,7 @@ use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceModel;
+use App\Core\Reference\ReferenceSchema;
 use App\Models\User;
 use App\Modules\FileStorageMonitor\Models\FileStorage;
 
@@ -15,55 +16,48 @@ class FileStorageReference extends ReferenceEntry
 
     public function getSchema(): array
     {
-        return [
-            'id' => ReferenceFieldSchema::make()
-                ->id(),
+        return ReferenceSchema::make()
+            ->forModel($this->model)
 
-            'name' => ReferenceFieldSchema::make()
+            ->withKey()
+
+            ->addField('name', ReferenceFieldSchema::make()
                 ->label('Наименование')
                 ->max(256)
                 ->required()
                 ->visible()
-                ->pinia(PiniaAttribute::string()),
+                ->pinia(PiniaAttribute::string()))
 
-            'company_code' => ReferenceFieldSchema::make()
-                ->label('Код организации')
-                ->pinia(PiniaAttribute::string()),
-
-            'company' => ReferenceFieldSchema::make()
+            ->addField('company', ReferenceFieldSchema::make()
                 ->label('Организация')
                 ->visible()
                 ->pinia(PiniaAttribute::belongsTo('Company', 'company_code', 'code'))
-                ->eagerLoad(),
+                ->eagerLoad())
 
-            'path' => ReferenceFieldSchema::make()
+            ->addField('path', ReferenceFieldSchema::make()
                 ->label('Путь к файловому хранилищу')
                 ->max(1024)
                 ->visible()
                 ->required()
-                ->pinia(PiniaAttribute::string()),
+                ->pinia(PiniaAttribute::string()))
 
-            'enabled' => ReferenceFieldSchema::make()
+            ->addField('enabled', ReferenceFieldSchema::make()
                 ->label('Активно')
-                ->pinia(PiniaAttribute::boolean()),
+                ->pinia(PiniaAttribute::boolean()))
 
-            'exclude' => ReferenceFieldSchema::make()
-                ->label('Не включать в отчет')
-                ->pinia(PiniaAttribute::boolean()),
-
-            'size' => ReferenceFieldSchema::make()
+            ->addField('size', ReferenceFieldSchema::make()
                 ->label('Размер')
                 ->readonly()
                 ->visible()
                 ->pinia(PiniaAttribute::number())
-                ->displayFilter('formatBytes'),
+                ->displayFilter('formatBytes'))
 
-            'last_sync' => ReferenceFieldSchema::make()
+            ->addField('last_sync', ReferenceFieldSchema::make()
                 ->label('Дата статуса')
                 ->readonly()
-                ->pinia(PiniaAttribute::datetime()),
+                ->pinia(PiniaAttribute::datetime()))
 
-            'last_status' => ReferenceFieldSchema::make()
+            ->addField('last_status', ReferenceFieldSchema::make()
                 ->label('Статус')
                 ->readonly()
                 ->options([
@@ -71,18 +65,19 @@ class FileStorageReference extends ReferenceEntry
                     'R' => 'Успешно',
                     'F' => 'Ошибка',
                 ])
-                ->pinia(PiniaAttribute::string()),
+                ->pinia(PiniaAttribute::string()))
 
-            'last_duration' => ReferenceFieldSchema::make()
+            ->addField('last_duration', ReferenceFieldSchema::make()
                 ->label('Продолжительность')
                 ->readonly()
-                ->pinia(PiniaAttribute::number()),
+                ->pinia(PiniaAttribute::number()))
 
-            'last_error' => ReferenceFieldSchema::make()
+            ->addField('last_error', ReferenceFieldSchema::make()
                 ->label('Последняя ошибка')
                 ->readonly()
-                ->pinia(PiniaAttribute::string()),
-        ];
+                ->pinia(PiniaAttribute::string()))
+
+            ->toArray();
     }
 
     protected function getLabelKey(): string
