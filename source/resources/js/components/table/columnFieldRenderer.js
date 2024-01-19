@@ -1,7 +1,17 @@
 import { h, resolveComponent } from 'vue';
 import filters from '../../plugin/filters';
 
-export function rawRenderer(value) {
+export function rawRenderer(value, row, field, fields) {
+    const filter = fields[field]?.filter;
+
+    if (Array.isArray(filter)) {
+        const [filterMethod, ...args] = filter;
+
+        if (typeof filters[filterMethod] === 'function') {
+            return filters[filterMethod].call(null, value, ...args);
+        }
+    }
+
     return value;
 }
 
