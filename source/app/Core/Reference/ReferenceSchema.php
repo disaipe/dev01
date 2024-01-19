@@ -69,7 +69,7 @@ class ReferenceSchema
 
         $this->addField($key, ReferenceFieldSchema::make()
             ->hidden()
-            ->pinia(PiniaAttribute::number())
+            ->pinia(PiniaAttribute::attr())
         );
     }
 
