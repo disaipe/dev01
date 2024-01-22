@@ -60,6 +60,11 @@ class SharepointService
             return null;
         }
 
+        $companyCodeField = Arr::get($sharepointList->options, 'company_prefix') ?? ['field' => 'company_code'];
+        $companyCodeField['ref'] = 'company_code';
+
+        $syncFields[] = $companyCodeField;
+
         $list = $service->getList($sharepointList->list_name, $sharepointList->list_site);
 
         if ($list) {
