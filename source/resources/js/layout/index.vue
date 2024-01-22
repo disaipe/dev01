@@ -76,68 +76,82 @@
                     title='Настройки'
                 )
                     el-scrollbar.pr-4
-                        .text-xs.text-gray-400.mb-1.
-                            Способ отображения формы создания и редактирования записей -
-                            в правом боковом меню или модальном окне
-                        el-select(v-model='profileSettings.formDisplayType')
-                            el-option(value='drawer' label='Боковое меню')
-                                .flex.items-center.space-x-2
-                                    icon.text-xl(icon='tabler:layout-sidebar-right')
-                                    span Боковое меню
-                            el-option(value='modal' label='Модальное окно')
-                                .flex.items-center.space-x-2
-                                    icon.text-xl(icon='tabler:app-window')
-                                    span Модальное окно
+                        .space-y-6
+                            div
+                                .text-xs.text-gray-400.mb-1.
+                                    Способ отображения формы создания и редактирования записей -
+                                    в правом боковом меню или модальном окне
+                                el-select(v-model='profileSettings.formDisplayType')
+                                    el-option(value='drawer' label='Боковое меню')
+                                        .flex.items-center.space-x-2
+                                            icon.text-xl(icon='tabler:layout-sidebar-right')
+                                            span Боковое меню
+                                    el-option(value='modal' label='Модальное окно')
+                                        .flex.items-center.space-x-2
+                                            icon.text-xl(icon='tabler:app-window')
+                                            span Модальное окно
+
+                            div
+                                .text-xs.text-gray-400.mb-1.
+                                    Региональные настройки для форматирования числовых значений в отчетах
+                                el-select(
+                                    v-model='profileSettings.numberFormatLocale'
+                                    @change='onChangeNumberFormatLocale'
+                                )
+                                    el-option(
+                                        v-for='(label, code) of countryCodes'
+                                        :value='code'
+                                        :label='label'
+                                    )
+
+                                .text-xs.text-gray-400.
+                                    Разделитель дробной части "{{currentNumberFormatOptions.decimal}}".
+                                    Пример отформатированного числа: {{ toFixed(1234.56) }}
             //- el-footer Footer
 </template>
 
-<script>
+<script setup>
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { useTabsStore, useProfilesSettingsStore } from '../store/modules';
 import usePage from '../utils/usePage';
+import { getCountryCodes, getNumberSeparators, toFixed } from '../utils/localeUtils';
 import BreadCrumbs from '../components/breadcrumbs/BreadCrumbs.vue';
 import SideBarMenu from './components/SideBarMenu.vue';
 
-export default {
-    name: 'BaseLayout',
-    components: { SideBarMenu, BreadCrumbs },
-    setup() {
-        const { cachedViews } = useTabsStore();
-        const profileSettings = useProfilesSettingsStore();
+const { cachedViews } = useTabsStore();
+const profileSettings = useProfilesSettingsStore();
 
-        const drawer = ref(false);
-        const company = ref(profileSettings.companyContext);
+const drawer = ref(false);
+const company = ref(profileSettings.companyContext);
 
-        const router = useRouter();
+const router = useRouter();
 
-        const { user } = usePage();
+const { user } = usePage();
 
-        if (! Object.hasOwn(user.companies, profileSettings.companyContext)) {
-            company.value = Object.values(user.companies)[0];
-            profileSettings.setCompanyContext(company.value);
-        }
+const countryCodes = getCountryCodes();
 
-        return {
-            isRouteScroll: computed(() => router.currentRoute.value.meta?.scroll !== false),
+if (! Object.hasOwn(user.companies, profileSettings.companyContext)) {
+    company.value = Object.values(user.companies)[0];
+    profileSettings.setCompanyContext(company.value);
+}
 
-            cachedViews,
-            user,
+const isRouteScroll = computed(() => router.currentRoute.value.meta?.scroll !== false);
+const currentNumberFormatOptions = computed(() => {
+    return getNumberSeparators(profileSettings.numberFormatLocale);
+});
 
-            drawer,
-            company,
-            profileSettings,
+const openSettingsDrawer = () => drawer.value = true;
 
-            openSettingsDrawer: () => drawer.value = true,
-            onChangeCompany: () => profileSettings.setCompanyContext(company.value),
-            logout: () => window.location.href = '/logout'
-        };
-    }
-};
+const onChangeCompany = () => profileSettings.setCompanyContext(company.value);
+
+const onChangeNumberFormatLocale = (event) => profileSettings.setNumberFormatLocale(event);
+
+const logout = () => window.location.href = '/logout';
 </script>
 
-<style lang='postcss'>
+<style scoped lang='postcss'>
 .app-wrapper {
     @apply w-full h-full;
 

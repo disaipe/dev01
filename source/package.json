@@ -29,6 +29,7 @@
         "hyperformula": "^2.6.0",
         "laravel-vite-plugin": "^0.7.2",
         "lodash": "^4.17.21",
+        "numbro": "^2.4.0",
         "pinia": "^2.0.29",
         "pinia-orm": "^1.5.1",
         "pinia-plugin-persistedstate": "^3.0.2",
