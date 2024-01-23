@@ -8,8 +8,6 @@ use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceModel;
 use App\Models\User;
 use App\Modules\OneC\Models\OneCInfoBase;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Arr;
 
 class OneCInfoBaseReference extends ReferenceEntry
 {
@@ -37,15 +35,6 @@ class OneCInfoBaseReference extends ReferenceEntry
                 ->label('Имя базы данных')
                 ->visible()
                 ->pinia(PiniaAttribute::string()),
-        ];
-    }
-
-    public function makeFilters(): array
-    {
-        return [
-            'one_c_domain_user_id' => function (Builder $query, $value) {
-                $query->whereHas('domain_users', fn (Builder $subQuery) => $subQuery->whereKey(Arr::wrap($value)));
-            }
         ];
     }
 
