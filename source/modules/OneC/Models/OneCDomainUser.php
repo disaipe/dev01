@@ -28,6 +28,12 @@ class OneCDomainUser extends ReferenceModel
         'blocked' => 'boolean',
     ];
 
+    protected $filterFields = [
+        'one_c_domain_user_id',
+        'one_c_info_base_user_id',
+        'one_c_info_base_id',
+    ];
+
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class, 'company_prefix', 'code');

@@ -31,7 +31,7 @@ class OneCInfoBase extends ReferenceModel
         'db_base',
     ];
 
-    public function domainUsers(): BelongsToMany
+    public function domain_users(): BelongsToMany
     {
         return $this->belongsToMany(
             OneCDomainUser::class,

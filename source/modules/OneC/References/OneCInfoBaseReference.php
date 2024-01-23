@@ -44,7 +44,7 @@ class OneCInfoBaseReference extends ReferenceEntry
     {
         return [
             'one_c_domain_user_id' => function (Builder $query, $value) {
-                $query->whereHas('domainUsers', fn (Builder $subQuery) => $subQuery->whereKey(Arr::wrap($value)));
+                $query->whereHas('domain_users', fn (Builder $subQuery) => $subQuery->whereKey(Arr::wrap($value)));
             }
         ];
     }
