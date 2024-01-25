@@ -31,6 +31,16 @@ class OneCInfoBaseReference extends ReferenceEntry
                 ->visible()
                 ->pinia(PiniaAttribute::string()),
 
+            'company_code' => ReferenceFieldSchema::make()
+                ->label('Код организации')
+                ->pinia(PiniaAttribute::string()),
+
+            'company' => ReferenceFieldSchema::make()
+                ->label('Организация')
+                ->visible()
+                ->eagerLoad()
+                ->pinia(PiniaAttribute::belongsTo('Company', 'company_code', 'code')),
+
             'ref' => ReferenceFieldSchema::make()
                 ->label('Имя базы данных')
                 ->visible()
