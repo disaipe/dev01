@@ -55,6 +55,6 @@ class ADEntryCountExpression extends CountExpression
             class_basename(ADComputerEntry::class),
         ];
 
-        return !in_array($reference, $references);
+        return ! in_array($reference, $references);
     }
 }

@@ -47,8 +47,6 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
 
     /**
      * Returns field label
-     *
-     * @return string|null
      */
     public function getLabel(): ?string
     {
@@ -58,7 +56,7 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
     /**
      * Set field description
      *
-     * @param string $description helper text to display near the field
+     * @param  string  $description helper text to display near the field
      * @return $this
      */
     public function description(string $description): static
@@ -245,7 +243,6 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
     /**
      * Link field to relation field
      *
-     * @param string $relation
      * @return $this
      */
     public function relatedTo(string $relation): static
@@ -257,8 +254,6 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
 
     /**
      * Get linked relation field name
-     *
-     * @return string|null
      */
     public function getRelation(): ?string
     {

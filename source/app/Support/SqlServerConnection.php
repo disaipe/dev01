@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Config;
 class SqlServerConnection
 {
     /**
-     * @param string $name connection name
+     * @param  string  $name connection name
      * @param array{
      *     db_driver?: string,
      *     db_host: string,
@@ -17,7 +17,6 @@ class SqlServerConnection
      *     db_username: string,
      *     db_password: string,
      * } $config connection params
-     * @return void
      */
     public static function setup(string $name, array $config = []): void
     {

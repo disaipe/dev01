@@ -191,6 +191,7 @@ class QueryExpressionType implements IExpressionType
             if (class_exists($expression)) {
                 /** @var IExpression $instance */
                 $instance = app()->make($expression, ['options' => $options]);
+
                 return $instance;
             }
         }

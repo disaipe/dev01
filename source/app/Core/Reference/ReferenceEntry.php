@@ -224,7 +224,8 @@ class ReferenceEntry
         }
 
         $snaked = Str::snake($this->getName());
-        return preg_replace('/(\d+)/', '_$1_' ,$snaked);
+
+        return preg_replace('/(\d+)/', '_$1_', $snaked);
     }
 
     /**

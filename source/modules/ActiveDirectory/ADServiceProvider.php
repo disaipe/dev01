@@ -58,6 +58,7 @@ class ADServiceProvider extends ModuleBaseServiceProvider
         $references->register(ADUserEntryReference::class);
         $references->register(ADComputerEntryReference::class);
     }
+
     public function onBooting(): void
     {
         /** @var ExpressionManager $expressions */

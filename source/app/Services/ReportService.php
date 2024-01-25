@@ -211,8 +211,10 @@ class ReportService
         $indicators = [];
 
         foreach ($services as $service) {
-            $indicator = Arr::get($registeredIndicators, $service->indicator_code);
-            $indicators[$service->getKey()] = $indicator;
+            if ($service) {
+                $indicator = Arr::get($registeredIndicators, $service->indicator_code);
+                $indicators[$service->getKey()] = $indicator;
+            }
         }
 
         return $indicators;
@@ -229,7 +231,7 @@ class ReportService
                 'indicator' => $indicator,
             ];
 
-            if ($indicator) {
+            if (is_a($indicator, Indicator::class)) {
                 try {
                     $results[$serviceKey]['value'] = $this->calculateIndicator($indicator);
                 } catch (\Exception $e) {

@@ -5,8 +5,8 @@ namespace App\Modules\OneC\Jobs;
 use App\Core\Module\ModuleScheduledJob;
 use App\Modules\DatabaseMonitor\Models\DatabaseServer;
 use App\Modules\OneC\Enums\DatabaseType;
-use App\Modules\OneC\Models\OneCInfoBaseUser;
 use App\Modules\OneC\Models\OneCInfoBase;
+use App\Modules\OneC\Models\OneCInfoBaseUser;
 use App\Utils\DomainUtils;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
@@ -94,7 +94,6 @@ class SyncOneCServerUsers extends ModuleScheduledJob
 
         foreach ($this->infoBases as $infoBase) {
             /** @var OneCInfoBase $infoBase */
-
             try {
                 $userCount = $this->getInfoBaseUsers($infoBase, $connection);
                 $results[$infoBase->ref] = [

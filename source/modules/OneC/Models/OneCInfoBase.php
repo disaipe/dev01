@@ -3,11 +3,11 @@
 namespace App\Modules\OneC\Models;
 
 use App\Core\Reference\ReferenceModel;
+use App\Core\Traits\ExtendSelectQuery;
 use App\Core\Traits\WithoutSoftDeletes;
 use App\Models\Company;
 use App\Modules\DatabaseMonitor\Models\Database;
 use App\Modules\DatabaseMonitor\Models\DatabaseServer;
-use App\Core\Traits\ExtendSelectQuery;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -67,7 +67,7 @@ class OneCInfoBase extends ReferenceModel
                     'company_code',
                 ]))
                 ->addSelect($serversInstance->qualifyColumns([
-                    "{$serversInstance->getKeyName()} as database_server_id"
+                    "{$serversInstance->getKeyName()} as database_server_id",
                 ]));
         });
     }

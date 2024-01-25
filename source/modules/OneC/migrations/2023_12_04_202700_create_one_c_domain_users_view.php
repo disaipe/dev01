@@ -51,4 +51,3 @@ return new class extends Migration
         DB::statement("DROP VIEW `$this->viewName`");
     }
 };
-

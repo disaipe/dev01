@@ -4,7 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 if (! function_exists('resolveModel')) {
-    function resolveModel(string $model): Model|null
+    function resolveModel(string $model): ?Model
     {
         $className = collect(get_declared_classes())
             ->filter(fn ($class) => Str::endsWith($class, "\\$model"))

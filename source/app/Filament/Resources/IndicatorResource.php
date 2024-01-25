@@ -92,10 +92,10 @@ class IndicatorResource extends Resource
                     $headerParts = [__('admin.$indicator.mutator')];
 
                     if ($type = $get('schema.mutator.type')) {
-                        $headerParts []= '('.__("mutator.$type").')';
+                        $headerParts[] = '('.__("mutator.$type").')';
                     }
 
-                    return join(' ', $headerParts);
+                    return implode(' ', $headerParts);
                 })
                     ->icon('heroicon-o-calculator')
                     ->statePath('schema.mutator')
@@ -113,7 +113,7 @@ class IndicatorResource extends Resource
                                 Forms\Components\TextInput::make('value')
                                     ->label(__('admin.value')),
 
-                                RawHtmlContent::make(__('mutator.expression help'))
+                                RawHtmlContent::make(__('mutator.expression help')),
                             ])
                             ->visible(fn (Get $get) => $get('type') === 'Expression'),
 
@@ -140,7 +140,7 @@ class IndicatorResource extends Resource
                                     ]),
                             ])
                             ->visible(fn (Get $get) => $get('type') === 'Fixed'),
-                    ])
+                    ]),
             ]);
     }
 
@@ -197,6 +197,6 @@ class IndicatorResource extends Resource
 
     public static function canEdit(Model $record): bool
     {
-        return !$record->getAttribute('module');
+        return ! $record->getAttribute('module');
     }
 }

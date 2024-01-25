@@ -5,7 +5,7 @@ namespace App\Core\Enums;
 enum QueryConditionOperator: string
 {
     case EQUAL = '=';
-    CASE EQUAL_OR_MORE = '>=';
+    case EQUAL_OR_MORE = '>=';
     case EQUAL_OR_LESS = '<=';
     case NOT_EQUAL = '<>';
     case LIKE = 'like';

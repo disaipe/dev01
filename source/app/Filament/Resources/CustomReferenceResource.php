@@ -83,8 +83,8 @@ class CustomReferenceResource extends Resource
                             ->native(false)
                             ->allowHtml()
                             ->default(CustomReferenceContextType::Code->value)
-                            ->visible(fn (Get $get) => !!$get('company_context'))
-                            ->required(fn (Get $get) => !!$get('company_context')),
+                            ->visible(fn (Get $get) => (bool) $get('company_context'))
+                            ->required(fn (Get $get) => (bool) $get('company_context')),
 
                         Forms\Components\Toggle::make('enabled')
                             ->label('Активно')
@@ -93,7 +93,7 @@ class CustomReferenceResource extends Resource
                             ->offColor(Color::Red)
                             ->onColor(Color::Green)
                             ->columnSpanFull(),
-                ]),
+                    ]),
 
                 Forms\Components\Section::make('Конфигурация полей')
                     ->columnSpanFull()

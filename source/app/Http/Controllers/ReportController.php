@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
-    public function makeReport(Request $request)
+    public function makeReport(Request $request): JsonResponse
     {
         $companyCode = $request->input('company');
         $reportTemplateId = $request->input('template');

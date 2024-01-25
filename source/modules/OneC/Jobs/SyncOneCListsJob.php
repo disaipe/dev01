@@ -36,6 +36,7 @@ class SyncOneCListsJob extends ModuleScheduledJob
 
             if (! $content) {
                 $results[$file] = $response->json('Error');
+
                 continue;
             }
 

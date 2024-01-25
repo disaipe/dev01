@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\IndicatorResource\Pages;
 
 use App\Filament\Resources\IndicatorResource;
-use App\Models\StaticIndicator;
 use App\Models\IndicatorGroup;
+use App\Models\StaticIndicator;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;

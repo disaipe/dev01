@@ -73,11 +73,11 @@ class DirectumUser extends ReferenceModel
 
     public function scopeCompany(Builder $query, string $code): void
     {
-        $query->whereHas('user', fn(Builder $q) => $q->company($code));
+        $query->whereHas('user', fn (Builder $q) => $q->company($code));
     }
 
     public function scopeActive(Builder $query): void
     {
-        $query->whereHas('user', fn(Builder $q) => $q->active());
+        $query->whereHas('user', fn (Builder $q) => $q->active());
     }
 }

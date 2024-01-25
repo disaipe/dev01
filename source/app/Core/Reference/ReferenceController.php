@@ -191,11 +191,11 @@ class ReferenceController extends BaseController
         $data = $export->raw($writerType);
 
         return new JsonResponse([
-           'status' => true,
-           'data' =>  [
-               'name' => "export.$format",
-               'content' => base64_encode($data)
-           ],
+            'status' => true,
+            'data' => [
+                'name' => "export.$format",
+                'content' => base64_encode($data),
+            ],
         ]);
     }
 

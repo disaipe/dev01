@@ -34,6 +34,7 @@ class IndicatorValueMutator
             $optimizedExpression = preg_replace('/(?:^|\s)(value)(?:\s|$)/i', 'value', $expression);
 
             $expressionLanguage = new ExpressionLanguage();
+
             return $expressionLanguage->evaluate($optimizedExpression, ['value' => $v]);
         });
 
@@ -48,10 +49,10 @@ class IndicatorValueMutator
         $this->mutators->put('KBToGB', fn (float $v) => $v / pow($base, 2));
         $this->mutators->put('KBToTB', fn (float $v) => $v / pow($base, 3));
 
-        $this->mutators->put('MBToGB', fn (float $v) =>$v / $base);
+        $this->mutators->put('MBToGB', fn (float $v) => $v / $base);
         $this->mutators->put('MBToTB', fn (float $v) => $v / pow($base, 2));
 
-        $this->mutators->put('GBToTB', fn (float $v) =>$v / $base);
+        $this->mutators->put('GBToTB', fn (float $v) => $v / $base);
     }
 
     public function get(): Collection

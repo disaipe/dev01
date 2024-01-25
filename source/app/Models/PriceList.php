@@ -15,7 +15,6 @@ use Illuminate\Support\Collection;
  * @property ServiceProvider service_provider
  * @property Collection<Company> companies
  * @property Collection<PriceListValue> values
- * @method
  */
 class PriceList extends ReferenceModel
 {

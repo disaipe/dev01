@@ -42,7 +42,7 @@ class SumExpression extends Expression implements IQueryExpression
                 ->label(__('admin.$indicator.column'))
                 ->options(fn (Component $component) => static::getReferenceColumns($component))
                 ->native(false)
-                ->required()
+                ->required(),
         ];
     }
 

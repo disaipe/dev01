@@ -35,7 +35,8 @@ class Indicator extends Model
         'published' => 'bool',
     ];
 
-    public function group(): BelongsTo {
+    public function group(): BelongsTo
+    {
         return $this->belongsTo(IndicatorGroup::class, 'indicator_group_id');
     }
 

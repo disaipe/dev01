@@ -29,7 +29,7 @@ class StaticIndicator extends Model
 
         $rows = collect($indicators->getIndicators())
             ->whereNotNull('module')
-            ->map(function (\App\Core\Indicator\Indicator  $indicator) use($modules) {
+            ->map(function (\App\Core\Indicator\Indicator $indicator) use ($modules) {
                 return [
                     'code' => $indicator->code,
                     'name' => $indicator->name,

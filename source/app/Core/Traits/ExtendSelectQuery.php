@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-trait ExtendSelectQuery {
+trait ExtendSelectQuery
+{
     protected const SELECT_SCOPE = 'SELECT_SCOPE';
 
     protected static function extendSelect(Closure $makeQuery): void

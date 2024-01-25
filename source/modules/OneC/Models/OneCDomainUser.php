@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string login
  * @property string domain
  * @property string company_prefix
- * @property integer info_base_count
+ * @property int info_base_count
  */
 class OneCDomainUser extends ReferenceModel
 {

@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name', 256);
             $table->string('conn_string', 512)->nullable();
-            $table->string('server',256)->nullable();
+            $table->string('server', 256)->nullable();
             $table->string('ref', 128)->nullable();
-            $table->string('list_path',1024);
+            $table->string('list_path', 1024);
             $table->string('db_type', 64)->nullable();
             $table->string('db_server', 128)->nullable();
             $table->string('db_base', 128)->nullable();

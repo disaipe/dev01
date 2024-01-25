@@ -45,7 +45,7 @@ class ReferencesExport implements FromCollection, ShouldAutoSize, WithHeadings, 
             /** @var ?ReferenceFieldSchema $field */
             $field = $schema[$column];
 
-            $headings []= $field ? $field->getLabel() : $column;
+            $headings[] = $field ? $field->getLabel() : $column;
         }
 
         return $headings;
@@ -57,17 +57,17 @@ class ReferencesExport implements FromCollection, ShouldAutoSize, WithHeadings, 
             $rowData = [];
 
             foreach ($this->columns as $column) {
-                $rowData []= $this->transformValue($record, $column);
+                $rowData[] = $this->transformValue($record, $column);
             }
 
-            return  $rowData;
+            return $rowData;
         });
     }
 
     public function styles(Worksheet $sheet): array
     {
         return [
-            1  => ['font' => ['bold' => true]],
+            1 => ['font' => ['bold' => true]],
         ];
     }
 

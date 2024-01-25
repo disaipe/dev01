@@ -13,9 +13,9 @@ use App\Modules\OneC\Commands\OneCSyncServerListCommand;
 use App\Modules\OneC\Jobs\SyncOneCListsJob;
 use App\Modules\OneC\Jobs\SyncOneCServersListsJob;
 use App\Modules\OneC\Jobs\SyncOneCServersUsers;
+use App\Modules\OneC\References\OneCDomainUserReference;
 use App\Modules\OneC\References\OneCInfoBaseReference;
 use App\Modules\OneC\References\OneCInfoBaseUserReference;
-use App\Modules\OneC\References\OneCDomainUserReference;
 use App\Support\Forms\RpcConnectionSettingsForm;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Group;
@@ -132,7 +132,7 @@ class OneCServiceProvider extends ModuleBaseServiceProvider
                                             ->label(__('admin.run'))
                                             ->action(fn () => $this->runJob(SyncOneCServersUsers::class)),
                                     ]),
-                            ])
+                            ]),
                         ]),
 
                         Tabs\Tab::make(__('admin.description'))->schema([
