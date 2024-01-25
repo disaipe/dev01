@@ -3,13 +3,12 @@
 namespace App\Modules\Directum\Models;
 
 use App\Core\Reference\ReferenceModel;
+use App\Core\Traits\ExtendSelectQuery;
 use App\Core\Traits\WithoutSoftDeletes;
 use App\Models\Company;
 use App\Modules\ActiveDirectory\Models\ADUserEntry;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 /**
  * @property string name
@@ -18,9 +17,7 @@ use Illuminate\Support\Str;
  */
 class DirectumUser extends ReferenceModel
 {
-    use WithoutSoftDeletes;
-
-    const SELECT_SCOPE = 'SELECT_SCOPE';
+    use ExtendSelectQuery, WithoutSoftDeletes;
 
     protected $fillable = [
         'name',
@@ -33,47 +30,22 @@ class DirectumUser extends ReferenceModel
 
     protected static function booted(): void
     {
-        // Some strange magic to append columns from ADUserEntry model.
-        // This is required to be able to work with data as with a regular table.
-        static::addGlobalScope(static::SELECT_SCOPE, function (Builder $builder) {
-            if (Str::startsWith($builder->withoutGlobalScope(static::SELECT_SCOPE)->toSql(), 'select')) {
-                /** @var ADUserEntry $usersInstance */
-                $usersInstance = app(ADUserEntry::class);
-                $usersTable = $usersInstance->getTable();
+        static::extendSelect(function (Builder $builder) {
+            /** @var ADUserEntry $usersInstance */
+            $usersInstance = app(ADUserEntry::class);
+            $usersTable = $usersInstance->getTable();
 
-                $query = $builder->getQuery();
-                $bindings = $builder->getBindings();
-
-                $subQuery = $builder->getModel()->newModelQuery()->join(
-                    $usersTable,
-                    $usersInstance->qualifyColumn('username'),
-                    '=',
-                    $builder->qualifyColumn('name')
-                )
-                    ->select($builder->qualifyColumn('*'))
-                    ->addSelect($usersInstance->qualifyColumns([
-                        'company_prefix',
-                        'name as fullname',
-                        'post',
-                    ]));
-
-                $newQuery = DB::table(
-                    DB::raw("({$subQuery->toSql()}) as `{$builder->getModel()->getTable()}`")
-                );
-
-                $builder
-                    ->setQuery($newQuery)
-                    ->mergeWheres($query->wheres, $bindings)
-                    ->withoutGlobalScope(static::SELECT_SCOPE);
-
-                if ($query->limit) {
-                    $builder->limit($query->limit);
-                }
-
-                if ($query->offset) {
-                    $builder->offset($query->offset);
-                }
-            }
+            return $builder->getModel()->newModelQuery()->join(
+                $usersTable,
+                $usersInstance->qualifyColumn('username'),
+                '=',
+                $builder->qualifyColumn('name')
+            )
+                ->addSelect($usersInstance->qualifyColumns([
+                    'company_prefix',
+                    'name as fullname',
+                    'post',
+                ]));
         });
     }
 

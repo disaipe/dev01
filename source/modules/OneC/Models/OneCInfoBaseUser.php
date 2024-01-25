@@ -3,12 +3,11 @@
 namespace App\Modules\OneC\Models;
 
 use App\Core\Reference\ReferenceModel;
+use App\Core\Traits\ExtendSelectQuery;
 use App\Models\Company;
 use App\Modules\ActiveDirectory\Models\ADUserEntry;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 /**
  * @property int one_c_info_base_id
@@ -20,7 +19,7 @@ use Illuminate\Support\Str;
  */
 class OneCInfoBaseUser extends ReferenceModel
 {
-    const SELECT_SCOPE = 'SELECT_SCOPE';
+    use ExtendSelectQuery;
 
     protected $fillable = [
         'one_c_info_base_id',
@@ -35,45 +34,20 @@ class OneCInfoBaseUser extends ReferenceModel
 
     protected static function booted(): void
     {
-        // Some strange magic to append columns from ADUserEntry model.
-        // This is required to be able to work with data as with a regular table.
-        static::addGlobalScope(static::SELECT_SCOPE, function (Builder $builder) {
-            if (Str::startsWith($builder->withoutGlobalScope(static::SELECT_SCOPE)->toSql(), 'select')) {
-                /** @var ADUserEntry $usersInstance */
-                $usersInstance = app(ADUserEntry::class);
-                $usersTable = $usersInstance->getTable();
+        static::extendSelect(function (Builder $builder) {
+            /** @var ADUserEntry $usersInstance */
+            $usersInstance = app(ADUserEntry::class);
+            $usersTable = $usersInstance->getTable();
 
-                $query = $builder->getQuery();
-                $bindings = $builder->getBindings();
-
-                $subQuery = $builder->getModel()->newModelQuery()->join(
-                    $usersTable,
-                    $usersInstance->qualifyColumn('username'),
-                    '=',
-                    $builder->qualifyColumn('login')
-                )
-                    ->select($builder->qualifyColumn('*'))
-                    ->addSelect($usersInstance->qualifyColumns([
-                        'company_prefix',
-                    ]));
-
-                $newQuery = DB::table(
-                    DB::raw("({$subQuery->toSql()}) as `{$builder->getModel()->getTable()}`")
-                );
-
-                $builder
-                    ->setQuery($newQuery)
-                    ->mergeWheres($query->wheres, $bindings)
-                    ->withoutGlobalScope(static::SELECT_SCOPE);
-
-                if ($query->limit) {
-                    $builder->limit($query->limit);
-                }
-
-                if ($query->offset) {
-                    $builder->offset($query->offset);
-                }
-            }
+            return $builder->getModel()->newModelQuery()->join(
+                $usersTable,
+                $usersInstance->qualifyColumn('username'),
+                '=',
+                $builder->qualifyColumn('login')
+            )
+                ->addSelect($usersInstance->qualifyColumns([
+                    'company_prefix',
+                ]));
         });
     }
 
