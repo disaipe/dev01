@@ -28,11 +28,19 @@ class OneCDomainUser extends ReferenceModel
         'blocked' => 'boolean',
     ];
 
-    protected $filterFields = [
-        'one_c_domain_user_id',
-        'one_c_info_base_user_id',
-        'one_c_info_base_id',
-    ];
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->filterFields = array_merge(
+            $this->availableFields(),
+            [
+                'one_c_domain_user_id',
+                'one_c_info_base_user_id',
+                'one_c_info_base_id',
+            ]
+        );
+    }
 
     public function company(): BelongsTo
     {
