@@ -19,6 +19,8 @@ VXETable.renderer.add('model-field', {
                 case 'boolean':
                     rendererType = 'switch';
                     break;
+                case 'switch':
+                case 'checkbox':
                 case 'datetime':
                 case 'date':
                 case 'select':

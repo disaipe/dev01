@@ -16,8 +16,6 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
 
     protected bool $eagerLoad = false;
 
-    protected ?string $relation = null;
-
     protected function __construct()
     {
         $this->attributes = [];
@@ -139,6 +137,18 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
     }
 
     /**
+     * Set field type checkbox
+     *
+     * @return $this
+     */
+    public function checkbox(): static
+    {
+        Arr::set($this->attributes, 'type', 'checkbox');
+
+        return $this;
+    }
+
+    /**
      * Set filed type password
      */
     public function password(): static
@@ -238,26 +248,6 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
         Arr::set($this->attributes, 'lazy', true);
 
         return $this;
-    }
-
-    /**
-     * Link field to relation field
-     *
-     * @return $this
-     */
-    public function relatedTo(string $relation): static
-    {
-        $this->relation = $relation;
-
-        return $this;
-    }
-
-    /**
-     * Get linked relation field name
-     */
-    public function getRelation(): ?string
-    {
-        return $this->relation;
     }
 
     /**

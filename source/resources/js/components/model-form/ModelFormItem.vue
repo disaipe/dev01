@@ -40,6 +40,14 @@ el-form-item(
             @input='$emit("update:modelValue", $event)'
         )
 
+    //- CHECKBOX
+    template(v-else-if='field.type === "checkbox"')
+        el-checkbox(
+            :model-value='modelValue'
+            :disabled='field.readonly'
+            @input='$emit("update:modelValue", $event)'
+        )
+
     //- DATETIME
     template(v-else-if='field.type === "datetime"')
         el-date-picker(

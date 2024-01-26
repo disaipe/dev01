@@ -35,7 +35,17 @@ export function switchRenderer(value) {
         {
             modelValue: value,
             size: 'small',
-            disabled: true
+            readonly: true
+        }
+    );
+}
+
+export function checkboxRenderer(value) {
+    return h(
+        resolveComponent('el-checkbox'),
+        {
+            modelValue: value,
+            readonly: true
         }
     );
 }
@@ -60,6 +70,7 @@ export default {
     raw: rawRenderer,
     relation: relationRenderer,
     switch: switchRenderer,
+    checkbox: checkboxRenderer,
     datetime: datetimeRenderer,
     date: dateRenderer,
     select: selectRenderer,
