@@ -33,6 +33,7 @@
                         )
                             .flex.space-x-2.items-center
                                 el-avatar(
+                                    :class='user.isImpersonating ? "outline outline-2 outline-red-400" : ""'
                                     :src='user.avatar'
                                     shape='square'
                                     :size='32'
@@ -42,6 +43,11 @@
 
                             template(#dropdown)
                                 el-dropdown-menu
+                                    el-dropdown-item
+                                        a.flex.items-center.space-x-1.text-orange-500(:href='user.isImpersonating')
+                                            icon(icon='tabler:spy' height='16')
+                                            span Вернуться в свой аккаунт
+
                                     el-dropdown-item(@click='openSettingsDrawer')
                                         .flex.items-center.space-x-1
                                             icon(icon='material-symbols:display-settings-outline-rounded' height='16')

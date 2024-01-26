@@ -8,6 +8,7 @@ use Filament\Facades\Filament;
 use Illuminate\Contracts\View\View;
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Facades\Storage;
+use Lab404\Impersonate\Services\ImpersonateManager;
 
 class VueAppService
 {
@@ -54,8 +55,24 @@ class VueAppService
             ...$user?->only('name'),
             'avatar' => $avatar,
             'isClient' => $user->isClient(),
+            'isImpersonating' => $this->getIsImpersonating(),
             'hasAdminAccess' => $user->canAccessPanel(Filament::getCurrentPanel()),
             'companies' => $user->companies()->pluck('name', 'id'),
         ];
+    }
+
+    /**
+     * Returns false if impersonating is off or url to leave this mode
+     *
+     * @return string|false
+     */
+    private function getIsImpersonating(): string|false
+    {
+        /** @var ImpersonateManager $impersonate */
+        $impersonate = app('impersonate');
+
+        return $impersonate->isImpersonating()
+            ? route('impersonate.leave')
+            : false;
     }
 }

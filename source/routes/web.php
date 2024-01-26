@@ -2,6 +2,7 @@
 
 use App\Services\VueAppService;
 use Illuminate\Support\Facades\Route;
+use Lab404\Impersonate\Services\ImpersonateManager;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +29,15 @@ Route::controller(\App\Http\Controllers\AuthController::class)->group(function (
 Route::middleware('auth')->get('/dashboard/{url?}', function () {
     return VueAppService::render('dashboard');
 })->where('url', '.*')->name('dashboard');
+
+Route::get('impersonate/leave', function() {
+    if(! app(ImpersonateManager::class)->isImpersonating()) {
+        return redirect('/');
+    }
+
+    app(ImpersonateManager::class)->leave();
+
+    return redirect(session()->pull('impersonate.back_to'));
+})
+    ->name('impersonate.leave')
+    ->middleware(config('filament-impersonate.leave_middleware'));

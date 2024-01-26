@@ -23,6 +23,7 @@
         "laravel/tinker": "^2.7",
         "maatwebsite/excel": "^3.1",
         "phpoffice/phpspreadsheet": "^1.28",
+        "stechstudio/filament-impersonate": "^3.5",
         "symfony/expression-language": "^6.4"
     },
     "require-dev": {

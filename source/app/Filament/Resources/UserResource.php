@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use STS\FilamentImpersonate\Tables\Actions\Impersonate;
 
 class UserResource extends Resource
 {
@@ -25,29 +26,35 @@ class UserResource extends Resource
                     ->helperText(__('admin.$user.name help'))
                     ->columnSpanFull()
                     ->required(),
+
                 Forms\Components\TextInput::make('email')
                     ->label(__('admin.email'))
                     ->helperText(__('admin.$user.email help'))
                     ->email()
                     ->required(),
+
                 Forms\Components\TextInput::make('password')
                     ->label(__('admin.password'))
                     ->helperText(fn ($record) => $record ? __('admin.$user.password help') : null)
                     ->password()
                     ->required(fn ($record) => ! $record),
+
                 Forms\Components\TextInput::make('domain')
                     ->label(trans_choice('admin.domain', 1))
                     ->helperText(__('admin.$user.domain help'))
                     ->visible(fn ($state) => (bool) $state)
                     ->disabled(),
+
                 Forms\Components\Select::make('roles')
                     ->label(trans_choice('admin.role', 2))
                     ->relationship('roles', 'name')
+                    ->columnSpanFull()
                     ->multiple(),
 
                 Forms\Components\Select::make('companies')
                     ->label(trans_choice('reference.Company', 2))
                     ->relationship('companies', 'name')
+                    ->columnSpanFull()
                     ->multiple(),
             ]);
     }
@@ -66,6 +73,7 @@ class UserResource extends Resource
                     ->label(trans_choice('admin.domain', 1)),
             ])
             ->actions([
+                Impersonate::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
