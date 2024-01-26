@@ -24,27 +24,27 @@ class CompanyReference extends ReferenceEntry
             ->withKey()
 
             ->addField('code', ReferenceFieldSchema::make()
-                ->label('Код')
+                ->label(__('admin.code'))
                 ->required()
                 ->max(16)
                 ->visible())
 
             ->addField('name', ReferenceFieldSchema::make()
-                ->label('Наименование')
+                ->label(__('admin.name'))
                 ->required()
                 ->visible())
 
             ->addField('fullname', ReferenceFieldSchema::make()
-                ->label('Полное наименование')
+                ->label(__('reference.$company.fullname.label'))
                 ->max(512))
 
             ->addField('identity', ReferenceFieldSchema::make()
-                ->label('ИНН')
+                ->label(__('reference.$company.identity.label'))
                 ->max(32)
                 ->visible())
 
             ->addField('description', ReferenceFieldSchema::make()
-                ->label('Описание'))
+                ->label(__('reference.$company.description.label')))
 
             ->toArray();
     }

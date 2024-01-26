@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Core\Reference\ReferenceModel;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @property string code
@@ -20,4 +21,9 @@ class Company extends ReferenceModel
         'identity',
         'description',
     ];
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
+    }
 }
