@@ -13,6 +13,8 @@ class DirectumUserReference extends ReferenceEntry
 {
     protected string|ReferenceModel $model = DirectumUser::class;
 
+    protected ?string $icon = 'tabler:users';
+
     public function getSchema(): array
     {
         return [

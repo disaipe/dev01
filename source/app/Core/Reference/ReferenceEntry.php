@@ -106,6 +106,10 @@ class ReferenceEntry
 
         $fields = Arr::get($customReference->schema, 'fields', []);
 
+        if ($customReference->icon) {
+            $entry->icon = $customReference->icon;
+        }
+
         if ($customReference->company_context) {
             if ($customReference->context_type === CustomReferenceContextType::Code->value) {
                 $entry->schema['company_code'] = ReferenceFieldSchema::make()

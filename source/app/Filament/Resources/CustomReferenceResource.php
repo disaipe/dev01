@@ -62,11 +62,18 @@ class CustomReferenceResource extends Resource
                             ->maxLength(64)
                             ->required(),
 
-                        Forms\Components\Toggle::make('company_context')
-                            ->label('Контекст организации')
-                            ->helperText('Добавить колонку организации для создания привязки записи справочника к организации')
-                            ->reactive()
-                            ->default(true),
+                        Forms\Components\Group::make([
+                            Forms\Components\Toggle::make('company_context')
+                                ->label('Контекст организации')
+                                ->helperText('Добавить колонку организации для создания привязки записи справочника к организации')
+                                ->reactive()
+                                ->default(true),
+
+                            Forms\Components\TextInput::make('icon')
+                                ->label('Иконка')
+                                ->helperText(new HtmlString('Укажите код иконки из <a class="underline" href="https://icones.js.org" target="_blank">https://icones.js.org</a>')),
+                        ])
+                            ->columns(1),
 
                         Forms\Components\Select::make('context_type')
                             ->label('Значение организации')
@@ -80,7 +87,6 @@ class CustomReferenceResource extends Resource
                                 CustomReferenceContextType::Id->value => 'По id (будет автоматически создана колонка <span class="font-bold">`company_id`</span>)',
                                 CustomReferenceContextType::Code->value => 'По коду (будет автоматически создана колонка <span class="font-bold">`company_code`</span>)',
                             ])
-                            ->native(false)
                             ->allowHtml()
                             ->default(CustomReferenceContextType::Code->value)
                             ->visible(fn (Get $get) => (bool) $get('company_context'))
@@ -129,7 +135,6 @@ class CustomReferenceResource extends Resource
                                         'datetime' => 'Datetime',
                                     ])
                                     ->reactive()
-                                    ->native(false)
                                     ->extraInputAttributes(fn ($get) => ['disabled' => $isSystem($get)])
                                     ->required(),
 

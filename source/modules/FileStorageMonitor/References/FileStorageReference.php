@@ -14,6 +14,8 @@ class FileStorageReference extends ReferenceEntry
 {
     protected string|ReferenceModel $model = FileStorage::class;
 
+    protected ?string $icon = 'tabler:folders';
+
     public function getSchema(): array
     {
         return ReferenceSchema::make()

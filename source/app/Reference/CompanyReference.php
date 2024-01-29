@@ -16,6 +16,8 @@ class CompanyReference extends ReferenceEntry
 
     protected ?string $primaryDisplayField = 'name';
 
+    protected ?string $icon = 'octicon:organization-16';
+
     public function getSchema(): array
     {
         return ReferenceSchema::make()

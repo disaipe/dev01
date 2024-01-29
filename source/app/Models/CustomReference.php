@@ -15,6 +15,7 @@ use Illuminate\Support\Arr;
  * @property bool company_context
  * @property string context_type
  * @property array schema
+ * @property string icon
  */
 class CustomReference extends Model
 {
@@ -26,6 +27,7 @@ class CustomReference extends Model
         'company_context',
         'context_type',
         'schema',
+        'icon',
         'enabled',
     ];
 

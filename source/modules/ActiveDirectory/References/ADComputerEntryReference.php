@@ -13,6 +13,8 @@ class ADComputerEntryReference extends ReferenceEntry
 {
     protected string|ReferenceModel $model = ADComputerEntry::class;
 
+    protected ?string $icon = 'teenyicons:computer-outline';
+
     public function getSchema(): array
     {
         return [

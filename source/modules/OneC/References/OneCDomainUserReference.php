@@ -18,6 +18,8 @@ class OneCDomainUserReference extends ReferenceEntry
 
     protected ?string $primaryDisplayField = 'username';
 
+    protected ?string $icon = 'tabler:users';
+
     protected function getLabelKey(): string
     {
         return 'onec::messages.domain user';

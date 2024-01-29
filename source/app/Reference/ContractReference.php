@@ -16,6 +16,8 @@ class ContractReference extends ReferenceEntry
 
     protected ?string $primaryDisplayField = 'number';
 
+    protected ?string $icon = 'teenyicons:contract-outline';
+
     public function getSchema(): array
     {
         return ReferenceSchema::make()

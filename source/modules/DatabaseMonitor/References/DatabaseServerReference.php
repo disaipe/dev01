@@ -17,6 +17,8 @@ class DatabaseServerReference extends ReferenceEntry
 
     protected string|bool|null $recordView = 'DatabaseServerRecord';
 
+    protected ?string $icon = 'tabler:database';
+
     public function getSchema(): array
     {
         $statusOptions = collect(DatabaseServerStatus::cases())
