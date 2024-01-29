@@ -34,17 +34,22 @@ class OneCInfoBaseUser extends ReferenceModel
 
     protected static function booted(): void
     {
+        parent::booted();
+
         static::extendSelect(function (Builder $builder) {
             /** @var ADUserEntry $usersInstance */
             $usersInstance = app(ADUserEntry::class);
             $usersTable = $usersInstance->getTable();
 
-            return $builder->getModel()->newModelQuery()->join(
-                $usersTable,
-                $usersInstance->qualifyColumn('username'),
-                '=',
-                $builder->qualifyColumn('login')
-            )
+            return $builder
+                ->getModel()
+                ->newModelQuery()
+                ->join(
+                    $usersTable,
+                    $usersInstance->qualifyColumn('username'),
+                    '=',
+                    $builder->qualifyColumn('login')
+                )
                 ->addSelect($usersInstance->qualifyColumns([
                     'company_prefix',
                 ]));
@@ -75,9 +80,6 @@ class OneCInfoBaseUser extends ReferenceModel
 
     public function scopeCompany(Builder $query, string $code): void
     {
-        $query->whereHas(
-            'ad_user',
-            fn (Builder $user) => $user->active()->company($code)
-        );
+        $query->where('company_prefix', '=', $code);
     }
 }

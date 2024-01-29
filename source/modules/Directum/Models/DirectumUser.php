@@ -30,17 +30,22 @@ class DirectumUser extends ReferenceModel
 
     protected static function booted(): void
     {
+        parent::booted();
+
         static::extendSelect(function (Builder $builder) {
             /** @var ADUserEntry $usersInstance */
             $usersInstance = app(ADUserEntry::class);
             $usersTable = $usersInstance->getTable();
 
-            return $builder->getModel()->newModelQuery()->join(
-                $usersTable,
-                $usersInstance->qualifyColumn('username'),
-                '=',
-                $builder->qualifyColumn('name')
-            )
+            return $builder
+                ->getModel()
+                ->newModelQuery()
+                ->join(
+                    $usersTable,
+                    $usersInstance->qualifyColumn('username'),
+                    '=',
+                    $builder->qualifyColumn('name')
+                )
                 ->addSelect($usersInstance->qualifyColumns([
                     'company_prefix',
                     'name as fullname',
@@ -73,7 +78,7 @@ class DirectumUser extends ReferenceModel
 
     public function scopeCompany(Builder $query, string $code): void
     {
-        $query->whereHas('user', fn (Builder $q) => $q->company($code));
+        $query->where('company_prefix', '=', $code);
     }
 
     public function scopeActive(Builder $query): void

@@ -30,6 +30,8 @@ class OneCInfoBase extends ReferenceModel
 
     protected static function booted(): void
     {
+        parent::booted();
+
         static::extendSelect(function (Builder $builder) {
             /** @var Database $databasesInstance */
             $databasesInstance = app(Database::class);
@@ -117,5 +119,10 @@ class OneCInfoBase extends ReferenceModel
     public function database(): BelongsTo
     {
         return $this->belongsTo(Database::class, 'database_id');
+    }
+
+    public function scopeCompany(Builder $query, string $code): void
+    {
+        $query->where('company_code', '=', $code);
     }
 }

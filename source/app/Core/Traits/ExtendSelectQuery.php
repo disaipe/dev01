@@ -4,7 +4,6 @@ namespace App\Core\Traits;
 
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 trait ExtendSelectQuery
@@ -17,28 +16,13 @@ trait ExtendSelectQuery
         // This is required to be able to work with data as with a regular table.
         static::addGlobalScope(static::SELECT_SCOPE, function (Builder $builder) use ($makeQuery) {
             if (Str::startsWith($builder->withoutGlobalScope(static::SELECT_SCOPE)->toSql(), 'select')) {
-                $originalQuery = $builder->getQuery();
-                $bindings = $builder->getBindings();
+                $builder->beforeQuery(function (\Illuminate\Database\Query\Builder $q) use ($makeQuery, $builder) {
+                    $subQuery = $makeQuery($builder)
+                        ->withoutGlobalScope(static::SELECT_SCOPE)
+                        ->addSelect($builder->qualifyColumn('*'));
 
-                /** @var Builder $subQuery */
-                $subQuery = $makeQuery($builder)->addSelect($builder->qualifyColumn('*'));
-
-                $newQuery = DB::table(
-                    DB::raw("({$subQuery->toSql()}) as `{$builder->getModel()->getTable()}`")
-                );
-
-                $builder
-                    ->setQuery($newQuery)
-                    ->mergeWheres($originalQuery->wheres, $bindings)
-                    ->withoutGlobalScope(static::SELECT_SCOPE);
-
-                if ($originalQuery->limit) {
-                    $builder->limit($originalQuery->limit);
-                }
-
-                if ($originalQuery->offset) {
-                    $builder->offset($originalQuery->offset);
-                }
+                    $q->fromSub($subQuery, $builder->getModel()->getTable());
+                });
             }
         });
     }
