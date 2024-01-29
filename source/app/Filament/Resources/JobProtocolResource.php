@@ -45,7 +45,7 @@ class JobProtocolResource extends Resource
                 Tables\Columns\IconColumn::make('state')
                     ->label('')
                     ->size('md')
-                    ->options([
+                    ->icons([
                         'heroicon-o-clock' => JobProtocolState::Create->value,
                         'heroicon-o-command-line' => JobProtocolState::Work->value,
                         'heroicon-o-exclamation-triangle' => JobProtocolState::Failed->value,
