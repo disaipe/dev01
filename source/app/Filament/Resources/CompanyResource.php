@@ -53,6 +53,7 @@ class CompanyResource extends Resource
                     ->helperText(new HtmlString(__('reference.$company.users.helper')))
                     ->relationship('users', 'name')
                     ->columnSpanFull()
+                    ->preload()
                     ->multiple(),
             ]);
     }

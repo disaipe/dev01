@@ -49,12 +49,14 @@ class UserResource extends Resource
                     ->label(trans_choice('admin.role', 2))
                     ->relationship('roles', 'name')
                     ->columnSpanFull()
+                    ->preload()
                     ->multiple(),
 
                 Forms\Components\Select::make('companies')
                     ->label(trans_choice('reference.Company', 2))
                     ->relationship('companies', 'name')
                     ->columnSpanFull()
+                    ->preload()
                     ->multiple(),
             ]);
     }
