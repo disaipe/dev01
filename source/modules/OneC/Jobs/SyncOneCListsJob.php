@@ -95,21 +95,36 @@ class SyncOneCListsJob extends ModuleScheduledJob
                         }
                     }
                 }
+
+                $folderString = $strLine->match('/^Folder=(.*)$/');
+
+                if ($folderString->isNotEmpty()) {
+                    if ($currentRef) {
+                        $currentRef->folder = $folderString->value();
+                    }
+                }
             }
 
             if ($currentRef->name && $currentRef->conn_string) {
                 $references->push($currentRef);
             }
 
-            DB::transaction(function () use ($references, $file) {
+            //DB::transaction(function () use ($references, $file) {
                 OneCInfoBase::query()->where('list_path', $file)->forceDelete();
 
-                $uniqueRefs = $references->unique(fn (OneCInfoBase $item) => $item->server.$item->ref);
+                $uniqueRefs = $references
+                    ->unique(fn (OneCInfoBase $item) => $item->server.$item->ref);
 
                 foreach ($uniqueRefs as $row) {
-                    $row->save();
+                    /** @var OneCInfoBase $row */
+
+                    try {
+                        $row->save();
+                    } catch (\Exception|\Error $e) {
+                        $v = $e;
+                    }
                 }
-            });
+            // });
 
             $results[$file] = count($references);
         }

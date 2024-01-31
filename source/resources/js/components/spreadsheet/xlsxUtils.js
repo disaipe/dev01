@@ -426,7 +426,7 @@ export function defaultRenderer(td, row, column, prop, value, cellProperties) {
         td.style.verticalAlign = 'bottom';
 
         if (alignment) {
-            const { horizontal, vertical } = alignment;
+            const { horizontal, vertical, wrapText } = alignment;
 
             if (horizontal) {
                 td.style.textAlign = horizontal;
@@ -436,6 +436,12 @@ export function defaultRenderer(td, row, column, prop, value, cellProperties) {
                 td.style.verticalAlign = vertical;
             } else {
                 td.style.verticalAlign = 'bottom';
+            }
+
+            if (wrapText) {
+                td.style.whiteSpace = 'break-spaces';
+            } else {
+                td.style.whiteSpace = 'nowrap';
             }
         }
 
@@ -583,6 +589,16 @@ export function setAlign(value) {
         const type = stylesMap[value];
 
         setRangePropertyValue(range, `style.alignment.${type}`, value);
+    }
+
+    instance.value.render();
+}
+
+export function setWrapText(value = true) {
+    const ranges = instance.value.getSelectedRange();
+
+    for (const range of ranges) {
+        setRangePropertyValue(range, `style.alignment.wrapText`, !!value);
     }
 
     instance.value.render();

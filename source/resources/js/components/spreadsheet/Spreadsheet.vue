@@ -111,6 +111,11 @@
                                         icon(icon='material-symbols:vertical-align-bottom-rounded' height='14')
                                         span По нижнему краю
 
+                        el-button(
+                            :class='{ active: data.wrapText }'
+                            @click='setWrapText(!data.wrapText); syncCellStyling()'
+                        )
+                            icon(icon='material-symbols:wrap-text' height='14')
                         slot(name='toolbar-actions')
 
                     .flex-1
@@ -154,6 +159,7 @@ import {
     setFontFamily,
     setBorder,
     setAlign,
+    setWrapText,
 
     useHotTable
 } from './xlsxUtils';
@@ -198,7 +204,8 @@ export default {
             fontBold: null,
             fontItalic: null,
             fontFamilyInput: null,
-            fontSizeInput: null
+            fontSizeInput: null,
+            wrapText: null,
         });
 
         if (fit.value) {
@@ -249,6 +256,13 @@ export default {
                 data.fontBold = value > 400;
             }
 
+            // set wrapping
+            {
+                const wrapping = styles.whiteSpace;
+                console.log({ wrapping });
+                data.wrapText = wrapping !== 'nowrap';
+            }
+
             // set font italic button active state
             data.fontItalic = styles.fontStyle === 'italic';
         }
@@ -271,7 +285,7 @@ export default {
                 instance.value.addHook('debug', (...args) => emit('debug', ...args));
             },
             afterSelection: (row, column, row2, column2, preventScrolling, selectionLayerLevel) => {
-              syncCellStyling(row, column);
+                syncCellStyling(row, column);
             },
             ...(settingsProp.value || {})
         });
@@ -302,6 +316,7 @@ export default {
             setFontSize,
             setBorder,
             setAlign,
+            setWrapText,
 
             loadFromBuffer,
             loadFromBase64,

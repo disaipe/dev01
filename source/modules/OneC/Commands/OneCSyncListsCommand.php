@@ -26,6 +26,7 @@ class OneCSyncListsCommand extends Command
      */
     public function handle(): void
     {
-        SyncOneCListsJob::dispatch();
+        // SyncOneCListsJob::dispatch();
+        SyncOneCListsJob::dispatchSync();
     }
 }

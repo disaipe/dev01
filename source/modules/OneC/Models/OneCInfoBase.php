@@ -22,13 +22,14 @@ use Illuminate\Support\Facades\DB;
  * @property string db_type
  * @property string db_server
  * @property string db_base
+ * @property string folder
  * @property Database database
  */
 class OneCInfoBase extends ReferenceModel
 {
     use ExtendSelectQuery, WithoutSoftDeletes;
 
-    protected static function booted(): void
+    protected static function bsooted(): void
     {
         parent::booted();
 
@@ -46,14 +47,12 @@ class OneCInfoBase extends ReferenceModel
                 ->newModelQuery()
                 ->join(
                     $serversTable,
-                    $serversInstance->getQualifiedKeyName(),
-                    '=',
+                    $serversInstance->qualifyColumn('deleted_at'),
+                    'IS',
                     DB::raw("
-                        {$serversInstance->getQualifiedKeyName()}
-                        AND (
-                            {$serversInstance->qualifyColumn('host')} = {$builder->qualifyColumn('db_server')}
-                            OR {$serversInstance->qualifyColumn('aliases')} LIKE CONCAT('%', REPLACE({$builder->qualifyColumn('db_server')}, '\\\\', '\\\\\\\\') , '%')
-                        )
+                        NULL
+                        AND {$serversInstance->qualifyColumn('host')} = {$builder->qualifyColumn('db_server')}
+                        OR {$serversInstance->qualifyColumn('aliases')} LIKE CONCAT('%', REPLACE({$builder->qualifyColumn('db_server')}, '\\\\', '\\\\\\\\') , '%')
                     "),
                     'left'
                 )
@@ -61,7 +60,11 @@ class OneCInfoBase extends ReferenceModel
                     $databasesTable,
                     $databasesInstance->qualifyColumn('name'),
                     '=',
-                    $builder->qualifyColumn('db_base'),
+                    DB::raw("
+                        {$builder->qualifyColumn('db_base')}
+                        AND {$databasesInstance->qualifyColumn('database_server_id')} = {$serversInstance->getQualifiedKeyName()}
+                        AND {$databasesInstance->qualifyColumn('deleted_at')} IS NULL
+                    "),
                     'left'
                 )
                 ->addSelect($databasesInstance->qualifyColumns([
@@ -80,14 +83,14 @@ class OneCInfoBase extends ReferenceModel
 
         // add additional filter fields that are attached from
         // the ADUserEntry model
-        $this->filterFields = array_merge(
-            $this->availableFields(),
-            [
-                'database_id',
-                'database_server_id',
-                'company_code',
-            ]
-        );
+//        $this->filterFields = array_merge(
+//            $this->availableFields(),
+//            [
+//                'database_id',
+//                'database_server_id',
+//                'company_code',
+//            ]
+//        );
     }
 
     protected $fillable = [
@@ -99,6 +102,7 @@ class OneCInfoBase extends ReferenceModel
         'db_type',
         'db_server',
         'db_base',
+        'folder',
     ];
 
     public function domain_users(): BelongsToMany

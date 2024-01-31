@@ -130,7 +130,7 @@ class SyncOneCServerUsers extends ModuleScheduledJob
             OneCInfoBaseUser::withoutTimestamps(function () use ($infoBase) {
                 OneCInfoBaseUser::withoutEvents(function () use ($infoBase) {
                     OneCInfoBaseUser::query()
-                        ->withoutGlobalScope(OneCInfoBaseUser::SELECT_SCOPE)
+                        ->withoutSelectExtending()
                         ->where('one_c_info_base_id', '=', $infoBase->getKey())
                         ->delete();
                 });
@@ -156,7 +156,7 @@ class SyncOneCServerUsers extends ModuleScheduledJob
 
             OneCInfoBaseUser::withoutEvents(function () use ($records, $fillable) {
                 OneCInfoBaseUser::withTrashed()
-                    ->withoutGlobalScope(OneCInfoBaseUser::SELECT_SCOPE)
+                    ->withoutSelectExtending()
                     ->upsert(
                         $records,
                         ['one_c_info_base_id', 'username'],

@@ -33,7 +33,7 @@ class DirectumSyncUsersJob extends ModuleScheduledJob
             ->toArray();
 
         $count = DirectumUser::query()
-            ->withoutGlobalScope(DirectumUser::SELECT_SCOPE)
+            ->withoutSelectExtending()
             ->upsert($recordsToUpsert, ['name', 'domain']);
 
         return [
