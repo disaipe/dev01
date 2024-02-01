@@ -5,6 +5,7 @@ namespace App\Modules\OneC\Jobs;
 use App\Core\Module\ModuleScheduledJob;
 use App\Modules\OneC\Models\OneCInfoBase;
 use App\Support\RpcClient;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -26,8 +27,17 @@ class SyncOneCServerListJob extends ModuleScheduledJob
         $baseUrl = $module->getConfig('base_list.base_url');
         $secret = $module->getConfig('base_list.secret');
 
-        $host = explode(':', $this->server)[0];
-        $serverListFile = "\\\\{$host}\\C$\\Program Files\\1cv8\\srvinfo\\reg_1541\\1CV8Clst.lst";
+        preg_match('/(?<host>.+?)(?:-(?<srv>\d{4,}))?:?(?<port>\d{4,})?$/', $this->server, $parts);
+
+        $host = Arr::get($parts, 'host');
+        $srv = Arr::get($parts, 'srv', );
+        $port = intval(Arr::get($parts, 'port', '1541'));
+
+        if (! $srv && $port !== 1541) {
+            $srv = $port - 1;
+        }
+
+        $serverListFile = "\\\\{$host}\\C$\\Program Files\\1cv8\\srvinfo{$srv}\\reg_{$port}\\1CV8Clst.lst";
 
         $rpc = RpcClient::make()
             ->setBase($baseUrl)
