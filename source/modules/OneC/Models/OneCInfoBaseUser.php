@@ -4,6 +4,7 @@ namespace App\Modules\OneC\Models;
 
 use App\Core\Reference\ReferenceModel;
 use App\Core\Traits\ExtendSelectQuery;
+use App\Core\Traits\WithoutSoftDeletes;
 use App\Models\Company;
 use App\Modules\ActiveDirectory\Models\ADUserEntry;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,7 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class OneCInfoBaseUser extends ReferenceModel
 {
-    use ExtendSelectQuery;
+    use ExtendSelectQuery, WithoutSoftDeletes;
 
     protected $fillable = [
         'one_c_info_base_id',

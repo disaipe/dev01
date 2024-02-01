@@ -122,18 +122,8 @@ class SyncOneCServerUsers extends ModuleScheduledJob
             return 0;
         }
 
-        $fillable = null;
-
-        DB::transaction(function () use ($users, $infoBase, $fillable) {
+        DB::transaction(function () use ($users, $infoBase) {
             $records = [];
-
-            OneCInfoBaseUser::withoutTimestamps(function () use ($infoBase) {
-                OneCInfoBaseUser::withoutEvents(function () use ($infoBase) {
-                    OneCInfoBaseUser::query()
-                        ->where('one_c_info_base_id', '=', $infoBase->getKey())
-                        ->delete();
-                });
-            });
 
             foreach ($users as $user) {
                 [$domain, $username] = DomainUtils::parseUserName(Arr::get($user, 'OSName'));
@@ -153,12 +143,24 @@ class SyncOneCServerUsers extends ModuleScheduledJob
                 $records[] = $record;
             }
 
-            OneCInfoBaseUser::withoutEvents(function () use ($records, $fillable) {
-                OneCInfoBaseUser::withTrashed()->upsert(
-                    $records,
-                    ['one_c_info_base_id', 'username'],
-                    $fillable
-                );
+            OneCInfoBaseUser::withoutEvents(function () use ($infoBase, $records) {
+                $updatedRecords = [];
+
+                foreach ($records as $record) {
+                    $updatedRecord = OneCInfoBaseUser::query()
+                        ->updateOrCreate([
+                            'one_c_info_base_id' => Arr::get($record, 'one_c_info_base_id'),
+                            'login' => Arr::get($record, 'login'),
+                            'domain' => Arr::get($record, 'domain'),
+                        ], $record);
+
+                    $updatedRecords[] = $updatedRecord->getKey();
+                }
+
+                OneCInfoBaseUser::query()
+                    ->where('one_c_info_base_id', '=', $infoBase->getKey())
+                    ->whereKeyNot($updatedRecords)
+                    ->delete();
             });
         });
 
