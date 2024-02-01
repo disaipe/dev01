@@ -59,6 +59,11 @@ class ReferenceController extends BaseController
         // make query
         $query = $this->reference->query();
 
+        // apply extending select scope if exists
+        if ($query->getModel()->hasNamedScope('extended')) {
+            $query->extended();
+        }
+
         if ($id) {
             $query->whereKey($id);
         }

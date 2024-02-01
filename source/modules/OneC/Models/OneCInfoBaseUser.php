@@ -32,42 +32,6 @@ class OneCInfoBaseUser extends ReferenceModel
         'ad_user',
     ];
 
-    protected static function booted(): void
-    {
-        parent::booted();
-
-        static::extendSelect(function (Builder $builder) {
-            /** @var ADUserEntry $usersInstance */
-            $usersInstance = app(ADUserEntry::class);
-            $usersTable = $usersInstance->getTable();
-
-            return $builder
-                ->getModel()
-                ->newModelQuery()
-                ->join(
-                    $usersTable,
-                    $usersInstance->qualifyColumn('username'),
-                    '=',
-                    $builder->qualifyColumn('login')
-                )
-                ->addSelect($usersInstance->qualifyColumns([
-                    'company_prefix',
-                ]));
-        });
-    }
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        // add additional filter fields that are attached from
-        // the ADUserEntry model
-        $this->filterFields = array_merge(
-            $this->availableFields(),
-            ['company_prefix']
-        );
-    }
-
     public function ad_user(): BelongsTo
     {
         return $this->belongsTo(ADUserEntry::class, 'login', 'username');
@@ -81,5 +45,25 @@ class OneCInfoBaseUser extends ReferenceModel
     public function scopeCompany(Builder $query, string $code): void
     {
         $query->where('company_prefix', '=', $code);
+    }
+
+    protected function extendSelect(Builder $builder): Builder
+    {
+        /** @var ADUserEntry $usersInstance */
+        $usersInstance = app(ADUserEntry::class);
+        $usersTable = $usersInstance->getTable();
+
+        return $builder
+            ->getModel()
+            ->newModelQuery()
+            ->join(
+                $usersTable,
+                $usersInstance->qualifyColumn('username'),
+                '=',
+                $builder->qualifyColumn('login')
+            )
+            ->addSelect($usersInstance->qualifyColumns([
+                'company_prefix',
+            ]));
     }
 }

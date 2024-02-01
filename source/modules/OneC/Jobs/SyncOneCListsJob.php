@@ -117,7 +117,6 @@ class SyncOneCListsJob extends ModuleScheduledJob
 
                 foreach ($uniqueRefs as $row) {
                     $updatedRecord = OneCInfoBase::query()
-                        ->withoutSelectExtending()
                         ->updateOrCreate([
                             'server' => $row->server,
                             'ref' => $row->ref,
@@ -127,7 +126,6 @@ class SyncOneCListsJob extends ModuleScheduledJob
                 }
 
                 OneCInfoBase::query()
-                    ->withoutSelectExtending()
                     ->where('list_path', $file)
                     ->whereKeyNot($updatedKeys)
                     ->delete();

@@ -30,72 +30,6 @@ class OneCInfoBase extends ReferenceModel
 {
     use ExtendSelectQuery, WithoutSoftDeletes;
 
-    protected static function booted(): void
-    {
-        parent::booted();
-
-        static::extendSelect(function (Builder $builder) {
-            /** @var Database $databasesInstance */
-            $databasesInstance = app(Database::class);
-            $databasesTable = $databasesInstance->getTable();
-
-            /** @var DatabaseServer $serversInstance */
-            $serversInstance = app(DatabaseServer::class);
-            $serversTable = $serversInstance->getTable();
-
-            return $builder
-                ->getModel()
-                ->newModelQuery()
-                ->join(
-                    $serversTable,
-                    $serversInstance->qualifyColumn('deleted_at'),
-                    'IS',
-                    DB::raw("
-                        NULL
-                        AND (
-                            {$serversInstance->qualifyColumn('host')} = {$builder->qualifyColumn('db_server')}
-                            OR {$serversInstance->qualifyColumn('aliases')} LIKE CONCAT('%', REPLACE({$builder->qualifyColumn('db_server')}, '\\\\', '\\\\\\\\') , '%')
-                        )
-                    "),
-                    'left'
-                )
-                ->join(
-                    $databasesTable,
-                    $databasesInstance->qualifyColumn('name'),
-                    '=',
-                    DB::raw("
-                        {$builder->qualifyColumn('db_base')}
-                        AND {$databasesInstance->qualifyColumn('database_server_id')} = {$serversInstance->getQualifiedKeyName()}
-                        AND {$databasesInstance->qualifyColumn('deleted_at')} IS NULL
-                    "),
-                    'left'
-                )
-                ->addSelect($databasesInstance->qualifyColumns([
-                    "{$databasesInstance->getKeyName()} as database_id",
-                    'company_code',
-                ]))
-                ->addSelect($serversInstance->qualifyColumns([
-                    "{$serversInstance->getKeyName()} as database_server_id",
-                ]));
-        });
-    }
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        // add additional filter fields that are attached from
-        // the ADUserEntry model
-        $this->filterFields = array_merge(
-            $this->availableFields(),
-            [
-                'database_id',
-                'database_server_id',
-                'company_code',
-            ]
-        );
-    }
-
     protected $fillable = [
         'list_path',
         'name',
@@ -131,5 +65,51 @@ class OneCInfoBase extends ReferenceModel
     public function scopeCompany(Builder $query, string $code): void
     {
         $query->where('company_code', '=', $code);
+    }
+
+    protected function extendSelect(Builder $builder): Builder
+    {
+        /** @var Database $databasesInstance */
+        $databasesInstance = app(Database::class);
+        $databasesTable = $databasesInstance->getTable();
+
+        /** @var DatabaseServer $serversInstance */
+        $serversInstance = app(DatabaseServer::class);
+        $serversTable = $serversInstance->getTable();
+
+        return $builder
+            ->getModel()
+            ->newModelQuery()
+            ->join(
+                $serversTable,
+                $serversInstance->qualifyColumn('deleted_at'),
+                'IS',
+                DB::raw("
+                        NULL
+                        AND (
+                            {$serversInstance->qualifyColumn('host')} = {$builder->qualifyColumn('db_server')}
+                            OR {$serversInstance->qualifyColumn('aliases')} LIKE CONCAT('%', REPLACE({$builder->qualifyColumn('db_server')}, '\\\\', '\\\\\\\\') , '%')
+                        )
+                    "),
+                'left'
+            )
+            ->join(
+                $databasesTable,
+                $databasesInstance->qualifyColumn('name'),
+                '=',
+                DB::raw("
+                        {$builder->qualifyColumn('db_base')}
+                        AND {$databasesInstance->qualifyColumn('database_server_id')} = {$serversInstance->getQualifiedKeyName()}
+                        AND {$databasesInstance->qualifyColumn('deleted_at')} IS NULL
+                    "),
+                'left'
+            )
+            ->addSelect($databasesInstance->qualifyColumns([
+                "{$databasesInstance->getKeyName()} as database_id",
+                'company_code',
+            ]))
+            ->addSelect($serversInstance->qualifyColumns([
+                "{$serversInstance->getKeyName()} as database_server_id",
+            ]));
     }
 }
