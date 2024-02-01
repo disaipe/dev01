@@ -159,6 +159,11 @@ class ReferenceController extends BaseController
         // make query
         $query = $this->reference->query();
 
+        // apply extending select scope if exists
+        if ($query->getModel()->hasNamedScope('extended')) {
+            $query->extended();
+        }
+
         if ($onePage) {
             // pagination options
             $page = $request->input('page', 1);
