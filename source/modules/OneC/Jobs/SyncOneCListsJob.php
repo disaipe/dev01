@@ -95,20 +95,42 @@ class SyncOneCListsJob extends ModuleScheduledJob
                         }
                     }
                 }
+
+                $folderString = $strLine->match('/^Folder=(.*)$/');
+
+                if ($folderString->isNotEmpty()) {
+                    if ($currentRef) {
+                        $currentRef->folder = $folderString->value();
+                    }
+                }
             }
 
-            if ($currentRef->name && $currentRef->conn_string) {
+            if ($currentRef && $currentRef->name && $currentRef->conn_string) {
                 $references->push($currentRef);
             }
 
             DB::transaction(function () use ($references, $file) {
-                OneCInfoBase::query()->where('list_path', $file)->forceDelete();
-
+                /** @var OneCInfoBase[] $uniqueRefs */
                 $uniqueRefs = $references->unique(fn (OneCInfoBase $item) => $item->server.$item->ref);
 
+                $updatedKeys = [];
+
                 foreach ($uniqueRefs as $row) {
-                    $row->save();
+                    $updatedRecord = OneCInfoBase::query()
+                        ->withoutSelectExtending()
+                        ->updateOrCreate([
+                            'server' => $row->server,
+                            'ref' => $row->ref,
+                        ], $row->toArray());
+
+                    $updatedKeys[] = $updatedRecord->getKey();
                 }
+
+                OneCInfoBase::query()
+                    ->withoutSelectExtending()
+                    ->where('list_path', $file)
+                    ->whereKeyNot($updatedKeys)
+                    ->delete();
             });
 
             $results[$file] = count($references);

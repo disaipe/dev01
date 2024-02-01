@@ -22,6 +22,8 @@ use Illuminate\Support\Facades\DB;
  * @property string db_type
  * @property string db_server
  * @property string db_base
+ * @property string folder
+ *
  * @property Database database
  */
 class OneCInfoBase extends ReferenceModel
@@ -46,10 +48,10 @@ class OneCInfoBase extends ReferenceModel
                 ->newModelQuery()
                 ->join(
                     $serversTable,
-                    $serversInstance->getQualifiedKeyName(),
-                    '=',
+                    $serversInstance->qualifyColumn('deleted_at'),
+                    'IS',
                     DB::raw("
-                        {$serversInstance->getQualifiedKeyName()}
+                        NULL
                         AND (
                             {$serversInstance->qualifyColumn('host')} = {$builder->qualifyColumn('db_server')}
                             OR {$serversInstance->qualifyColumn('aliases')} LIKE CONCAT('%', REPLACE({$builder->qualifyColumn('db_server')}, '\\\\', '\\\\\\\\') , '%')
@@ -61,7 +63,11 @@ class OneCInfoBase extends ReferenceModel
                     $databasesTable,
                     $databasesInstance->qualifyColumn('name'),
                     '=',
-                    $builder->qualifyColumn('db_base'),
+                    DB::raw("
+                        {$builder->qualifyColumn('db_base')}
+                        AND {$databasesInstance->qualifyColumn('database_server_id')} = {$serversInstance->getQualifiedKeyName()}
+                        AND {$databasesInstance->qualifyColumn('deleted_at')} IS NULL
+                    "),
                     'left'
                 )
                 ->addSelect($databasesInstance->qualifyColumns([
@@ -99,6 +105,7 @@ class OneCInfoBase extends ReferenceModel
         'db_type',
         'db_server',
         'db_base',
+        'folder',
     ];
 
     public function domain_users(): BelongsToMany

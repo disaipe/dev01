@@ -26,4 +26,9 @@ trait ExtendSelectQuery
             }
         });
     }
+
+    public function scopeWithoutSelectExtending(Builder $query): void
+    {
+        $query->withoutGlobalScope(static::SELECT_SCOPE);
+    }
 }
