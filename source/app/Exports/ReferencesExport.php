@@ -74,7 +74,7 @@ class ReferencesExport implements FromCollection, ShouldAutoSize, WithHeadings, 
     protected function transformValue(ReferenceModel $record, string $attribute): mixed
     {
         if ($record->isRelation($attribute)) {
-            $related = $record->getRelation($attribute);
+            $related = $record->$attribute;
 
             if ($related) {
                 $table = $related->getTable();
