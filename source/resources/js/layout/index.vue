@@ -43,7 +43,7 @@
 
                             template(#dropdown)
                                 el-dropdown-menu
-                                    el-dropdown-item
+                                    el-dropdown-item(v-if='user.isImpersonating')
                                         a.flex.items-center.space-x-1.text-orange-500(:href='user.isImpersonating')
                                             icon(icon='tabler:spy' height='16')
                                             span Вернуться в свой аккаунт
