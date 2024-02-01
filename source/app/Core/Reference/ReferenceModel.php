@@ -2,8 +2,8 @@
 
 namespace App\Core\Reference;
 
-use Abbasudo\Purity\Traits\Filterable;
 use App\Core\Traits\CanListRelations;
+use App\Core\Traits\Filterable;
 use App\Core\Traits\Protocolable;
 use App\Models\Scopes\CompanyScope;
 use Illuminate\Database\Eloquent\Model;
