@@ -2,6 +2,7 @@
 
 namespace App\Modules\OneC\Models;
 
+use App\Attributes\Lazy;
 use App\Core\Reference\ReferenceModel;
 use App\Core\Traits\ExtendSelectQuery;
 use App\Core\Traits\WithoutSoftDeletes;
@@ -42,6 +43,7 @@ class OneCInfoBase extends ReferenceModel
         'folder',
     ];
 
+    #[Lazy]
     public function domain_users(): BelongsToMany
     {
         return $this->belongsToMany(

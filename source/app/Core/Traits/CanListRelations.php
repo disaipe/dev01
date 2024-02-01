@@ -2,6 +2,8 @@
 
 namespace App\Core\Traits;
 
+use App\Attributes\Lazy;
+use Illuminate\Support\Arr;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -22,8 +24,11 @@ trait CanListRelations
             ->map(fn (ReflectionMethod $method) => [
                 'name' => $method->getName(),
                 'type' => $method->getReturnType(),
+                'lazy' => collect($method->getAttributes())
+                    ->map(fn ($attribute) => $attribute->getName())
+                    ->contains(Lazy::class),
             ])
-            ->pluck('type', 'name')
+            ->filter(fn (array $item) => ! Arr::get($item, 'lazy'))
             ->all();
     }
 }
