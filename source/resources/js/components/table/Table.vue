@@ -365,8 +365,6 @@ export default {
 
             const query = this.getQueryParams();
 
-            throw new Error('test');
-
             return this.repository.fetch(query)
                 .then(({ response, items }) => {
                     const { status, total } = response.data;
