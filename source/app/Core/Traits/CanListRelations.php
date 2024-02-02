@@ -28,7 +28,8 @@ trait CanListRelations
                     ->map(fn ($attribute) => $attribute->getName())
                     ->contains(Lazy::class),
             ])
-            ->filter(fn (array $item) => ! Arr::get($item, 'lazy'))
+            ->filter(fn (array $item) => Arr::get($item, 'lazy') !== true)
+            ->pluck('type', 'name')
             ->all();
     }
 }
