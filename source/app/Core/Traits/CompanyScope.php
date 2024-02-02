@@ -11,11 +11,11 @@ trait CompanyScope
      */
     public function scopeCompany(Builder $query, string $code): void
     {
-        $query->where($this->companyCodeColumn ?? 'company_code', '=', $code);
+        $query->where($this->getCompanyColumn(), '=', $code);
     }
 
     public function getCompanyColumn(): ?string
     {
-        return $this->companyCodeColumn;
+        return $this->companyCodeColumn ?? 'company_code';
     }
 }
