@@ -297,7 +297,14 @@ class QueryExpressionType implements IExpressionType
     protected function getModelQuery(string $model): Builder
     {
         if (is_subclass_of($model, Model::class)) {
-            return $model::query();
+            $query = $model::query();
+
+            // apply extending select scope if exists
+            if ($query->getModel()->hasNamedScope('extended')) {
+                $query->extended();
+            }
+
+            return $query;
         }
 
         /** @var ReferenceManager $referenceManager */
