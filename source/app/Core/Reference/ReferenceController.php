@@ -296,6 +296,12 @@ class ReferenceController extends BaseController
                 $reference = $references->getByTableName($relatedTable);
                 $orderBy = $reference->getPrimaryDisplayField() ?? $relatedModel->getKeyName();
 
+                $select = $query->getQuery()->getColumns();
+
+                if (! count($select)) {
+                    $select = ['*'];
+                }
+
                 $query
                     ->leftJoin(
                         $relatedTable,
@@ -304,7 +310,7 @@ class ReferenceController extends BaseController
                         $relation->getQualifiedForeignKeyName()
                     )
                     ->orderBy($relatedModel->qualifyColumn($orderBy), $order)
-                    ->select($query->qualifyColumns($query->getQuery()->getColumns()));
+                    ->select($query->qualifyColumns($select));
             } else {
                 if ($model->isSortable($field)) {
                     $query->orderBy($field, $order);
