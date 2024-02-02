@@ -61,14 +61,14 @@ class SyncOneCServerListJob extends ModuleScheduledJob
         $infoBases = OneCInfoBase::query()
             ->where('server', '=', $this->server)
             ->get()
-            ->keyBy('ref');
+            ->keyBy(fn (OneCInfoBase $item) => Str::lower($item->ref));
 
         $savedCount = 0;
 
         DB::transaction(function () use ($matches, $infoBases, &$savedCount) {
             foreach ($matches as $match) {
                 /** @var ?OneCInfoBase $infoBase */
-                $infoBase = $infoBases->get($match['info_base']);
+                $infoBase = $infoBases->get(Str::lower($match['info_base']));
 
                 if ($infoBase) {
                     $infoBase->db_type = $match['db_type'];
