@@ -57,7 +57,7 @@ const subMenuOpen = ref(false);
 const subMenuClasses = computed(() => {
     return subMenuOpen.value
         ? 'grid-rows-[1fr] opacity-100'
-        : 'grid-rows-[0fr] opacity-0';
+        : 'grid-rows-[0fr] opacity-0 !mt-0';
 });
 
 const isActive = computed(() => {
@@ -95,6 +95,6 @@ function toggleSubMenu() {
 }
 
 .side-bar-menu__sub-menu {
-    @apply grid ps-3 pt-2 transition-all duration-300 ease-in-out;
+    @apply grid ps-3 transition-all duration-300 ease-in-out;
 }
 </style>

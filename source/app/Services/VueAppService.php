@@ -21,9 +21,13 @@ class VueAppService
 
     private function getPropsData($share = []): array
     {
+        /** @var DashboardMenuService $menu */
+        $menu = app('menu');
+
         $referenceService = new ReferenceService();
 
         $share = array_merge_recursive([
+            'menu' => $menu->getMenu(),
             'user' => $this->getUserProps(),
             'routes' => $referenceService->getVueRoutes(),
             'models' => $referenceService->getModels(),

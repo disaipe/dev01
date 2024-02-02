@@ -7,6 +7,7 @@ use App\Core\HasManySyncMacro;
 use App\Core\Indicator\IndicatorManager;
 use App\Core\Report\Expression\ExpressionManager;
 use App\Directives;
+use App\Services\DashboardMenuService;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -45,6 +46,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton('expressions', fn () => new ExpressionManager());
         $this->app->singleton('indicators', fn () => new IndicatorManager());
+        $this->app->singleton('menu', fn () => new DashboardMenuService());
         $this->app->singleton(ClientCompanyContext::class, fn () => new ClientCompanyContext());
     }
 

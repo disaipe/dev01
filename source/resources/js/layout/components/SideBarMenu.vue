@@ -13,6 +13,7 @@
 </template>
 
 <script setup>
+import { getCurrentInstance } from 'vue';
 import { useRouter } from 'vue-router';
 import groupBy from 'lodash/groupBy';
 import orderBy from 'lodash/orderBy';
@@ -32,6 +33,7 @@ function makeMenuTree(data) {
     return childrenOf(null);
 }
 
+const app = getCurrentInstance();
 const router = useRouter();
 
 // get routes with sidebar menu item
@@ -46,20 +48,10 @@ for (const route of router.getRoutes()) {
     }
 }
 
+const menu = app.appContext.config.globalProperties.$page.menu || [];
+
 const flatRoutes = [
-    {
-        name: 'dashboard',
-        label: 'Главная',
-        icon: 'fluent-mdl2:home',
-        route: { name: 'dashboard' },
-        order: 1
-    },
-    {
-        name: 'references',
-        label: 'Справочники',
-        icon: 'fluent-mdl2:product-catalog',
-        order: 99
-    },
+    ...menu,
 
     ...menuRoutes.map((r) => ({
         name: r.name,
