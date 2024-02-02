@@ -20,8 +20,6 @@ return new class extends Migration
             $table->string('domain', 32)->nullable();
             $table->timestamps();
             $table->softDeletes();
-
-            $table->unique(['one_c_info_base_id', 'username']);
         });
     }
 
