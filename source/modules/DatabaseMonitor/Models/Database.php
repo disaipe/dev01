@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string name
  * @property int size size in bytes
  * @property string company_code
+ *
+ * @property DatabaseServer database_server
+ * @property Company company
  */
 class Database extends ReferenceModel
 {
@@ -25,6 +28,11 @@ class Database extends ReferenceModel
         'size',
         'company_code',
     ];
+
+    public function database_server(): BelongsTo
+    {
+        return $this->belongsTo(DatabaseServer::class);
+    }
 
     public function company(): BelongsTo
     {

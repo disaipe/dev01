@@ -17,7 +17,7 @@ class DatabaseServerReference extends ReferenceEntry
 
     protected string|bool|null $recordView = 'DatabaseServerRecord';
 
-    protected ?string $icon = 'tabler:database';
+    protected ?string $icon = 'tabler:database-cog';
 
     public function getSchema(): array
     {
