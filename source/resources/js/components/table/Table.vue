@@ -323,7 +323,14 @@ export default {
                         this.loadPages();
                     })
                     .catch((response) => {
-                        const message = `(${response.status}) ${response.statusText}`;
+                        let message;
+
+                        if (response.constructor?.name === 'Error') {
+                            message = response.message;
+                        } else {
+                            message = `(${response.status}) ${response.statusText}`;
+                        }
+
                         raiseErrorMessage(message, 'Ошибка загрузки связанных записей');
                     });
             }
@@ -357,6 +364,8 @@ export default {
             this.loading = true;
 
             const query = this.getQueryParams();
+
+            throw new Error('test');
 
             return this.repository.fetch(query)
                 .then(({ response, items }) => {
