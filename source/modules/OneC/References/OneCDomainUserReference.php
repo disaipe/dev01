@@ -16,6 +16,8 @@ class OneCDomainUserReference extends ReferenceEntry
 
     protected string|bool|null $recordView = 'OneCDomainUserRecord';
 
+    protected ?string $sidebarMenuParent = 'onec';
+
     protected ?string $primaryDisplayField = 'username';
 
     protected ?string $icon = 'tabler:users';

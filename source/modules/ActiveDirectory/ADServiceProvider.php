@@ -20,7 +20,9 @@ use App\Modules\ActiveDirectory\Job\ADSyncUsersJob;
 use App\Modules\ActiveDirectory\References\ADComputerEntryReference;
 use App\Modules\ActiveDirectory\References\ADUserEntryReference;
 use App\Modules\ActiveDirectory\Utils\LdapQueryConditionsBuilder;
+use App\Services\DashboardMenuService;
 use App\Services\LdapService;
+use App\Support\DashboardMenuItem;
 use App\Utils\DomainUtils;
 use Cron\CronExpression;
 use Error;
@@ -57,6 +59,12 @@ class ADServiceProvider extends ModuleBaseServiceProvider
         $references = app('references');
         $references->register(ADUserEntryReference::class);
         $references->register(ADComputerEntryReference::class);
+
+        /** @var DashboardMenuService $menu */
+        $menu = app('menu');
+        $menu->addMenuItem(DashboardMenuItem::make('ad')
+            ->label('Active Directory')
+            ->icon('material-symbols:folder-data-outline'));
     }
 
     public function onBooting(): void

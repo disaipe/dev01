@@ -17,6 +17,8 @@ class DatabaseServerReference extends ReferenceEntry
 
     protected string|bool|null $recordView = 'DatabaseServerRecord';
 
+    protected ?string $sidebarMenuParent = 'dbmon';
+
     protected ?string $icon = 'tabler:database-cog';
 
     public function getSchema(): array

@@ -15,6 +15,8 @@ class OneCInfoBaseReference extends ReferenceEntry
 
     protected string|bool|null $recordView = 'OneCInfoBaseRecord';
 
+    protected ?string $sidebarMenuParent = 'onec';
+
     protected ?string $icon = 'file-icons:1c';
 
     public function getSchema(): array

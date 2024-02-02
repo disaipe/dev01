@@ -16,6 +16,8 @@ use App\Modules\OneC\Jobs\SyncOneCServersUsers;
 use App\Modules\OneC\References\OneCDomainUserReference;
 use App\Modules\OneC\References\OneCInfoBaseReference;
 use App\Modules\OneC\References\OneCInfoBaseUserReference;
+use App\Services\DashboardMenuService;
+use App\Support\DashboardMenuItem;
 use App\Support\Forms\RpcConnectionSettingsForm;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Group;
@@ -48,6 +50,10 @@ class OneCServiceProvider extends ModuleBaseServiceProvider
         $references->register(OneCDomainUserReference::class);
         $references->register(OneCInfoBaseReference::class);
         $references->register(OneCInfoBaseUserReference::class);
+
+        /** @var DashboardMenuService $menu */
+        $menu = app('menu');
+        $menu->addMenuItem(DashboardMenuItem::make('onec')->label('1С')->icon('file-icons:1c'));
     }
 
     public function getOptions(): array

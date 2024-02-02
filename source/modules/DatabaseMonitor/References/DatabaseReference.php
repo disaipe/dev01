@@ -13,6 +13,8 @@ class DatabaseReference extends ReferenceEntry
 {
     protected string|ReferenceModel $model = Database::class;
 
+    protected ?string $sidebarMenuParent = 'dbmon';
+
     protected ?string $icon = 'tabler:database';
 
     public function getSchema(): array

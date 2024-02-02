@@ -19,6 +19,8 @@ use App\Modules\DatabaseMonitor\Jobs\DatabaseServersSyncJob;
 use App\Modules\DatabaseMonitor\Models\Database;
 use App\Modules\DatabaseMonitor\References\DatabaseReference;
 use App\Modules\DatabaseMonitor\References\DatabaseServerReference;
+use App\Services\DashboardMenuService;
+use App\Support\DashboardMenuItem;
 use Cron\CronExpression;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Tabs;
@@ -57,6 +59,12 @@ class DatabaseMonitorServiceProvider extends ModuleBaseServiceProvider
                 'mutator' => fn ($value) => round($value / 1024 / 1024, 2),
             ]),
         ]);
+
+        /** @var DashboardMenuService $menu */
+        $menu = app('menu');
+        $menu->addMenuItem(DashboardMenuItem::make('dbmon')
+            ->label('Базы данных')
+            ->icon('tabler:database'));
 
         $this->commands([
             CheckDatabaseServerCommand::class,

@@ -13,6 +13,8 @@ class ADUserEntryReference extends ReferenceEntry
 {
     protected string|ReferenceModel $model = ADUserEntry::class;
 
+    protected ?string $sidebarMenuParent = 'ad';
+
     protected ?string $icon = 'tabler:users';
 
     public function getSchema(): array
