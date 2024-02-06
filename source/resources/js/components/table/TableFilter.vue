@@ -52,7 +52,7 @@ el-popover(
 
             //- BOOLEAN INPUT
             el-checkbox-group.flex.flex-col(
-                v-else-if='schema && schema.type === "boolean"'
+                v-else-if='schema && (schema.type === "boolean" || schema.type === "checkbox")'
                 v-model='filterStore.inputs[remoteField]'
                 :max='1'
             )
