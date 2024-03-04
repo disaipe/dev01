@@ -53,6 +53,11 @@ class OneCInfoBaseUserReference extends ReferenceEntry
                 ->visible()
                 ->pinia(PiniaAttribute::belongsTo('Company', 'company_prefix', 'code'))
                 ->eagerLoad(),
+
+            'allow_login' => ReferenceFieldSchema::make()
+                ->label('Вход разрешен')
+                ->visible()
+                ->pinia(PiniaAttribute::boolean()),
         ];
     }
 

@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string username
  * @property string login
  * @property string domain
+ * @property boolean allow_login
  * @property string company_prefix
  * @property ADUserEntry ad_user
  */
@@ -27,10 +28,15 @@ class OneCInfoBaseUser extends ReferenceModel
         'username',
         'login',
         'domain',
+        'allow_login',
     ];
 
     protected $hidden = [
         'ad_user',
+    ];
+
+    protected $casts = [
+        'allow_login' => 'bool',
     ];
 
     public function ad_user(): BelongsTo

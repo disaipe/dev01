@@ -5,6 +5,7 @@ namespace App\Modules\OneC\Jobs;
 use App\Core\Module\ModuleScheduledJob;
 use App\Modules\DatabaseMonitor\Models\DatabaseServer;
 use App\Modules\OneC\Enums\DatabaseType;
+use App\Modules\OneC\Helpers;
 use App\Modules\OneC\Models\OneCInfoBase;
 use App\Modules\OneC\Models\OneCInfoBaseUser;
 use App\Utils\DomainUtils;
@@ -34,10 +35,14 @@ class SyncOneCServerUsers extends ModuleScheduledJob
         $this->server = $server;
     }
 
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
     public function work(): ?array
     {
         if (! $databaseServer = $this->getDatabaseServer()) {
             return [
+                'server' => $this->server,
                 'error' => 'No database configuration found',
             ];
         }
@@ -48,6 +53,7 @@ class SyncOneCServerUsers extends ModuleScheduledJob
 
         if (! $this->infoBases->count()) {
             return [
+                'server' => $this->server,
                 'warning' => 'No infobases on given database server found',
             ];
         }
@@ -85,6 +91,9 @@ class SyncOneCServerUsers extends ModuleScheduledJob
             ->get();
     }
 
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
     protected function getUsers(): array
     {
         $connection = $this->getConnection();
@@ -115,7 +124,7 @@ class SyncOneCServerUsers extends ModuleScheduledJob
     {
         $table = self::USERS_TABLE;
         $users = $connection
-            ->executeQuery("select Name, OSName from [{$infoBase->db_base}].[dbo].[{$table}]")
+            ->executeQuery("select Name, OSName, Data from [{$infoBase->db_base}].[dbo].[{$table}]")
             ->fetchAllAssociative();
 
         if (! $users) {
@@ -132,11 +141,15 @@ class SyncOneCServerUsers extends ModuleScheduledJob
                     continue;
                 }
 
+                $data = Arr::get($user, 'Data');
+                $userData = Helpers::decryptUserData($data) ?? [];
+
                 $record = [
                     'one_c_info_base_id' => $infoBase->getKey(),
                     'username' => Arr::get($user, 'Name'),
                     'login' => $username,
                     'domain' => $domain,
+                    'allow_login' => Arr::get($userData, 'allow_login') === "1",
                     'deleted_at' => null,
                 ];
 
