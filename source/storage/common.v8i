@@ -1,0 +1,6831 @@
+﻿[ДЕМО КОНФИГУРАЦИИ]
+ID=15b8666d-0e82-4283-ba6b-7a3974740e6c
+OrderInList=-1
+Folder=/
+OrderInTree=33280
+External=1
+[1С:Расчет квартплаты и бухгалтерия ЖКХ (демо)]
+Connect=ws="http://demo.kv-plata.com/kpdemo/";
+ID=e760cacd-7179-4d9f-bbff-c5fecf6d4d07
+OrderInList=1179648
+Folder=/ДЕМО КОНФИГУРАЦИИ
+OrderInTree=17408
+External=1
+UseProxy=1
+App=Auto
+WA=1
+WSA=1
+[Бухгалтерия предприятия КОРП (демо) для АвтоСпутника]
+Connect=Srvr="1c-app-gw-02";Ref="demo-buh83-as";
+ID=d26a1b41-ae15-4d84-a4cb-a637d78f0bd6
+OrderInList=-1
+Folder=/ДЕМО КОНФИГУРАЦИИ
+OrderInTree=1481418.66666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[РАБОЧИЕ БД]
+ID=e2ecf307-fa10-49fe-a61d-bc0087343c00
+OrderInList=-1
+Folder=/
+OrderInTree=512
+External=1
+[НЕ ИСПОЛЬЗУЕМЫЕ БД]
+ID=19658774-4375-48b7-ac5e-9a8bd5770c3f
+OrderInList=-1
+Folder=/
+OrderInTree=49664
+External=0
+[Аскона (Украина)]
+Connect=Srvr="1c-app03";Ref="askonaua82_sql";
+ID=f6c7d3e4-8a42-4374-a792-e63b5387cd5e
+OrderInList=802816
+Folder=/РАБОЧИЕ БД
+OrderInTree=16786
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+[Дольче Вита, ООО (УПП до 2021 года)]
+Connect=Srvr="1c-app-gw-01";Ref="mebel";
+ID=b9b504aa-966a-43e7-b626-869065fad6e1
+OrderInList=180224
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=32960
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+[Аскона, ООО (каскад) (УПП до 2021 года)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="kaskad";
+ID=237728d8-595c-4903-9e1e-c6421c5204db
+OrderInList=196608
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=16678.4
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+DefaultApp=ThickClient
+[Билонг, ООО и другие (УПП без ЗП с 2022 года)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="belong2";
+ID=44ecda48-13d1-4970-8e09-a2d9107e3475
+OrderInList=32768
+Folder=/РАБОЧИЕ БД
+OrderInTree=16640
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+[ВауСервис, ООО (Зарплата)]
+Connect=Srvr="1c-app-gw-01";Ref="vs_zk";
+ID=6e8da2e2-0b0c-498a-8c20-7241e5f5f919
+OrderInList=1163264
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=16738.4
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+DefaultApp=ThickClient
+[ДСК 33, Строительное Управление ООО (СЗ Аскона Инвест)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="sudsk";
+ID=a011371b-5815-456d-8ae7-a437096ac092
+OrderInList=114688
+Folder=/РАБОЧИЕ БД
+OrderInTree=16736
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+[Литвуд (Старый)]
+Connect=Srvr="1c-app-gw-01";Ref="litwood";
+ID=09b92a13-5777-4dba-8d34-5ccc662102da
+OrderInList=65536
+Folder=/ПМТ/ПМТ_Рабочие БД
+OrderInTree=16768
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+[Первый клинический медицинский центр, ООО (УПП, с 2020 без ЗП)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="ams";
+ID=dec91849-e5ac-4130-91cf-3a953e503d75
+OrderInList=131072
+Folder=/РАБОЧИЕ БД
+OrderInTree=16560
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+[Первый клинический медицинский центр, ООО (Аптека)]
+Connect=Srvr="1c-app-gw-01";Ref="1c_apteka";
+ID=60674b33-2d28-4514-bba1-038eb4bbc1a2
+OrderInList=2179072
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=34264
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Сервис-Групп, ООО (Общепит)]
+Connect=Srvr="1c-app-gw-01";Ref="obshepit";
+ID=88c97378-999c-4b41-ac96-5e6a7054b74b
+OrderInList=163840
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=16856
+External=1
+ClientConnectionSpeed=Normal
+App=ThinClient
+WA=1
+[Сервис-Менеджмент, ООО УК (УПП)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="1c_svcmgmt";
+ID=db2fff62-ddc2-461c-9632-3b34fed95972
+OrderInList=999424
+Folder=/РАБОЧИЕ БД
+OrderInTree=33240
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+[Слип Профессор (Старый)]
+Connect=Srvr="1c-app-gw-01";Ref="sleepprof82";
+ID=f5867d6b-2e88-4ed7-b23b-3d85900ca11f
+OrderInList=81920
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=67200
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+[АвтоСпутник, ООО (УПП до 2021 года)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="1c_komtrans";
+ID=01656e90-fbd8-46a3-b34c-aa0fffe948d7
+OrderInList=851968
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=32984
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+AdditionalParameters=/RunModeOrdinaryApplication
+WA=1
+[Фом Тех, ООО]
+Connect=Srvr="1c-app-gw-03-upp";Ref="1c_fomtex";
+ID=414c94d8-6c56-49b4-9879-03b56069d18e
+OrderInList=1949696
+Folder=/ПМТ/ПМТ_Рабочие БД
+OrderInTree=49344
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+[ХоумАртЭнерджи, ООО]
+Connect=Srvr="1c-app-gw-03-upp";Ref="home_art_energy";
+ID=b485b90d-c9e5-4114-be28-0515f28fabb8
+OrderInList=147456
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=16600
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+[Хоум Арт Групп, ООО]
+Connect=Srvr="1c-app-gw-01";Ref="1c_hag";
+ID=086644da-5b72-44d1-9688-e028d81003df
+OrderInList=1343488
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=20831
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+DefaultApp=ThickClient
+[Гудвилл, ООО Группа компаний (УПП) /не используется/]
+Connect=Srvr="1c-app-gw-03-upp";Ref="1c_esmen";
+ID=7f49ef32-311e-43b7-941c-2f825b7741b8
+OrderInList=1327104
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=24876
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+DefaultApp=ThickClient
+[КОПИИ БД]
+ID=1e39a4ce-5cb9-40a4-96d6-0456de185bcc
+OrderInList=-1
+Folder=/
+OrderInTree=98816
+External=1
+[ТЕСТОВЫЕ КОНФИГУРАЦИИ]
+ID=53b2619e-b751-48f2-8640-cbddd0f1e575
+OrderInList=-1
+Folder=/
+OrderInTree=82688
+External=1
+[Аскона-Мебель, ООО (тест+разработка)]
+Connect=Srvr="1c-app02";Ref="test_mebel";
+ID=5c3c344e-e7b2-4190-8efc-4842b77731f3
+OrderInList=475136
+Folder=/ПМТ/ПМТ_Тестовые БД
+OrderInTree=65536
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+DefaultApp=ThickClient
+[СлипПрофессор, ООО (тест+разработка)]
+Connect=Srvr="1c-app02";Ref="test_sleepprof82";
+ID=fac239de-9927-456d-8de6-bc441c9ae6f6
+OrderInList=458752
+Folder=/ПМТ/ПМТ_Тестовые БД
+OrderInTree=98304
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+[СУ ДСК, ООО (тест+разработка)]
+Connect=Srvr="1c-app02";Ref="test_sudsk";
+ID=b701f840-5da8-411c-bd56-fa11a660228a
+OrderInList=606208
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=33024
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+[Аскона-Век, ООО (Налогоплательщик)]
+Connect=Srvr="cluster1c";Ref="nalogvek";
+ID=086776a8-53f0-4ea1-b1e9-a97c03409f81
+OrderInList=704512
+Folder=/СЛУЖЕБНЫЕ КОНФИГУРАЦИИ
+OrderInTree=33024
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+[НЕ ИСПОЛЬЗУЕМЫЕ БД]
+ID=545071ef-a217-4368-b799-237c6ca95be2
+OrderInList=-1
+Folder=/
+OrderInTree=82944
+External=1
+[АЛС, ООО Логистическая компания]
+Connect=Srvr="1c-app02";Ref="als";
+ID=4f4ca982-b520-4f4b-af90-12b454d3d9e5
+OrderInList=671744
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=16384
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+DefaultApp=ThickClient
+[Юниформ, ООО (реорг. ВауСервис, ООО)]
+Connect=Srvr="c7119";Ref="copy_uniform";
+ID=65a1b73e-29a0-41f9-87ec-e7584eed737c
+OrderInList=1212416
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=50816
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+[Риелтор (старая 2014 год)]
+Connect=Srvr="1c-app02";Ref="rieltor";
+ID=f1e4bddf-549d-4a15-b2da-b404f49171d7
+OrderInList=737280
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=32768
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+[Риелтор 2015 (Управление продажами недвижимости)]
+Connect=Srvr="1c-app02";Ref="rieltor2015";
+ID=8504e88b-1451-4dda-8fcd-f8726af5d19c
+OrderInList=1851392
+Folder=/СЛУЖЕБНЫЕ КОНФИГУРАЦИИ
+OrderInTree=82688
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+Version=8.3
+DefaultApp=ThickClient
+DefaultVersion=8.3
+[УЧЕБНЫЕ КОНФИГУРАЦИИ]
+ID=5d28de01-0d85-4f70-bdc6-39e285cc1c08
+OrderInList=-1
+Folder=/
+OrderInTree=82432
+External=1
+[Центр управления производительностью, редакция 2.0 (2.0.14.12)]
+Connect=Srvr="1capp01";Ref="1c-cup";
+ID=3547c65d-3655-483d-80d4-d85151627ab3
+OrderInList=1687552
+Folder=/СЛУЖЕБНЫЕ КОНФИГУРАЦИИ
+OrderInTree=82432
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+DefaultApp=ThickClient
+[Сервис-Групп, ООО (УПП до 2021 года)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="1c_servicegroup";
+ID=ef9ec821-a4d8-4539-871f-8d28611c7724
+OrderInList=2146304
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=34008
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+DefaultApp=ThickClient
+[Сервис-Групп, ООО (Зарплата) /действительна до 01.08.2015/]
+Connect=Srvr="1c-app-gw-01";Ref="obshepit_zp82";
+ID=961d6881-36cf-4cb4-962a-b870bbd45608
+OrderInList=589824
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=65536
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+[Конвертация данных (Общепит для Пикинского)]
+Connect=Srvr="1c-app02";Ref="test_obshepit_convert";
+ID=29d11629-92bf-488c-b365-5126ee9d353d
+OrderInList=2408448
+Folder=/СЛУЖЕБНЫЕ КОНФИГУРАЦИИ
+OrderInTree=115456
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[БЛАГОТВОРИТЕЛЬНЫЙ ФОНД «ПРОДОБРО» (УПП до 2021 года)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="bfgoodwill";
+ID=46c7c6f0-67f3-4a20-a196-1c3c16f4f608
+OrderInList=2539520
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=20807.2
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Аскона Инвест, ООО (CRM)]
+Connect=Srvr="1c-app-gw-01";Ref="askona_invest_crm";
+ID=5eab262b-167f-4d07-b067-6798c1d9143b
+OrderInList=2605056
+Folder=/РАБОЧИЕ БД
+OrderInTree=18723.6
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[1с Деньги]
+Connect=Srvr="1c-app02";Ref="dengi_1c";
+ID=178e2dba-68bf-4503-a8fe-55a50c977c60
+OrderInList=3140266.666666667
+Folder=/РАБОЧИЕ БД
+OrderInTree=17691.4
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+DefaultVersion=8.3.8.1784
+[МЕДТЕХ, ООО (Общепит 8.3 + Зарплата) /Отель Групп, ООО/]
+Connect=Srvr="1c-app-gw-01";Ref="Otel_Group_buh";
+ID=22e0ffdd-8517-4c9e-97a5-477ebb771407
+OrderInList=4898816
+Folder=/РАБОЧИЕ БД
+OrderInTree=17214.6
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Олимпик, ООО (УПП) /не используется/]
+Connect=Srvr="1c-app-gw-03-upp";Ref="Olympic_upp";
+ID=18d58317-83ab-47eb-9156-8bc168e1807d
+OrderInList=4931584
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=17132.775
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Сервис-Групп, ООО (Общепит ТЕСТ)]
+Connect=Srvr="1c-app-gw-01";Ref="obshepit_test";
+ID=89bb9bea-c61b-4d22-b0e6-9b9e583415ef
+OrderInList=5488640
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=25432
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Фудкорт, ООО (Зарплата 2.5)]
+Connect=Srvr="1c-app-02-atl";Ref="1c_foodcourt_zuk25";
+ID=f2fc626e-8931-4448-b289-65f7b25b9d19
+OrderInList=6198613.333333333
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=635904
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Сатре, ООО (УПП) /действительно до 01.01.2017/]
+Connect=Srvr="1c-app-gw-01";Ref="1c_da";
+ID=07ec3572-bd8c-4508-892e-5c9b0431e4b0
+OrderInList=6968661.333333333
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=69020.44444444444
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+DefaultApp=ThickClient
+[Диджитал Адванс, ООО (УПП до 2021 года)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="1c_da2";
+ID=599a2b8c-dd82-4277-80d7-77c87dba5b23
+OrderInList=7755093.333333333
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=637184
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Транс-Логистика, ООО]
+Connect=Srvr="1c-app-gw-01";Ref="1c_translog";
+ID=8e2b1425-47f3-4644-9546-cb1d59c9221e
+OrderInList=1064960
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=33496
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+DefaultApp=ThickClient
+[1C_Наголоплательщик_HA]
+Connect=Srvr="cluster1c";Ref="nalogha";
+ID=df7641b9-1741-4b3a-9696-b358416b56b2
+OrderInList=18666.5
+Folder=/Аскона Век
+OrderInTree=33024
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+DefaultApp=ThickClient
+[Аскона Опт (Налогоплательщик)]
+Connect=Srvr="cluster1c";Ref="nalogopt";
+ID=e6a812d0-40ac-4c6d-924c-edc1a4194942
+OrderInList=3287722.666666667
+Folder=/Аскона Век
+OrderInTree=99328
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+DefaultVersion=8.3.5.1443
+[Аскона Век]
+ID=7e67dddc-76d1-4067-92eb-8549e7cbc2e2
+OrderInList=-1
+Folder=/
+OrderInTree=115712
+External=1
+[Торговый дом, ООО (Налогоплательщик)]
+Connect=Srvr="cluster1c";Ref="nalogtd";
+ID=2523e4a3-01e2-410d-aafc-3e7679f0d91b
+OrderInList=688128
+Folder=/СЛУЖЕБНЫЕ КОНФИГУРАЦИИ
+OrderInTree=45376
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+[Hilding-Anders (Налогоплательщик)]
+Connect=Srvr="1c-server";Ref="nalogha";
+ID=7fe5f28b-e682-4aa8-9eb1-066aeb91c991
+OrderInList=1540096
+Folder=/СЛУЖЕБНЫЕ КОНФИГУРАЦИИ
+OrderInTree=57728
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+[1C_Налогоплательщик_ВЕК]
+Connect=Srvr="vm-1c-srv01.hcaskona.com";Ref="nalogvek82";
+ID=a87def50-6e7d-45e5-9782-c600592fa5ba
+OrderInList=20949
+Folder=/Аскона Век
+OrderInTree=571136
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Аптека(копия2016-04-01)]
+Connect=Srvr="1c-app02";Ref="copy_apteka_2016-04-01";
+ID=c8bfe2bf-0773-43e9-862c-6a98604ef40a
+OrderInList=1245184
+Folder=/КОПИИ БД
+OrderInTree=1116928
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Гудвилл(копия)2016-04-12]
+Connect=Srvr="1c-app02";Ref="copy_esmen_sql2016-04-12";
+ID=11d2fe18-eb59-457d-96af-362e0a3cf054
+OrderInList=942144
+Folder=/КОПИИ БД
+OrderInTree=1149696
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Аскона Украина CRM Test]
+Connect=Srvr="1c-app03";Ref="copy_askonaua82_test2";
+ID=e3edde50-7867-424f-97e8-044cd38e5fed
+OrderInList=1712128
+Folder=/КОПИИ БД
+OrderInTree=1016320
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Первый клинический медицинский центр, ООО ( УПП )/Копия 2016-15-07/]
+Connect=Srvr="1c-app02";Ref="copy_ams_sql_2015-12-08";
+ID=dec91849-e5ac-4130-91cf-3a953e503d74
+OrderInList=136533.3333333333
+Folder=/КОПИИ БД
+OrderInTree=16560
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+[Сервис-Групп, ООО (CRM)]
+Connect=Srvr="1c-app-gw-01";Ref="1c_servicegroupCRM";
+ID=67fb08a6-1709-4bf4-ac0f-dfbe68a8ba87
+OrderInList=914794.6666666666
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=999936
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ВауСервис, ООО (Бухгалтерия)]
+Connect=Srvr="1c-app-gw-01";Ref="1c_vs";
+ID=114c6bfd-bc9f-4205-ba66-baae2fe8e5b1
+OrderInList=15414741.33333333
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=16737.2
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+Version=8.2
+[ПКМЦ Клеверенс: Учет имущества (демо)]
+Connect=Srvr="1c-app02";Ref="demo_1c_clvs_pkmc";
+ID=7c99463a-0ecb-48ea-bd4b-e63537bfd320
+OrderInList=15431125.33333333
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=27264
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Аскона, ООО (КОПИЯ: 2016-11-14)]
+Connect=Srvr="1c-app02";Ref="copy_kaskad_2015-04-03";
+ID=45843942-0a9c-411e-8655-17878740f195
+OrderInList=15463893.33333333
+Folder=/КОПИИ БД
+OrderInTree=67712
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+[ХоумАртЭнерджи, ООО (копия 2015-07-03)]
+Connect=Srvr="1c-app02";Ref="copy_homeArtEnergy_2015-07-03";
+ID=5651d134-9021-4d97-a91c-7554a03dc237
+OrderInList=15513045.33333333
+Folder=/КОПИИ БД
+OrderInTree=69760
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+Version=8.3
+[Первый клинический медицинский центр (Копия на 02-03-2016)]
+Connect=Srvr="1c-app02";Ref="copy_ams_2015-08-31";
+ID=96a53201-b4fa-460e-835c-25174033ee8e
+OrderInList=15529429.33333333
+Folder=/КОПИИ БД
+OrderInTree=52480
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[АТЛАНТА, ООО (УПП до 2021 года)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="askona2016";
+ID=fabd3e5d-20ec-4e6d-83a2-5c47a8dc3609
+OrderInList=15545813.33333333
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=16688.6
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Аскона Украина (Копия 19-02-2021)]
+Connect=Srvr="1c-app03";Ref="copy_askonaua82-23-06-2016";
+ID=ed9e4bd0-8983-4547-ae51-f88a5025900d
+OrderInList=15594965.33333333
+Folder=/КОПИИ БД
+OrderInTree=59657
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[monitoring of indicators]
+Connect=Srvr="1c-app-gw-01";Ref="1c_monitoring_of_indicators";
+ID=d539f5e9-04d5-406a-b0bd-f49bcec519bb
+OrderInList=15660501.33333333
+Folder=/СЛУЖЕБНЫЕ КОНФИГУРАЦИИ
+OrderInTree=115712
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[УК Сервис-Менеджмент, ООО (Бухгалтерия ЖКХ)]
+Connect=Srvr="1c-app-04-atl";Ref="1c_zhkh";
+ID=d6b5b249-209b-486d-9f35-88d8a2029676
+OrderInList=15676885.33333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=16726.4
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Аскона Украина (Копия Битрикс)]
+Connect=Srvr="1c-app02";Ref="test-askonaua82_Bitrix";
+ID=18ecb654-be26-41ea-868f-9879c6f43076
+OrderInList=15693269.33333333
+Folder=/КОПИИ БД
+OrderInTree=191492.5
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Отель Групп, ООО (Зарплата 8.2.5 - не используется)]
+Connect=Srvr="1c-app-gw-01";Ref="Otel_Group_zp25";
+ID=dc327be6-52d9-4250-8445-6fd2a8bcfa83
+OrderInList=15824341.33333333
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=24892
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ЦЕС АЛГ, ООО]
+Connect=Srvr="1c-app-03-atl";Ref="1c_dobrograd_upp";
+ID=aeb74dbc-1163-4069-9590-8517c95f7c25
+OrderInList=15873493.33333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=16737.8
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Фудкорт, ООО (Общепит)]
+Connect=Srvr="1c-app-02-atl";Ref="1c_foodcourt_obp";
+ID=b1fd5a9c-4a1a-499a-a2e0-67527192d4ae
+OrderInList=15922645.33333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=328367.5
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Для СЭБ]
+Connect=Srvr="1c-app-gw-01";Ref="1c_seb";
+ID=39cec0df-a1a1-446c-b749-6cd9e7db04af
+OrderInList=15939029.33333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=636160
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Розница (центральная база)]
+Connect=Srvr="1c-app-gw-01";Ref="1c_retail_main";
+ID=5d1a1e58-16af-4198-92a5-20388b9ed2eb
+OrderInList=16102869.33333333
+Folder=/СЛУЖЕБНЫЕ КОНФИГУРАЦИИ
+OrderInTree=116480
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[1С:Предприятие 8. Общепит КОРП (демо)]
+Connect=Srvr="1c-app02";Ref="ДЕМО: Общепит КОРП";
+ID=72dde7b3-bdf3-4574-8022-7511026509c5
+OrderInList=16135637.33333333
+Folder=/ДЕМО КОНФИГУРАЦИИ
+OrderInTree=110976
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[СЛУЖЕБНЫЕ КОНФИГУРАЦИИ]
+ID=21b3dde7-dc83-4024-b151-93f631d594fc
+OrderInList=-1
+Folder=/
+OrderInTree=60586.66666666666
+External=1
+[1С_Налогоплательщик_ТД]
+Connect=Srvr="vm-1c-srv01.hcaskona.com";Ref="nalogtd82";
+ID=30f4cb78-edb1-4acd-b4c7-8ed1920759c2
+OrderInList=16053717.33333333
+Folder=/Аскона Век
+OrderInTree=426.6666666666666
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Фудкорт, ООО (Общепит Копия от 04-10-17)_54004]
+Connect=Srvr="1c-app02";Ref="copy_1c_foodcourt_obp_18-04-17_39618";
+ID=b22e8ad5-d03b-4d4a-9a3a-777147b6fcf2
+OrderInList=16397781.33333333
+Folder=/КОПИИ БД
+OrderInTree=833536
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Атериа, ООО /г.Курорт Доброград/(Общепит)]
+Connect=Srvr="1c-app-01-atl";Ref="Ateria";
+ID=5d99125d-9d24-4615-a05f-f0664d9e8658
+OrderInList=16430549.33333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=850176
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Атериа, ООО (Зарплата 3.1)]
+Connect=Srvr="1c-app-02-atl";Ref="1c_ateria_zup30";
+ID=10a2b0af-b46b-42b6-a9a4-c10ce7d11251
+OrderInList=16463317.33333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=850432
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AdditionalParameters=/iTaxi
+AppArch=x86
+[Сервис-Групп, ООО (Зарплата /действительна до 01.08.2015 Копия от 15-05-17 по 41240)]
+Connect=Srvr="1c-app02";Ref="copy_obshepit_zp82_15-05-2017_41240";
+ID=780407fb-07f8-43c8-8631-e286191d8800
+OrderInList=16512469.33333333
+Folder=/КОПИИ БД
+OrderInTree=982016
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Аптека (копия 18-05-2017)для Борисенко]
+Connect=Srvr="1c-app02";Ref="copy_1C_apteka_18_05_2017";
+ID=7292d696-beab-46cf-a685-91233794eba0
+OrderInList=16528853.33333333
+Folder=/КОПИИ БД
+OrderInTree=982272
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Диджитал Адванс, ООО (CRM)]
+Connect=Srvr="1c-app-gw-01";Ref="1c_da_crm";
+ID=09e677e3-b638-4362-88ed-438f68bc107d
+OrderInList=16627157.33333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=850688
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Система проектирования прикладных решений]
+Connect=Srvr="1c-app04";Ref="1c_system_project";
+ID=dc10aa04-69a6-44d7-a54b-ff5615be74a4
+OrderInList=16790997.33333333
+Folder=/СЛУЖЕБНЫЕ КОНФИГУРАЦИИ
+OrderInTree=116736
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ПМТ_Внедрение]
+ID=16a8df7b-c1d9-499c-9b61-3e90939997b6
+OrderInList=-1
+Folder=/ПМТ
+OrderInTree=32768
+External=1
+[ПМТ_Тестовые БД]
+ID=922600da-8dc5-47cc-854e-8a9f1df5b23c
+OrderInList=-1
+Folder=/ПМТ
+OrderInTree=81920
+External=1
+[Базы для ФЭО]
+ID=42c1aa3b-be95-4f70-88f8-5fdf1ef4aa03
+OrderInList=-1
+Folder=/
+OrderInTree=197632
+External=1
+[ПМТ_Копии БД]
+ID=2008238c-9176-4b47-8a42-afd220134a5b
+OrderInList=-1
+Folder=/ПМТ
+OrderInTree=49152
+External=1
+[Лоренс Трейд, ООО]
+Connect=Srvr="1c-app-gw-01";Ref="lorens";
+ID=e09e1300-c08a-4d4a-8e2b-eaa195c00574
+OrderInList=98304
+Folder=/ПМТ/ПМТ_Рабочие БД
+OrderInTree=34220.3076923077
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+[Передовые Мебельные Технологии, ООО УК (УПП до 2021 года)]
+Connect=Srvr="1c-app-gw-01";Ref="1c_pmt";
+ID=9afeba6b-ff48-42ac-bf62-96bb7cfe27a2
+OrderInList=1114112
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=35480.61538461539
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+[Полиформ Трейд, ООО]
+Connect=Srvr="1c-app-gw-01";Ref="poliform82";
+ID=9227f532-e8ed-45f7-b0ae-b65921c72e4f
+OrderInList=212992
+Folder=/ПМТ/ПМТ_Рабочие БД
+OrderInTree=36740.92307692309
+External=1
+ClientConnectionSpeed=Normal
+WA=1
+[Полиформ, ООО]
+Connect=Srvr="1c-app-gw-01";Ref="poliform";
+ID=ccccdd5f-e4b8-4304-ac89-b7e033cc6fd2
+OrderInList=49152
+Folder=/ПМТ/ПМТ_Рабочие БД
+OrderInTree=38001.23076923078
+External=1
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+[Солвис, ООО]
+Connect=Srvr="1c-app-gw-01";Ref="1c_solvis";
+ID=1ca69bef-b0ca-4b2e-9ab8-00d9be0d95c5
+OrderInList=2244608
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=67200
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+DefaultApp=ThickClient
+[ERP Солвис]
+Connect=Srvr="1c-app-07-pmt";Ref="1c_solvis_erp";
+ID=ef197724-92fd-4d6d-bcd9-4aa7fc1d652e
+OrderInList=3489792
+Folder=/ПМТ/ПМТ_Рабочие БД
+OrderInTree=40521.84615384616
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ERP Слип Профессор]
+Connect=Srvr="1c-app-gw-01";Ref="1c_sleepprof_ERP";
+ID=d0447df0-6617-45e3-b9bb-c60566e2b89a
+OrderInList=15791573.33333333
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=67200
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ERP Ревери/Хотнер]
+Connect=Srvr="1c-app-07-pmt";Ref="1c_revery-hotner_ERP";
+ID=acffa11e-3fee-41f7-a453-0098bf047e64
+OrderInList=16758229.33333333
+Folder=/ПМТ/ПМТ_Рабочие БД
+OrderInTree=16384
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ПМТ]
+ID=83407d92-23f9-4b32-abbe-1c9a9722981f
+OrderInList=-1
+Folder=/
+OrderInTree=197888
+External=0
+[Аскона Каскад, Балтвик, Дельта, Костиков]
+Connect=Srvr="1c-app-gw-03-upp";Ref="A_K_B_D_K_52633";
+ID=9ad9b8f5-db44-4b42-accc-8bb011545405
+OrderInList=-1
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=1000192
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Фудкорт (тест переноса 2.5 на 3.1)]
+Connect=Srvr="atlc0002";Ref="test_zp";
+ID=72dae825-6c5e-4db3-8fdd-406a8b5da5cf
+OrderInList=8148309.333333333
+Folder=/КОПИИ БД
+OrderInTree=35328
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Фудкорт, ООО (Зп 2.5 от 23-11-17 хранить 3 года)]
+Connect=Srvr="1c-app-gw-02";Ref="1c_foodcourt_zuk25_copy_23-11-17_do_perevoda31";
+ID=cf08ad3e-da7e-4aac-a672-1f028135ddc7
+OrderInList=-1
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=69276.44444444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ДревПлитГрупп_тест]
+Connect=Srvr="1c-app02";Ref="test_drev_plit_group";
+ID=706c333f-6a92-40e7-9cfa-f028c074d047
+OrderInList=-1
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=52821.33333333334
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Аэропорт ДОБРОГРАД, ООО (Бухгалтерия 8.0 КОРП)]
+Connect=Srvr="1c-app-gw-01";Ref="1c_airport_buh";
+ID=fff7c39e-673b-475b-a7f0-074c125e01b4
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=637440
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+DefaultVersion=8.3.11.2924
+[Дмитриев О.Н., ИП (Бухгалтерия 8.0 КОРП)]
+Connect=Srvr="1c-app-gw-05";Ref="1c_dmitriev_buh";
+ID=430bb13c-a02e-40b3-8826-fd03faf1f687
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=327040
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Дмитриев ИП (Зарплата 3.1)]
+Connect=Srvr="1c-app-gw-01";Ref="1c_dmitriev_zup";
+ID=da1f6b5c-fd17-469f-b1c3-b3fe7679b1d3
+OrderInList=17315285.33333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=1000448
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Аэропорт Доброград (Зарплата 3.1), ООО]
+Connect=Srvr="1c-app-gw-01";Ref="1c_airport_zup";
+ID=72de7fb7-3781-4dcd-a19f-99bc8b0d1b16
+OrderInList=17298901.33333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=17208.9
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AdditionalParameters=/iTaxi
+AppArch=x86
+[Фудкорт, ООО Зарплата (3.1)]
+Connect=Srvr="1c-app-02-atl";Ref="1c_foodcourt_zuk31";
+ID=e8e52cac-5615-4e13-b72b-3275d7ff6a7e
+OrderInList=17348053.33333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=366809.5625
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AdditionalParameters=/iTaxi
+AppArch=x86
+[Фудкорт, ООО (Общепит от 04-12-2017)]
+Connect=Srvr="1c-app02";Ref="copy_foodcourt_obp_04-12-17";
+ID=9fa9e657-5123-4782-9b56-9f4415eefb4a
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=450816
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ERP Аскона-Мебель (экспериментальная)]
+Connect=Srvr="1c-app02";Ref="test_askona-mebel_ERP";
+ID=4e8169f4-d1c5-4316-a22c-e870b2b5f549
+OrderInList=-1
+Folder=/ПМТ/ПМТ_Внедрение
+OrderInTree=512
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Аскона Лайф Групп (Инвест Сити, ООО)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="1c_invest_city";
+ID=6181ed46-9b3d-4e1f-bf47-8361af9750c9
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=1000704
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Сварог_тд_тест]
+Connect=Srvr="1c-app02";Ref="test_svarog_td";
+ID=dc3dd9dd-c519-4132-bb37-d9a34ca710fe
+OrderInList=17855957.33333333
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=53333.33333333334
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Сварог_фсг_тест]
+Connect=Srvr="1c-app02";Ref="test_svarog_fsg";
+ID=8f71e0aa-127a-49da-ba94-d9e2e06110c4
+OrderInList=17872341.33333333
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=43178.66666666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Центр развития м-на Доброград "г.Доброград", АНО (УПП до 2021 года)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="1c_center_mk_dobrograd";
+ID=c5413c50-8188-40c9-bbea-5cb831ad343d
+OrderInList=8557909.333333332
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=326796.15
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[rumax]
+Connect=Srvr="1c-app02";Ref="rumax";
+ID=4e978008-acb3-4bbc-ad2f-c93bbd1e9bf3
+OrderInList=18429397.3333333
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=53589.3333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+DefaultVersion=8.3
+[Литвуд, Софт Слип (Новый)]
+Connect=Srvr="1c-app-gw-05";Ref="1c_newLitwood22";
+ID=3900fa94-eff2-45b5-94ca-7cb7f53e655b
+OrderInList=19019221.3333333
+Folder=/ПМТ/ПМТ_Рабочие БД
+OrderInTree=49600
+External=0
+ClientConnectionSpeed=Normal
+App=ThickClient
+WA=1
+Version=8.3
+DefaultVersion=8.3.11.2867
+[Copy_1c_newLitwood2_29-09-17_53761]
+Connect=Srvr="1c-app-05-pmt";Ref="Copy_1c_newLitwood2_29-09-17_53761";
+ID=57140ae5-4d7a-4edf-97d9-1ac634eadd9c
+OrderInList=19609045.3333333
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=913173.333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+DefaultApp=ThickClient
+[Копия Первый Клинический Медицинский Центр (заявка 66325 для Борисенко А.)]
+Connect=Srvr="1c-app02";Ref="copy_ams_sql_09-02-18_66325";
+ID=295b6940-635f-4195-8883-e6d56f9ed6ab
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1200384
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[RumaxAuto]
+Connect=Srvr="1c-app02";Ref="rumaxauto";
+ID=59b3e99f-4f31-49da-9c4e-b2ace518a015
+OrderInList=-1
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=913429.333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Комтранс (Автоспутник) для Семеновой Е.В. по заявке 73015]
+Connect=Srvr="1c-app02";Ref="copy_komtrans_18-04-18_73015";
+ID=bbfd2390-0758-407f-b2d2-9ca7aafa95a0
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1218560
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Билонг для Доронина Р. по 71610]
+Connect=Srvr="1c-app02";Ref="copy_belong2_82_sql_20-04-18_71610";
+ID=f5eef0ac-ff0e-4964-8d95-8d7675933685
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1218816
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Билонг от 25.04.18 по заявке 73816 (Для Погодина В.)]
+Connect=Srvr="1c-app02";Ref="copy_belong2_82_sql_25-04-18_73816";
+ID=14f97c38-f153-4612-bb3b-74bbdc506857
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1219072
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Билонг для Кирилловой М.В. (Заявка 74436)]
+Connect=Srvr="1c-app02";Ref="copy_belong2_82_sql_03-05-18_74436";
+ID=13798051-2612-4280-816f-249cc40763da
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1219328
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ПроДобро, ООО (Бухгалтерия КОРП)]
+Connect=Srvr="1c-app-gw-05";Ref="1c_prodobro";
+ID=c9aafae4-aa9b-4c9a-a06b-42b3671b181c
+OrderInList=20461013.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=1000960
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ПроДобро, ООО (Зарплата)]
+Connect=Srvr="1c-app-gw-05";Ref="1c_prodobro_zup";
+ID=08e03d37-136f-4cfa-9d62-9de86df31bd3
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=534442.666666665
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Инвест Сити для Зверевой Д.С. (заявка 82129)]
+Connect=Srvr="1c-app02";Ref="copy_1c_invest_city_82129";
+ID=724847b7-a01e-4ce5-8716-bd459ba2ef23
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1221120
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Инвест Сити для Тюриной И. по заявке 83945]
+Connect=Srvr="1c-app02";Ref="copy_1c_invest_city_31-07-18_83945";
+ID=aaa4b25f-ce36-4d1f-9e2e-9c90cfcf3641
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1222144
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ПКМЦ для Тюриной И.А. по заявке 84277]
+Connect=Srvr="1c-app02";Ref="copy_ams_sql_03-08-18_84277";
+ID=df20ba8e-f8fb-4721-8ea6-1e82ca6e1680
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1222912
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[КПМГ]
+Connect=Srvr="1c-app02";Ref="kpmg";
+ID=2ec416c2-23cb-4081-a4f9-41fe17428a89
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1224704
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Билонг для Зверевой Д.С. по заявке 87153]
+Connect=Srvr="1c-app02";Ref="copy_belong2_82_sql_05-09-18_87153";
+ID=bde5c582-a39d-4e16-809d-9efcf1ec0066
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1224960
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Доброград СЗ, ООО (УПП без ЗП с 2022 года)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="1c_sz_dobrograd_new";
+ID=5e4b0aed-8c05-4d6f-99ca-05013804c149
+OrderInList=23967189.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=179200
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ItiliumDA]
+Connect=ws="http://r.epi33.ru/ItiliumDA";
+ID=9ef653c2-7eb4-4b33-b203-df51c1dda835
+OrderInList=25343445.3333333
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=913941.333333333
+External=0
+ClientConnectionSpeed=Normal
+UseProxy=0
+App=Auto
+WA=1
+Version=8.3
+WSA=1
+DefaultVersion=8.3.10.2580
+[Аскона (Латвия) Бухгалтерия]
+Connect=Srvr="1c-app-gw-02";Ref="askona_lv_buh";
+ID=c77bdbcf-fcd7-440a-950e-630430641259
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=1001472
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Аскона (Латвия) УТ]
+Connect=Srvr="1c-app-gw-02";Ref="askona_lv_ut";
+ID=e7b57076-712d-424a-8496-61665db67cca
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=517270.666666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия СЗ Аскона Инвест для Тюриной И. по заявке 75917]
+Connect=Srvr="1c-app02";Ref="copy_sudsk_sql_15-10-18_75917";
+ID=89091431-1262-420d-b169-0a1c1022b80c
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1225728
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Itilium-kpmg]
+Connect=Srvr="1c-app-gw-02";Ref="itilium_kpmg";
+ID=aec0feb3-a4f3-4ffe-af21-0a575f10b280
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=1001984
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[СЗ Аскона Инвест (Копия от 01.11.18 отчет 9 мес.2018 для Беловой О.В.)]
+Connect=Srvr="1c-app02";Ref="copy_sudsk_sql_02-11-18_95034";
+ID=a9dc92a4-d4da-45dc-942a-76d21b23e75d
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1227264
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Атерия для Зверевой Д.С. по заявке 96296]
+Connect=Srvr="1c-app02";Ref="copy_1c_ateria_zup30_19-11-18_96296";
+ID=614424bf-4b1b-47aa-8d89-fc4b57009a01
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1228288
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Казахстан УТ для Зверевой Д. по заявке 97625]
+Connect=Srvr="1c-app02";Ref="copy_askona_kz_ut_22-11-18_97625";
+ID=cb70d895-bd68-481c-bab6-c40065c1f7f9
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1228544
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Казахстан УТ для Тюриной И. по заявке 97036]
+Connect=Srvr="1c-app02";Ref="copy_askona_kz_ut_23-11-18_97036";
+ID=6fd0c2f6-99e5-4060-8196-6d5e036afd21
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1228800
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия УК СМ для Тюриной И.А. по заявке 97311]
+Connect=Srvr="1c-app02";Ref="copy_1c_svcmgmt_20-12-18_97311";
+ID=f94b6932-8d73-4170-93ca-b0f4af87579b
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1230080
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[УК Сервис-Менеджмент, ООО (Зарплата)]
+Connect=Srvr="1c-app-gw-05";Ref="uksmzarplata";
+ID=46a76c7f-ae29-4023-8f60-31ebe34e227b
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=1228288
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AdditionalParameters=/iTaxi
+AppArch=x86
+[Курорт Доброград/Атерия (копия от 01-02-19 по 106118)]
+Connect=Srvr="1c-app02";Ref="copy_Ateria_01-02-19_106118";
+ID=ff706b84-d9d3-4d59-b25b-6928137348d1
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1240832
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия КПМГ по 106521]
+Connect=Srvr="1c-app02";Ref="copy_kpmg_106521";
+ID=b4f35b36-d4eb-4308-8a9d-7cc1843a56f7
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1232768
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[СЗ Аскона Инвест (копия от 29.01.19 для Беловой О.В. по 105719)]
+Connect=Srvr="1c-app02";Ref="copy_sudsk_sql_105719_29-01-19";
+ID=31c499c6-1ab8-4b96-9cee-a6de89e0dc1c
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1240832
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия СЗ Аскона Инвест по заявке 108223 для Гладыш С.Б.]
+Connect=Srvr="1c-app02";Ref="copy_sudsk_sql_18-02-19_108223";
+ID=9ca4adaa-c9a1-4081-8d1b-11a36130e243
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1241344
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Сервис Групп для Зверевой Д.С. по заявке 103709]
+Connect=Srvr="1c-app02";Ref="copy_1c_servicegroup_26-02-19_103709";
+ID=abadf22d-601b-4fb1-8aef-4e9508ce8a51
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1257728
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Водоканал]
+Connect=Srvr="1c-app-gw-05";Ref="vodokanal";
+ID=9691d40c-db56-4561-b93e-a8350d334659
+OrderInList=-1
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=914197.333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Атерия для Пикинского А. от 13-03-19]
+Connect=Srvr="1c-app02";Ref="copy_Ateria_delete_at_01-04-19";
+ID=8e4d2794-2a2f-4c5f-96ac-cb97255e8889
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1259008
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[МОСТОТРЕСТ]
+ID=96319b57-55c0-4f2c-a2a8-d996f9a8fbc1
+OrderInList=-1
+Folder=/
+OrderInTree=100693.333333333
+External=0
+[Итилиум (2019-04-24)]
+Connect=Srvr="1c-app02";Ref="1c_itilium_2019-03-15";
+ID=1a6d87b5-a349-47a5-984b-c3def1b5f9cf
+OrderInList=30586325.3333333
+Folder=/МОСТОТРЕСТ
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Водоканал с данными]
+Connect=Srvr="1c-app02";Ref="vodokanal_data";
+ID=75f17c32-d863-47cd-975a-603d65fc988a
+OrderInList=30504405.3333333
+Folder=/КОПИИ БД
+OrderInTree=1259264
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Отель Групп (Общепит 8.3) для Доронина Р. по заявке 110940]
+Connect=Srvr="1c-app02";Ref="copy_Otel_Group_Buh_19-03-19_110940";
+ID=3985b255-e171-4dc0-a6a8-f542e63ea016
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1276160
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Атланта (Копия от 21-03-19 по 112280 для Доронина)]
+Connect=Srvr="1c-app02";Ref="copy_askona2016_21-03-19_doronin";
+ID=c0ed294e-5773-4a39-a2f8-7232bf55aa30
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1259264
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Доброград-1, ООО УК Зарплата 3.1]
+Connect=Srvr="1c-app-gw-05";Ref="1c_dobrograd_1_zup";
+ID=4aa3d371-1cab-4019-a104-e647f6847c8f
+OrderInList=33060309.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=1057664
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AdditionalParameters=/iTaxi
+AppArch=x86
+[Доброград-1, ООО УК Бухгалтерия КОРП 8.3]
+Connect=Srvr="1c-app-gw-05";Ref="1c_dobrograd_1_buh";
+ID=ce3b73c4-bcf2-48c3-b2be-d80ae225ec33
+OrderInList=33043925.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=1114624
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Управление холдингом (демо)]
+Connect=Srvr="1c-app02";Ref="test_UX";
+ID=c2b833b4-5351-474d-bf59-803a3e49a6fa
+OrderInList=33076693.3333333
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=930581.333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Отель Групп (Общепит 8.3) для Доронина Р. по заявке 110940]
+Connect=Srvr="1c-app02";Ref="copy_Otel_Group_Buh_19-03-19_110940";
+ID=3985b255-e171-4dc0-a6a8-f542e63ea016
+OrderInList=32863701.3333333
+Folder=/КОПИИ БД
+OrderInTree=1276160
+External=1
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия АйСи для Зверевой Д. по заявке 114708]
+Connect=Srvr="1c-app02";Ref="copy_1c_dobrograd_upp_114708";
+ID=066a2089-6052-4a8b-b056-e84b687127aa
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1276672
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ЖКХ (Асташовой для проверки)]
+Connect=Srvr="dac0020";Ref="dev-1c_zhkh";
+ID=a70e93f9-2168-4608-922b-b26c0ccee087
+OrderInList=36517333.3333333
+Folder=/КОПИИ БД
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[СЗ Аскона Инвест (копия от 22-04-19 по 116438)]
+Connect=Srvr="1c-app02";Ref="copy_sudsk_22-04-19_116438";
+ID=b04d1637-b249-42a3-a6a9-d3b6bca6397b
+OrderInList=39040469.3333333
+Folder=/КОПИИ БД
+OrderInTree=1277440
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Система ООО (УПП до 2021 года)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="1c_systema";
+ID=e65be355-0fc6-4e1a-918b-a70ecc5f46c0
+OrderInList=39073237.3333333
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=636672
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Аскона (Латвия) тест]
+Connect=Srvr="1c-app02";Ref="test_askona_lv_120643";
+ID=7756b0a0-dce9-42b5-8da2-069ceb905763
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1277952
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ERP 2019 (обновления кф+ расширения)]
+Connect=Srvr="1c-app-08-pmt";Ref="erp_pmt_repl_cfg";
+ID=334a3862-cf88-49b7-8906-115390947841
+OrderInList=-1
+Folder=/ПМТ/ПМТ_Тестовые БД
+OrderInTree=165376
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия КПМГ от 05-06-19 для Моисеенкова М.В.]
+Connect=Srvr="1c-app02";Ref="copy_kpmg_106521_05-06-19";
+ID=7a8e714d-9fc5-4732-8c72-9826b337da45
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1278464
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Зарплата и Управление Персоналом (демо)]
+Connect=Srvr="1c-app02";Ref="demo_zup_04-06-19_118966";
+ID=af09250f-2e29-4887-801d-2c0492406121
+OrderInList=41727445.3333333
+Folder=/КОПИИ БД
+OrderInTree=841728
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Копия СЗ Доброград для Зверевой Д. по заявке 120013]
+Connect=Srvr="1c-app02";Ref="copy_1c_sz_dobrograd_11-06-19_120013";
+ID=fa237ac1-fb9e-494e-9e0e-14b4b77fbb94
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1278720
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Демобаза ERP редакции 2.4.8]
+Connect=Srvr="1c-app02";Ref="demobase_erp_2.4.8";
+ID=0e6e11e7-033a-4378-bed7-d37c3b5b812b
+OrderInList=-1
+Folder=/ДЕМО КОНФИГУРАЦИИ
+OrderInTree=127872
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ERP для Доронина Р. по заявке 124302]
+Connect=Srvr="1c-app02";Ref="copy_ERP_79546_drv_2019-06-19";
+ID=24eaaaf8-0641-4457-969d-c967cbe2b204
+OrderInList=-1
+Folder=/КОПИИ БД/Copy ERP PMT
+OrderInTree=1278976
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Строй – Инвест, ООО (УПП до 2022 года)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="1c_stroyinvest_upp";
+ID=0a6deaa1-70f8-4a49-80a2-9ca094eed21e
+OrderInList=39368149.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=3518741.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Копия ПКМЦ для Зверевой Д.С. по заявке 118966]
+Connect=Srvr="1c-app02";Ref="copy_ams_sql_31-07-19_118966";
+ID=ae764206-e246-4728-ae20-bd47669c91f6
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1282048
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ПМТ_ERP_Рабочие БД]
+ID=72f0a82a-c133-4341-9ad9-799cf7f280e3
+OrderInList=-1
+Folder=/ПМТ
+OrderInTree=1242112
+External=0
+[1. ERP 2019 (CC,СЛ,ПТ,ФТ)]
+Connect=Srvr="1c-app-15-pmt";Ref="erp_pmt_repl_signer1";
+ID=19a8aecd-66c1-4aea-8fac-a41594288809
+OrderInList=-1
+Folder=/ПМТ/ПМТ_ERP_Рабочие БД
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[2. ERP 2019 (Литвуд)]
+Connect=Srvr="1c-app-15-pmt-02:2541";Ref="erp_pmt_repl_signer2";
+ID=6dbfab97-06f8-4a33-abed-eb3991a64722
+OrderInList=-1
+Folder=/ПМТ/ПМТ_ERP_Рабочие БД
+OrderInTree=512
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[3. ERP 2019 Общая]
+Connect=Srvr="1c-app-13-pmt-03:3541";Ref="erp_pmt_repl_signer3";
+ID=c5843e9a-36ed-4d68-aafe-e983da6536a3
+OrderInList=-1
+Folder=/ПМТ/ПМТ_ERP_Рабочие БД
+OrderInTree=768
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[4. ERP 2019 (Регламентная)]
+Connect=Srvr="1c-app-13-pmt-04:4541";Ref="erp_pmt_repl_signer4";
+ID=f747a7c5-89e0-430f-a214-01eab5729f7a
+OrderInList=44430805.3333333
+Folder=/ПМТ/ПМТ_ERP_Рабочие БД
+OrderInTree=17237.3333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия monitoring of indicators для Ермолайчев Д.А. по заявке 137917]
+Connect=Srvr="1c-app-gw-02";Ref="copy_1c_monitoring_of_indicators_21-0819_137917";
+ID=49a84dfc-fcdf-461f-8082-df65fe1e0d16
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1283328
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Арга, ООО ССК (Бухгалтерия)]
+Connect=Srvr="1c-app-gw-04";Ref="1c_arga_buh";
+ID=832b51fa-460c-4a42-83dc-3a4f4c0d1a86
+OrderInList=39531989.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=3519253.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Арга, ООО ССК (Зарплата)]
+Connect=Srvr="1c-app-gw-04";Ref="1c_arga_zup";
+ID=fb8866c0-0493-47b7-9d10-35d956720950
+OrderInList=39515605.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=3518997.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AdditionalParameters=/iTaxi
+AppArch=x86
+[ПМТ ERP – тестовые базы от предыдущего дня (Б1,Б2,Б3,Б4)]
+ID=be76df29-7e92-473b-bfce-e489377d99cc
+OrderInList=-1
+Folder=/ПМТ/ПМТ_ERP_Рабочие БД
+OrderInTree=17493.3333333333
+External=0
+[1. Тест  ERP Б1 (СС,СЛ,ПТ,ФТ) - копия за предыдущий день]
+Connect=Srvr="1c-app-07-pmt";Ref="erp_pmt_repl_signer1_prevday";
+ID=bc8935b7-c154-48ae-803e-9ac838f9645c
+OrderInList=-1
+Folder=/ПМТ/ПМТ_ERP_Рабочие БД/ПМТ ERP – тестовые базы от предыдущего дня (Б1,Б2,Б3,Б4)
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Хейлкрофт Лимитед, ООО Филиал (Зарплата)]
+Connect=Srvr="1c-app-gw-01";Ref="HalecroftZup";
+ID=5b19814f-bf08-4ebf-9af0-6df7df0d281a
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=717708.15
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Хейлкрофт Лимитед, ООО Филиал (Бухгалтерия)]
+Connect=Srvr="1c-app-gw-01";Ref="Halecroft";
+ID=78b15b80-b366-44aa-a44f-8632a232db61
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=433432.3
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ERP для тестирования с Directum Аскона-Век]
+Connect=Srvr="1c-app02";Ref="copy_ERP_test_18092019";
+ID=c95173dd-795f-425f-8dec-34c67f61075e
+OrderInList=-1
+Folder=/КОПИИ БД/Copy ERP PMT
+OrderInTree=1283584
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[2. Тест  ERP Б2 (Литвуд) - копия за предыдущий день]
+Connect=Srvr="1c-app-07-pmt";Ref="erp_pmt_repl_signer2_prevday";
+ID=d8ed221a-bd52-41a4-833e-ca60e533cc85
+OrderInList=-1
+Folder=/ПМТ/ПМТ_ERP_Рабочие БД/ПМТ ERP – тестовые базы от предыдущего дня (Б1,Б2,Б3,Б4)
+OrderInTree=512
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[4. Тест  ERP Б4 (Регламентная) - копия за предыдущий день]
+Connect=Srvr="1c-app-07-pmt";Ref="erp_pmt_repl_signer4_prevday";
+ID=7d106d19-70db-43ba-9729-22ddb4d6460c
+OrderInList=-1
+Folder=/ПМТ/ПМТ_ERP_Рабочие БД/ПМТ ERP – тестовые базы от предыдущего дня (Б1,Б2,Б3,Б4)
+OrderInTree=1024
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Бухгалтерия предприятия КОРП (демо)]
+Connect=Srvr="dac0020";Ref="demo-buh83-korp";
+ID=d02499b4-d857-4ca0-b3b8-c28e2c84aaa8
+OrderInList=39663061.3333333
+Folder=/ДЕМО КОНФИГУРАЦИИ
+OrderInTree=2945045.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Копия для переноса 25-09-19]
+Connect=Srvr="1c-app-gw-01";Ref="copy_perenos";
+ID=bea7abc7-640d-43c8-82a3-0921246c0b7e
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1283840
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия СУ ДСК для Погодина В. по заявке 123330]
+Connect=Srvr="1c-app02";Ref="copy_sudsk_sql_08-10-19_123330";
+ID=f1ee0d7f-889c-4f98-b12f-c54a9d1b8f34
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1284352
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+
+[Копия Фудкорт для Журавлевой О.В. по заявке 254809]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_foodcourt_obp_11-11-21_254809";
+
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4221717.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3 
+
+[Копия Фудкорт для Зверевой Д. по заявке 148483]
+Connect=Srvr="1c-app02";Ref="copy_1c_foodcourt_obp_10-10-19_148483";
+ID=5e3af56e-6db0-4b41-b2a0-b6aae03f7a8c
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1284864
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия СЗ Аскона Инвест по заявке 148634]
+Connect=Srvr="1c-app02";Ref="copy_sudsk_sql_11-10-19_148634";
+ID=f065c8fc-340c-4cbb-ad22-fa689a6d0500
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1301248
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Ревери\Хотнер ЕРП для Моисеенкова М.В.]
+Connect=Srvr="1c-app02";Ref="copy_1c_revery-hotner_ERP_18-10-19";
+ID=17534cb3-e21e-4a5d-ba5b-c305173c0cb3
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1301504
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Атланты для Зверевой Д.С. по заявке 150629]
+Connect=Srvr="1c-app02";Ref="copy_askona2016_24-10-10_150629";
+ID=58c419fc-9ec4-43d1-b477-20aa2c789d5a
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1301760
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ЗУП корп демо]
+Connect=Srvr="1c-app-gw-02";Ref="zup_corp_demo";
+ID=41311fb6-0794-405e-8078-e39aeaa67b38
+OrderInList=-1
+Folder=/ДЕМО КОНФИГУРАЦИИ
+OrderInTree=2945301.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Sibedge]
+Connect=Srvr="1c-app-gw-01";Ref="sibedge";
+ID=fd6f292f-819c-46ed-a835-4e8278362276
+OrderInList=-1
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=930837.333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Аскона Хоум, ООО (Бухгалтерия 3.0)]
+Connect=Srvr="1c-app-gw-05";Ref="1c_askhome_buh";
+ID=62f995bc-6ff2-454f-bc71-ddae1ad9005a
+OrderInList=50525653.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=3519765.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Биёса, ООО (Бухгалтерия 3.0)]
+Connect=Srvr="1c-app-gw-05";Ref="1c_biosa_buh_korp";
+ID=57c5074d-f4b6-41c0-aeb6-ab463012b53a
+OrderInList=53540309.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=3520021.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Добромаркет, ООО (Зарплата 3.1)]
+Connect=Srvr="1c-app-gw-05";Ref="1c_dobromarket_zup";
+ID=309ebf43-0190-421c-8cd2-307923af0400
+OrderInList=56407509.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=1776033.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Добромаркет, ООО (Бухгалтерия 3.0)]
+Connect=Srvr="1c-app-gw-05";Ref="1c_dobromarket_buh";
+ID=a6d31125-d738-44b8-9969-c4e5d9fe07b3
+OrderInList=56391125.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=2094154.66666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ERP для Борисенко по заявке 153722]
+Connect=Srvr="1c-app-13-pmt-02:2541";Ref="copy_erp_pmt_repl_signer4_12-11-19_153722";
+ID=06e5b55a-34a9-4ef5-acb4-f3e0384c9d7b
+OrderInList=-1
+Folder=/ПМТ/ПМТ_Копии БД
+OrderInTree=190400
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[копия Атерия для Моисеенкова М. за 08.11.2019]
+Connect=Srvr="1c-app02";Ref="copy_ateria_13-11-19";
+ID=343319e6-a82e-4300-aa9d-65351cc2531e
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1318912
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[ZUPSibedge_test]
+Connect=Srvr="1c-app-gw-01";Ref="ZUPSibedge_test";
+ID=cf9f704d-289b-4803-b5c1-353d7713007f
+OrderInList=59291093.3333333
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=931093.333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[ZUPSibedge-file_test]
+Connect=Srvr="1c-app-gw-01";Ref="ZUPSibedge-file_test";
+ID=d6aa0a59-d7b9-4aa3-a858-f6a7a9c0ef30
+OrderInList=59307477.3333333
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=492085.333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[copy_1c_sz_dobrograd]
+Connect=Srvr="1c-app-gw-02";Ref="copy_1c_sz_dobrograd";
+ID=4b4799b4-364b-4067-95c6-2e169b827e5f
+OrderInList=50271701.3333333
+Folder=/КОПИИ БД
+OrderInTree=-1
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Аскона Хоум, ООО (Зарплата 3.1)]
+Connect=Srvr="1c-app-gw-05";Ref="1c_askhome_zup";
+ID=8d2693d2-c12a-4919-beb5-afe5b4cdb1f2
+OrderInList=62207445.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=1882073.77777778
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия_ЖКХ_20191128_]
+Connect=Srvr="1c-app-gw-02";Ref="copy_1c_zhkh_20192811_156593";
+ID=dd4551d0-8a08-4b3d-a5b7-58b5f4ea7ea9
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=164992
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Аскона (Украина) пустая]
+Connect=Srvr="1c-app03:2541";Ref="1c_askona_20192911_156752";
+ID=ea83b439-67d0-449f-880b-5d41bf5a06d4
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=3520277.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Билонг для Доронина Р.В. по заявке 157467]
+Connect=Srvr="1c-app02";Ref="copy_belong2_82_sql_04-12-19_157467";
+ID=d7757093-33ec-4f8a-889f-4d3d838b09ad
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3553045.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Зарплата и управление персоналом КОРП]
+Connect=Srvr="vm-1c-srv01";Ref="1c_zup";
+ID=548f94b4-9e71-43b0-bcfe-b11d6f4422ef
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=571392
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Первый клинический медицинский центр, ООО (Зарплата 3.1 с 2020)]
+Connect=Srvr="1c-app-gw-01";Ref="1c_pkmc_zup";
+ID=8ffb8ccd-8b3e-47d8-85d3-a66550c53cce
+OrderInList=65205717.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=517654.666666665
+External=0
+ClientConnectionSpeed=Normal
+WA=1
+Version=8.3
+AdditionalParameters=/iTaxi
+[Демонстрационная база для ПКМЦ ЗУП 3.1]
+Connect=Srvr="1c-app-gw-05";Ref="1с_demo_pkmc_zup";
+ID=4bfccd7a-a508-4f59-8a5f-fbb7c859e969
+OrderInList=67990997.3333333
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=947989.333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ИП Дмитриев для Зверевой Д.С. по заявке 160575]
+Connect=Srvr="1c-app02";Ref="copy_1c_dmitriev_buh_26-12-19_160575";
+ID=7a04629b-6ce2-49c9-83ac-9e7cc840cca9
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3570197.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1С Askona Life UT_161968]
+Connect=Srvr="1c-app02";Ref="copy_kz_ut_161968";
+ID=12813c5e-f4a8-4a36-8bf7-0aa332a9bda0
+OrderInList=-1
+Folder=/KZ/КОПИИ
+OrderInTree=1699590.45833333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1С Askona Life ZUP_162151]
+Connect=Srvr="1c-app02";Ref="copy_askona_kz_zup_162151";
+ID=13c8dc01-1ee3-420d-aa98-dd4f208b518a
+OrderInList=-1
+Folder=/KZ/КОПИИ
+OrderInTree=1489539.22916667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1С Askona Life UT 14012020]
+Connect=Srvr="1c-app02";Ref="copy_askona_kz_162745";
+ID=1179dd84-f1aa-4053-acd9-a18743329ef9
+OrderInList=-1
+Folder=/KZ/КОПИИ
+OrderInTree=1384513.61458333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Halecroft для Зверевой Д. 162505]
+Connect=Srvr="1c-app02";Ref="copy_halecroft_162505";
+ID=c1747195-c70d-481c-a892-0dfe99f05124
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=2029707.16666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Консолидированная (ИнфоКиоск)]
+Connect=Srvr="1c-app-gw-01";Ref="infokiosk";
+ID=22eeabbf-e47a-4725-bf0f-9d1a99911987
+OrderInList=65451477.3333333
+Folder=/СЛУЖЕБНЫЕ КОНФИГУРАЦИИ
+OrderInTree=32882.1333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Копия Автоспутник для Зверевой Д.С. по заявке 167729]
+Connect=Srvr="1c-app02";Ref="copy_komtrans_04-02-20_167729";
+ID=01da2da8-2700-425e-a951-fa3b4ea97b5b
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3619093.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ДА для Зверевой Д.С. по заявке 168062]
+Connect=Srvr="1c-app02";Ref="copy_1c_da2_05-02-20_168062";
+ID=8771938f-a618-485e-8f66-b902eef0ad9a
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3619349.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[СППРn]
+Connect=Srvr="1c-app-13-pmt-02:2541";Ref="sppr_pmt";
+ID=36d5d8fa-e733-4cc4-ae29-588ead281c8a
+OrderInList=-1
+Folder=/ПМТ/ПМТ_Внедрение
+OrderInTree=1280
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия СУ ДСК для Зверевой Д.С. по заявке 168640]
+Connect=Srvr="1c-app02";Ref="copy_sudsk_sql_10-02-20_168640";
+ID=e3463cfd-940d-4b1a-ae6f-a8a69c39847b
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3619861.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Katerina]
+Connect=Srvr="1c-app-gw-01";Ref="1c_katerina_ut";
+ID=cabb0329-f3f3-41ab-9c22-5487c13b1bf1
+OrderInList=70809045.3333333
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=948245.333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ZUPSibedge_upr_DA]
+Connect=Srvr="1c-app02";Ref="ZUPSibedge_upr_DA";
+ID=9f6c9904-1fac-458a-ab23-4250c6b6dee4
+OrderInList=-1
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=939797.333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+[ZUPSibedge_reg_DA]
+Connect=Srvr="1c-app02";Ref="ZUPSibedge_reg_DA"; 
+ID=5fb2eaa9-6df6-4c55-8f8d-aa9698531735 
+OrderInList=-1 
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=948501.333333333 
+External=0 
+ClientConnectionSpeed=Normal 
+App=Auto 
+WA=1 
+Version=8.3
+[Копия ЖКХ для Крылова В.А. по заявке 169579]
+Connect=Srvr="1c-app02";Ref="copy_1c_zhkh_13-02-20_169579";
+ID=be11a466-9485-4766-980d-8cc45ed971b8
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3620117.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Доброград Апарт ООО, (Бухгалтерия 3.0 КОРП)]
+Connect=Srvr="1c-app-gw-05";Ref="1c_apart_buh";
+//ID=7e5f1b0e-5aca-465e-83e4-7ab74af618e0
+OrderInList=73709013.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=24860.9
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Доброград Апарт ООО, (Зарплата 3.1)]
+Connect=Srvr="1c-app-gw-05";Ref="1c_apart_zup";
+ID=77437e6f-7229-4731-a0e1-587890e4a436
+OrderInList=73725397.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=17210.8
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Управление нашей фирмой (Демо база – ООО «Кухни Ассоль», производство и продажа мебели)]
+Connect=Srvr="1c-app02";Ref="demo_nf";
+ID=4eef9c71-c19f-4359-ba17-ed41dbff30c4
+OrderInList=65500629.3333333
+Folder=/ДЕМО КОНФИГУРАЦИИ
+OrderInTree=1110378.66666666
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Соколовский, ИП (Бухгалтерия ПРОФ)]
+Connect=Srvr="1c-app-gw-05";Ref="1c_ip_sokolovskiy";
+ID=e367104d-9fe8-41e7-be0e-d9b4174753a0
+OrderInList=65517013.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=3520533.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Копия Строй Инвест УПП по заявке 168237]
+Connect=Srvr="1c-app02";Ref="copy_1c_stroyinvest_upp_26-02-20_168237";
+ID=bea79632-0c2a-435d-b730-9035ba75e0d0
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3620629.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ПроДобро по заявке 171377]
+Connect=Srvr="1c-app02";Ref="copy_1c_prodobro_27-02-20_171377";
+ID=e7386a6d-57b0-4382-8456-d4fad7c1e88c
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3620885.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Атерия для Орловой А.А. по заявке 171882]
+Connect=Srvr="1c-app02";Ref="copy_Ateria_28-02-20_171882";
+ID=010aa6e2-3151-4e88-b092-3188355846d1
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3621141.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Атериа от 11-03-2020 по заявке 173575]
+Connect=Srvr="1c-app02";Ref="copy_ateria_11-03-2020_173575";
+ID=871e19f9-8d54-4dd1-8fca-3ad51ba6c2a7
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3669269.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Автоспутник (копия то от 12-03-2020)]
+Connect=Srvr="1c-app02";Ref="copy_avtosputnik_12-03-2020";
+ID=2f2cedb1-f01a-4f82-80e5-5b521026fd7f
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=1138048
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Конвертация данных 2.1 (Сибейдж)]
+Connect=Srvr="1c-app02";Ref="konvdate21";
+ID=61ce034f-6d3d-4962-935a-1525f1ddc66e
+OrderInList=-1
+Folder=/СЛУЖЕБНЫЕ КОНФИГУРАЦИИ
+OrderInTree=116992
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Биёса для Крылова В.А. по заявке 175366]
+Connect=Srvr="1c-app02";Ref="copy_1c_biosa_buh_20-03-20_175366";
+ID=9da316f8-bab4-4168-b0c3-e45cb2da88f4
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3670037.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Тестирование оформления сдельной оплаты 2]
+Connect=Srvr="1c-app-07-pmt";Ref="erp_pmt_test_SolvisVipusk_j1235";
+ID=ccd40b29-0d93-4207-94b7-fc09cb2ab317
+OrderInList=-1
+Folder=/ПМТ/ПМТ_Тестовые БД
+OrderInTree=170837.333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ПМТ_Разработка]
+ID=60e6f9ee-bc4c-4a32-9217-5a90dc8fb56e
+OrderInList=-1
+Folder=/ПМТ
+OrderInTree=3652629.33333333
+External=0
+[Разработка (Марахин)]
+Connect=Srvr="1c-app-07-pmt";Ref="erp_pmt_cut_marahin";
+ID=6aff415f-7b92-4401-a52d-db2960a8c8f7
+OrderInList=75970005.3333333
+Folder=/ПМТ/ПМТ_Разработка
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Разработка (Морозова)]
+Connect=Srvr="1c-app-07-pmt";Ref="erp_pmt_cut_morozova";
+ID=48eb1ba7-f554-411b-9586-1b4799b365a8
+OrderInList=75986389.3333333
+Folder=/ПМТ/ПМТ_Разработка
+OrderInTree=512
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Разработка (Зайцева)]
+Connect=Srvr="1c-app-07-pmt";Ref="erp_pmt_cut_zayceva";
+ID=a15e0115-f4fc-46c3-9fca-82a3a1ab9d0b
+OrderInList=76002773.3333333
+Folder=/ПМТ/ПМТ_Разработка
+OrderInTree=384
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Разработка (Шиков)]
+Connect=Srvr="1c-app-07-pmt";Ref="erp_pmt_cut_shikov";
+ID=57586f8a-0cec-42a8-a653-23f2c678bdf2
+OrderInList=76019157.3333333
+Folder=/ПМТ/ПМТ_Разработка
+OrderInTree=320
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Разработка (Терехова)]
+Connect=Srvr="1c-app-07-pmt";Ref="erp_pmt_cut_terehova";
+ID=5cdb368d-e873-49c6-ab5a-0bc1048e039e
+OrderInList=76035541.3333333
+Folder=/ПМТ/ПМТ_Разработка
+OrderInTree=576
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Разработка (Лузан)]
+Connect=Srvr="1c-app-07-pmt";Ref="erp_pmt_test_luzan";
+ID=60666781-609a-43c3-abb4-a3ee440d5142
+OrderInList=76068309.3333333
+Folder=/ПМТ/ПМТ_Разработка
+OrderInTree=416
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Разработка (Пуганова)]
+Connect=Srvr="1c-app-07-pmt";Ref="erp_pmt_cut_puganova";
+ID=b1942330-561c-4649-bac9-a43f867b9ef8
+OrderInList=76084693.3333333
+Folder=/ПМТ/ПМТ_Разработка
+OrderInTree=336
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Разработка (Шуралёв)]
+Connect=Srvr="1c-app-07-pmt";Ref="erp_pmt_cut_shuralev";
+ID=c9ec66b6-c9ff-4fd7-b7ff-60a20e3ed3bc
+OrderInList=76101077.3333333
+Folder=/ПМТ/ПМТ_Разработка
+OrderInTree=456
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Разработка (ОБЩАЯ)]
+Connect=Srvr="1c-app-07-pmt";Ref="erp_pmt_test_forall_j1222";
+ID=e309d39e-39ad-4348-993c-e9c9290d9be2
+OrderInList=76117461.3333333
+Folder=/ПМТ/ПМТ_Разработка
+OrderInTree=712
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Разработка (Скворцова)]
+Connect=Srvr="1c-app-07-pmt";Ref="erp_pmt_test_skvorcova_j1310";
+ID=139acb3c-7e6b-47c4-91d6-d1f333bf4afa
+OrderInList=76133845.3333333
+Folder=/ПМТ/ПМТ_Разработка
+OrderInTree=524
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Копия Биеса БУХ для Зверевой Д.С. по заявке 178769]
+Connect=Srvr="1c-app02";Ref="copy_1c_biosa_buh_30-04-20_178769";
+ID=6cc2f3a1-cc58-40f6-9ebf-c0252c6a9bf3
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3671061.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[1С Управление Холдингом АсконаЛайф]
+Connect=Srvr="1c-app-03-atl";Ref="1c_up_askonalife";
+ID=9390d9b5-37fc-4227-a6d6-a794547c628b
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=509355.2
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[1С Управление Холдингом Демо]
+Connect=Srvr="1c-app-gw-01";Ref="1c_up_hk_demo";
+ID=8b0e5df6-481c-452c-a429-ed209d80c726
+OrderInList=-1
+Folder=/ДЕМО КОНФИГУРАЦИИ
+OrderInTree=2945557.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ПМТ_Тестирование релизов ERP]
+ID=d47cf524-d2ea-436d-916d-e8c7810f94f6
+OrderInList=-1
+Folder=/ПМТ
+OrderInTree=3652885.33333333
+External=0
+[Агат, ООО (Бухгалтерия КОРП 3.1)]
+Connect=Srvr="1c-app-gw-05";Ref="agat_buh";
+ID=8c37ee8b-52e0-4f24-9954-dc1399c0c407
+OrderInList=73987541.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=2462229.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Агат, ООО (Зарплата КОРП 3.1)]
+Connect=Srvr="1c-app-gw-05";Ref="agat_zup";
+ID=3d8452e6-6a3d-4840-a5a0-5f2628058221
+OrderInList=74020309.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=1364816
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Аскона Проперти, ООО (Бухгалтерия КОРП 3.1)]
+Connect=Srvr="1c-app-gw-05";Ref="1c_property_buh";
+ID=d6d6df18-8406-4e97-849a-a79328c91bae
+OrderInList=74003925.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=1324938.66666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Аскона Проперти, ООО (Зарплата КОРП 3.1)]
+Connect=Srvr="1c-app-gw-05";Ref="property_zup";
+ID=1b97157f-bfdf-47a4-9b0e-3401c4ff8b76
+OrderInList=74036693.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=1378108.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AdditionalParameters=/DisplayAllFunctions
+AppArch=x86
+[Доброград Проперти, ООО (Бухгалтерия КОРП 8.3)]
+Connect=Srvr="1c-app-gw-05";Ref="dobrogr_property_buh";
+ID=288dd142-0458-444a-876b-0b42cd850229
+OrderInList=74053077.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=1173529.11666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Доброград Проперти, ООО (Зарплата КОРП 8.3)]
+Connect=Srvr="1c-app-gw-05";Ref="dobrogr_property_zup";
+ID=01a401ac-9a8a-4e86-b304-adc11de97235
+OrderInList=74069461.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=2337815.225
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[А-Эстейт, ООО (Бухгалтерия КОРП 8.3)]
+Connect=Srvr="1c-app-gw-05";Ref="estate_buh";
+ID=e149ac9d-e9e4-421b-826c-543272f21920
+OrderInList=74102229.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=2945045.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[А-Эстейт, ООО (Зарплата КОРП 3.1)]
+Connect=Srvr="1c-app-gw-05";Ref="estate_zup";
+ID=d2e1fc30-41da-4b34-ace4-4b16338dad91
+OrderInList=74085845.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=2699605.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Комплексная автоматизация Demo]
+Connect=Srvr="1c-app-gw-01";Ref="demo-komplex-auto";
+ID=7ab63812-6677-4d15-bac3-327ffff799aa
+OrderInList=-1
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=949525.333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[copy_kaskad_10-07-20_189242]
+Connect=Srvr="1c-app02";Ref="copy_1c_kaskad_189242";
+ID=2a3e2a8f-bde3-4144-b754-6e184706ae93
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3671573.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ПКМЦ для Крылова В.А. (для настройки обмена с УХ)]
+Connect=Srvr="1c-app02";Ref="copy_ams_20-07-20_189556";
+ID=414b3736-1616-46af-b2e6-ef7fa4b65d29
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3671829.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Система для Крылова В.А. по заявке 189633]
+Connect=Srvr="1c-app02";Ref="copy_1c_systema_21-07-20_189633";
+ID=0d2e2907-360b-49cb-904d-e6cb9e27a4d2
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3672085.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[УХ Копия 3]
+Connect=Srvr="1c-app-gw-02";Ref="copy_1c_uh_askonalife_3";
+ID=2f1dc63a-bd5d-4bff-8caa-b03e7f700b7c
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3672341.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ООО Сатре (до 31.12.2016 года)]
+Connect=Srvr="1c-app-gw-05";Ref="1c_satre";
+ID=3deb4105-533e-45bb-9f81-e7f40beae824
+OrderInList=-1
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=636160
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ПКМЦ для Крылова от 27.07.2020(данные не тронуты)]
+Connect=Srvr="1c-app02";Ref="copy_pkmc_upp_27072020";
+ID=159bf7ef-4503-40e0-a89c-5a0668b391f9
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=949781.333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ERP_2.4.12.83 (Общее тестирование)]
+Connect=Srvr="1c-app-07-pmt";Ref="erp_pmt_test_bylinkin_upgrade12";
+ID=321e054f-a99a-4037-a766-a8a1305bc73e
+OrderInList=-1
+Folder=/ПМТ/ПМТ_Тестирование релизов ERP
+OrderInTree=768
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[УХ Копия 1]
+Connect=Srvr="1c-app02";Ref="copy_1c_uh_askonalife_1";
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3672341.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[УХ Копия 2]
+Connect=Srvr="1c-app-gw-01";Ref="copy_1c_uh_askonalife_2";
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3672341.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[БП_строительной компании КОРП]
+Connect=Srvr="1c-app-gw-05";Ref="1c_BSOcorp";
+ID=9299a212-b44f-47b6-88f9-c3b0b8333f40
+OrderInList=-1
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=949781.333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[УНФ Клеверенс]
+Connect=Srvr="1c-app02";Ref="1c_unf_clev";
+OrderInList=-1
+Folder=/СЛУЖЕБНЫЕ КОНФИГУРАЦИИ
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ИП Бубнова ЗУП]
+Connect=Srvr="1c-app-gw-05";Ref="ip_bubnova_zup";
+ID=44deefd3-9274-42ec-b323-810ecef81beb
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=1769001.96666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AdditionalParameters=/iTaxi
+AppArch=x86
+[ИП Бубнова Бухгалтерия]
+Connect=Srvr="1c-app-gw-05";Ref="ip_bubnova_buh";
+ID=862d29da-8429-410c-a1a5-51b24fe7a5f6
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=3520789.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Бухгалтерия строительной организации КОРП, редакция 3.0 (демо)]
+Connect=Srvr="1c-app-gw-01";Ref="1c_BSOcorp-demo";
+ID=40328b01-42c9-4280-ace0-bc59f48c227c
+OrderInList=78656981.3333333
+Folder=/ДЕМО КОНФИГУРАЦИИ
+OrderInTree=2945813.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[тестовая база РиосХаус]
+Connect=Srvr="1c-app02";Ref="test-rioshouse";
+ID=a4a17a3d-9d5d-487b-a77d-1aa277b9b4ae
+OrderInList=-1
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=950122.666666666
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Атериа 18-09-20 198058 ]
+Connect=Srvr="1c-app02";Ref="copy_Ateria_18-09-20_198058";
+ID=53d3fa84-3a84-45df-9a46-1828faab37b6
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=2423946.66666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ПКМЦ 21-09-20 198128]
+Connect=Srvr="1c-app02";Ref="copy_ams_21-09-20_198128";
+ID=bad6c3f9-6c38-4bc0-9a98-56b3ac564948
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=2423946.66666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[COPY ERP Б1 ДЛЯ ОБМЕНА С УХ (РУКАМИ НЕ ТРОГАТЬ!)]
+Connect=Srvr="1c-app02";Ref="copy_atlanta_erp_signer1";
+OrderInList=-1
+Folder=/КОПИИ БД/Copy ERP PMT
+OrderInTree=190144
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Отель Групп Бух для Зверевой Д.С. по заявке 198950]
+Connect=Srvr="1c-app02";Ref="copy_Otel_Group_buh_29-09-20_198950";
+ID=ed149096-b1f7-4e56-bfea-5676bc538688
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3706133.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Протеин, (Бухгалтерия)]
+Connect=Srvr="1c-app02";Ref="1c_protein_bp";
+ID=7ec58713-9de3-43b5-94e6-471086ca16ef
+OrderInList=81229269.3333333
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=950378.666666666
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Протеин, (Управление торговлей)]
+Connect=Srvr="1c-app02";Ref="1с_protein_ut";
+ID=0d1d775a-0968-42ff-a878-9733f77c1fc8
+OrderInList=-1
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=950378.666666666
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Петрохолод УПП]
+Connect=Srvr="1c-app-gw-03-upp";Ref="1c-petroholod-upp";
+ID=7fe12358-fc87-4410-8183-9afb6cdab31e
+OrderInList=81245653.3333333
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=950378.666666666
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Петрохолод УТ]
+Connect=Srvr="1c-app-gw-05";Ref="1c-petroholod-ut";
+ID=a57c9a86-6d08-4576-b999-90334d008ee2
+OrderInList=81262037.3333333
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=488821.333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Петрохолод ЗУП]
+Connect=Srvr="1c-app-gw-05";Ref="1c-petroholod-zup";
+ID=1f612790-f757-4c1f-8057-7df8ad2a8d12
+OrderInList=81278421.3333333
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=258042.666666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[demo_erp]
+Connect=Srvr="1c-app-07-pmt";Ref="demo_erp";
+ID=99dcd57c-9d5e-4858-bd0e-5bf639ab385f
+OrderInList=-1
+Folder=/ПМТ/ПМТ_Копии БД
+OrderInTree=950293.333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Доброград СЗ для Погодина В. по заявке 201123]
+Connect=Srvr="1c-app02";Ref="copy_1c_sz_dobrograd_21-10-20_201123";
+ID=442c7612-ff0c-4208-a16b-34fe80778538
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3739157.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Билонг для Погодина В.]
+Connect=Srvr="1c-app02";Ref="copy_belong2_82_sq_23-10-20";
+ID=d97c9262-574b-43c6-b6e8-6979d4c97e45
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3739413.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Торговый Дом Управление торговлей]
+Connect=Srvr="1c-app-05-atl";Ref="1c-ask-td-ut";
+ID=166b15b6-7c94-4a67-a059-cca8ba94ccca
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=946965.333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ТД УТ для Крайнова А.С. по заявке 207098]
+Connect=Srvr="1c-app02";Ref="copy_1c-ask-td-ut_25-11-20_208098";
+ID=5ef057c2-367f-40b5-b39f-e5e6b0136652
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3739925.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Бухгалтерия предприятия (демо)]
+Connect=Srvr="1c-app02:2541";Ref="demo-buh-83";
+ID=13d39392-3b84-4fe8-9fff-1bc582bbf73f
+OrderInList=83916245.3333333
+Folder=/ДЕМО КОНФИГУРАЦИИ
+OrderInTree=2945429.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86_64
+[Копия Атерия для Коротковой А.Н. по заявке 209215]
+Connect=Srvr="1c-app02";Ref="copy_Ateria_02-12-20_209215";
+ID=093fdba5-73b0-41f5-a152-ede3a1d03844
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3740181.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Обучение]
+Connect=Srvr="1c-app-gw-03-upp";Ref="education";;
+Folder=/УЧЕБНЫЕ КОНФИГУРАЦИИ
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Копия Аскона УТ (Беларусь) 10-12-2020 тестовая]
+Connect=Srvr="1c-app02:2541";Ref="copy_1c_askona_UT_Belarus_101220_210348";
+ID=7c9012c2-6fca-41b6-a64f-aa65408d9335
+OrderInList=-1
+Folder=/КОПИИ
+OrderInTree=3554837.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ТД УТ для Зверевой Д. по заявке 210870]
+Connect=Srvr="1c-app02";Ref="copy_1c-ask-td-ut_15-12-20_210870";
+ID=c4a32834-3ea8-48c6-a4bd-7c3cd7a1e88e
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3740437.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Дольче Вита (Общепит) для Зверевой Д.С. по заявке 211098]
+Connect=Srvr="1c-app02";Ref="copy_1c_dv_obp_16-12-20_211098";
+ID=4bc2ecff-2226-406c-9b5f-a5a6a13a64fe
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3740693.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Дольче Вита (Розница) для Зверевой Д.С. по заявке 211098]
+Connect=Srvr="1c-app02";Ref="copy_1c_dv_roznica_16-12-20_211098";
+ID=a68f5436-a64f-49ab-a5db-654fa70a5e81
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3740949.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Автоспутник, ООО (БП КОРП с 2021 года)]
+Connect=Srvr="1c-app-gw-06-2540:2541";Ref="1c_autosputnik_buh";
+ID=793878c4-d278-4242-80fd-920a07bdcddc
+OrderInList=75183573.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=17920
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[АвтоСпутник, ООО (ЗУП КОРП с 2021 года)]
+Connect=Srvr="1c-app-gw-06-2540:2541";Ref="1c_autosputnik_zup";
+ID=93fe2ec7-a610-4c9f-9182-9c36aeab54fd
+OrderInList=74479061.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=17408
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Аскона-каскад, ООО (БП КОРП с 2021 года)]
+Connect=Srvr="1c-app-gw-06-5540:5541";Ref="1c_askonaKaskad_buh";
+ID=70656be4-71e7-4674-855c-2e8abf872f76
+OrderInList=74855893.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=18432
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Аскона-каскад, ООО (ЗУП КОРП с 2021 года)]
+Connect=Srvr="1c-app-gw-06-5540:5541";Ref="1c_askonaKaskad_zup";
+ID=795fcbb8-b624-41e2-a57f-41908cc9f3f9
+OrderInList=74970581.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=15168
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Атланта, ООО (БП КОРП с 2021 года)]
+Connect=Srvr="1c-app-gw-06-2540:2541";Ref="1с_atlanta_buh";
+ID=4de87658-dcba-4e08-ae39-17ed1c8c7024
+OrderInList=75150805.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=15850.6666666666
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Атланта, ООО (ЗУП КОРП с 2021 года)]
+Connect=Srvr="1c-app-gw-06-2540:2541";Ref="1с_atlanta_zup";
+ID=795d1b87-4929-4441-bead-654bf5da583d
+OrderInList=74495445.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=17280
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AdditionalParameters=/iTaxi
+AppArch=x86
+[Дельта, ООО (БП КОРП с 2021 года)]
+Connect=Srvr="1c-app-gw-06-5540:5541";Ref="1c_delta_buh";
+ID=08f3e537-6082-4f2e-96b2-bbc8280a104b
+OrderInList=74692053.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=14421.3333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Дельта, ООО (ЗУП КОРП с 2021 года)]
+Connect=Srvr="1c-app-gw-06-5540:5541";Ref="1c_delta_zup";
+ID=641b9d74-4017-4108-9c7b-d38c8ffe92e0
+OrderInList=74905045.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=8832
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AdditionalParameters=/iTaxi
+AppArch=x86
+[Диджитал Адванс, ООО (БП КОРП с 2021 года)]
+Connect=Srvr="1c-app-gw-06";Ref="1c_da_buh";
+ID=0c3b65a8-ad6f-4be6-ab4b-5560be758fda
+OrderInList=75134421.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=9032
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Диджитал Адванс, ООО (ЗУП КОРП с 2021)]
+Connect=Srvr="1c-app-gw-06";Ref="1c_da_zup";
+ID=aabee9c3-5bb7-4be7-8849-d2a9143a8e9a
+OrderInList=74413525.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=512
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Дольче Вита, ООО (Общепит КОРП с 2021 года)]
+Connect=Srvr="1c-app-02-atl";Ref="1c_dv_obp";
+ID=f0a61b51-fb9a-40d5-bc40-47209ccdf0b7
+OrderInList=75216341.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=9064
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Дольче Вита, ООО (Розница с 2021 года)]
+Connect=Srvr="1c-app-02-atl";Ref="1c_dv_roznica";
+ID=07bd8bcf-36a0-46b7-a8a6-d57c60c002fa
+OrderInList=75036117.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=576
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ДольчеВита, ООО (ЗУП КОРП с 2021 года)]
+Connect=Srvr="1c-app-02-atl";Ref="1c_dv_zup";
+ID=dd18c149-d1bb-460a-af5e-63558848e504
+OrderInList=74954197.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=17488
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[42 Солюшн, ООО (БП КОРП с 2021 года)]
+Connect=Srvr="1c-app-10-atl";Ref="1c_pmt_42_buh";
+ID=651b8a14-1b0a-4153-94ea-422b6080fa7c
+OrderInList=75167189.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=17760
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[42 Солюшн, ООО (ЗУП КОРП с 2021 года)]
+Connect=Srvr="1c-app-gw-05";Ref="1c_pmt_42_zup";
+ID=61efa4a6-3bb9-4bb2-8229-f6a11cf29580
+OrderInList=74626517.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=17344
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ПРОДОБРО Благотворительный фонд, ООО (БП КОРП подлежит удалению)]
+Connect=Srvr="1c-app-gw-06-6540:6541";Ref="1c_prodobro_bf_buh";
+ID=11db1a9d-bf51-4032-bfb5-d140c5ee7c0f
+OrderInList=74741205.3333333
+Folder=/НЕ ИСПОЛЬЗУЕМЫЕ БД
+OrderInTree=18176
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ПРОДОБРО Благотворительный фонд, ООО (ЗУП КОРП с 2021 года)]
+Connect=Srvr="1c-app-gw-06-6540:6541";Ref="1c_prodobro_bf_zup";
+ID=11d3a6b4-968a-4abd-a14e-d73a3c95d822
+OrderInList=75003349.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=17560
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ПЭК, ООО (БП КОРП с 2021 года)]
+Connect=Srvr="1c-app-gw-06-6540:6541";Ref="1c_pek_buh";
+ID=2a4a07f4-6f1c-4abc-a6ed-9e33c60ae24f
+OrderInList=74839509.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=17680
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ПЭК, ООО (ЗУП КОРП с 2021 года)]
+Connect=Srvr="1c-app-gw-06-6540:6541";Ref="1c_pek_zup";
+ID=b7c698cc-35a0-40dc-a399-c8909f926683
+OrderInList=74986965.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=17368
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Сервис-Групп, ООО (БП КОРП с 2021 года)]
+Connect=Srvr="1c-app-gw-06-3540";Ref="1c_serviceGroup_buh";
+ID=5b7474a7-c54d-4334-91fc-c176fa640f68
+OrderInList=75199957.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=25688
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AdditionalParameters=/itdi
+AppArch=x86
+[Сервис-Групп, ООО (ЗУП КОРП с 2021 года)]
+Connect=Srvr="1c-app-gw-06-3540:3541";Ref="1c_serviceGroup_zup";
+ID=f87b3deb-187a-4873-be59-b1935b44e702
+OrderInList=74937813.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=17296
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AdditionalParameters=/iTaxi
+AppArch=x86
+[Система, ООО (БП КОРП с 2021 года)]
+Connect=Srvr="1c-app-gw-06-3540:3541";Ref="1c_systema_buh";
+ID=bdcbd421-dd53-4700-8fb0-e8234837468e
+OrderInList=75101653.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=34080
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Система, ООО (ЗУП КОРП с 2021 года)]
+Connect=Srvr="1c-app-gw-06-3540:3541";Ref="1c_systema_zup";
+ID=b0060bd2-fd52-4544-9464-3e79b52fa767
+OrderInList=74528213.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=17216
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ТЭК, ООО (БП КОРП с 2021 года)]
+Connect=Srvr="1c-app-gw-06-4540:4541";Ref="1c_tek_buh";
+ID=9b6c1461-91ce-4a66-b41c-ebb1f296b8ae
+OrderInList=74823125.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=17493.3333333334
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ТЭК, ООО (ЗУП КОРП с 2021 года)]
+Connect=Srvr="1c-app-gw-06-4540:4541";Ref="1c_tek_zup";
+ID=95434d2f-bf3d-41b7-840c-1dfd04e8f085
+OrderInList=74921429.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=17573.3333333334
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Центр развития м-на Доброград "Город Доброград" АНО, ООО (БП КОРП с 2021 года)]
+Connect=Srvr="1c-app-gw-06-6540:6541";Ref="1c_cr_dobrograd_ano_buh";
+ID=3d0805f2-3fe2-4f04-b6c9-5241c6b0c7ff
+OrderInList=75118037.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=17952
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Центр развития м-на Доброград "Город Доброград" АНО, ООО (ЗУП КОРП с 2021 года)]
+Connect=Srvr="1c-app-gw-06-6540:6541";Ref="1c_cr_dobrograd_ano_zup";
+ID=772e0cb6-0a91-43ce-b399-490884b005d5
+OrderInList=74790357.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=17696
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Тестирование релиза 2.4.13.85]
+Connect=Srvr="1c-app-13-pmt-02:2541";Ref="erp_pmt_upgrade_j4540";
+ID=e9b97d27-55b3-49f0-bb4d-f92dc816d657
+OrderInList=-1
+Folder=/ПМТ/ПМТ_Тестирование релизов ERP
+OrderInTree=1024
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Разработка (Барских)]
+Connect=Srvr="1c-app-07-pmt";Ref="erp_pmt_cut_barskih";
+ID=b16a0daf-096b-4b32-82e6-b6d1588c5cfc
+OrderInList=-1
+Folder=/ПМТ/ПМТ_Разработка
+OrderInTree=968
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Полиформ Трейд, ООО (ЗУП КОРП)]
+Connect=Srvr="1c-app-gw-06-4540:4541";Ref="1c_poliform_zup";
+ID=ab9200cc-344a-44a6-ac43-5d0bbe002ed8
+OrderInList=86652373.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=31286.3
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Полиформ Трейд (Бухгалтерия КОРП)]
+Connect=Srvr="1c-app-gw-06-4540:4541";Ref="1c_poliform_buh";
+ID=2d58c9fa-481a-4575-aac3-7c649da7f7f2
+OrderInList=86635989.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=45875
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Градострой, ООО (Бухгалтерия КОРП)]
+Connect=Srvr="1c-app-gw-06-5540:5541";Ref="1c_gs_buh";
+ID=d01ee049-0a4c-4413-9fbf-a8be66cfe067
+OrderInList=86668757.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=31844.2
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Градострой, ООО (Зарплата КОРП)]
+Connect=Srvr="1c-app-gw-06-5540:5541";Ref="1c_gs_zup";
+ID=32078977-68d0-4a28-b523-b118ed4ab11c
+OrderInList=86685141.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=28360.1
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AdditionalParameters=/iTaxi
+AppArch=x86
+[Финмаркет, КПК (Бухгалтерия КПК) (демо)]
+Connect=Srvr="1c-app-gw-02";Ref="demo-1c-finmarket-buh";
+ID=1bcee4b7-5a3b-4c70-bbdd-514513148c9d
+OrderInList=-1
+Folder=/ДЕМО КОНФИГУРАЦИИ
+OrderInTree=2946069.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Финмаркет, КПК (УМФО КПК КОРП)]
+Connect=Srvr="1c-app-gw-02";Ref="1c-finmarket";
+ID=58444750-702d-4494-87b0-6b5bcb3d8f53
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=3521045.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ERP_2.5.6.98]
+Connect=Srvr="1c-app-07-pmt";Ref="erp_pmt_demo25";
+ID=e5b8e138-8437-476d-a076-373cc951d301
+OrderInList=-1
+Folder=/ПМТ/ПМТ_Тестирование релизов ERP
+OrderInTree=1280
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Курорт Доброград/Атерия для Соловьева А.А. по зявке 213500]
+Connect=Srvr="1c-app02";Ref="copy_ateria_13-01-21_213500";
+ID=4a16ce47-53aa-45cf-9cb3-b59d285201dd
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3773205.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Автоспутник БУХ по заявке 213403]
+Connect=Srvr="1c-app02";Ref="copy_1c_autosputnik_buh_15-01-21_213403";
+ID=1c3972de-7b3e-4c78-8240-2c16442592f9
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3773717.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия УХ для Кленц А.Ю.]
+Connect=Srvr="1c-app-gw-05:2541";Ref="copy_1c_uh_askonalife_4";
+ID=ce89406e-cb64-48c4-85ac-70cedf2f145d
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3774485.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия АйСи для Зверевой Д.С. по заявке 214349]
+Connect=Srvr="1c-app02";Ref="copy_1c_dobrograd_upp_18-01-21_214349";
+ID=b12eeb70-fb3e-4ad0-b6b8-acb34bdcd73e
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3774741.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Атериа 20-01-21]
+Connect=Srvr="1c-app02";Ref="copy_ateria_20-01-21";
+ID=e14323d2-4ee9-4f02-90a4-a16bda3e6921
+OrderInList=16384
+Folder=/КОПИИ БД
+OrderInTree=3774997.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ERP PMT 2.4.13.85: для составления бух отчетности]
+Connect=Srvr="1c-app-13-pmt:2541";Ref="erp_pmt_upgrade_j4951";
+ID=9a312e86-a383-475b-bd24-8e5ba5cfecd9
+OrderInList=-1
+Folder=/ПМТ/ПМТ_Копии БД
+OrderInTree=950549.333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Бухгалтерия НКО КОРП «ШКОЛА И ДЕТСКИЙ САД»]
+Connect=Srvr="1c-app-gw-01";Ref="1c_school_buh";
+ID=6225cc34-a8ec-4f9d-94d8-1bba3451cff7
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Атериа, ООО /г.Курорт Доброград/(Общепит) для Королева Н.С.]
+Connect=Srvr="1c-app02";Ref="copy_Ateria_25-01-21";
+ID=d98ef734-803b-41aa-9801-e6d95a1eea35
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3824405.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Биёса 2, ООО (Бухгалтерия КОРП)]
+Connect=Srvr="1c-app-gw-05";Ref="1c_biosa2_buh_korp";
+ID=1d4dfa29-573b-4686-8b78-33850fa07e23
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=3521301.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ПРОДОБРО Благотворительный фонд, ООО (Бухгалтерия НКО)]
+Connect=Srvr="1c-app-gw-06-6540:6541";Ref="1c_prodobro_bf_buh_nko";
+ID=c68b0bef-d2f6-406e-a5db-bc2c1022d757
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=3520661.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Курорт Доброград\ Атерия для Зверевой Д.С. по заявке 216162]
+Connect=Srvr="1c-app02";Ref="copy_Ateria_29-01-21_216162";
+ID=017fc134-5ad5-4793-9bfa-a2dde68fa6b7
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3824661.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ТД УТ для Кленц А от 28-01-21]
+Connect=Srvr="1c-app-gw-06:1541";Ref="copy_1c-ask-td-ut_29-01-21_216200";
+ID=4b21f5e6-6760-4d9a-bcf5-e29552ba9a0b
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3824917.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Школа и детский сад, ОАНО (ЗУП КОРП)]
+Connect=Srvr="1c-app-gw-01";Ref="1c_school_zup";
+ID=e9482839-37bb-40f6-946f-c12c32ba6a0f
+OrderInList=89634261.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=2822325.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AdditionalParameters=/iTaxi
+AppArch=x86
+[Копия Доброград Проперти Бух для Зверевой Д.С. по заявке 216757]
+Connect=Srvr="1c-app02";Ref="copy_dobrogr_property_buh_05-02-21_216757";
+ID=b063b4af-7b5e-46c5-ab0c-4e957d3510b1
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3825173.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1С Управление Холдингом АсконаЛайф 10-02-21]
+Connect=Srvr="1c-app02";Ref="copy_1c_up_askonalife_5";
+ID=f4029f95-5aab-4604-8392-e014a6ccd375
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3826197.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Управление холдингом 3.1 (демо)]
+Connect=Srvr="1c-app02:2541";Ref="1c_uphk_31_demo";
+ID=d1079ac9-543c-4486-96d0-67fe8703a580
+OrderInList=-1
+Folder=/ДЕМО КОНФИГУРАЦИИ
+OrderInTree=1528266.66666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[1С Касса (демо)]
+Connect=Srvr="1c-app02:2541";Ref="demo-1c-kassa";
+ID=146e93f2-d862-4180-9c43-cc60ea64657d
+OrderInList=-1
+Folder=/ДЕМО КОНФИГУРАЦИИ
+OrderInTree=2946325.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[1С Мобильная касса (Демо)]
+Connect=Srvr="1c-app02:2541";Ref="demo-1c-mobile-kassa";
+ID=496e71cc-9587-478d-ad85-133d85b98d9d
+OrderInList=-1
+Folder=/ДЕМО КОНФИГУРАЦИИ
+OrderInTree=2945941.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Атерия ООО (Зарплата 3.1) для Королева Н.С. по заявке 218873]
+Connect=Srvr="1c-app02";Ref="copy_1c_ateria_zup30_17-02-21_218873";
+ID=53d1ea09-d4b9-47b1-b961-84d7b90d4f2d
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3826709.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Фудкорт, ООО (Общепит) для Королева Н.С. по заявке 219210]
+Connect=Srvr="1c-app02";Ref="copy_1c_foodcourt_obp_19-02-21_219210";
+ID=c741397c-2529-4fa6-828f-bf7b86681854
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3827221.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Автоспутник БП от 19.02.21]
+Connect=Srvr="1c-app02";Ref="copy_avtosputnik_19-02-2021_219293";
+ID=1da720fc-85f6-4c2b-b4b7-c48c002005d0
+OrderInList=92730837.3333333
+Folder=/КОПИИ БД
+OrderInTree=3826965.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Тестирование нового сервера]
+Connect=Srvr="1c-app-13-pmt-02:2541";Ref="erp_pmt_test_newserver";
+ID=0b560d88-1d7c-464a-9f76-7e05bb1dd42f
+OrderInList=-1
+Folder=/ПМТ/ПМТ_Тестовые БД
+OrderInTree=171093.333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ПКМЦ ЗУП 20-02-21]
+Connect=Srvr="1c-app02";Ref="copy_1c_pkmc_zup_20-02-21_219439";
+ID=1af2f37e-6b4c-4fbb-8667-346e2687313b
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3800341.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Атериа для Коротковой А. на 18-02-21]
+Connect=Srvr="1c-app02";Ref="copy_ateria_18-02-21_219095";
+ID=b0ffab5d-72f6-4c0b-82e5-10785e413f37
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3827477.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1С Дельта для Василенко Е.И. по заявке 221672]
+Connect=Srvr="1c-app02";Ref="copy_belong2_100321_221672";
+ID=b9b6c99d-fc89-4e4c-a8b7-1b3b3fab7d9f
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3827733.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Аэропорт Доброград для Василенко Е.И. по заявке 221672]
+Connect=Srvr="1c-app02";Ref="copy_1c_airport_buh_100321_221672";
+ID=728e145a-aca9-49d6-a2be-5574683282b0
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3758357.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ТД УТ для Крылова В.А. по заявке 221875]
+Connect=Srvr="1c-app02";Ref="copy_1c-ask-td-ut_11-03-21_221875";
+ID=f54f919e-7f51-4f9f-8cf3-b8774b0316b9
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3827989.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Биёса (Бухгалтерия) для Крылова В.А. по заявке 221875]
+Connect=Srvr="1c-app02";Ref="copy_1c_biosa_buh_korp_11-03-21_221975";
+ID=b9a5b95c-d75a-485a-a617-e4993307d095
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3828245.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Доброград СЗ (рабочая база на 120321)]
+Connect=Srvr="1c-app02:2541";Ref="copy_1c_sz_dobrograd_120321";
+ID=fd9e1839-ffa1-4f9b-a205-fec16b81133a
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3828501.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Биёса для Соловьева А.А. по заявке 222920]
+Connect=Srvr="1c-app02";Ref="copy_1c-ask-td-ut_18-03-21_222920";
+ID=d786c669-2781-4245-88ee-64a28aea19cb
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3894293.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Мобильная касса (тестирование ТД Аскона)]
+Connect=Srvr="1c-app02:2541";Ref="1c-kassa";
+ID=d1c01b6d-1802-4ca4-bfef-b1622576fc2e
+OrderInList=-1
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=983402.666666666
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[1С Касса приложение для ПК (тестирование ТД Аскона)]
+Connect=Srvr="1c-app-01-dev";Ref="1c-kassa-pc";
+ID=8cff9541-2a20-4123-95ad-560deea86ff2
+OrderInList=-1
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=620722.666666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ДСК 33 для Гладыш С.Б. по заявке 223050]
+Connect=Srvr="1c-app02";Ref="copy_sudsk_19-03-21_223050";
+ID=4369ab83-7f45-4e5a-a4ce-4c7a2a5b3e2c
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3894549.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Билонг от 18.03.2021 по заявке 222942]
+Connect=Srvr="1c-app02";Ref="copy_belong2_18-03-21_222942";
+ID=77498193-b36d-483b-99b4-1daa3159fc17
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3800768
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Курорт Доброград для Коротковой А.Н. по заявке 223411]
+Connect=Srvr="1c-app02";Ref="copy_Ateria_22-03-21_223411";
+ID=f40e313d-61c3-486d-9ac1-0a10df0c545a
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3894805.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Курорт Доброград для Зверевой Д.С. по заявке 223477]
+Connect=Srvr="1c-app02";Ref="copy_Ateria_23-03-21_223477";
+ID=36da8474-cc62-477a-9835-229e3a7275af
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3895061.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Дольче Вита (Розница) для Королева Н.С. по заявке 224496]
+Connect=Srvr="1c-app02";Ref="copy_1c_dv_roznica_30-03-21_224496";
+ID=e8a7cb1e-4388-43bf-b951-be8a9c019767
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3896085.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Управление автотранспортом Проф (демо)]
+Connect=Srvr="1c-app-gw-06";Ref="1c_upr_avtotrans_demo";
+ID=caca43ee-446f-4836-a688-f2aa4607f656
+OrderInList=-1
+Folder=/ДЕМО КОНФИГУРАЦИИ
+OrderInTree=1319322.66666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Управление автотранспортом Проф]
+Connect=Srvr="1c-app-gw-06:5541";Ref="1c_upr_avtotrans";
+ID=1243ce28-c6a4-428d-bb92-d987fdd19ced
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=3521557.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Дольче Вита Розница по заявке 224659]
+Connect=Srvr="1c-app02";Ref="copy_1c_dv_roznica_31-03-21_224659";
+ID=1982ea9a-77c0-4283-be5a-caae0e6c3ffb
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3945493.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ПМТ, ООО (БП КОРП с 2021 года) для Орловой А.А. по заявке 224860]
+Connect=Srvr="1c-app02";Ref="copy_1c_pmt_42_buh_01-04-21_224860";
+ID=db0ef59c-13a5-4772-9483-da80d8cada08
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3896341.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Дольче Вита Общепит по заявке 224924]
+Connect=Srvr="1c-app02";Ref="copy_1c_dv_obp_01-04-21_224924";
+ID=e6e9d69e-c6b9-4e3b-9475-5a4d7de5b787
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3945749.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Сервис Групп БУХ для Королева Н.С. по заявке 225121]
+Connect=Srvr="1c-app02";Ref="copy_1c_serviceGroup_buh_02-04-21_225121";
+ID=dc03dcb5-9658-47ad-8ad7-1c1afa5324a4
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3946005.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Аскона (Украина) пустая по заявке 225439]
+Connect=Srvr="1c-app03";Ref="empty_askonaua82";
+ID=baf4d043-6a83-4ef7-8a6c-cb585ba07656
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=1769500.46666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Автоспутник Бух для Королева Н.С. 225874]
+Connect=Srvr="1c-app02";Ref="copy_1c_autosputnik_buh_07-04-21_225874";
+ID=94fc0f16-4336-475d-b9dd-40e49824a363
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3946261.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ERP 2.4.13.156 (тестироване релиза)]
+Connect=Srvr="1c-app-07-pmt";Ref="erp_pmt_upgrade_j6157";
+ID=603515c1-b480-4a66-90b4-a295fc780513
+OrderInList=-1
+Folder=/ПМТ/ПМТ_Тестирование релизов ERP
+OrderInTree=1536
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ЖКХ для Королев Н.С. по заявке 226306]
+Connect=Srvr="1c-app02";Ref="copy_1c_zhkh_09-04-21_226308";
+ID=96d5e17a-be4d-4c9f-a44a-fae4f3920183
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3946517.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Петрохолод от 26-04-2021]
+Connect=Srvr="1c-app02:2541";Ref="copy_1c-petroholod-upp_228485";
+ID=a37e37f4-c8bc-41f0-aff4-30cf3cdbaa8f
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3947285.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Петрохолод БП 2.0]
+Connect=Srvr="1c-app02:2541";Ref="1c_BP_Petroholod_2_0";
+OrderInList=-1
+Folder=/КОПИИ БД/Петрохолод
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Петрохолод БП 3.0]
+Connect=Srvr="1c-app02:2541";Ref="1c_BP_Petroholod_3_0";
+OrderInList=-1
+Folder=/КОПИИ БД/Петрохолод
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ТД УТ для Крылова В.А. по заявке 229586]
+Connect=Srvr="1c-app02:2541";Ref="copy_1c-ask-td-ut_05-05-21_229586";
+ID=9b2ba7eb-bdd4-4944-a495-9bc79a74c57d
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3963925.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия AMS для Покореева И.В. по заявке 229795]
+Connect=Srvr="1c-app02:2541";Ref="copy_ams_07-05-20_229795";
+ID=10abf724-bafd-4892-bd3b-70d1d6e67b54
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4046101.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ДА БУХ для Доронина Р.В. по заявке 230094]
+Connect=Srvr="1c-app02";Ref="copy_1c_da_buh_11-05-21_230094";
+ID=fad6433f-0430-4881-9fb8-9bcad62a0939
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4144661.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1c_stroyinvest_upp для А.Пикинского по заявке 230398]
+Connect=Srvr="1c-app02:2541";Ref="copy_1c_stroyinvest_upp_230398";
+ID=dae45852-a456-4018-8f58-7d2189a7ad4e
+OrderInList=96368085.3333333
+Folder=/КОПИИ БД
+OrderInTree=4161557.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Копия Биёса Бух для Крайнова А.С. по заявке 231493]
+Connect=Srvr="1c-app-gw-06";Ref="copy_1c-ask-td-ut_20-05-21_231493";
+ID=a612f072-5b9c-4713-a32f-9098c3eb01ab
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4162069.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Доброград УПП для Доронина Р.В. по заявке 232207]
+Connect=Srvr="1c-app02";Ref="copy_1c_dobrograd_upp_26-05-21_232207";
+ID=73139799-0c9a-402f-8d14-a8807639bf84
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4162325.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Атериа для Покореева И.В. по заявке 232189]
+Connect=Srvr="1c-app02:2541";Ref="copy_ateria_27-05-21_232189";
+ID=020b5d2a-92dd-429b-ab11-9422e54c437c
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4162325.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Финмаркет, КПК (УМФО КПК КОРП) /новая/]
+Connect=Srvr="1c-app-gw-02";Ref="1c-finmarket_new";
+ID=adccf28b-fc78-4c3f-9eed-551ab6f7c959
+OrderInList=90174933.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=3554069.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ИП Дмитриев О.Н.   /2021/]
+Connect=Srvr="1c-app-gw-01";Ref="1c_ip_dmitriev";
+ID=eb4c4545-e610-4625-96b8-13d162230e76
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=3554325.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия УТ 10.3 ИП Герасюта]
+Connect=Srvr="1c-app-gw-06";Ref="copy_ut_ip_gerasuta_232306";
+ID=fa4c0c07-8d6e-4600-b908-e8668b47dbc0
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3993365.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Дольче Вита, ООО (Общепит КОРП) для Кузьмина А.И. по заявке 233141]
+Connect=Srvr="1c-app02";Ref="copy_1c_dv_obp_02-06-21_233141";
+ID=529d1c80-8cd7-4972-9992-38c06a53c642
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4178965.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Автоспутник БП КОРП для Журавлевой О.В. по заявке 233427]
+Connect=Srvr="1c-app02";Ref="copy_1c_autosputnik_buh_04-06-21_233427";
+ID=803cb3b7-ea6d-4042-aaad-6a8a96d855a2
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4179221.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия copy_1c-ask-td-ut_20-05-21_231493 для Соловьева А.А. ]
+Connect=Srvr="1c-app-gw-06";Ref="copy_copy_1c-ask-td-ut_20-05-21_231493";
+ID=4f52265c-feef-4109-beab-4e0037293d8a
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4162581.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Доброград УПП для Журавлевой О.В. по заявке 233489]
+Connect=Srvr="1c-app02:2541";Ref="copy_1c_dobrograd_upp_04-06-21_233489";
+ID=8bd4be47-8008-4694-b321-575a91af070d
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4179477.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Атерия для Доронина Р.В. по заявке 233496]
+Connect=Srvr="1c-app02";Ref="copy_Ateria_04-06-21_233496";
+ID=aafe5e17-4565-4776-a243-8f994dc32df2
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4179477.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Атерия ЗУП для Доронина Р.В. по заявке 233496]
+Connect=Srvr="1c-app02";Ref="copy_1c_ateria_zup30_04-06-21_233496";
+ID=38401b9e-ecdf-419d-b925-1964ff557a50
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4179733.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Автоспутник ЗУП для Журавлевой О.В. по заявке 233674]
+Connect=Srvr="1c-app02:2541";Ref="copy_1c_autosputnik_zup_07-06-21_233674";
+ID=7b5b0a78-03a7-4811-ae5f-064661a3e57c
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3792789.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Латвия УТ 07-06-21]
+Connect=Srvr="1c-app-gw-02";Ref="copy_askona_lv_ut_070621";
+ID=c8840775-ed55-4cd8-aa62-8f9129cf2ba6
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4179989.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Ревери Хотнер ERP]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_revery-hotner_ERP_233799";
+ID=1fa71bdc-7d25-4bef-b270-b6060e07fe55
+OrderInList=-1
+Folder=/ПМТ/ПМТ_Копии БД
+OrderInTree=950805.333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Доброград-1, ООО УК Бухгалтерия КОРП для Антроповой А.Ю. по заявке 233919]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_dobrograd_1_buh_08-06-21_233919";
+ID=2ca3a306-4c58-4cf3-bb4e-cba3018eb8ed
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4179989.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Доброград-1, ООО УК Зарплата 3.1 для Антроповой А.Ю. по заявке 233919]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_dobrograd_1_zup_08-06-21_233919";
+ID=9494fc92-b8e0-411d-93dc-2ef54be1383e
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4180245.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ИП Бубнова Бухгалтерия для Антроповой А.Ю. по заявке 234318]
+Connect=Srvr="1c-app02";Ref="copy_ip_bubnova_buh_10-06-21_234318";
+ID=022f6cf1-40c4-4be9-82a4-d2f1cc5434a9
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4180501.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Инвест Сити для Крайнова А.С. по заявке 234209]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_invest_city_10-06-21_234209";
+ID=6da86871-3e0b-4367-ad9e-6230b32178eb
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4196885.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Доброград УПП для Крайнова А.С. по заявке 234209]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_dobrograd_upp_10-06-21_234209";
+ID=19e0714b-0e72-438c-bf9a-4c9a2884c8a6
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=2718218.66666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Атланта БУХ для Доронина Р.В. по заявке 234319]
+Connect=Srvr="1c-app02";Ref="copy_1с_atlanta_buh_10-06-21_234319";
+ID=be31b4c8-be7a-4b52-8631-df2b8c1df6a8
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4180757.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Аскона ТД УТ для Гончарова И.А. по заявке 234439]
+Connect=Srvr="1c-app02";Ref="copy_1c-ask-td-ut_11-06-21_234439";
+ID=0a0c2c01-c8de-4e62-b346-b375f71289b6
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4197141.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1С ЖКХ для Покореева И.В. по заявке 234746]
+Connect=Srvr="1c-app02";Ref="copy_1C_zhkh_15-06-21_234746";
+ID=26adfefc-9f50-4f34-8c76-27edbed8bce0
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4197397.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Разработка (СИТЕК)]
+Connect=Srvr="1c-app-13-pmt-02:2541";Ref="erp_pmt_test_mobile_j7028";
+ID=8c78c4b3-9681-43ec-a218-ba31e6950483
+OrderInList=-1
+Folder=/ПМТ/ПМТ_Разработка
+OrderInTree=1224
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ПМТ, ООО (БП КОРП с 2021 года) для Крылова В.А. по заявке 235128]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_pmt_42_buh_17-06-21_235128";
+ID=e26d4ade-34cd-4068-876a-b3d56cb02084
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4197653.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[УХ Копия Журавлевой от 17.08]
+Connect=Srvr="1c-app-gw-04";Ref="copy_1c_foodcourt_obp_21-06-21_235451";
+ID=6aad8b6a-a8c9-48e3-8a90-ec950fa51b0e
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4197909.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[МЕДТЕХ, ООО (Зарплата)]
+Connect=Srvr="1c-app-gw-05";Ref="1c_MEDTECH";
+ID=1666fa91-618e-4f60-b4c4-08c10a27bcc0
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=3554581.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Квестдорс]
+Connect=Srvr="1c-app-01-dev";Ref="copy_questdoors_25-06-21_236039";
+ID=b908060e-3ab2-4d98-96bc-85a40b83602f
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4198165.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Askona LifeKZ UT для Крылова В.А. по заявке 236305]
+Connect=Srvr="1c-app-01-dev";Ref="copy_kz_askonalife_ut_28-06-21_236305";
+ID=7a9ffe8e-ed7f-4143-9644-a70e788efc2c
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4198421.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Аскона (Латвия) Бухгалтерия (TH ASKONA)]
+Connect=Srvr="1c-app-01-dev";Ref="copy_askona_lv_buh_29-06-21_235446";
+ID=cea514ed-3f62-45c0-a6fa-abaceb9a6d35
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=4198677.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия СтройИнвест УПП для Крылова В.А. по заявке 237133]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_stroyinvest_upp_02-07-21_237133";
+ID=7b3bbd41-6374-4ebd-a63d-589399543747
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4198933.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1с_zhkh для Королева Н.С. по заявке 237148]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1C_zhkh_05-07-21_237148";
+ID=2e5e8454-2647-4cff-b011-e925c01242bc
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4199189.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1c_dv_roznica для Королева Н.С. по заявке 237148]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_dv_roznica_05-07-21_237148";
+ID=b479cbc1-eeec-4f28-a52c-2e4299228a93
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4050069.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1c_airport_buh для Королева Н.С. по заявке 237148]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_airport_buh_05-07-21_237148";
+ID=6b30e029-826a-4b1d-ac04-363d6c86a9d3
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4105813.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1c-ask-td-ut для Антроповой А.Ю. по заявке 237801]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c-ask-td-ut_08-08-21_237801";
+ID=ef620fee-a761-4958-8b40-ad4da21a485f
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4199701.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1С Управление Холдингом АсконаЛайф для Журавлевой О.В. по заявке 238264]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_up_askonalife_13-07-2021_238264";
+ID=af688a45-c06d-422d-a966-9dad4450ebaf
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4199957.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Биёса бух корп для Королева Н.С. по заявке 239110]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_biosa_buh_korp_19-07-21_239110";
+ID=46d5b6d1-d9e7-4035-a618-195f4a21098e
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3935125.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Квестдорс БП]
+Connect=Srvr="1c-app-01-dev";Ref="copy_questdoors_bp_20-07-21_239151";
+ID=384dbbd8-54e3-4c37-a0db-f8c0530406e6
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4200213.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ТД УТ для Покореева И.В. по заявке 239469]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c-ask-td-ut_21-07-21_239469";
+ID=d2d7dd6e-ad7a-4eae-9f36-6f2b500cb4f5
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4200469.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1c_up_askonalife для Зубашковой Яны по заявке 239507]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_up_askonalife_23-07-21_239507";
+ID=5c433a55-6f07-4e45-ae7d-a59463b2c38e
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3373799.11111111
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1c_dobrograd_upp для Зубашковой Яны по заявке 239507]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_dobrograd_upp_23-07-21_239507";
+ID=a839ee60-9129-435b-9452-c48521202991
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3786750.22222222
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Атерия для Королева Н.С. по заявке 240036]
+Connect=Srvr="1c-app-01-dev";Ref="copy_Ateria_26-07-21_240036";
+ID=c142598e-a429-4280-a8fb-e756a04e842a
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4200725.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Новая база N1 июль 2021]
+Connect=Srvr="1c-app03";Ref="new_base_n1_july_2021";
+ID=dccd8563-1cef-4467-89a7-89a27e82bf76
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=4198933.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Новая база N2 июль 2021]
+Connect=Srvr="1c-app03";Ref="new_base_n2_july_2021";
+ID=2aae65c7-9680-46f7-88c2-a5897f905408
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=4199189.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ДА БУХ для Королева Н.С. по заявке 240269]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_da_buh_28-07-21_240269";
+ID=3bb3bc1e-a356-48b4-ae64-a7f5d0ab9bcd
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4201237.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Доброград УПП для Королева Н.С. по заявке 240429]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_dobrograd_upp_29-07-21_240429";
+ID=b67e340f-cacc-4d64-9f79-24fa7c1e8924
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4201493.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1c_dv_obp для Королева Н.С. по заявке 240853]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_dv_obp_02-08-21_240853";
+ID=dc0ef85f-64d3-491e-a59f-f479c17fe654
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4200725.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1c_up_askonalife для Кузьмина А.И. по заявке 241044]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_up_askonalife_03-08-21_241044";
+ID=a47a79e2-7d28-4fa9-b8f7-956bda99a647
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4200981.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 42 Солюшн БУХ для Кузьмина А.И. по заявке 241711]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_pmt_42_buh_06-08-21_241711";
+ID=b046b09c-b9c0-44df-aab2-fddbdc0109c4
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4201749.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1c-ask-td-ut для Кузьмина А.И. по заявке 241715]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c-ask-td-ut_06-08-21_241715";
+ID=04e7e2b2-a389-4d6e-8514-be2e57032662
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4202005.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Торговый Дом УТ для Соловьева А.А. по заявке 242051]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c-ask-td-ut_09-08-21_242051";
+ID=2929d4b1-77e8-442e-9870-1bd2c756b414
+OrderInList=100840917.333333
+Folder=/КОПИИ БД
+OrderInTree=4202261.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Система автосверки АсконаЛайфГрупп]
+Connect=Srvr="1c-app-gw-03-upp";Ref="1c_ALG_autosverki";
+ID=5d7017ed-6632-40ed-9693-31c267ee7250
+OrderInList=-1
+Folder=/СЛУЖЕБНЫЕ КОНФИГУРАЦИИ
+OrderInTree=3962133.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Градострой, ООО (Зарплата КОРП) для Королёва Н.С. по заявке 244624]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_gs_zup_27-08-21_244624";
+ID=82581ac1-c2bf-4957-8803-a0329e64d2b1
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4202517.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Доброград Кампус, ООО (Бухгалтерия КОРП)]
+Connect=Srvr="1c-app-gw-06:5541";Ref="1c_dobrograd_kampus_buh";
+ID=a2085a6f-4f98-4dd0-9f07-0c1a0caf5890
+OrderInList=105149909.333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=1768330.66666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Доброград Кампус, ООО (Зарплата КОРП)]
+Connect=Srvr="1c-app-gw-06:5541";Ref="1c_dobrograd_kampus_zup";
+ID=ec9bcaee-606c-4dba-bed4-15bd37cf1474
+OrderInList=105166293.333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=892770.733333335
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Копия Halecroft для Зверевой Д.С. по заявке 246590]
+Connect=Srvr="1c-app-01-dev";Ref="copy_Halecroft_10-09-21_246590";
+ID=3eb108eb-9ac0-4d31-b8a7-649ffdad6162
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4202773.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Аскона Латвия УТ для Соловьева А.А. по заявке 248158]
+Connect=Srvr="1c-app-01-dev";Ref="copy_askona_lv_ut_21-09-21_248158";
+ID=94cc8a7e-0cb3-4167-8ef7-24a1aea525c8
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4203029.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1c-ask-td-ut для Редькина Д.И. по заявке 248202]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c-ask-td-ut_22-09-21_248202";
+ID=0dc27b5f-fdbf-490c-89a4-2848f397e59f
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=2743050.66666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1c_biosa_buh_korp для Редькина Д.И. по заявку 248202]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_biosa_buh_korp_22-09-21_248202";
+ID=5d16a410-94ba-4cfc-b035-67baf0c5d210
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3206800
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1c_pkmc_zup для Гончарова И.А. по заявке 248128]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_pkmc_zup_22-09-21_248128";
+ID=1b64c0e1-bbd9-4807-a804-3cdf9a4efbe6
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3496775.11111111
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Биёса УТ для Норматовой ТН по заявке 248882]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c-ask-td-ut_27-09-21_248882";
+ID=3ea13e68-902e-4c99-b943-05d7fe31271b
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4202773.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Доброград Проперти, ООО БУХ для Крайнова А.С. по заявке 251092]
+Connect=Srvr="1c-app-01-dev";Ref="copy_dobrogr_property_buh_13-10-21_251092";
+ID=4f9d8700-4b10-46f5-b6a6-212a5cfc8441
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4203541.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Первый клинический медицинский центр, ООО (БП КОРП с 2022 года)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="1c_ams_buh";
+ID=3f247d84-280b-4112-a41a-6d801e7cbde4
+OrderInList=90420693.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=215219.127831197
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Атерия для Журавлевой О.В. по заявке 251372]
+Connect=Srvr="1c-app-gw-04";Ref="copy_Ateria_15-10-21_251372";
+ID=717cc7d5-c8f2-4627-92f2-db6ae9957fb6
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4204053.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Апарт БУХ для Антроповой А.Ю. по заявке 251679]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_apart_buh_18-10-21_251679";
+ID=64a95f70-7935-47ab-aeb7-735e5d81f692
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4204309.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Доброград СЗ ООО (УПП) для Покореева И.В. по заявке 251817]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_sz_dobrograd_new_19-10-21_251817";
+ID=a4d02c3d-75c1-44bf-a136-c29267b4b7d3
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4204821.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Управление торговлей (демо)]
+Connect=Srvr="1c-app02";Ref="test_UT11";
+ID=a4d02c3d-75c1-44bf-a136-c29267с4b7d3
+OrderInList=-1
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=4204921.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[УХ Копия 6]
+Connect=Srvr="1c-app-gw-04";Ref="copy_1c_uh_askonalife_6";
+ID=1af14892-44fb-494e-a4d4-c66b80b6989f
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4204565.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+AdditionalParameters=/Lru
+WA=1
+Version=8.3 
+[АЛГ (БП КОРП с 2022 года)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="1c_alg_buh";
+ID=3b138152-661b-42f5-9d9c-d5645ab85cec
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=2838709.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Диджитал Адванс для Кирилловой М.В. (2021-10-25)]
+Connect=Srvr="1c-app-gw-02";Ref="copy_da_buh_2021-10-25";
+ID=f9e041ec-7639-439d-ac91-2632bd037ee4
+OrderInList=90502613.3333333
+Folder=/КОПИИ БД
+OrderInTree=343578.661917163
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[1c: Бухгалтерия для Эстонии]
+Connect=Srvr="1c-app-08-atl";Ref="1с_buh_Estonia";
+ID=b501f51b-aded-4f57-a1b5-916cb1f5d09d
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=4199530.66666666
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Биеса для Редькина Д.И. по заявке 249956]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c-ask-td-ut_28-10-21_249956";
+ID=4d50937e-e24c-4cb3-a31d-ec3f788b7269
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4220693.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Арга, ООО ССК (Бухгалтерия) для Журавлевой О.В. по заявке 254113]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_arga_buh_08-11-21_254113";
+ID=3029a7bf-f106-457c-a033-f9d28ed12f94
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4220949.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Управление Холдингом АсконаЛайф для Журавлевой О.В. по заявке 254122]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_up_askonalife_09-11-21_254122";
+ID=80da9683-9c37-44e0-9e24-470159b8d073
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4221205.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ПКМЦ (УПП, с 2020 без ЗП) для Журавлевой О.В. по заявке 254122]
+Connect=Srvr="1c-app-01-dev";Ref="copy_ams_09-11-21_254122";
+ID=301473ac-e957-4ab3-bc8c-eaf611fd0288
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4221461.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Диджитал Адванс, ООО (БП КОРП с 2021 года)  /копия 2021-10-25/]
+Connect=Srvr="1c-app-gw-06";Ref="copy_da_buh_2021-10-25";
+ID=36844c88-5110-4fc9-bb71-61c149114935
+OrderInList=90551765.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=343586.475876323
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[Аскона УТ 11 (Беларусь)]
+Connect=Srvr="1c-app-gw-02";Ref="1c_askona_UT_11_belarus";
+ID=c4f0a1a6-0e8c-429c-80f9-c34b3fdf65a8
+OrderInList=-1
+Folder=/BY
+OrderInTree=3569941.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+AppArch=x86
+[Копия Торговый Дом УТ для Соловьева А.А. по заявке 255349]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c-ask-td-ut_16-11-21_255349";
+ID=f40efbe9-3568-4345-89a8-3a434c7018a4
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4221717.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Фудкорт ОБП для Медведева М.А. по заявке 255361]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_foodcourt_obp_16-11-21_255361";
+ID=fa41c377-f107-46e9-883a-6ecdbe491ed0
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4225500.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Управление Холдингом для Норматовой Т.Н. по заявке 255542]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_up_askonalife_17-11-21_255542";
+ID=211ef32e-947b-41a9-9ef1-48fbbf7c236c
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4225756.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Арга Бух для Журавлёвой О.В. по заявке 255719]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_arga_buh_18-11-21_255719";
+ID=10274997-e3f1-4970-9250-4dbcab2e88d4
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4225756.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Литвуд (Новый) для Пугановой Н.В. по заявке 255817]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_newLitwood22_18-11-21_255817";
+ID=867d4d07-ffdc-48c0-a3a8-1ac07f3dd96d
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4226012.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия pmt_42_buh для Медведева М.А. по заявке 256135]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_pmt_42_buh_18-11-21_256135";
+ID=06ac7dd8-0f47-4380-b5ed-3f3e488d34bb
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4228193.18518518
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Билонг, ООО (ЗУП КОРП с 2022 года)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="1c_belong_zup";
+ID=130d662e-41f7-4f0c-b1bd-7fd08a3d7120
+OrderInList=90437077.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=3052650.66666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AdditionalParameters=/iTaxi
+AppArch=x86_64
+[Доброград СЗ, ООО (ЗУП КОРП с 2022 года)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="1c_sz_dobrograd_zup";
+ID=0d52dd12-07d4-4e78-bfa3-a56597fb7d78
+OrderInList=90633685.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=3297173.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AdditionalParameters=/iTaxi
+AppArch=x86_64
+[Строй – Инвест, ООО (БП КОРП с 2022 года)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="1c_stroyinvest_buh";
+ID=637f826e-d6c0-4f88-8c8a-7ddefc64253d
+OrderInList=90715605.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=1934696.74212136
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Строй – Инвест, ООО (ЗУП КОРП с 2022 года)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="1c_stroyinvest_zup";
+ID=3968c41e-7eac-412f-9854-9886fa2c88a8
+OrderInList=90650069.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=1931499.90484871
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AdditionalParameters=/iTaxi
+AppArch=x86
+[Копия 1c-ask-td-ut для Фадеев М.А. по заявке 256389]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c-ask-td-ut_19-11-21_256389";
+ID=6f87bdc4-b49b-404a-8d55-93dab71203a1
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4221973.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Биеса для Редькина по заявке 257558]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c-ask-td-ut_02-12-21_257558";
+ID=071f9a10-44ff-4fb1-8bf6-8d250fdaf2c3
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4228449.18518518
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия УК СМ для Степанюк Е.И. по заявке 257716]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1C_zhkh_02-12-21";
+ID=c4849289-04d2-409c-9722-1add97251955
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4061371.25925926
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1С Дельта (БП КОРП с 2021г.) для Василенко Е.И. по заявке 257833]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_delta_buh_02-12-21_257833";
+ID=8c5905c4-f104-4cc9-aef4-91e7dc89f25d
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4242396.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1С УХ АсконаЛайф для Норматовой Т.Н. по заявке 258194]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_up_askonalife_06-12-21_258194";
+ID=0a9d4a27-1727-4549-88fb-ea3d2a2d16cd
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4242652.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[1c Аскона УТ (Биёса)]
+Connect=Srvr="1c-app-05-atl";Ref="1c-askona-ut";
+ID=f936cc87-f1aa-40dc-baa7-a1615b7fde0b
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=4199786.66666666
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Биёса для Кленца по заявке 259287]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c-ask-td-ut_13-12-21_259287";
+ID=4ffc0c5e-1280-412a-8dfc-106127d36965
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4242908.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия А-Эстейт Бухгалтерия для Норматовой Т.Н. по заявке 259480]
+Connect=Srvr="1c-app-01-dev";Ref="copy_estate_buh_14-12-21_259480";
+ID=a86d3b97-fd6a-4bb1-aeeb-33217844afd0
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4243164.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия УТ Торговый Дом для Редькина Д.И. по заявке 259351]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c-ask-td-ut_16-12-21_259351";
+ID=564411c9-1441-480a-882d-db6dfcd16f3a
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4243420.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Арга Бух для Журавлевой О.В. по заявке 260814]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_arga_buh_23-12-21_260814";
+ID=0f8673cc-969c-4a56-8eec-7f215aff7646
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4243676.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Пустая тестовая база 1С для Фадеева М.А. по заявке 260946]
+Connect=Srvr="1c-app-01-dev";Ref="empty_test_base_24-12-21_260946";
+ID=38c7fc2d-3492-43b4-b865-6c7e4aab03e7
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4243676.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Биёса УТ для Кириллова Константина по заявке 262299]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c-ask-td-ut_11-01-22_262299";
+ID=2af65f1d-a699-4edd-8f41-f536398f73c6
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4260316.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия УХ для Кирилова К. по заявке 262299]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_up_askonalife_11-01-22_262299";
+ID=83750bf1-b1b1-47ef-a4bd-bb603b739183
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4231544.88888889
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия УХ для Зубашковой Я. по заявке 262387]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_up_askonalife_12-01-22_262387";
+ID=bd82f726-eca6-4c5a-95bf-c762234718c8
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4003015.11111111
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[БУХ КОРП ПМТ (2022)]
+Connect=Srvr="1c-app-13-pmt-02:2541";Ref="buh_corp_pmt";
+ID=d5420cb5-4477-4aab-880a-0494319d5181
+OrderInList=-1
+Folder=/ПМТ/ПМТ_Рабочие БД
+OrderInTree=49856
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Биёса, ООО (Бухгалтерия 3.0) для Фадеева М.А. по заявке 262927]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_biosa_buh_korp_14-01-22_262927";
+ID=bcaac7d8-fb65-4413-bb9e-4dbaffaa4f36
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4260316.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Аскона Тех., ООО (Бухгалтерия)]
+Connect=Srvr="1c-app-gw-01";Ref="1c_askona_Alachino_buh";
+ID=1569e5c8-41c8-40e7-8b7d-1250df034d28
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=4216170.66666666
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Доброград УПП для Кирилова К. по заявке 263919]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_dobrograd_upp_21-01-22_263919";
+ID=c57e553a-5f13-4a60-9f68-b4318d33e5ad
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4277212.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Тестовая база для разработки (Управление торговлей 11)(Биёса)]
+Connect=Srvr="1c-app-01-dev";Ref="TESTFORDEV_UT_BEYOSA";
+ID=9033ed90-7fbd-4ade-9afe-43e3b10a4613
+OrderInList=704515
+Folder=/СЛУЖЕБНЫЕ КОНФИГУРАЦИИ
+OrderInTree=4205177.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[База для предварительного теста (Управление торговлей 11)(Биёса)]
+Connect=Srvr="1c-app-01-dev";Ref="PRETEST_UT_BEYOSA";
+ID=930d0e76-4f21-4e09-a23f-ff9b1888795f
+OrderInList=-1
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=4205433.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Фудкорт Общепит для Кирилова К.В. по заявке 264386]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_foodcourt_obp_27-01-22_264386";
+ID=4338d66b-8ad3-4646-b2e0-bd6d80f94b38
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4277468.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1С Атерия\Курорт Доброград Общепит для Коревиной Е.Б. по заявке 266989]
+Connect=Srvr="1c-app-01-dev";Ref="copy_Ateria_10-02-22_266989";
+ID=f617fb83-c888-48c1-95b8-584fb506d73d
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4277724.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия СЗ Доброград УПП для Гладыш С.Б. по заявке 267928]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_sz_dobrograd_new_17-02-22_267928";
+ID=00467d24-42cb-4656-8413-06d136158309
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4277980.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Атериа для Кленц А.С. по заявке 267960]
+Connect=Srvr="1c-app-01-dev";Ref="copy_ateria_17-02-22_267960";
+ID=1c34729b-e307-420b-8434-b97ce8aa5962
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4278236.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Атериа, ООО /г.Курорт Доброград/(Общепит) для Королева Н.С. по заявке 268557]
+Connect=Srvr="1c-app-01-dev";Ref="copy_Ateria_21-02-22_268557";
+ID=d293ebde-ea48-499d-9826-ca6bafc1cb11
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4278492.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Федерация гольфа Владимирской обл., РОО (Бухгалтерия НКО КОРП)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="1c_golf_nko";
+ID=a334280e-3f2e-4fa9-bcfe-95140d43004a
+OrderInList=90928597.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=301143.64102564
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AdditionalParameters=/iTaxi
+AppArch=x86_64
+[Федерация гольфа Владимирской обл., РОО (ЗУП КОРП)]
+Connect=Srvr="1c-app-gw-03-upp";Ref="1c_golf_zup";
+ID=1a30d2d5-1e12-4a10-8eb7-ee34fdc76a53
+OrderInList=90961365.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=1911094.48717949
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Биёса БП для Покореева И.В. по заявке 268739]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_biosa_buh_korp_22-02-22_268739";
+ID=8fcd0f10-47c4-4106-be3c-a2b9fbc171a1
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4278748.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия AMS для Шатайкиной О.А. по заявке 269489]
+Connect=Srvr="1c-app-01-dev";Ref="copy_ams_28-02-2022_269489";
+ID=9580413f-3bfb-4102-a5c2-527b961a01ec
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4279004.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия AMS для Гладких О.С. по заявке 269827]
+Connect=Srvr="1c-app-01-dev";Ref="copy_ams_03-03-22_269827";
+ID=8baf6a77-559d-4e96-81b8-821b51aa7cb8
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4279260.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Атланта Проперти, ООО Бухгалтерия]
+Connect=Srvr="1c-app-10-atl";Ref="1с_atlanta_property_buh";
+ID=9d3a8583-ec02-4c06-a2e2-0c0bfbe82f1d
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=4216426.66666666
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Атланта Проперти, ООО ЗУП]
+Connect=Srvr="1c-app-10-atl";Ref="1c_atlanta_property_zup";
+ID=21f4c121-9dc0-458a-969b-fc6c153426f5
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=4216682.66666666
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1c_biosa_buh_korp для Гладких О.С. по заявке 270351]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_biosa_buh_korp_09-03-22_270351";
+ID=feb3b6ad-9a0c-46e1-976d-cf614eb38dbe
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4279516.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Аскона Латвия УТ от 10.03.2022]
+Connect=Srvr="1c-app-01-dev";Ref="copy_askona_lv_ut_10-03-22";
+ID=19e942da-3b7e-45d9-a475-75462e8756e2
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4279772.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Алачино Рентал, ООО (Бухгалтерия)]
+Connect=Srvr="1c-app-10-atl";Ref="1c_alachino_rental_buh";
+ID=665b3484-0a79-40fd-9341-443126abac7d
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=4216938.66666666
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Консолидированная ЗУП (рабочая)]
+Connect=Srvr="1c-app-09-atl";Ref="1c_consolid_zup";
+ID=4d1157c9-e424-482c-b817-415b0e029169
+OrderInList=90846677.3333333
+Folder=/СЛУЖЕБНЫЕ КОНФИГУРАЦИИ
+OrderInTree=3504490.66666666
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+DefaultVersion=8.3.19.1467
+AdditionalParameters=/itdi
+AppArch=x86_64
+[Копия Аскона (Латвия) УТ от 15-03-22 по заявке 271264]
+Connect=Srvr="1c-app-01-dev";Ref="copy_askona_lv_ut_15-03-22_271264";
+ID=d1eb14fa-f123-410f-bd79-55aab9c32a89
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4280028.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ЖКХ для Зверевой Д.С. по заявке 271320]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_zhkh_15-03-22_271320";
+ID=9359d5c1-6fd7-4527-b198-a76d4154d81b
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4280284.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ЖКХ для Зверевой Д.С. по заявке 271337]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1C_zhkh_16-03-22_271337";
+ID=177035d0-eaaf-4be0-a3f5-305332038082
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4280540.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ЖКХ для разработчиков]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_zhkh_24-03-22";
+ID=9b6d998f-1a5d-4b1f-b90c-8406fbaff362
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4280796.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Дельта Бух для Журавлевой О.В. 273269]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_delta_buh_29-03-22_273269";
+ID=4b214ae1-a151-4bea-9080-c34376ea5de9
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4281052.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+
+[Копия Дельта ЗУП для Семеновой Е.В. по заявке 273544]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_delta_zup_30-03-22_273544";
+ID=b703e4a1-a91c-421a-b059-eada6046665b
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4281564.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+
+[Копия 1c-askona-ut для Крайнова А.С. по заявке 273326]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c-askona-ut_30-03-22_273326";
+ID=b4672be7-d8b0-4de8-a5f1-07a88a3bebbe
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4281308.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+
+[Копия 42 для Гладких О.С. по заявке 274016]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_pmt_42_buh_04-04-22_274016";
+ID=2117807e-fcc6-45d0-8f7a-bae5960267e9
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4298460.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1С Атланта, ООО (БП КОРП с 2021 г.) по заявке 274172]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_atlanta_buh_04-04-22_274172";
+ID=6fb343d4-f3e5-4ac9-a2e8-ba45be4f1397
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4298716.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ПКМЦ ЗУП для Соловьева А.А. по заявке 274315]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_pkmc_zup_04-04-22_274135";
+ID=bc4522d0-081d-4f14-8020-4b2fdc379f8d
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4298972.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ПРОДОБРО Благотворительный фонд (Бухгалтерия НКО) для Антроповой А.Ю. по заявке 275399]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_prodobro_bf_buh_nko_12-04-22_275399";
+ID=db243edc-446e-4ef4-823e-65bb723b090c
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4315612.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ТД УТ для Редькина Д.И. по заявке 275691]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c-ask-td-ut_13-04-22_275691";
+ID=b6487d4a-aa68-49e0-9b2d-f2a74b3951c7
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4315868.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ПКМЦ УПП для Королева Н.С. по заявке 276027]
+Connect=Srvr="1c-app-01-dev";Ref="copy_ams_15-04-22_276027";
+ID=c87af1df-b9a6-4b1b-a617-490adcad8ea9
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4316124.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Журавлева]
+ID=19498b40-175e-43d7-9a2e-63679808dc1d
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков
+OrderInTree=512
+External=0
+[Фадеев]
+ID=7c7322ad-150e-4ffb-98b5-58826690b582
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков
+OrderInTree=768
+External=0
+[Кленц]
+ID=27f42e25-d8ee-4054-989a-5ca249697333
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков
+OrderInTree=1024
+External=0
+[Зверева]
+ID=7a696d90-7709-4847-b11f-e19461b1b2f4
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков
+OrderInTree=1280
+External=0
+[Соловьев]
+ID=ed0486a2-b55c-4bd5-abc7-c4b9ede59940
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков
+OrderInTree=1536
+External=0
+[Покореев]
+ID=709593fc-1c5a-4343-b4a2-bdfd3baab62f
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков
+OrderInTree=1792
+External=0
+[Доронин]
+ID=d22cd102-7ebd-4fd8-b2a5-5eede8221641
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков
+OrderInTree=2048
+External=0
+[Королев]
+ID=357b3887-207c-4b4c-97d4-77f0ad13b724
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков
+OrderInTree=2304
+External=0
+[Антропова]
+ID=f9114efe-c5e0-4027-a1d2-360cb6326776
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков
+OrderInTree=2560
+External=0
+[Крайнов]
+ID=886fcd04-d6af-4ac9-b1a0-a692ea0e8515
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков
+OrderInTree=2816
+External=0
+[Кирилов]
+ID=23edf4f8-60fd-45e9-84b0-fc710509e850
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков
+OrderInTree=3072
+External=0
+[Гладких]
+ID=9eea43d2-eb16-4fab-9d65-992dc303a0d2
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков
+OrderInTree=3328
+External=0
+[Кузьмин]
+ID=c013db4d-6a50-48f4-9588-d5255e1a49af
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков
+OrderInTree=3584
+External=0
+[Журавлева 01]
+Connect=Srvr="1c-app-dev01-atl";Ref="zhuravlevaov01";
+ID=10a18911-ec72-4ca5-b599-42c7c588584c
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Копия Дельта Журавлева
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Кленц01]
+Connect=Srvr="1c-app-dev02-atl";Ref="Klentsau01";
+ID=40eb1c07-c6b4-4f09-8ed0-92d25f566c1c
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Кленц
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия УХ АсконаЛайф для Кузьмина А.И. по заявке 277073]
+Connect=Srvr="1c-app-06-atl";Ref="copy_1c_up_askonalife_25-04-22_277073";
+ID=d827a2ca-4433-4e8a-825a-97b2a5b189fa
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4326620.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Журавлева02]
+Connect=Srvr="1c-app-dev01-atl";Ref="zhuravlevaov02";
+ID=cc89408e-f46d-44a2-85a0-7b8c7c8497d2
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Журавлева
+OrderInTree=512
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Гладких01]
+Connect=Srvr="1c-app-dev02-atl";Ref="gladkikhos01";
+ID=c055b5a3-0b25-430f-a534-75d60f572a33
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Гладких
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Kraynovas01]
+Connect=Srvr="1c-app-dev02-atl";Ref="kraynovas01";
+ID=3a39e620-f8ea-4893-b2c5-b31924b3c9d6
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Крайнов
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Зарплата и управление персоналом ООО «Аскона Лайф Групп»]
+Connect=Srvr="vm-1c-srv01";Ref="1c_zup_alg";
+ID=548f94b4-9e71-43b0-bcfe-b11d6f4422ev
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=571392
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Зарплата и управление персоналом ООО «ЦЕС Аскона Лайф Групп»]
+Connect=Srvr="vm-1c-srv01";Ref="1c_zup_aici";
+ID=548f94b4-9e71-43b0-bcfe-b11d6f4422ea
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=571392
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Конвертация данных (общая)]
+Connect=Srvr="1c-app-gw-01";Ref="convert_common";
+ID=e6c9701a-5194-4945-8740-1c2f4822220c
+OrderInList=91043285.3333333
+Folder=/СЛУЖЕБНЫЕ КОНФИГУРАЦИИ
+OrderInTree=2628913.77777777
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86_64
+[kraynovas02]
+Connect=Srvr="1c-app-dev02-atl";Ref="kraynovas02";
+ID=7bf0131e-7381-419e-8f5b-e493e34db8eb
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Крайнов
+OrderInTree=512
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[kraynovas03]
+Connect=Srvr="1c-app-dev02-atl";Ref="Kraynovas03";
+ID=9c78ab5f-039f-4f6e-9eb0-cdf479f37340
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Крайнов
+OrderInTree=768
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ПКМЦ БП для Цой М.А. по заявке 279779]
+Connect=Srvr="1c-app-01-dev";Ref="copy_ams_buh_24-05-22_279779";
+ID=4cd1b5aa-8ca2-4f5f-8f06-e0c1cc852255
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4321500.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ПКМЦ ЗУП для Цой М.А. по заявке 279779]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_pkmc_zup_24-05-22_279779";
+ID=3b4cab83-c9e6-484d-9d55-d8d4fad15c91
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4326876.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Доброград АГРО (ЗУП КОРП)]
+Connect=Srvr="1c-app-gw-05";Ref="1c_dobrograd_AGRO_zup";
+ID=be2c0650-fcb7-4592-a1b2-6cd35c98aab2
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=4217194.66666666
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Доброград АГРО (БП КОРП)]
+Connect=Srvr="1c-app-gw-05";Ref="1c_dobrograd_AGRO_corp";
+ID=445828b5-c057-4b65-867b-d3803c005db9
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=2121027.78333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[kraynovas04]
+Connect=Srvr="1c-app-dev02-atl";Ref="Kraynovas04";
+ID=6c219189-2956-4e51-bea7-d161c78a9871
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Крайнов
+OrderInTree=1024
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1С Бух АвтоСпутник для Ширяковой С.С. по заявке 280463]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_autosputnik_buh_27-05-22_280463";
+ID=d12c77d5-b519-4a7d-a565-3cb4ca353a70
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=3512179.55555556
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1с Бух Автоспутник для Цой М.А. по заявке 280379]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_autosputnik_buh_27-05-22_280379";
+ID=8c65ccf3-dc20-4757-842a-a9459e6b8b12
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4327132.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Соловьев01]
+Connect=Srvr="1c-app-dev01-atl";Ref="solovevaa01";
+ID=7f2dd0c1-e8b3-49b3-ae51-9a44c2ddc91f
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Соловьев
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Королёв01]
+Connect=Srvr="1c-app-dev02-atl";Ref="korolevns01";
+ID=2b2cd59a-e71f-4a08-88b4-3d1f493d7e36
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Королев
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Система финансового контроля]
+Connect=Srvr="1c-app-01-dev";Ref="financial_control_system";
+ID=59222cb9-6376-442e-b990-3c538176d580
+OrderInList=-1
+Folder=/ТЕСТОВЫЕ КОНФИГУРАЦИИ
+OrderInTree=4205689.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ПокореевИВ01]
+Connect=Srvr="1c-app-dev02-atl";Ref="pokoreeviv01";
+ID=febcbf28-4353-4bb6-96f1-333832672a06
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Покореев
+OrderInTree=1280
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Журавлева03]
+Connect=Srvr="1c-app-dev01-atl";Ref="zhuravlevaov03";
+ID=22b8dd85-0ba5-4547-b8ca-e22d8ef94a2b
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Журавлева
+OrderInTree=768
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[kraynovas05]
+Connect=Srvr="1c-app-dev02-atl";Ref="kraynovas05";
+ID=4d173e74-fe22-413b-a25f-e5dc98bd8036
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Крайнов
+OrderInTree=707947.927777777
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ЦЕС АЛГ для Цой М.А. по заявке 283595]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_dobrograd_upp_16-06-22_283595";
+ID=e279c7e9-6b3f-4f16-b7b8-965a86de6473
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4327388.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Кузьмин01]
+Connect=Srvr="1c-app-dev01-atl";Ref="kuzminai01";
+ID=a5ba026c-611f-4e43-b29f-e0a039db84d5
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Кузьмин
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[pokoreeviv02]
+Connect=Srvr="1c-app-dev02-atl";Ref="pokoreeviv02";
+ID=5ca7e897-fcae-4ef8-94a4-acdb368283bf
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Покореев
+OrderInTree=512
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[3. Тест  ERP Б2 (Литвуд) – копия (2) за предыдущий день]
+Connect=Srvr="1c-app-07-pmt";Ref="erp_pmt_repl_signer2_prevday2";
+ID=34394cc1-d16e-4c47-8e62-e7dee99b8ccc
+OrderInList=-1
+Folder=/ПМТ/ПМТ_ERP_Рабочие БД/ПМТ ERP – тестовые базы от предыдущего дня (Б1,Б2,Б3,Б4)
+OrderInTree=896
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[fadeevma01]
+Connect=Srvr="1c-app-dev02-atl";Ref="fadeevma01";
+ID=6985839e-9e04-4cb8-ad87-7a38ca326833
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Фадеев
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[copy_pheonix]
+Connect=Srvr="1c-app-01-dev";Ref="copy_pheonix";
+ID=3fa337fb-ffd5-48d6-9b83-8b99a7615f90
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4327644.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Гладких02]
+Connect=Srvr="1c-app-dev02-atl";Ref="gladkikhos02";
+ID=1eb55608-1b19-4fec-a9b3-9d370975caa8
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Гладких
+OrderInTree=512
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Журавлева04]
+Connect=Srvr="1c-app-dev01-atl";Ref="zhuravlevaov04";
+ID=cd6e7f57-d9ef-476e-b33f-5d92e9dac8e3
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Журавлева
+OrderInTree=1109.33333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Диджитал Адванс, ООО (БП КОРП с 2021) + ДЕМО КЕДО]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_da_buh_demo_kedo";
+ID=059b66da-ede5-47ac-92cf-89491cb899a2
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=318336
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Диджитал Адванс, ООО (ЗУП КОРП) + ДЕМО КЕДО]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_da_zup_demo_kedo";
+ID=05a712fe-febf-4cd3-8e35-f6a798be5c46
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=159424
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[SLEEP8 BALTIC (Латвия)  Бухгалтерия]
+Connect=Srvr="1c-app-01-dev";Ref="copy_askona_lv_buh_286493";
+ID=f9750f31-2104-4a08-9706-f8d6aca1c7b3
+OrderInList=-1
+Folder=/РАБОЧИЕ БД
+OrderInTree=2357974
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Журавлева05]
+Connect=Srvr="1c-app-dev01-atl";Ref="zhuravlevaov05";
+ID=54c980db-0da1-420c-a710-6c791fc1161e
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Журавлева
+OrderInTree=1365.33333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Гладких03]
+Connect=Srvr="1c-app-dev02-atl";Ref="gladkikhos03";
+ID=0393640f-9d20-4be5-ae76-b9002446540a
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Гладких
+OrderInTree=853.333333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Гладких04]
+Connect=Srvr="1c-app-dev02-atl";Ref="gladkikhos04";
+ID=16fd1168-4553-4475-85c5-9ff7ea1d3368
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Гладких
+OrderInTree=1109.33333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 42 ЗУП - ДЕМО КЭДО Контур]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_pmt_42_zup_19-07_22_288207";
+ID=3a4cb1ba-b0e0-4640-9ea6-6792edf67b11
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4327900.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Askona LifeKZ UT для Калашниковой Н.А. по заявке 288579]
+Connect=Srvr="1c-app-01-dev";Ref="copy_kz_askonalife_ut_21_07_22_288579";
+ID=2d9a4c39-3587-4ceb-a526-541efa0b7989
+OrderInList=-1
+Folder=/KZ/КОПИИ
+OrderInTree=3579925.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия СЗ Доброград УПП от 24-07-22 по заявке 289057]
+Connect=Srvr="1c-app02";Ref="copy_1c_sz_dobrograd_new_26-07-22_289057";
+ID=a469c1e7-8f70-4043-9db4-cdba9b8d8f47
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4328156.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Кленц02]
+Connect=Srvr="1c-app-dev02-atl";Ref="Klentsau02";
+ID=e49d811e-997f-46ed-bf80-da21b10bbb6b
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Кленц
+OrderInTree=16640
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Кузьмин02]
+Connect=Srvr="1c-app-dev01-atl";Ref="kuzminai02";
+ID=674b7dcd-7659-4442-b69f-0cbcab5bb76b
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Кузьмин
+OrderInTree=512
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Гладких05]
+Connect=Srvr="1c-app-dev02-atl";Ref="gladkikhos05";
+ID=c31d3b79-e5be-4fb7-8236-59e0b66ac661
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Гладких
+OrderInTree=1365.33333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Зверева01]
+Connect=Srvr="1c-app-dev01-atl";Ref="zverevads01";
+ID=c225947e-bdd6-444d-a18e-b829a75cec0f
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Зверева
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия ЖКХ по от 28-07-22 по заявке 289218]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_zhkh_28-07-22_289218";
+ID=d7096d8e-936a-4722-ba47-9473c14bee87
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4328412.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Соловьев02]
+Connect=Srvr="1c-app-dev01-atl";Ref="solovevaa02";
+ID=c429ab03-7cf3-41a4-8daa-79a1afd19c43
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Соловьев
+OrderInTree=682.666666666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Королев02]
+Connect=Srvr="1c-app-dev02-atl";Ref="korolevns02";
+ID=9472f196-e432-4141-a1bc-5976c6eb3d63
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Королев
+OrderInTree=512
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия Строй-инвест (1С8 Бухгалтерия) на 02.08.2022 ]
+Connect=Srvr="1c-app-dev-01";Ref="copy_1c_stroyinvest_buh_02-08-22_290184";
+ID=29133089-4fc5-451f-b994-8643eb6e62ae
+OrderInList=115209685.333333
+Folder=/КОПИИ БД/КОПИИ ДЛЯ КИРИЛЛОВОЙ М.В.
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86_64
+[Копия Строй-инвест (1С ЗУП) на 02.08.2022]
+Connect=Srvr="1c-app-dev-01";Ref="copy_1c_stroyinvest_zup_02-08-22_290184";
+ID=7cd3e801-08ff-4819-8f8c-d52ca17abbf0
+OrderInList=115226069.333333
+Folder=/КОПИИ БД/КОПИИ ДЛЯ КИРИЛЛОВОЙ М.В.
+OrderInTree=512
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86_64
+[Копия ЖКХ по от 04-08-22 для Покореева]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_zhkh_04-08-22";
+ID=d7096d8e-936a-4722-ba47-9473c14bee8s
+OrderInList=-1
+Folder=/КОПИИ БД
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия 1c_ask-td-ut для Редькина Д.И. по заявке 290681]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_ask-td-ut_05-08-22_290681";
+ID=0917513a-6c41-4f13-a09b-6d22fbf24981
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4345052.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Кленц03]
+Connect=Srvr="1c-app-dev02-atl";Ref="Klentsau03";
+ID=36780709-ed4e-48df-b4c7-ed0f5fcf7e38
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Кленц
+OrderInTree=16896
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Леньков]
+ID=c44a3c9c-3163-4f83-9ab2-70cdca980cf2
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков
+OrderInTree=247296
+External=0
+[Леньков01]
+Connect=Srvr="1c-app-dev01-atl";Ref="lenkovryu01";
+ID=5245d451-37b0-43bc-ab95-09838f33cf1e
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Леньков
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Королев03]
+Connect=Srvr="1c-app-dev02-atl";Ref="korolevns03";
+ID=ddb7773d-d67a-48a9-ad4d-1d9682948887
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Королев
+OrderInTree=768
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия для Ефремова А.А. по заявке 291238]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c-ask-td-ut_12-08-22_291238";
+ID=dd8bfeac-b530-4a8a-be21-43148c5f61dd
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4361692.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ERP демо 2.5.9.77 (тестовый релиз)]
+Connect=Srvr="1c-app-07-pmt";Ref="erp_demo_j10943_25977";
+ID=efb2150f-372b-497d-bb80-bbb79e7066fe
+OrderInList=-1
+Folder=/ПМТ/ПМТ_Тестирование релизов ERP
+OrderInTree=1792
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Гладких06]
+Connect=Srvr="1c-app-dev02-atl";Ref="gladkikhos06";
+ID=c1ea1521-49cd-41bb-8f5f-9096379377a4
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Гладких
+OrderInTree=1621.33333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[ИП Полянина Бухгалтерия]
+Connect=Srvr="1c-app-10-atl";Ref="1c_polyanina_buh";
+ID=9f1331c5-2021-4bf5-a95e-249d93e86b0b
+OrderInList=121222613.333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=4217450.66666666
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86_64
+[ИП Полянина ЗУП]
+Connect=Srvr="1c-app-10-atl";Ref="1c_polyanina_zup";
+ID=fd3d07db-c5ab-47e9-9a83-72124897ca38
+OrderInList=121238997.333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=3886016
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86_64
+[Копия Бухгалтерия НКО КОРП «ШКОЛА И ДЕТСКИЙ САД» для Журавлевой О.В. по заявке 292983]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_school_buh_23-08-22_292983";
+ID=6da44cc2-3ea3-4301-94ef-ac32da98ea2b
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4378332.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Норматова]
+ID=6dffd881-d7b5-497a-b5c6-22cf34038eec
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков
+OrderInTree=247552
+External=0
+[Норматова01]
+Connect=Srvr="1c-app-dev02-atl";Ref="normatovatn01";
+ID=8427f8fb-a7d9-4cba-9770-1c79e2ef4793
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Норматова
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Норматова02]
+Connect=Srvr="1c-app-dev02-atl";Ref="normatovatn02";
+ID=2c7145d0-f9e9-4f59-9565-cdbffbc988bd
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Норматова
+OrderInTree=512
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия А-Эстейт бухгалтерия КОРП 8.3]
+Connect=Srvr="1c-app-01-dev";Ref="copy_estate_buh_28-08-22_293729";
+ID=57355533-0409-4f27-b968-610c0088d446
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4378588.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[pokoreeviv03]
+Connect=Srvr="1c-app-dev02-atl";Ref="pokoreeviv03";
+ID=e61ba3a3-e38d-4fcf-a52c-33d1a2c2c338
+OrderInList=126924245.333333
+Folder=/КОПИИ БД/1C_Базы разработчиков/Покореев
+OrderInTree=768
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86
+[pokoreeviv04]
+Connect=Srvr="1c-app-dev02-atl";Ref="pokoreeviv04";
+ID=31bd0e08-2aa0-4553-9947-13e55fff0b47
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Покореев
+OrderInTree=1024
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Кленц04]
+Connect=Srvr="1c-app-dev02-atl";Ref="Klentsau04";
+ID=98c207ac-b81c-4e98-bb27-f5ef61655a31
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Кленц
+OrderInTree=33536
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Зверева02]
+Connect=Srvr="1c-app-dev01-atl";Ref="zverevads02";
+ID=069bcc3c-50f2-4d80-96f3-f7cc944ae1c8
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Зверева
+OrderInTree=672
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Норматова03]
+Connect=Srvr="1c-app-dev02-atl";Ref="normatovatn03";
+ID=442c0e5e-98d3-4c06-a039-36c7f64736bb
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Норматова
+OrderInTree=768
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Козлов]
+ID=0ac732ce-4379-4492-a41b-39392eb961f1
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков
+OrderInTree=247808
+External=0
+[kozlovva01]
+Connect=Srvr="1c-app-dev01-atl";Ref="kozlovva01";
+ID=f2ba11a3-150d-4184-8e2d-c10652115c94
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Козлов
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Норматова04]
+Connect=Srvr="1c-app-dev02-atl";Ref="normatovatn04";
+ID=b77296d9-8f54-44c8-8cb7-d10b132e1288
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Норматова
+OrderInTree=1024
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Кузьмин03]
+Connect=Srvr="1c-app-dev01-atl";Ref="kuzminai03";
+ID=91954f5c-b73a-4693-8970-a700b07c5b24
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Кузьмин
+OrderInTree=768
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[для Шатайкиной О.А. копия ПКМЦ УПП с 2020]
+Connect=Srvr="1c-app-01-dev";Ref="copy_ams_27-09-22_297915";
+ID=72bd818f-3054-4d4d-aa2f-2e6bcb0259f6
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4378844.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Соловьев03]
+Connect=Srvr="1c-app-dev01-atl";Ref="solovevaa03";
+ID=a73b0733-9d83-453f-98ff-31f3834ab4a0
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Соловьев
+OrderInTree=938.666666666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Норматова05]
+Connect=Srvr="1c-app-dev02-atl";Ref="normatovatn05";
+ID=e1bd5980-933e-4409-9173-bc04e07f418d
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Норматова
+OrderInTree=1280
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Гладких07]
+Connect=Srvr="1c-app-dev02-atl";Ref="gladkikhos07";
+ID=f671637f-15c8-444c-9b68-e8947232561d
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Гладких
+OrderInTree=1877.33333333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Шаева]
+ID=cf08a93f-3a13-41f3-abd3-53125cdb4844
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков
+OrderInTree=248064
+External=0
+[Шаева01]
+Connect=Srvr="1c-app-dev01-atl";Ref="Shaevaia01";
+ID=2b334ece-8cb4-4f95-8bdf-84e5a40698df
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Шаева
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Петросян]
+ID=99265397-4dd5-4ef6-beba-90651fd2c03f
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков
+OrderInTree=248320
+External=0
+[Петросян01]
+Connect=Srvr="1c-app-dev01-atl";Ref="petrosyanvo01";
+ID=26d0cf92-15bd-4cde-b463-70a621655fdc
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Петросян
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Скляров01]
+Connect=Srvr="1c-app-dev01-atl";Ref="sklyarovea01";
+ID=15fabcb1-a6d4-4c1b-b82b-9c942bb264d7
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Скляров
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия kz_askonalife_ut для Якимец 10.10.22 заявка 299891]
+Connect=Srvr="1c-app-01-dev";Ref="copy_kz_askonalife_ut_10-10-22_299891";
+ID=b920cb36-b40d-4c3f-b81b-9f079e217481
+OrderInList=-1
+Folder=/KZ/КОПИИ
+OrderInTree=3580181.33333333
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Шаева02]
+Connect=Srvr="1c-app-dev01-atl";Ref="shaevaia02";
+ID=a7bfbc2b-dded-47c4-b0ce-9106810e21b6
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Шаева
+OrderInTree=512
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Скляров02]
+Connect=Srvr="1c-app-dev01-atl";Ref="sklyarovea02";
+ID=317741e3-58bc-4a8c-8bc5-15d0d67a794b
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Скляров
+OrderInTree=512
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Скляров03]
+Connect=Srvr="1c-app-dev01-atl";Ref="sklyarovea03";
+ID=f6977472-77be-4652-9715-3898c86d9465
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Скляров
+OrderInTree=768
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Доронин01]
+Connect=Srvr="1c-app-dev01-atl";Ref="doroninrv01";
+ID=18d0fecb-e6fc-4043-9d18-6815f55e783e
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Доронин
+OrderInTree=256
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Соловьев04]
+Connect=Srvr="1c-app-dev01-atl";Ref="solovevaa04";
+ID=513f1437-235b-488e-9afc-72e74ed976d1
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Соловьев
+OrderInTree=1194.66666666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Соловьев05]
+Connect=Srvr="1c-app-dev01-atl";Ref="solovevaa05";
+ID=8dec387b-fbba-474e-8dab-2ea13d8b9d3b
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Соловьев
+OrderInTree=1450.66666666667
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Доронин02]
+Connect=Srvr="1c-app-dev01-atl";Ref="doroninrv02";
+ID=ef0557bf-c8b1-4939-88a2-576fd5c1552a
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Доронин
+OrderInTree=512
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Кленц05]
+Connect=Srvr="1c-app-dev02-atl";Ref="Klentsau05";
+ID=ad09b6ad-2727-4610-b40a-aa09f2ebd51d
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Кленц
+OrderInTree=33792
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Копия АвтоСпутник ЗУП для Цой М.А. по заявке 304461]
+Connect=Srvr="1c-app-01-dev";Ref="copy_1c_autosputnik_zup_09-11-22_304461";
+ID=092e94d9-5335-4728-91fb-ec753af41f19
+OrderInList=-1
+Folder=/КОПИИ БД
+OrderInTree=4379100.44444444
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[kozlovva02]
+Connect=Srvr="1c-app-dev01-atl";Ref="kozlovva02";
+ID=0f9139ee-59cc-4ac5-b6ec-0f1b6e35b450
+OrderInList=-1
+Folder=/КОПИИ БД/1C_Базы разработчиков/Козлов
+OrderInTree=1443230.81481481
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+[Аскона Лайф Групп, ЦЕС ООО /бывшая АйСи, ООО/ (БП КОРП с 2023 года)]
+Connect=Srvr="1c-app-03-atl";Ref="1c_aici_buh";
+ID=7c67fa9c-2fd5-4c81-b423-4a650fa01dbb
+OrderInList=91420117.3333333
+Folder=/РАБОЧИЕ БД
+OrderInTree=454552.241666668
+External=0
+ClientConnectionSpeed=Normal
+App=Auto
+WA=1
+Version=8.3
+AppArch=x86

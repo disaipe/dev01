@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 el-table(:data='records')
     el-table-column(type='expand')
         template(#default='{ row }')
@@ -8,48 +8,41 @@ el-table(:data='records')
     el-table-column(prop='user' label='Пользователь')
 </template>
 
-<script>
-import { toRef } from 'vue';
+<script setup lang="ts">
+import { ref, toRef, onMounted, watch } from 'vue';
 
-import { useRepos } from '../../store/repository';
+import type { HistoryRecord } from '@/types';
+import { useRepos } from '@/store/repository';
 
-export default {
-    name: 'HistoryTable',
-    props: {
-        reference: {
-            type: String,
-            required: true
-        },
-        id: {
-            type: [String, Number],
-            required: true
-        }
+const props = defineProps({
+    reference: {
+        type: String,
+        required: true
     },
-    setup(props) {
-      const reference = toRef(props, 'reference');
-      const repository = useRepos()[reference.value];
-
-      return {
-          repository
-      };
-    },
-    data: () => ({
-        records: []
-    }),
-    watch: {
-      id() {
-          this.load();
-      }
-    },
-    mounted() {
-        this.load();
-    },
-    methods: {
-        load() {
-            this.repository.history(this.id).then((data) => {
-                this.records = data;
-            });
-        }
+    id: {
+        type: [String, Number],
+        required: true
     }
+});
+
+const records = ref<HistoryRecord[]>([]);
+const id = toRef(props, 'id');
+const reference = toRef(props, 'reference');
+const repository = useRepos()[reference.value];
+
+function load() {
+    repository.history(id.value).then((data) => {
+        records.value = data;
+    });
+}
+
+watch(() => id.value, () => load());
+
+onMounted(() => load());
+</script>
+
+<script lang="ts">
+export default {
+    name: 'HistoryTable'
 }
 </script>

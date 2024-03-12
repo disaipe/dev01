@@ -37,7 +37,9 @@ class AuthController extends Controller
             if ($request->expectsJson()) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Неверный логин или пароль',
+                    'data' => [
+                        'message' => 'Неверный логин или пароль',
+                    ],
                 ]);
             }
 
@@ -49,8 +51,9 @@ class AuthController extends Controller
         if ($request->expectsJson()) {
             return response()->json([
                 'status' => true,
-                'redirect' => route('dashboard'),
-                // here we can send welcome message to username by fullname
+                'data' => [
+                    'redirect' => route('dashboard'),
+                ],
             ]);
         }
 

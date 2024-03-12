@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 el-form(
     ref='form'
     v-bind='$props'
@@ -8,23 +8,29 @@ el-form(
     slot
 </template>
 
-<script>
+<script setup lang="ts">
 import { ref, toRef, provide } from 'vue';
-import props from './modelFormProps';
+import { type FormValidateCallback } from 'element-plus';
+import { type ModelFormProps } from './modelFormProps';
 
+const props = defineProps<ModelFormProps>();
+
+const form = ref();
+const modelForm = toRef(props, 'modelValue');
+
+provide('modelForm', modelForm);
+
+function validate(callback: FormValidateCallback) {
+    form.value?.validate(callback);
+}
+
+defineExpose({
+    validate
+});
+</script>
+
+<script lang="ts">
 export default {
-    name: 'ModelForm',
-    props,
-    setup(props) {
-        const form = ref();
-        const modelForm = toRef(props, 'modelValue');
-
-        provide('modelForm', modelForm);
-
-        return {
-            form,
-            validate: (...params) => form.value.validate(...params)
-        };
-    }
+    name: 'ModelForm'
 }
 </script>

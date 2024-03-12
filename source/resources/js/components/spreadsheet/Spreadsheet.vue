@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 .spreadsheet-wrapper.h-full(ref='wrapper')
     .relative.z-10
         el-config-provider(size='small')
@@ -12,32 +12,35 @@
                                 el-dropdown-item(@click='download') Сохранить в файл
                                 el-dropdown-item(@click='uploader.$el.querySelector("input").click()') Загрузить из файла
 
-                    el-select.w-32(
-                        v-model='data.fontFamilyInput'
-                        filterable
-                        allow-create
-                        placeholder=' '
-                        @change='setFontFamily($event); syncCellStyling()'
-                    )
-                        el-option(
-                            v-for='fontFamily of defaultFontFamilies'
-                            :key='fontFamily'
-                            :label='fontFamily'
-                            :value='fontFamily'
+                    .w-32
+                        el-select(
+                            v-model='data.fontFamilyInput'
+                            filterable
+                            allow-create
+                            placeholder=' '
+                            @change='setFontFamily($event); syncCellStyling()'
                         )
-                    el-select.w-16(
-                        v-model='data.fontSizeInput'
-                        filterable
-                        allow-create
-                        placeholder=' '
-                        @change='setFontSize($event); syncCellStyling()'
-                    )
-                        el-option(
-                            v-for='fontSize of defaultFontSizes'
-                            :key='fontSize'
-                            :label='fontSize'
-                            :value='fontSize'
+                            el-option(
+                                v-for='fontFamily of defaultFontFamilies'
+                                :key='fontFamily'
+                                :label='fontFamily'
+                                :value='fontFamily'
+                            )
+
+                    .w-16
+                        el-select(
+                            v-model='data.fontSizeInput'
+                            filterable
+                            allow-create
+                            placeholder=' '
+                            @change='setFontSize($event); syncCellStyling()'
                         )
+                            el-option(
+                                v-for='fontSize of defaultFontSizes'
+                                :key='fontSize'
+                                :label='fontSize'
+                                :value='fontSize'
+                            )
                     el-button-group(v-if='instance')
                         //- el-button(@click='history.undo()') Undo
                         //- el-button(@click='history.redo()') Redo
@@ -132,13 +135,14 @@
         hot-table.hot-table.bg-gray-100(ref='spread' :settings='hotSettings')
 </template>
 
-<script>
+<script setup lang="ts">
+import type { UploadFile } from 'element-plus';
+
 import { ref, toRef, reactive, onMounted } from 'vue';
 import debounce from 'lodash/debounce';
-import { HotTable } from '@handsontable/vue3';
-import 'handsontable/dist/handsontable.full.css';
+import HotTable from '@handsontable/vue3';
 
-import { parseSize, pxToPt } from '../../utils/cssUtils';
+import { parseSize, pxToPt } from '@/utils/cssUtils';
 
 import {
     configure,
@@ -158,168 +162,156 @@ import {
     useHotTable
 } from './xlsxUtils';
 
-export default {
-    name: 'Spreadsheet',
-    components: { HotTable },
-    props: {
-        showToolbar: {
-            type: Boolean,
-            default: true
-        },
-        settings: {
-            type: Object,
-            default: null
-        },
-        cellModifier: {
-            type: Function,
-            default: null
-        },
-        /**
-         * Pass query selector value to fit spreadsheet to container.
-         */
-        fit: {
-            type: String,
-            default: null
-        }
-    },
-    emits: ['debug'],
-    setup(props, { emit }) {
-        const settingsProp = toRef(props, 'settings');
-        const cellModifier = toRef(props, 'cellModifier');
-        const fit = toRef(props, 'fit');
+interface SpreadsheetProps {
+    showToolbar?: boolean;
+    settings?: Object;
+    cellModifier?: (cell: Object) => void;
+    fit?: string;
+}
 
-        const wrapper = ref();
-        const spread = ref();
-        const uploader = ref();
-        const borderDrop = ref();
-        const alignDrop = ref();
+interface Data {
+    fontBold: boolean | null;
+    fontItalic: boolean| null;
+    fontFamilyInput: string| null;
+    fontSizeInput: number| null;
+}
 
-        const data = reactive({
-            fontBold: null,
-            fontItalic: null,
-            fontFamilyInput: null,
-            fontSizeInput: null
+const defaultFontFamilies = ['Arial', 'Calibri', 'Courier New', 'Helvetica', 'Verdana'];
+const defaultFontSizes = [8,9,10,11,12,14,16,18,22,24,26,36,42];
+
+const props = withDefaults(defineProps<SpreadsheetProps>(), {
+    showToolbar: true
+});
+
+const emit = defineEmits(['debug']);
+
+const upload = (file: UploadFile) => {
+    if (file.raw) {
+        loadFromFile(file.raw).then(() => {
+            uploader.value.clearFiles();
         });
-
-        if (fit.value) {
-            const fitSpreadsheet = () => {
-                const target = document.querySelector(fit.value);
-
-                if (target) {
-                    wrapper.value.style.height = `${target.clientHeight - wrapper.value.offsetTop}px`;
-                }
-            };
-
-            onMounted(() => {
-                fitSpreadsheet();
-            });
-
-            window.addEventListener('resize', () => debounce(fitSpreadsheet, 1000));
-        }
-
-        function syncCellStyling(row = null, column = null) {
-            if (!row || !column) {
-                const selection = instance.value?.getSelected();
-
-                if (selection) {
-                    [[row, column]] = selection;
-                }
-            }
-
-            if (!row || !column) {
-                return;
-            }
-
-            const cell = instance.value.getCell(row, column);
-
-            const styles = window.getComputedStyle(cell);
-
-            // set font size selector value
-            {
-                const { value, unit } = parseSize(styles.fontSize);
-                data.fontSizeInput = unit === 'px' ? pxToPt(value) : value;
-            }
-
-            // set font family selector value
-            data.fontFamilyInput = styles.fontFamily;
-
-            // set font bold button active state
-            {
-                const value = parseInt(styles.fontWeight);
-                data.fontBold = value > 400;
-            }
-
-            // set font italic button active state
-            data.fontItalic = styles.fontStyle === 'italic';
-        }
-
-        const {
-            store,
-            instance,
-            history
-        } = useHotTable(spread, {
-            cellModifier: cellModifier.value
-        });
-
-        const hotSettings = configure({
-            startRows: 50,
-            startCols: 25,
-            width: '100%',
-            height: '100%',
-            tableClassName: 'table',
-            afterInit: () => {
-                instance.value.addHook('debug', (...args) => emit('debug', ...args));
-            },
-            afterSelection: (row, column, row2, column2, preventScrolling, selectionLayerLevel) => {
-              syncCellStyling(row, column);
-            },
-            ...(settingsProp.value || {})
-        });
-
-        return {
-            data,
-
-            defaultFontFamilies: ['Arial', 'Calibri', 'Courier New', 'Helvetica', 'Verdana'],
-            defaultFontSizes: [8,9,10,11,12,14,16,18,22,24,26,36,42],
-
-            hotSettings,
-
-            // $refs
-            wrapper,
-            spread,
-            uploader,
-            borderDrop,
-            alignDrop,
-
-            store,
-            instance,
-
-            history,
-
-            setItalic,
-            setBold,
-            setFontFamily,
-            setFontSize,
-            setBorder,
-            setAlign,
-
-            loadFromBuffer,
-            loadFromBase64,
-            loadFromFile,
-            upload: (file) => {
-                loadFromFile(file).then(() => {
-                    uploader.value.clearFiles();
-                });
-            },
-            download,
-
-            syncCellStyling
-        };
     }
+};
+
+const settingsProp = toRef(props, 'settings');
+const cellModifier = toRef(props, 'cellModifier');
+const fit = toRef(props, 'fit');
+
+const wrapper = ref();
+const spread = ref();
+const uploader = ref();
+const borderDrop = ref();
+const alignDrop = ref();
+
+const data = reactive<Data>({
+    fontBold: null,
+    fontItalic: null,
+    fontFamilyInput: null,
+    fontSizeInput: null
+});
+
+if (fit.value) {
+    const fitSpreadsheet = () => {
+        const target = document.querySelector(fit.value as string);
+
+        if (target) {
+            wrapper.value.style.height = `${target.clientHeight - wrapper.value.offsetTop}px`;
+        }
+    };
+
+    onMounted(() => {
+        fitSpreadsheet();
+    });
+
+    window.addEventListener('resize', () => debounce(fitSpreadsheet, 1000));
+}
+
+function syncCellStyling(row?: number, column?: number) {
+    if (!row || !column) {
+        const selection = instance.value?.getSelected();
+
+        if (selection) {
+            [[row, column]] = selection;
+        }
+    }
+
+    if (!row || !column) {
+        return;
+    }
+
+    const cell = instance.value.getCell(row, column);
+
+    if (! cell) {
+        return;
+    }
+
+    const styles = window.getComputedStyle(cell);
+
+    // set font size selector value
+    {
+        const { value, unit } = parseSize(styles.fontSize);
+
+        if (value) {
+            data.fontSizeInput = unit === 'px' ? pxToPt(value) : value;
+        }
+    }
+
+    // set font family selector value
+    data.fontFamilyInput = styles.fontFamily;
+
+    // set font bold button active state
+    {
+        const value = parseInt(styles.fontWeight);
+        data.fontBold = value > 400;
+    }
+
+    // set font italic button active state
+    data.fontItalic = styles.fontStyle === 'italic';
+}
+
+const {
+    store,
+    instance,
+    history
+} = useHotTable(spread, {
+    cellModifier: cellModifier.value
+});
+
+const hotSettings = configure({
+    startRows: 50,
+    startCols: 25,
+    width: '100%',
+    height: '100%',
+    tableClassName: 'table',
+    afterInit: () => {
+        /* @ts-ignore */
+        instance.value.addHook('debug', (...args) => emit('debug', ...args));
+    },
+    afterSelection: (row: number, column: number, row2: number, column2: number, preventScrolling: object, selectionLayerLevel: number) => {
+        syncCellStyling(row, column);
+    },
+    ...(settingsProp.value || {})
+});
+
+defineExpose({
+    instance,
+
+    loadFromBase64,
+    loadFromBuffer
+});
+</script>
+
+<script lang="ts">
+export default {
+    name: 'Spreadsheet'
 }
 </script>
 
-<style lang='postcss' scoped>
+<style lang="postcss">
+@import 'handsontable/dist/handsontable.full.css';
+</style>
+
+<style lang="postcss" scoped>
 .spreadsheet-wrapper {
     @apply relative pb-4;
 

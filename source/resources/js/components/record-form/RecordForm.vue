@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 model-form(
     v-bind='$props'
     ref='form'
@@ -14,7 +14,7 @@ model-form(
         :prop='prop'
     )
 
-    el-button(v-if='canUpdate' type='primary' :loading='saving' @click='save($refs.form)') Сохранить
+    el-button(v-if='canUpdate' type='primary' :loading='saving' @click='save(form)') Сохранить
 
     el-popconfirm(
         v-if='canRemove'
@@ -28,95 +28,92 @@ model-form(
             el-button(v-if='canDelete' type='danger' :loading='removing') Удалить
 </template>
 
-<script>
+<script setup lang="ts">
 import { computed, ref, toRef } from 'vue';
 import pickBy from 'lodash/pickBy';
 
-import { useRepos } from '../../store/repository';
-import { validationRulesFromSchema } from '../../utils/formUtils';
+import { useRepos } from '@/store/repository';
+import { validationRulesFromSchema } from '@/utils/formUtils';
 
-import modelFormProps from '../model-form/modelFormProps';
+import type CoreModel from '@/store/model';
 
-export default {
-    name: 'RecordForm',
-    props: {
-        ...modelFormProps,
-        canCreate: {
-            type: Boolean,
-            default: true
-        },
-        canUpdate: {
-            type: Boolean,
-            default: true
-        },
-        canDelete: {
-            type: Boolean,
-            default: true
+import { type ModelForm } from '../model-form';
+import { type ModelFormProps } from '../model-form/modelFormProps';
+
+export type RecordFormPermissions = {
+    canCreate: boolean,
+    canUpdate: boolean,
+    canDelete: boolean
+};
+
+const props = withDefaults(defineProps<ModelFormProps & RecordFormPermissions>(), {
+    canCreate: true,
+    canUpdate: true,
+    canDelete: true
+});
+
+const emit = defineEmits(['saved', 'removed']);
+
+const modelValue = toRef(props, 'modelValue');
+const reference = modelValue.value.$self().name;
+
+const repository = useRepos()[reference];
+
+const form = ref();
+const fields = ref();
+const visibleFields = ref();
+
+repository.getFieldsSchema().then((schema) => {
+    fields.value = (schema || {});
+    visibleFields.value = pickBy(schema, (value) => value.hidden !== true);
+});
+
+const rules = computed(() => validationRulesFromSchema(fields.value));
+const canRemove = computed(() => modelValue.value && modelValue.value.$isSaved());
+
+const saving = ref(false);
+const removing = ref(false);
+
+function save(form: ModelForm) {
+    form.validate((valid: boolean) => {
+        if (valid) {
+            saving.value = true;
+
+            repository
+                .push(props.modelValue)
+                .then((savedRecord: CoreModel) => {
+                    emit('saved', {
+                        original: props.modelValue,
+                        saved: savedRecord
+                    });
+
+                    return savedRecord;
+                })
+                .finally(() => saving.value = false);
         }
-    },
-    emits: ['saved', 'removed'],
-    setup(props) {
-        const modelValue = toRef(props, 'modelValue');
-        const reference = modelValue.value.$self().name;
+    });
+}
 
-        const repository = useRepos()[reference];
+function remove() {
+    removing.value = true;
 
-        const fields = ref();
-        const visibleFields = ref();
-        repository.getFieldsSchema().then((schema) => {
-            fields.value = (schema || {});
-            visibleFields.value = pickBy(schema, (value) => value.hidden !== true);
-        });
+    const key = modelValue.value.$getKey();
 
-        const rules =  computed(() => validationRulesFromSchema(fields.value));
-
-        return {
-            reference,
-            repository,
-            fields,
-            visibleFields,
-            rules
-        };
-    },
-    data: () => ({
-        saving: false,
-        removing: false
-    }),
-    computed: {
-        canRemove() {
-            return this.modelValue && this.modelValue.$isSaved();
-        }
-    },
-    methods: {
-        save(form) {
-            form.validate((valid) => {
-                if (valid) {
-                    this.saving = true;
-
-                    this.repository.push(this.modelValue).then((savedRecord) => {
-                        this.saving = false;
-
-                        this.$emit('saved', {
-                            original: this.modelValue,
-                            saved: savedRecord
-                        });
-
-                        return savedRecord;
-                    })
-                }
-            });
-        },
-        remove() {
-            this.removing = true;
-
-            this.repository.remove(this.modelValue.$getKey()).then((removed) => {
-                this.removing = false;
-
-                this.$emit('removed', removed);
+    if (key) {
+        repository
+            .remove(key)
+            .then((removed: number[] | false) => {
+                emit('removed', removed);
 
                 return removed;
-            });
-        }
+            })
+            .finally(() => removing.value = false);
     }
+}
+</script>
+
+<script lang="ts">
+export default {
+    name: 'RecordForm'
 }
 </script>

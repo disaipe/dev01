@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 el-dropdown(
     trigger='click'
     placement='bottom-end'
@@ -19,58 +19,58 @@ el-dropdown(
                     )
 </template>
 
-<script>
-import { ref, toRef, inject } from 'vue';
+<script setup>
+import { ref, inject, onMounted, nextTick, watch } from 'vue';
 import Sortable from 'sortablejs';
 
-import tableColumns from './mixins/tableColumns';
+import { useTableColumns } from './mixins/tableColumns';
 
-export default {
-    name: 'TableColumnsSettings',
-    functional: true,
-    mixins: [tableColumns],
-    setup() {
-        const table = inject('TableInstance');
-        const columns = toRef(table, 'columns');
-        const fields = toRef(table, 'fields');
+const { 
+    tableId, 
+    fields, 
+    columns, 
+    vxe, 
+    setVisibleColumns
+} = inject('TableInstance');
 
-        const sortables = ref(null);
-        const sortable = ref(null);
+const sortable = ref();
+const sortables = ref();
 
-        return {
-            table,
-            tableId: table.tableId,
-            columns,
-            fields,
-            sortable,
-            sortables
-        };
-    },
-    watch: {
-        // Watch column settings and sync them to table
-        visibleColumns() {
-            this.table.visibleColumns = this.visibleColumns;
+const {
+    columnStore,
+
+    allowedColumns,
+    visibleColumns,
+
+    loadColumns,
+    saveColumnVisibility,
+    saveColumnOrder,
+
+    handleColumnVisible
+} = useTableColumns(tableId, { fields, columns });
+
+watch(() => visibleColumns.value, () => {
+    setVisibleColumns(visibleColumns.value);
+});
+
+onMounted(() => {
+    sortable.value = new Sortable(sortables.value, {
+        onEnd: () => {
+            const order = sortable.value.toArray();
+
+            saveColumnOrder({ tableId, order });
+
+            nextTick(() => {
+                sortable.value.sort(order);
+                vxe.value?.updateData();
+            });
         }
-    },
-    mounted() {
-        this.sortable = new Sortable(
-            this.sortables,
-            {
-                onEnd: (evt) => {
-                    const order = this.sortable.toArray();
+    });
+});
+</script>
 
-                    this.saveColumnOrder({
-                        tableId: this.tableId,
-                        order
-                    });
-
-                    this.$nextTick(() => {
-                        this.sortable.sort(order);
-                        this.table.$refs.vxe.updateData();
-                    });
-                }
-            }
-        );
-    }
+<script>
+export default {
+    name: 'TableColumnsSettings'
 }
 </script>

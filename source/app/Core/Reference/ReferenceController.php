@@ -136,7 +136,7 @@ class ReferenceController extends BaseController
 
         return new JsonResponse([
             'status' => count($keys) === count($removed),
-            'removed' => $removed,
+            'data' => $removed,
         ]);
     }
 
