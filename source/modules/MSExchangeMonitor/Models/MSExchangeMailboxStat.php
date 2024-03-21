@@ -2,13 +2,16 @@
 
 namespace App\Modules\MSExchangeMonitor\Models;
 
+use App\Core\Reference\ReferenceModel;
+use App\Core\Traits\WithoutSoftDeletes;
 use App\Modules\ActiveDirectory\Models\ADUserEntry;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class MSExchangeMailboxStat extends Model
+class MSExchangeMailboxStat extends ReferenceModel
 {
+    use WithoutSoftDeletes;
+
     protected $table = 'ms_exchange_mailbox_stats';
 
     protected $fillable = [

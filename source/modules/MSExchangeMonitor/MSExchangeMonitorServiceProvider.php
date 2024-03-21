@@ -6,6 +6,7 @@ use App\Core\Enums\JobProtocolState;
 use App\Core\Indicator\Indicator;
 use App\Core\Indicator\IndicatorManager;
 use App\Core\Module\ModuleBaseServiceProvider;
+use App\Core\Reference\ReferenceManager;
 use App\Core\Report\Expression\CountExpression;
 use App\Core\Report\Expression\SumExpression;
 use App\Core\Report\ExpressionType\QueryExpressionType;
@@ -18,6 +19,7 @@ use App\Modules\MSExchangeMonitor\Commands\MSExchangeStatsCommand;
 use App\Modules\MSExchangeMonitor\Expressions\OversizeSumExpression;
 use App\Modules\MSExchangeMonitor\Jobs\MSExchangeStatsSyncJob;
 use App\Modules\MSExchangeMonitor\Models\MSExchangeMailboxStat;
+use App\Modules\MSExchangeMonitor\References\MSExchangeMailboxStatReference;
 use App\Support\Forms\RpcConnectionSettingsForm;
 use App\Utils\Size;
 use Cron\CronExpression;
@@ -40,6 +42,10 @@ class MSExchangeMonitorServiceProvider extends ModuleBaseServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/migrations');
         $this->loadRoutesFrom(__DIR__.'/routes/routes.php');
         $this->loadViewsFrom(__DIR__.'/resources/view', $this->namespace);
+
+        /** @var ReferenceManager $references */
+        $references = app('references');
+        $references->register(MSExchangeMailboxStatReference::class);
 
         /** @var IndicatorManager $indicators */
         $indicators = app('indicators');
