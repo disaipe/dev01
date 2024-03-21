@@ -11,14 +11,14 @@ el-dropdown(
         .flex.flex-col.gap-y-2.p-2
             .font-bold.text-gray-600 Формат
             el-radio-group(v-model='format' size='small')
-                el-radio-button(label='xlsx') Excel (XLSX)
-                el-radio-button(label='xls') Excel (XLS)
-                el-radio-button(label='csv') CSV
+                el-radio-button(value='xlsx') Excel (XLSX)
+                el-radio-button(value='xls') Excel (XLS)
+                el-radio-button(value='csv') CSV
 
             .font-bold.text-gray-600 Данные
             el-radio-group(v-model='type' size='small')
-                el-radio-button(label='page') Текущая страница
-                el-radio-button(label='all') Все страницы
+                el-radio-button(value='page') Текущая страница
+                el-radio-button(value='all') Все страницы
 
             el-button(@click='makeExport')
                 span Экспортировать
