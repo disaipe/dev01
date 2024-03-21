@@ -9,6 +9,7 @@ enum ReportContextConstant
     case PERIOD_YEAR;
     case PERIOD_MONTH;
     case PERIOD_MONTH_NAME;
+    case PERIOD_YEAR_MONTH;
     case COMPANY_ID;
     case COMPANY_CODE;
     case COMPANY_NAME;

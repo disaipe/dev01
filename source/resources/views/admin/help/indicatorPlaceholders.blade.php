@@ -6,14 +6,14 @@
 
 <div>
     Для подстановки предустановленных значений поместите специальый символьной код в двойные фигурные скобки
-    <span class="font-bold">&#123;&#123;&#125;&#125;</span>, например <span class="font-bold">&#123;&#123;PERIOD&#125;&#125;</span>.
+    <span class="font-bold">&#123;&#123;&#125;&#125;</span>, например <span class="font-bold">&#123;&#123;PERIOD_YEAR_MONTH&#125;&#125;</span>.
 </div>
 
 <div class="mt-2">
     Доступные вставки:
 
     <ul style='list-style: disc; padding-left: 20px'>
-        <li><i>PERIOD</i> - период отчета, например "2023-07"</li>
+        <li><i>PERIOD_YEAR_MONTH</i> - период отчета, например "2023-07"</li>
         <li><i>PERIOD_YEAR</i> - год периода отчета, например "2023"</li>
         <li><i>PERIOD_MONTH</i> - месяц периода отчета, например "7"</li>
         <li><i>COMPANY_ID</i> - уникальный ключ организации, например "13"</li>

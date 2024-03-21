@@ -424,6 +424,7 @@ class ReportService
             ReportContextConstant::PERIOD_YEAR->name => strval($period->year),
             ReportContextConstant::PERIOD_MONTH->name => strval($period->month),
             ReportContextConstant::PERIOD_MONTH_NAME->name => $period->getTranslatedMonthName(),
+            ReportContextConstant::PERIOD_YEAR_MONTH->name => $period->format('Y-m'),
             ReportContextConstant::COMPANY_ID->name => $this->company->getKey(),
             ReportContextConstant::COMPANY_CODE->name => $this->company->code,
             ReportContextConstant::COMPANY_NAME->name => $this->company->name,
