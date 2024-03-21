@@ -12,7 +12,7 @@ el-popover(
         )
             icon(:icon='isSet ? "tabler:filter-cancel" : "tabler:filter"')
 
-    .flex.flex-col.space-y-2.min-w-64(v-click-outside='{ handler: close, isActive: isVisible }')
+    .flex.flex-col.space-y-2(v-click-outside='{ handler: close, isActive: isVisible }')
         el-config-provider(size='small')
 
             //- FILTER TYPE SELECTOR
