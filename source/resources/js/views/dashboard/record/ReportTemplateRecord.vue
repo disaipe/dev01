@@ -16,6 +16,7 @@
         ref='spread'
         :settings='settings'
         :cell-modifier='cellModifier'
+        default-sheet-name='Отчет'
         fit='.spreadsheet-page'
     )
         template(#actions-menu-items)

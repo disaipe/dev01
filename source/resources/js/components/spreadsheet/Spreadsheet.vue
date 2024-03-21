@@ -12,8 +12,9 @@
                                 el-dropdown-item(@click='download') Сохранить в файл
                                 el-dropdown-item(@click='uploader.$el.querySelector("input").click()') Загрузить из файла
 
-                    el-select.w-32(
+                    el-select.shrink-0(
                         v-model='data.fontFamilyInput'
+                        style='width: 160px'
                         filterable
                         allow-create
                         placeholder=' '
@@ -25,8 +26,10 @@
                             :label='fontFamily'
                             :value='fontFamily'
                         )
-                    el-select.w-16(
+
+                    el-select.shrink-0(
                         v-model='data.fontSizeInput'
+                        style='width: 64px'
                         filterable
                         allow-create
                         placeholder=' '
@@ -38,7 +41,7 @@
                             :label='fontSize'
                             :value='fontSize'
                         )
-                    el-button-group(v-if='instance')
+                    el-button-group.shrink-0(v-if='instance')
                         //- el-button(@click='history.undo()') Undo
                         //- el-button(@click='history.redo()') Redo
                         el-button(
@@ -128,8 +131,24 @@
         :show-file-list='false'
     )
 
-    .spreadsheet-container(:class='{ "pts-8": showToolbar, "pbs-8": showToolbar }')
+    .spreadsheet-container.pb-8
         hot-table.hot-table.bg-gray-100(ref='spread' :settings='hotSettings')
+
+        .flex.items-cente.p-1(style='background: #f0f0f0')
+            el-select(
+                v-model='store.activeSheet'
+                style='width: 240px'
+                size='small'
+                @change='openWorkSheet'
+            )
+                template(#prefix)
+                    icon(icon='tabler:menu-2')
+
+                el-option(
+                    v-for='sheet of worksheets'
+                    :label='sheet.name'
+                    :value='sheet.id'
+                )
 </template>
 
 <script>
@@ -155,7 +174,7 @@ import {
     setBorder,
     setAlign,
 
-    useHotTable
+    useHotTable,
 } from './xlsxUtils';
 
 export default {
@@ -174,6 +193,10 @@ export default {
             type: Function,
             default: null
         },
+        defaultSheetName: {
+            type: String,
+            default: null
+        },
         /**
          * Pass query selector value to fit spreadsheet to container.
          */
@@ -182,10 +205,10 @@ export default {
             default: null
         }
     },
-    emits: ['debug'],
     setup(props, { emit }) {
         const settingsProp = toRef(props, 'settings');
         const cellModifier = toRef(props, 'cellModifier');
+        const defaultSheetName = toRef(props, 'defaultSheetName');
         const fit = toRef(props, 'fit');
 
         const wrapper = ref();
@@ -256,9 +279,17 @@ export default {
         const {
             store,
             instance,
-            history
+            worksheets,
+            history,
+
+            createWorkSheet,
+            openWorkSheet,
+            setWorkSheetData,
+            getWorkSheets,
+            fitWorksheetColumnsWidthToContent
         } = useHotTable(spread, {
-            cellModifier: cellModifier.value
+            cellModifier: cellModifier.value,
+            defaultSheetName: defaultSheetName.value
         });
 
         const hotSettings = configure({
@@ -267,9 +298,6 @@ export default {
             width: '100%',
             height: '100%',
             tableClassName: 'table',
-            afterInit: () => {
-                instance.value.addHook('debug', (...args) => emit('debug', ...args));
-            },
             afterSelection: (row, column, row2, column2, preventScrolling, selectionLayerLevel) => {
               syncCellStyling(row, column);
             },
@@ -293,6 +321,7 @@ export default {
 
             store,
             instance,
+            worksheets,
 
             history,
 
@@ -306,6 +335,13 @@ export default {
             loadFromBuffer,
             loadFromBase64,
             loadFromFile,
+
+            createWorkSheet,
+            openWorkSheet,
+            setWorkSheetData,
+            getWorkSheets,
+            fitWorksheetColumnsWidthToContent,
+
             upload: (file) => {
                 loadFromFile(file).then(() => {
                     uploader.value.clearFiles();

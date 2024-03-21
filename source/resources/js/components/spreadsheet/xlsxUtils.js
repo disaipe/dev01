@@ -29,11 +29,22 @@ const store = ref({
     workbook: null,
     worksheet: null,
 
+    activeSheet: 1,
+
     merges: [],
 
-    cellModifier: null
+    cellModifier: null,
+
+    defaultSheetName: 'Data'
 });
 
+const worksheets = computed(() => {
+    if (! store.value.workbook) {
+        return [];
+    }
+
+    return store.value.workbook.worksheets.map((ws) => ({ id: ws.id, name: ws.name }));
+});
 const worksheet = computed(() => store.value.worksheet);
 const instance = computed(() => store.value.spread?.hotInstance);
 
@@ -121,6 +132,10 @@ export function configure(settings = {}) {
 
         instance.value.updateSettings(toSync);
     };
+
+    if (settings.defaultSheetName) {
+        store.value.defaultSheetName = settings.defaultSheetName;
+    }
 
     return {
         autoRowSize: true,
@@ -272,17 +287,6 @@ export function configure(settings = {}) {
             worksheet.value.getRow(row + 1).height = round(newSize / 1.33, 2);
         },
         /**
-         * Fired after Handsontable's data gets modified by the loadData() method or the updateSettings() method
-         *
-         * @param {Array} sourceData An array of arrays, or an array of objects, that contains Handsontable's data
-         * @param {boolean} initialLoad A flag that indicates whether the data was loaded at Handsontable's initialization (true) or later (false)
-         * @param {?string} source The source of the call
-         */
-        afterLoadData(sourceData, initialLoad, source) {
-            store.value.workbook.removeWorksheet(store.value.worksheet.id);
-            store.value.worksheet = store.value.workbook.addWorksheet('Data');
-        },
-        /**
          * Fired after the updateData() method modifies Handsontable's data.
          *
          * @param {Array} sourceData An array of arrays, or an array of objects, that contains Handsontable's data
@@ -324,74 +328,13 @@ export function configure(settings = {}) {
 }
 
 export function loadFromBuffer(buffer) {
-    instance.value.suspendRender();
-    instance.value.loadData([]);
-
     const workbook = new excel.Workbook();
 
-    workbook.xlsx.load(buffer).then(() => {
-        const worksheet = workbook.getWorksheet(1);
-        store.value.worksheet = worksheet;
+    return workbook.xlsx.load(buffer).then(() => {
+        store.value.workbook = workbook;
 
-        // set cells
-        const data = makeMatrix(Math.max(50, worksheet.rowCount + 10), Math.max(30, worksheet.columnCount));
-
-        for (let row = 0; row < worksheet.rowCount; row++) {
-            for (let col = 0; col < worksheet.columnCount; col++) {
-                const cell = worksheet.getCell(row + 1, col + 1);
-
-                // clone style object to avoid changing it by reference
-                cell.style = cloneDeep(cell.style);
-
-                // apply custom cell modifiers if set
-                if (store.value.cellModifier instanceof Function) {
-                    store.value.cellModifier(cell);
-                }
-
-                // detect composite types like a formulas
-                if (cell.value && typeof(cell.value) === 'object') {
-                    const { formula } = cell.value;
-
-                    if (formula) {
-                        data[row][col] = `=${formula}`;
-                    }
-                } else {
-                    data[row][col] = cell.value;
-                }
-            }
-        }
-
-        instance.value.updateData(data);
-
-        // set merges
-        if (worksheet.hasMerges) {
-            store.value.merges = [];
-            const mergeCells = instance.value.getPlugin('MergeCells');
-
-            // clear old merges
-            mergeCells.clearCollections();
-
-            for (const merge of Object.values(worksheet._merges)) {
-                store.value.merges.push({
-                    top: merge.top,
-                    left: merge.left,
-                    bottom: merge.bottom,
-                    right: merge.right
-                });
-
-                mergeCells.merge(
-                    merge.top - 1,
-                    merge.left - 1,
-                    merge.bottom - 1,
-                    merge.right - 1
-                );
-            }
-        }
-    }).finally(() => {
-        instance.value.resumeRender();
+        openWorkSheet(1);
     });
-
-    store.value.workbook = workbook;
 }
 
 export function loadFromFile(file) {
@@ -402,8 +345,144 @@ export function loadFromFile(file) {
 
 export function loadFromBase64(base64string) {
     return base64ToBuffer(base64string).then((buffer) => {
-        loadFromBuffer(buffer);
+        return loadFromBuffer(buffer);
     });
+}
+
+function escapeWorksheetName(name) {
+    if (name && typeof name === 'string') {
+        return name.replaceAll(/[*?:\[\]\/]/g, '');
+    }
+
+    return name;
+}
+
+export function createWorkSheet(name) {
+    return store.value?.workbook?.addWorksheet(escapeWorksheetName(name));
+}
+
+export function setWorkSheetData(idOrName, data) {
+    const worksheet = store.value.workbook.getWorksheet(escapeWorksheetName(idOrName));
+
+    if (!worksheet) {
+        console.error(`[XLSX] Worksheet with key ${idOrName} not found`);
+        return;
+    }
+
+    for (const [r, row] of data.entries()) {
+        if (Array.isArray(row)) {
+            for (const [c, value] of row.entries()) {
+                worksheet.getCell(r + 1, c + 1).value = value;
+            }
+        }
+
+        if (typeof data === 'object') {
+            for (const [c, value] of Object.values(row).entries()) {
+                worksheet.getCell(r + 1, c + 1).value = value;
+            }
+        }
+    }
+}
+
+export function openWorkSheet(idOrName) {
+    instance.value.suspendRender();
+
+    const worksheet = store.value.workbook.getWorksheet(escapeWorksheetName(idOrName));
+
+    if (!worksheet) {
+        console.error(`[XLSX] Worksheet with key ${idOrName} not found`);
+        return;
+    }
+
+    store.value.worksheet = worksheet;
+    store.value.activeSheet = worksheet.id;
+
+    // set cells
+    const data = makeMatrix(Math.max(50, worksheet.rowCount + 10), Math.max(30, worksheet.columnCount));
+
+    // for (let row = 0; row < worksheet.rowCount; row++) {
+    for (let row = 0; row < worksheet.actualRowCount + 1; row++) {
+        // for (let col = 0; col < worksheet.columnCount; col++) {
+        for (let col = 0; col < worksheet.actualColumnCount + 1; col++) {
+            const cell = worksheet.getCell(row + 1, col + 1);
+
+            // clone style object to avoid changing it by reference
+            cell.style = cloneDeep(cell.style);
+
+            // apply custom cell modifiers if set
+            if (store.value.cellModifier instanceof Function) {
+                store.value.cellModifier(cell);
+            }
+
+            // detect composite types like a formulas
+            if (cell.value && typeof(cell.value) === 'object') {
+                const { formula } = cell.value;
+
+                if (formula) {
+                    data[row][col] = `=${formula}`;
+                }
+            } else {
+                data[row][col] = cell.value;
+            }
+        }
+    }
+
+    instance.value.updateData(data);
+
+    // set merges
+    if (worksheet.hasMerges) {
+        store.value.merges = [];
+        const mergeCells = instance.value.getPlugin('MergeCells');
+
+        // clear old merges
+        mergeCells.clearCollections();
+
+        for (const merge of Object.values(worksheet._merges)) {
+            store.value.merges.push({
+                top: merge.top,
+                left: merge.left,
+                bottom: merge.bottom,
+                right: merge.right
+            });
+
+            mergeCells.merge(
+                merge.top - 1,
+                merge.left - 1,
+                merge.bottom - 1,
+                merge.right - 1
+            );
+        }
+    }
+
+    instance.value.resumeRender();
+}
+
+export function fitWorksheetColumnsWidthToContent(idOrName) {
+    const worksheet = store.value.workbook.getWorksheet(escapeWorksheetName(idOrName));
+
+    if (!worksheet) {
+        console.error(`[XLSX] Worksheet with key ${idOrName} not found`);
+        return;
+    }
+
+    if (worksheet.columns) {
+        for (const column of worksheet.columns) {
+            let maxLength = 0;
+
+            column.eachCell({ includeEmpty: true }, function (cell) {
+                const columnLength = cell.value ? cell.value.toString().length : 10;
+                if (columnLength > maxLength) {
+                    maxLength = columnLength;
+                }
+            });
+
+            column.width = maxLength < 10 ? 10 : maxLength;
+        }
+    }
+}
+
+export function getWorkSheets() {
+    return store.value.workbook.worksheets;
 }
 
 export function download() {
@@ -591,6 +670,10 @@ export function setAlign(value) {
 export function setFontFamily(value) {
     const ranges = instance.value.getSelectedRange();
 
+    if (!ranges) {
+        return;
+    }
+
     for (const range of ranges) {
         setRangePropertyValue(range, 'style.font.name', value);
     }
@@ -598,12 +681,16 @@ export function setFontFamily(value) {
     instance.value.render();
 }
 
-export function useHotTable(container, { cellModifier } = {}) {
+export function useHotTable(container, { cellModifier, defaultSheetName } = {}) {
     store.value.spread = container;
     store.value.cellModifier = cellModifier;
 
+    if (defaultSheetName) {
+        store.value.defaultSheetName = defaultSheetName;
+    }
+
     const workbook = new excel.Workbook();
-    const worksheet = workbook.addWorksheet('Template');
+    const worksheet = workbook.addWorksheet(store.value.defaultSheetName);
 
     store.value.workbook = workbook;
     store.value.worksheet = worksheet;
@@ -611,8 +698,15 @@ export function useHotTable(container, { cellModifier } = {}) {
     return {
         store,
         instance,
+        worksheets: computed(() => worksheets.value),
 
-        history: computed(() => instance.value.getPlugin('UndoRedo'))
+        history: computed(() => instance.value.getPlugin('UndoRedo')),
+
+        createWorkSheet,
+        openWorkSheet,
+        setWorkSheetData,
+        getWorkSheets,
+        fitWorksheetColumnsWidthToContent
     };
 }
 

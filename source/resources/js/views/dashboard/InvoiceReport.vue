@@ -1,9 +1,10 @@
 <template lang='pug'>
-.relative.h-full
-    .flex.items-center.space-x-2.pb-4
-        el-select(
+.relative.h-full(ref='report')
+    .flex.items-center.space-x-2.pb-4(ref='toolbar')
+        el-select.shrink-0(
             v-model='company'
             placeholder='Организация'
+            style='width:180px'
             filterable
         )
             el-option(
@@ -12,9 +13,10 @@
                 :value='company.code'
             )
 
-        el-select(
+        el-select.shrink-0(
             v-model='reportTemplate'
             placeholder='Шаблон отчета'
+            style='width:180px'
         )
             template(#prefix)
                 icon(icon='tabler:template')
@@ -29,12 +31,17 @@
                     :value='reportTemplate.$getKey()'
                 )
 
-        el-date-picker(
+        el-date-picker.shrink-0(
             v-model='period'
-            class='!w-32'
+            style='width:120px'
             type='month'
             placeholder='Период'
         )
+
+        el-badge(value='beta')
+            el-checkbox(v-model='extended' label='Подробный' border)
+
+        .flex-1
 
         el-button(
             type='primary'
@@ -72,30 +79,12 @@
                     span.font-bold {{ error.service_name }}
                     div {{ error.message }}
 
-    el-dialog(
-        v-model='showDebugDialog'
-        title='Отладка (BETA)'
-        width='90%'
-        destroy-on-close
-        :close-on-click-modal='false'
-    )
-        it-table(
-            :reference='debugReference'
-            :columns='debugColumns'
-            :items='debugData'
-            :can-create='false'
-            :can-update='false'
-            :can-delete='false'
-            :can-load='false'
-        )
-
     .spread.h-full.pb-8
         spreadsheet(
             v-show='loaded'
             ref='spread'
             :cell-modifier='cellModifier'
             :show-toolbar='false'
-            @debug='onDebug'
         )
 </template>
 
@@ -104,32 +93,35 @@ import { ref, computed, nextTick, watch } from 'vue';
 import { ElMessageBox } from 'element-plus'
 import dayjs from 'dayjs';
 import orderBy from 'lodash/orderBy';
+import { useElementSize } from '@vueuse/core';
 import { useReportSettingsStore } from '../../store/modules';
 import { useRepos } from '../../store/repository';
 import { useApi } from '../../utils/axiosClient';
 import batchApi from '../../utils/batchApi';
 import { applyBindings } from '../../components/spreadsheet/utils';
-import ItTable from "../../components/table/Table.vue";
+import ItTable from '../../components/table/Table.vue';
 
 export default {
     name: 'InvoiceReport',
-    components: {ItTable},
+    components: { ItTable },
     setup() {
+        const report = ref();
+        const toolbar = ref();
         const spread = ref();
         const loading = ref(false);
         const loaded = ref(false);
         const showErrorsDialog = ref(false);
-        const showDebugDialog = ref(false);
 
-        const debugColumns = ref(null);
-        const debugReference = ref(null);
-        const debugData = ref(null);
+        const reportSize = useElementSize(report);
+        const toolbarSize = useElementSize(toolbar);
+        const spreadHeight = computed(() => reportSize.height.value - toolbarSize.height.value);
 
         const savedSettings = useReportSettingsStore();
 
         const company = ref(savedSettings.company);
         const reportTemplate = ref(savedSettings.reportTemplate);
         const period = ref(savedSettings.period);
+        const extended = ref(savedSettings.extended);
 
         const companies = ref();
         const providers = ref();
@@ -138,6 +130,7 @@ export default {
         watch(company, () => savedSettings.company = company.value);
         watch(reportTemplate, () => savedSettings.reportTemplate = reportTemplate.value);
         watch(period, () => savedSettings.period = period.value);
+        watch(extended, () => savedSettings.extended = extended.value);
 
         const { ServiceProvider } = useRepos();
 
@@ -171,7 +164,8 @@ export default {
             return {
                 company: company.value,
                 template: reportTemplate.value,
-                period: _period
+                period: _period,
+                extended: extended.value
             };
         });
 
@@ -187,14 +181,40 @@ export default {
                         const { status, data } = response.data;
 
                         if (status) {
-                            const { xlsx, values, errors } = data;
+                            const { xlsx, values, errors, debug } = data;
 
                             bindings = values || {};
                             reportErrors.value = errors;
 
                             if (xlsx) {
-                                spread.value.loadFromBase64(xlsx);
-                                loaded.value = true;
+                                spread.value.loadFromBase64(xlsx)
+                                    .then(() => {
+                                        if (extended.value) {
+                                            for (const serviceData of Object.values(debug)) {
+                                                const { rows, columns } = serviceData || {};
+
+                                                if (!rows || !columns) {
+                                                    continue;
+                                                }
+
+                                                const sheetName = serviceData?.service?.name;
+
+                                                const ws = spread.value.createWorkSheet(sheetName);
+
+                                                spread.value.setWorkSheetData(ws.id, [columns, ...rows]);
+                                                spread.value.fitWorksheetColumnsWidthToContent(ws.id);
+
+                                                ws.getRow(1).eachCell((cell) => {
+                                                    cell.alignment = {
+                                                        vertical: 'middle',
+                                                        horizontal: 'center'
+                                                    };
+                                                })
+                                            }
+                                        }
+                                    })
+                                    .finally(() => loaded.value = true);
+
                                 return;
                             }
                         } else if (data) {
@@ -218,25 +238,11 @@ export default {
             spread.value.download();
         };
 
-        const onDebug = (service) => {
-            api
-                .post('report/debug', { ...reportBody.value, service })
-                .then((response) => {
-                    if (response.ok) {
-                        const { status, data } = response.data;
-
-                        if (status) {
-                            showDebugDialog.value = true;
-
-                            debugColumns.value = data.columns;
-                            debugReference.value = data.reference;
-                            debugData.value = data.data;
-                        }
-                    }
-                });
-        };
-
         return {
+            spreadHeight,
+
+            report,
+            toolbar,
             spread,
             loaded,
             loading,
@@ -248,16 +254,11 @@ export default {
             reportTemplate,
             reportErrors,
             period,
+            extended,
 
             cellModifier,
             fetchReport,
-            downloadReport,
-
-            onDebug,
-            showDebugDialog,
-            debugReference,
-            debugColumns,
-            debugData
+            downloadReport
         };
     }
 }

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Core\Enums\ReportContextConstant;
 use App\Core\Indicator\Indicator;
 use App\Core\Indicator\IndicatorManager;
+use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceManager;
 use App\Models\Company;
 use App\Models\Contract;
@@ -13,6 +14,7 @@ use App\Models\ReportTemplate;
 use App\Models\Service;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -23,9 +25,11 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWriter;
 
 class ReportService
 {
+    protected bool $extended = false;
+
     protected string $companyCode;
 
-    protected string $templateId;
+    protected ?string $templateId = null;
 
     protected Company $company;
 
@@ -33,19 +37,28 @@ class ReportService
 
     protected ReferenceManager $referenceManager;
 
-    protected ReportTemplate $template;
+    protected ?ReportTemplate $template = null;
 
     protected Collection $priceListValues;
+
+    protected ?Contract $contract = null;
 
     protected Collection $services;
 
     protected Spreadsheet $spreadsheet;
 
-    protected array $values;
+    protected Collection $indicators;
+
+    protected Collection $values;
+
+    protected IndicatorManager $indicatorManager;
 
     public function __construct()
     {
         $this->referenceManager = app('references');
+        $this->indicatorManager = app('indicators');
+
+        $this->indicators = collect([]);
     }
 
     public function make(string $companyCode, string $period = null): self
@@ -59,12 +72,46 @@ class ReportService
         return $this;
     }
 
+    public function setPriceList(PriceList $priceList): self
+    {
+        $this->priceListValues = $priceList->values->collect();
+
+        return $this;
+    }
+
+    public function setContract(Contract $contract): self
+    {
+        $this->contract = $contract;
+
+        return $this;
+    }
+
     public function setTemplate(string $templateId): self
     {
         $this->templateId = $templateId;
         $this->template = ReportTemplate::query()->find($this->templateId);
 
         $this->getPriceListFromTemplate();
+        $this->getContractFromTemplate();
+        $this->getIndicatorsFromTemplate();
+
+        return $this;
+    }
+
+    public function extended(bool $extend = true): self
+    {
+        $this->extended = $extend;
+
+        return $this;
+    }
+
+    public function addIndicatorByCode($code): self
+    {
+        $indicator = $this->indicatorManager->getByCode($code);
+
+        if ($indicator) {
+            $this->indicators->add($indicator);
+        }
 
         return $this;
     }
@@ -103,11 +150,48 @@ class ReportService
         $cellReplacements['TOTAL_VAT'] = $vat;
         $cellReplacements['TOTAL_WITH_VAT'] = $total + $vat;
 
-        return [
+        $result = [
             'errors' => $errors,
             'values' => array_merge($cellReplacements, $this->getContext()),
             'xlsx' => $this->template->content,
         ];
+
+        if ($this->extended) {
+            $result['debug'] = $this->values->mapWithKeys(function ($item) {
+                /** @var ?Collection $data */
+                $data = Arr::get($item, 'debug.data');
+                $columns = Arr::get($item, 'debug.columns', []);
+                $refName = Arr::get($item, 'debug.reference');
+
+                if (! count($columns) && $refName) {
+                    $schema = $this->referenceManager->getByName($refName)?->getSchema();
+
+                    if ($schema) {
+                        $columns = Arr::where($schema, fn (ReferenceFieldSchema $item) => $item->isVisible());
+
+                        if (! count($columns)) {
+                            $columns = $schema;
+                        }
+
+                        $columns = Arr::map($columns, fn (ReferenceFieldSchema $col) => $col->getLabel());
+
+                        $keys = array_keys($columns);
+                        $data = $data->map(fn (Model $row) => $row->only($keys));
+                    }
+                }
+
+                return [$item['service']->getKey() => [
+                    'service' => [
+                        'id' => Arr::get($item, 'service.id'),
+                        'name' => Arr::get($item, 'service.name')
+                    ],
+                    'columns' => $columns,
+                    'rows' => $data,
+                ]];
+            });
+        }
+
+        return $result;
     }
 
     public function download(string $templateId, string $companyCode): false|string
@@ -117,25 +201,44 @@ class ReportService
         return $this->getTemplateWithData(true);
     }
 
+    public function calculate(): Collection
+    {
+        return $this->calculateIndicators($this->indicators);
+    }
+
     public function generate(): self
     {
-        $indicators = $this->getTemplateIndicators();
-        $values = $this->calculateIndicators($indicators);
-        $this->addPrices($values);
-
-        $this->values = $values;
+        $this->values = $this->calculate();
+        $this->addPrices($this->values);
 
         return $this;
     }
 
-    public function debugServiceIndicator(int|string $serviceId): array
+    public function debugService(int|string $serviceId): array
     {
         $service = $this->services->get($serviceId);
 
         /** @var Indicator $indicator */
         $indicator = $this->getServiceIndicators($service)[$serviceId];
 
-        return $indicator
+        return $this->debugIndicator($indicator);
+    }
+
+    public function debugIndicator(Indicator|string $indicator): ?array
+    {
+        $indicatorInstance = null;
+
+        if (is_string($indicator)) {
+            $indicatorInstance = $this->indicatorManager->getByCode($indicator);
+        } else if (get_class($indicator) === Indicator::class) {
+            $indicatorInstance = $indicator;
+        }
+
+        if (! $indicatorInstance) {
+            return null;
+        }
+
+        return $indicatorInstance
             ->setContext($this->getContext())
             ->debug();
     }
@@ -190,56 +293,61 @@ class ReportService
     /**
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
-    protected function getTemplateIndicators(): array
+    protected function getIndicatorsFromTemplate(): self
     {
         $templateServices = $this->getTemplateServices();
+        $this->indicators = $this->getServiceIndicators($templateServices);
 
-        return $this->getServiceIndicators($templateServices);
+        return $this;
     }
 
     /**
      * @param  Service|Service[]  $service
      */
-    protected function getServiceIndicators(Service|array $service): array
+    protected function getServiceIndicators(Service|array $service): Collection
     {
         $services = Arr::wrap($service);
+        $registeredIndicators = $this->indicatorManager->getIndicators();
 
-        /** @var IndicatorManager $indicatorsManager */
-        $indicatorsManager = app('indicators');
-        $registeredIndicators = $indicatorsManager->getIndicators();
-
-        $indicators = [];
+        $indicators = collect([]);
 
         foreach ($services as $service) {
             if ($service) {
                 $indicator = Arr::get($registeredIndicators, $service->indicator_code);
-                $indicators[$service->getKey()] = $indicator;
+                $indicators->put($service->getKey(), $indicator);
             }
         }
 
         return $indicators;
     }
 
-    protected function calculateIndicators(array $indicators): array
+    protected function calculateIndicators(Collection|array $indicators): Collection
     {
-        $results = [];
+        $results = collect([]);
+
         foreach ($indicators as $serviceKey => $indicator) {
             $service = Arr::get($this->services, $serviceKey);
 
-            $results[$serviceKey] = [
+            $serviceValue = [
                 'service' => $service,
                 'indicator' => $indicator,
             ];
 
             if (is_a($indicator, Indicator::class)) {
                 try {
-                    $results[$serviceKey]['value'] = $this->calculateIndicator($indicator);
+                    $serviceValue['value'] = $this->calculateIndicator($indicator);
+
+                    if ($this->extended) {
+                        $serviceValue['debug'] = $this->debugIndicator($indicator);
+                    }
                 } catch (\Exception $e) {
-                    $results[$serviceKey]['error'] = $e->getMessage();
+                    $serviceValue['error'] = $e->getMessage();
                 }
             } else {
-                $results[$serviceKey]['error'] = 'Индикатор не найден, расчет показателей невозможен';
+                $serviceValue['error'] = 'Индикатор не найден, расчет показателей невозможен';
             }
+
+            $results[$serviceKey] = $serviceValue;
         }
 
         return $results;
@@ -276,36 +384,39 @@ class ReportService
             throw new \Exception('Прайс лист не найден');
         }
 
-        $this->priceListValues = $priceList->values->collect();
-
-        return $this;
+        return $this->setPriceList($priceList);
     }
 
-    protected function addPrices(array &$values): void
+    protected function addPrices(Collection|array &$values): void
     {
         $priceByService = $this->priceListValues->pluck('value', 'service_id');
 
-        foreach ($values as &$value) {
+        foreach ($values as $k => $value) {
             if (! Arr::has($value, 'error')) {
                 $serviceId = $value['service']->id;
                 $value['price'] = Arr::get($priceByService, $serviceId, 0);
             }
+            $values[$k] = $value;
         }
     }
 
-    protected function getContract(): ?Contract
+    protected function getContractFromTemplate(): self
     {
-        return Contract::query()
-            ->where('company_id', '=', $this->company->getKey())
-            ->where('service_provider_id', '=', $this->template->service_provider_id)
-            ->where('is_actual', '=', true)
-            ->first();
+        if ($this->template) {
+            $this->contract = Contract::query()
+                ->where('company_id', '=', $this->company->getKey())
+                ->where('service_provider_id', '=', $this->template->service_provider_id)
+                ->where('is_actual', '=', true)
+                ->first();
+        }
+
+        return $this;
     }
 
     protected function getContext(): array
     {
         $period = Carbon::make($this->period);
-        $contract = $this->getContract();
+        $contract = $this->contract;
 
         return [
             ReportContextConstant::PERIOD->name => $period,

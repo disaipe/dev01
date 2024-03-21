@@ -77,6 +77,16 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
     }
 
     /**
+     * Get field is visible
+     *
+     * @return bool
+     */
+    public function isVisible(): bool
+    {
+        return Arr::get($this->attributes, 'visible') === true;
+    }
+
+    /**
      * Make field hidden in tables and forms
      *
      * @return $this

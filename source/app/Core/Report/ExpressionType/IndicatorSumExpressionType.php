@@ -40,9 +40,9 @@ class IndicatorSumExpressionType implements IExpressionType
     {
         return [
             'columns' => [
-                ['field' => 'code', 'label' => __('admin.code')],
-                ['field' => 'name', 'label' => __('admin.name')],
-                ['field' => 'value', 'label' => __('admin.value')],
+                'code' => __('admin.code'),
+                'name' => __('admin.name'),
+                'label' => __('admin.value'),
             ],
             'data' => $this->getIndicatorsValues($indicator),
         ];

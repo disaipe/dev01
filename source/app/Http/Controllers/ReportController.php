@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MakeReportRequest;
 use App\Services\ReportService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
-    public function makeReport(Request $request): JsonResponse
+    public function makeReport(MakeReportRequest $request): JsonResponse
     {
         $companyCode = $request->input('company');
         $reportTemplateId = $request->input('template');
         $period = $request->input('period');
+        $extended = $request->boolean('extended');
 
         $report = new ReportService();
 
         try {
             $data = $report
                 ->make($companyCode, $period)
+                ->extended($extended)
                 ->setTemplate($reportTemplateId)
                 ->generate()
                 ->getTemplateData();
@@ -30,26 +32,8 @@ class ReportController extends Controller
         } catch (\Exception|\Error $e) {
             return new JsonResponse([
                 'status' => false,
-                'data' => $e->getMessage(),
+                'data' => $e->getLine() . ': ' . $e->getMessage(),
             ]);
         }
-    }
-
-    public function debugService(Request $request): JsonResponse
-    {
-        $companyCode = $request->input('company');
-        $period = $request->input('period');
-        $service = $request->input('service');
-
-        $report = new ReportService();
-
-        $data = $report
-            ->make($companyCode, $period)
-            ->debugServiceIndicator($service);
-
-        return new JsonResponse([
-            'status' => true,
-            'data' => $data,
-        ]);
     }
 }
