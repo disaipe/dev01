@@ -24,6 +24,7 @@ class WorkorderReference extends ReferenceEntry
         return [
             'workorderid' => ReferenceFieldSchema::make()
                 ->id()
+                ->label('ID заявки')
                 ->visible(),
 
             'title' => ReferenceFieldSchema::make()
@@ -33,8 +34,12 @@ class WorkorderReference extends ReferenceEntry
 
             'description' => ReferenceFieldSchema::make()
                 ->label('Описание')
-                ->visible()
                 ->pinia(PiniaAttribute::string()),
+
+            'hours' => ReferenceFieldSchema::make()
+                ->label('Затрачено времени')
+                ->visible()
+                ->pinia(PiniaAttribute::number())
         ];
     }
 }

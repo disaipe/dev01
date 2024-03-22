@@ -9,8 +9,9 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Kirschbaum\PowerJoins\PowerJoinClause;
 
 /**
  * @property float hours
@@ -35,11 +36,11 @@ class SDWorkorder extends ReferenceModel
         return $this->belongsTo(SDServiceDefinition::class, 'serviceid', 'serviceid');
     }
 
-    public function charges(): BelongsToMany
+    public function charges(): HasManyThrough
     {
-        return $this->belongsToMany(
+        return $this->hasManyThrough(
             SDCharge::class,
-            'workordertocharge',
+            SDWorkorderToCharge::class,
             'workorderid',
             'chargeid',
             'workorderid',
@@ -62,13 +63,17 @@ class SDWorkorder extends ReferenceModel
     public function hours(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->charges()->sum('timespent') / 1000 / 60 / 60
+            get: fn () => round($this->charges()->sum('timespent') / 1000 / 60 / 60, 2)
         );
     }
 
     public function scopeCompany(Builder $query, string $code): void
     {
-        $query->whereRelation('organization', 'description', '=', $code);
+        $query
+            ->joinRelationship(
+                'organization',
+                fn (PowerJoinClause $join) => $join->where('sdorganization.description', '=', $code)
+            );
     }
 
     public function scopePeriod(Builder $query, Carbon $from, Carbon $to): void
@@ -77,11 +82,9 @@ class SDWorkorder extends ReferenceModel
         $toStr = $to->format('Y-m-d H:i:s');
 
         $query
-            ->whereHas('charges', function (Builder $query) use ($fromStr, $toStr) {
-                $query
-                    ->whereRaw("TO_TIMESTAMP(ts_endtime / 1000) >= '$fromStr'::timestamp")
-                    ->whereRaw("TO_TIMESTAMP(ts_endtime / 1000) <= '$toStr'::timestamp");
-            });
+            ->joinRelationship('charges')
+            ->whereRaw("TO_TIMESTAMP(chargestable.ts_endtime / 1000) >= '$fromStr'::timestamp")
+            ->whereRaw("TO_TIMESTAMP(chargestable.ts_endtime / 1000) <= '$toStr'::timestamp");
     }
 
     public function scopeCreationPeriod(Builder $query, Carbon $from, Carbon $to)

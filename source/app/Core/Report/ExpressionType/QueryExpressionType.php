@@ -281,6 +281,10 @@ class QueryExpressionType implements IExpressionType
         $this->applyScopes($query);
         $this->applyConditions($query);
 
+        if ($indicator->expression && method_exists($indicator->expression, 'beforeExec')) {
+            $indicator->expression->beforeExec($query);
+        }
+
         // Apply indicator query modification
         $execQuery = $this->query
             ? ($this->query)($query)
