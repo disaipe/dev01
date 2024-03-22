@@ -430,13 +430,12 @@ export function openWorkSheet(idOrName) {
     instance.value.updateData(data);
 
     // set merges
+    store.value.merges = [];
+
+    const mergeCells = instance.value.getPlugin('MergeCells');
+    mergeCells.clearCollections();
+
     if (worksheet.hasMerges) {
-        store.value.merges = [];
-        const mergeCells = instance.value.getPlugin('MergeCells');
-
-        // clear old merges
-        mergeCells.clearCollections();
-
         for (const merge of Object.values(worksheet._merges)) {
             store.value.merges.push({
                 top: merge.top,
