@@ -197,10 +197,10 @@ export default {
                                                     continue;
                                                 }
 
-                                                const sheetName = serviceData?.service?.name;
+                                                // make unique sheet name for each service with max allowed length
+                                                const sheetName = `${serviceData.service.id}: ${serviceData.service.name}`.substring(0, 31);
 
-                                                const ws = spread.value.createWorkSheet(sheetName);
-
+                                                const ws = spread.value.createWorkSheet(sheetName)
                                                 spread.value.setWorkSheetData(ws.id, [columns, ...rows]);
                                                 spread.value.fitWorksheetColumnsWidthToContent(ws.id);
 
