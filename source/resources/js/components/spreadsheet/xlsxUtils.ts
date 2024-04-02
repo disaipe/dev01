@@ -170,7 +170,7 @@ export function configure(settings: SpreadSheetSettings = {}): SpreadSheetSettin
     }
 
     return {
-        autoRowSize: true,
+        autoRowSize: false, // must be disabled to allow to user set row height manually
         rowHeaders: true,
         colHeaders: true,
         fillHandle: true,
