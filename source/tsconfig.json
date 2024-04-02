@@ -1,0 +1,31 @@
+{
+    "extends": "@vue/tsconfig/tsconfig.dom.json",
+    "include": ["resources/js/**/*.ts", "resources/js/**/*.vue"],
+    "module": "ESNext",
+    "compilerOptions": {
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "emitDecoratorMetadata": true,
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "isolatedModules": true,
+        "jsx": "preserve",
+        "lib": ["esnext", "dom"],
+        "moduleResolution": "bundler",
+        "noEmit": true,
+        "paths": {
+            "@/*": ["./resources/js/*"]
+        },
+        "resolveJsonModule": true,
+        "strict": true,
+        "target": "esnext",
+        "types": ["vite/client"],
+        "useDefineForClassFields": true
+    },
+    "vueCompilerOptions": {
+        "plugins": [
+            "@vue/language-plugin-pug"
+        ]
+    },
+    "references": [{ "path": "./tsconfig.node.json" }]
+}

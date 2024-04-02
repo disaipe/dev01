@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 el-dropdown(
     ref='dropdown'
     trigger='click'
@@ -26,7 +26,7 @@ el-dropdown(
                     icon(icon='tabler:file-download')
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 
 const dropdown = ref();

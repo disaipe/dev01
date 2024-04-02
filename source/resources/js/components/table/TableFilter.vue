@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 el-popover(
     :visible='isVisible'
     :width='200'
@@ -12,7 +12,7 @@ el-popover(
         )
             icon(:icon='isSet ? "tabler:filter-cancel" : "tabler:filter"')
 
-    .flex.flex-col.space-y-2(v-click-outside='{ handler: close, isActive: isVisible }')
+    .flex.flex-col.space-y-2(ref='filterPopup')
         el-config-provider(size='small')
 
             //- FILTER TYPE SELECTOR
@@ -80,7 +80,8 @@ el-popover(
 
 <script setup>
 import { ref, toRef, computed, inject } from 'vue';
-import { useRepos } from '../../store/repository';
+import { onClickOutside } from '@vueuse/core';
+import { useRepos } from '@/store/repository';
 
 const emit = defineEmits(['filter-change']);
 
@@ -96,6 +97,8 @@ const props = defineProps({
 });
 
 const { filterStore } = inject('TableInstance');
+
+const filterPopup = ref(null);
 
 const field = toRef(props, 'field');
 const schema = toRef(props, 'schema');
@@ -131,6 +134,7 @@ const canChangeType = computed(() => {
 
     return false;
 });
+
 const defaultType = computed(() => {
    if (schema.value) {
        switch (schema.value.type) {
@@ -145,6 +149,7 @@ const defaultType = computed(() => {
 
    return null;
 });
+
 const filteredRelatedOptions = computed(() => {
     if (relatedOptions.value && relatedOptionsFilter.value) {
         const rgx = new RegExp(relatedOptionsFilter.value, 'i');
@@ -201,4 +206,10 @@ const toggleFilter = () => {
 const close = () => {
     filterStore.visibility[remoteField.value] = false;
 };
+
+onClickOutside(filterPopup, () => {
+    if (isVisible.value) {
+        close();
+    }
+});
 </script>

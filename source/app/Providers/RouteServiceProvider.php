@@ -25,8 +25,6 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::register();
 
-        $this->app->singleton('references', fn () => new ReferenceManager());
-
         $this->routes(function () {
             Route::middleware('api')
                 ->prefix('api')

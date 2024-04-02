@@ -6,19 +6,25 @@ el-breadcrumb
     ) {{ breadcrumb.title }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
+import type { BreadcrumbItemProps } from 'element-plus';
 
 const route = useRoute();
+
+interface BreadcrumbItem extends BreadcrumbItemProps {
+    path: string,
+    title: string
+}
 
 const breadcrumbs = computed(() => {
     let pathArray = route.path.split('/');
     pathArray.shift();
 
-    return pathArray.reduce((acc, path, idx) => {
+    return pathArray.reduce((acc: BreadcrumbItem[], path: string, idx: number) => {
         const matched = route.matched[idx];
-        const title = matched.meta.title || path;
+        const title = matched.meta?.title || path;
 
         acc.push({
             path: path,
@@ -26,7 +32,7 @@ const breadcrumbs = computed(() => {
                 ? '/' + acc[idx - 1].path + '/' + path
                 : '/' + path,
             title
-        });
+        } as BreadcrumbItem);
 
         return acc;
     }, []);

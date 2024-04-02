@@ -69,13 +69,8 @@
                                                     icon(icon='tabler:logout' height='16')
                                                     span Выйти
             el-main(class='!pr-1')
-                //- RouterTabs
                 component.pt-1.pr-4.h-full(:is='isRouteScroll ? "el-scrollbar" : "div"')
                     router-view
-                    //router-view(v-slot='{ Component }')
-                    //    transition(name='fade-transform' mode='out-in')
-                    //        keep-alive(:include='cachedViews')
-                    //            component(:is='Component')
 
                 el-drawer(
                     v-model='drawer'
@@ -116,17 +111,16 @@
             //- el-footer Footer
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { useTabsStore, useProfilesSettingsStore } from '../store/modules';
+import { useProfilesSettingsStore } from '../store/modules';
 import usePage from '../utils/usePage';
 import { getCountryCodes, getNumberSeparators, toFixed } from '../utils/localeUtils';
 import BreadCrumbs from '../components/breadcrumbs/BreadCrumbs.vue';
 import SideBarMenu from './components/SideBarMenu.vue';
 
-const { cachedViews } = useTabsStore();
 const profileSettings = useProfilesSettingsStore();
 
 const drawer = ref(false);
@@ -138,26 +132,24 @@ const { user } = usePage();
 
 const countryCodes = getCountryCodes();
 
-if (! Object.hasOwn(user.companies, profileSettings.companyContext)) {
+if (profileSettings.companyContext && ! Object.hasOwn(user.companies, profileSettings.companyContext)) {
     company.value = Object.values(user.companies)[0];
     profileSettings.setCompanyContext(company.value);
 }
 
 const isRouteScroll = computed(() => router.currentRoute.value.meta?.scroll !== false);
-const currentNumberFormatOptions = computed(() => {
-    return getNumberSeparators(profileSettings.numberFormatLocale);
-});
+const currentNumberFormatOptions = computed(() => getNumberSeparators(profileSettings.numberFormatLocale));
 
 const openSettingsDrawer = () => drawer.value = true;
 
 const onChangeCompany = () => profileSettings.setCompanyContext(company.value);
 
-const onChangeNumberFormatLocale = (event) => profileSettings.setNumberFormatLocale(event);
+const onChangeNumberFormatLocale = (event: string) => profileSettings.setNumberFormatLocale(event);
 
 const logout = () => window.location.href = '/logout';
 </script>
 
-<style scoped lang='postcss'>
+<style scoped lang="postcss">
 .app-wrapper {
     @apply w-full h-full;
 

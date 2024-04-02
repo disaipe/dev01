@@ -1,5 +1,6 @@
-<template lang='pug'>
+<template lang="pug">
 el-form-item(
+    v-if='model'
     :label='field.label'
     :prop='prop'
 )
@@ -29,7 +30,7 @@ el-form-item(
             :disabled='field.readonly'
             :min='field.min || undefined'
             :max='field.max || undefined'
-            @input='$emit("update:modelValue", $event)'
+            @input='$emit("update:model-value", $event)'
         )
 
     //- BOOLEAN / SWITCH INPUT
@@ -37,7 +38,7 @@ el-form-item(
         el-switch(
             :model-value='modelValue'
             :disabled='field.readonly'
-            @input='$emit("update:modelValue", $event)'
+            @input='$emit("update:model-value", $event)'
         )
 
     //- CHECKBOX
@@ -45,7 +46,7 @@ el-form-item(
         el-checkbox(
             :model-value='modelValue'
             :disabled='field.readonly'
-            @input='$emit("update:modelValue", $event)'
+            @input='$emit("update:model-value", $event)'
         )
 
     //- DATETIME
@@ -56,7 +57,7 @@ el-form-item(
             :disabled='field.readonly'
             type='datetime'
             value-format='YYYY-MM-DD HH:mm:ss'
-            @update:model-value='$emit("update:modelValue", $event)'
+            @update:model-value='$emit("update:model-value", $event)'
         )
 
     //- DATE
@@ -67,7 +68,7 @@ el-form-item(
             :disabled='field.readonly'
             type='date'
             value-format='YYYY-MM-DD'
-            @update:model-value='$emit("update:modelValue", $event)'
+            @update:model-value='$emit("update:model-value", $event)'
         )
 
     //- RELATION INPUT
@@ -93,7 +94,7 @@ el-form-item(
             :disabled='field.readonly'
             :clearable='!field.required'
             filterable
-            @change='$emit("update:modelValue", $event)'
+            @change='$emit("update:model-value", $event)'
         )
             el-option(
                 v-for='(label, value) of field.options'
@@ -109,7 +110,7 @@ el-form-item(
             :disabled='field.readonly'
             :maxlength='field.max'
             :show-word-limit='!!field.max'
-            @input='$emit("update:modelValue", $event)'
+            @input='$emit("update:model-value", $event)'
         )
 
     //- OTHER / TEXT INPUT
@@ -122,15 +123,15 @@ el-form-item(
             :max='field.max'
             :maxlength='field.max'
             :show-word-limit='!!field.max'
-            @input='$emit("update:modelValue", $event)'
+            @input='$emit("update:model-value", $event)'
         )
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { toRef, inject, computed } from 'vue';
 import { useRepos } from '../../store/repository';
 
-const model = inject('modelForm');
+const model = inject<Record<string, any>>('modelForm');
 
 const emit = defineEmits(['update:model-value']);
 
@@ -169,13 +170,15 @@ const relatedOptions = computed(() => {
     });
 });
 
-function onRelatedChange(value) {
-    model.value[field.value.relation.key] = value;
-    emit('update:model-value', value);
+function onRelatedChange(value: any) {
+    if (model) {
+        model.value[field.value.relation.key] = value;
+        emit('update:model-value', value);
+    }
 }
 </script>
 
-<script>
+<script lang="ts">
 export default {
     name: 'ModelFormItem'
 }

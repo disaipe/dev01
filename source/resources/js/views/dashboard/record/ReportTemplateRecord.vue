@@ -1,16 +1,10 @@
-<template lang='pug'>
+<template lang="pug">
 .spreadsheet-page
     .flex.items-center.pb-4.space-x-2
         icon(icon="icon-park-outline:page-template" height='32')
         div
-            .font-bold {{ record.name }}
+            .font-bold {{ record?.name }}
             .text-sm {{ serviceProvider?.name }}
-
-    mixin cellTypeMenuItem(label, type, classes)
-        el-dropdown-item(@click=`formatCell('${type}')` :divided=attributes.divided)
-            .flex.items-center.space-x-2
-                .helper(class=classes)
-                div= label
 
     spreadsheet(
         ref='spread'
@@ -29,9 +23,21 @@
                 template(#dropdown)
                     el-dropdown-menu
                         el-dropdown-item(disabled) Данные услуг
-                        +cellTypeMenuItem('Наименование услуги', 'serviceName', 'cell-service-name')
-                        +cellTypeMenuItem('Количество оказанной услуги', 'serviceCount', 'cell-service-count')
-                        +cellTypeMenuItem('Стоимость услуги', 'servicePrice', 'cell-service-price')
+
+                        el-dropdown-item(@click='formatCell("serviceName")')
+                            .flex.items-center.space-x-2
+                                .helper.cell-service-name
+                                div Наименование услуги
+
+                        el-dropdown-item(@click='formatCell("serviceCount")')
+                            .flex.items-center.space-x-2
+                                .helper.cell-service-count
+                                div Количество оказанной услуги
+
+                        el-dropdown-item(@click='formatCell("servicePrice")')
+                            .flex.items-center.space-x-2
+                                .helper.cell-service-price
+                                div Стоимость услуги
 
                         el-dropdown-item(divided disabled) Данные договора
                         el-dropdown-item(@click='append("{CONTRACT_NUMBER}")') Номер договора
@@ -60,144 +66,135 @@
                 .ml-1 Сохранить
 </template>
 
-<script>
+<script setup lang="ts">
+import type { Model } from 'pinia-orm';
+
 import { ref, reactive, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
 
-import { useRepos } from '../../../store/repository';
-import { loadFromBase64 } from '../../../components/spreadsheet/xlsxUtils';
-import { bufferToBase64 } from '../../../utils/base64';
+import type { SpreadSheetCell } from '@/types';
+import { useRepos } from '@/store/repository';
+import { loadFromBase64 } from '@/components/spreadsheet/xlsxUtils';
+import { cellFormatter, setCellFormat } from '@/components/spreadsheet/cellFormatter';
+import { bufferToBase64 } from '@/utils/base64';
 import batchApi from '../../../utils/batchApi';
 
-import { cellFormatter, setCellFormat } from '../../../components/spreadsheet/cellFormatter';
+const route = useRoute();
+const { id } = route.params;
 
-export default {
-    name: 'ReportTemplateRecord',
-    setup() {
-        const route = useRoute();
-        const { id } = route.params;
+const { ReportTemplate } = useRepos();
 
-        const { ReportTemplate } = useRepos();
+const record = ref<Model>();
+const spread = ref();
+const instance = computed(() => spread.value.instance);
+const data = reactive({
+    loading: false,
+    saving: false
+});
 
-        const record = ref({});
-        const spread = ref();
-        const instance = computed(() => spread.value.instance);
-        const data = reactive({
-            loading: false,
-            saving: false
-        });
+const services = ref();
+const serviceProviders = ref();
 
-        const services = ref();
-        const serviceProviders = ref();
+const settings = {};
 
-        const settings = {};
+const serviceProvider = computed(() =>
+    serviceProviders.value?.find((provider: Model) => provider.$getKey() === record.value?.service_provider_id)
+);
 
-        const serviceProvider = computed(() =>
-            serviceProviders.value?.find((provider) => provider.id === record.value.service_provider_id)
-        );
+const load = () => {
+    data.loading = true;
 
-        const load = () => {
-            data.loading = true;
+    const _id = Array.isArray(id) ? id[0] : id;
 
-            return ReportTemplate.load(id).then(({ items }) => {
-                const [item] = items;
-
-                record.value = item;
-
-                if (item.content) {
-                    loadFromBase64(item.content).then(() => {
-                        data.loading = false;
-                    });
-                }
-            });
-        };
-
-        const save = () => {
-            data.saving = true;
-
-            spread.value.store.workbook.xlsx.writeBuffer().then((buffer) => {
-                bufferToBase64(buffer).then((base64) => {
-                    record.value.content = base64;
-
-                    ReportTemplate.push(record.value);
-
-                    data.saving = false;
-                });
-            });
-        };
-
-        const formatCell = (cellType) => {
-            const [[row, col]] = instance.value.getSelected();
-
-            setCellFormat(instance, row, col, cellType, { services });
-        };
-
-        const cellModifier = (cell) => {
-            cellFormatter(instance, cell.value, cell.row - 1, cell.col - 1, { services });
-        };
-
-        const append = (str) => {
-            const [[row, col]] = instance.value.getSelected();
-            const data = instance.value.getDataAtCell(row, col) || '';
-            instance.value.setDataAtCell(row, col, `${data}${str}`);
+    return ReportTemplate.load(_id).then(({ items }) => {
+        if (!items) {
+            return;
         }
 
-        const resetCellFormat = (render = true) => {
-            const ranges = instance.value.getSelectedRange();
-            for (const range of ranges) {
-                for (let row = range.from.row; row <= range.to.row; row++) {
-                    for (let col = range.from.col; col <= range.to.col; col++) {
-                        instance.value.setCellMetaObject(row, col, {
-                           renderer: undefined,
-                           editor: undefined,
-                           selectOptions: undefined,
-                           className: undefined
-                        });
+        const [item] = items;
 
-                        instance.value.setDataAtCell(row, col, null);
-                    }
-                }
-            }
+        record.value = item;
 
-            if (render) {
-                instance.value.render();
-            }
-        };
-
-        load()
-            .then(() => {
-                return batchApi.batch('ServiceProvider,Service')
-                    .then((result) => {
-                        const resultServices = result.Service.filter((service) => service.service_provider_id === record.value.service_provider_id);
-
-                        services.value = orderBy(resultServices, 'name');
-                        serviceProviders.value = result.ServiceProvider;
-                    })
-            })
-            .then(() => {
-                instance.value?.render();
+        if (item.content) {
+            loadFromBase64(item.content).then(() => {
+                data.loading = false;
             });
+        }
+    });
+};
 
-        return {
-            data,
-            record,
-            settings,
+const save = () => {
+    data.saving = true;
 
-            serviceProvider,
+    spread.value.store.workbook.xlsx.writeBuffer().then((buffer: BlobPart) => {
+        bufferToBase64(buffer).then((base64) => {
+            if (!record.value) {
+                return;
+            }
 
-            spread,
-            cellModifier,
+            record.value.content = base64;
 
-            formatCell,
-            resetCellFormat,
-            append,
+            if (record.value) {
+                ReportTemplate.push(record.value);
+            }
 
-            load,
-            save
+            data.saving = false;
+        });
+    });
+};
+
+const formatCell = (cellType: string) => {
+    const [[row, col]] = instance.value.getSelected();
+
+    setCellFormat(instance, row, col, cellType, { services });
+};
+
+const cellModifier = (cell: SpreadSheetCell) => {
+    cellFormatter(instance, cell.value, cell.fullAddress.row - 1, cell.fullAddress.col - 1, { services });
+};
+
+const append = (str: string) => {
+    const [[row, col]] = instance.value.getSelected();
+    const data = instance.value.getDataAtCell(row, col) || '';
+    instance.value.setDataAtCell(row, col, `${data}${str}`);
+}
+
+const resetCellFormat = (render = true) => {
+    const ranges = instance.value.getSelectedRange();
+    for (const range of ranges) {
+        for (let row = range.from.row; row <= range.to.row; row++) {
+            for (let col = range.from.col; col <= range.to.col; col++) {
+                instance.value.setCellMetaObject(row, col, {
+                    renderer: undefined,
+                    editor: undefined,
+                    selectOptions: undefined,
+                    className: undefined
+                });
+
+                instance.value.setDataAtCell(row, col, null);
+            }
         }
     }
-}
+
+    if (render) {
+        instance.value.render();
+    }
+};
+
+load()
+    .then(() => {
+        return batchApi.batch('ServiceProvider,Service')
+            .then((result) => {
+                const resultServices = result.Service.filter((service: Model) => service.service_provider_id === record.value?.service_provider_id);
+
+                services.value = orderBy(resultServices, 'name');
+                serviceProviders.value = result.ServiceProvider;
+            })
+    })
+    .then(() => {
+        instance.value?.render();
+    });
 </script>
 
 <style lang='postcss'>

@@ -88,12 +88,14 @@
         )
 </template>
 
-<script>
+<script setup lang="ts">
 import { ref, computed, nextTick, watch } from 'vue';
 import { ElMessageBox } from 'element-plus'
 import dayjs from 'dayjs';
 import orderBy from 'lodash/orderBy';
 import { useElementSize } from '@vueuse/core';
+
+import type { InvoiceResponse, SpreadSheetCell } from '@/types';
 import { useReportSettingsStore } from '../../store/modules';
 import { useRepos } from '../../store/repository';
 import { useApi } from '../../utils/axiosClient';
@@ -101,165 +103,137 @@ import batchApi from '../../utils/batchApi';
 import { applyBindings } from '../../components/spreadsheet/utils';
 import ItTable from '../../components/table/Table.vue';
 
-export default {
-    name: 'InvoiceReport',
-    components: { ItTable },
-    setup() {
-        const report = ref();
-        const toolbar = ref();
-        const spread = ref();
-        const loading = ref(false);
-        const loaded = ref(false);
-        const showErrorsDialog = ref(false);
+const report = ref();
+const toolbar = ref();
+const spread = ref();
+const loading = ref(false);
+const loaded = ref(false);
+const showErrorsDialog = ref(false);
 
-        const reportSize = useElementSize(report);
-        const toolbarSize = useElementSize(toolbar);
-        const spreadHeight = computed(() => reportSize.height.value - toolbarSize.height.value);
+const reportSize = useElementSize(report);
+const toolbarSize = useElementSize(toolbar);
+const spreadHeight = computed(() => reportSize.height.value - toolbarSize.height.value);
 
-        const savedSettings = useReportSettingsStore();
+const savedSettings = useReportSettingsStore();
 
-        const company = ref(savedSettings.company);
-        const reportTemplate = ref(savedSettings.reportTemplate);
-        const period = ref(savedSettings.period);
-        const extended = ref(savedSettings.extended);
+const company = ref(savedSettings.company);
+const reportTemplate = ref(savedSettings.reportTemplate);
+const period = ref(savedSettings.period);
+const extended = ref(savedSettings.extended);
 
-        const companies = ref();
-        const providers = ref();
-        const reportErrors = ref();
+const companies = ref();
+const providers = ref();
+const reportErrors = ref();
 
-        watch(company, () => savedSettings.company = company.value);
-        watch(reportTemplate, () => savedSettings.reportTemplate = reportTemplate.value);
-        watch(period, () => savedSettings.period = period.value);
-        watch(extended, () => savedSettings.extended = extended.value);
+watch(company, () => savedSettings.company = company.value);
+watch(reportTemplate, () => savedSettings.reportTemplate = reportTemplate.value);
+watch(period, () => savedSettings.period = period.value);
+watch(extended, () => savedSettings.extended = extended.value);
 
-        const { ServiceProvider } = useRepos();
+const { ServiceProvider } = useRepos();
 
-        const api = useApi();
+const api = useApi();
 
-        let bindings = {};
+let bindings = {};
 
-        batchApi.batch('ServiceProvider,Company,ReportTemplate,Indicator').then((result) => {
-            companies.value = orderBy(result.Company, 'name');
-            providers.value = ServiceProvider.query().whereHas('report_templates').with('report_templates').get();
-        });
+batchApi.batch('ServiceProvider,Company,ReportTemplate,Indicator').then((result) => {
+    companies.value = orderBy(result._company, 'name');
+    providers.value = ServiceProvider.query().whereHas('report_templates').with('report_templates').get();
+});
 
-        const cellModifier = (cell) => {
-            if (cell.value === null) {
-                return;
-            }
-
-            const newValue = applyBindings(cell.value, bindings);
-
-            if (newValue !== cell.value) {
-                spread.value.instance.setCellMeta(cell.row - 1, cell.col - 1, 'original', cell.value);
-                cell.value = newValue;
-            }
-        };
-
-        const reportBody = computed(() => {
-            const _period = period.value
-                ? dayjs(period.value).tz('UTC', true).toISOString()
-                : null;
-
-            return {
-                company: company.value,
-                template: reportTemplate.value,
-                period: _period,
-                extended: extended.value
-            };
-        });
-
-        const fetchReport = () => {
-            loading.value = true;
-
-            api
-                .post('report', reportBody.value)
-                .then((response) => {
-                    let message = 'Необработанная ошибка';
-
-                    if (response.ok) {
-                        const { status, data } = response.data;
-
-                        if (status) {
-                            const { xlsx, values, errors, debug } = data;
-
-                            bindings = values || {};
-                            reportErrors.value = errors;
-
-                            if (xlsx) {
-                                spread.value.loadFromBase64(xlsx)
-                                    .then(() => {
-                                        if (extended.value) {
-                                            for (const serviceData of Object.values(debug)) {
-                                                const { rows, columns } = serviceData || {};
-
-                                                if (!rows || !columns) {
-                                                    continue;
-                                                }
-
-                                                // make unique sheet name for each service with max allowed length
-                                                const sheetName = `${serviceData.service.id}: ${serviceData.service.name}`.substring(0, 31);
-
-                                                const ws = spread.value.createWorkSheet(sheetName)
-                                                spread.value.setWorkSheetData(ws.id, [columns, ...rows]);
-                                                spread.value.fitWorksheetColumnsWidthToContent(ws.id);
-
-                                                ws.getRow(1).eachCell((cell) => {
-                                                    cell.alignment = {
-                                                        vertical: 'middle',
-                                                        horizontal: 'center'
-                                                    };
-                                                })
-                                            }
-                                        }
-                                    })
-                                    .finally(() => loaded.value = true);
-
-                                return;
-                            }
-                        } else if (data) {
-                            message = data;
-                        }
-                   } else {
-                        message = 'Ошибка при выполнении запроса к серверу';
-                    }
-
-                    ElMessageBox.alert(
-                        message,
-                        'Что-то пошло не так'
-                    );
-                })
-                .finally(() => {
-                    nextTick(() => loading.value = false);
-                });
-        };
-
-        const downloadReport = () => {
-            spread.value.download();
-        };
-
-        return {
-            spreadHeight,
-
-            report,
-            toolbar,
-            spread,
-            loaded,
-            loading,
-            showErrorsDialog,
-
-            company,
-            companies,
-            providers,
-            reportTemplate,
-            reportErrors,
-            period,
-            extended,
-
-            cellModifier,
-            fetchReport,
-            downloadReport
-        };
+const cellModifier = (cell: SpreadSheetCell) => {
+    if (cell.value === null) {
+        return;
     }
-}
+
+    const newValue = applyBindings(cell.value, bindings);
+
+    if (newValue !== cell.value) {
+        spread.value.instance.setCellMeta(cell.fullAddress.row - 1, cell.fullAddress.col - 1, 'original', cell.value);
+        cell.value = newValue;
+    }
+};
+
+const reportBody = computed(() => {
+    const _period = period.value
+        ? dayjs(period.value).tz('UTC', true).toISOString()
+        : null;
+
+    return {
+        company: company.value,
+        template: reportTemplate.value,
+        period: _period,
+        extended: extended.value
+    };
+});
+
+const fetchReport = () => {
+    loading.value = true;
+
+    api
+        .post('report', reportBody.value)
+        .then((response: InvoiceResponse) => {
+            let message = 'Необработанная ошибка';
+
+            if (response.status === 200) {
+                const { status, data } = response.data;
+
+                if (status) {
+                    const { xlsx, values, errors, debug } = data;
+
+                    bindings = values || {};
+                    reportErrors.value = errors;
+
+                    if (xlsx) {
+                        spread.value
+                            .loadFromBase64(xlsx)
+                            .then(() => {
+                                if (extended.value && debug) {
+                                    for (const serviceData of Object.values(debug)) {
+                                        if (!serviceData) {
+                                            continue;
+                                        }
+
+                                        const { rows, columns } = serviceData;
+
+                                        if (!rows || !columns) {
+                                            continue;
+                                        }
+
+                                        // make unique sheet name for each service with max allowed length
+                                        const sheetName = `${serviceData.service.id}: ${serviceData.service.name}`.substring(0, 31);
+
+                                        const ws = spread.value.createWorkSheet(sheetName)
+                                        spread.value.setWorkSheetData(ws.id, [columns, ...rows]);
+                                        spread.value.fitWorksheetColumnsWidthToContent(ws.id);
+
+                                        ws.getRow(1).eachCell((cell: SpreadSheetCell) => {
+                                            cell.alignment = {
+                                                vertical: 'middle',
+                                                horizontal: 'center'
+                                            };
+                                        })
+                                    }
+                                }
+                            })
+                            .finally(() => loaded.value = true);
+
+                        return;
+                    }
+                } 
+            }
+
+            ElMessageBox.alert(
+                'Ошибка при выполнении запроса к серверу',
+                'Что-то пошло не так'
+            );
+        })
+        .finally(() => {
+            nextTick(() => loading.value = false);
+        });
+};
+
+const downloadReport = () => {
+    spread.value.download();
+};
 </script>

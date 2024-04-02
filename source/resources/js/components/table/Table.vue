@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 .it-table
     .errors-list(v-if='errors.length')
         el-alert(title='Что-то пошло не так' type='error' :closable='false' show-icon)
@@ -59,7 +59,7 @@
                     sortable
                     :field='field'
                     :label='label'
-                    :cell-render='fields ? { name: "model-field", fields } : null'
+                    :cell-render='fields ? { name: "model-field", fields } : undefined'
                 )
                     template(#header='{ column }')
                         .flex.items-center.justify-between.space-x-2.leading-3
@@ -71,7 +71,7 @@
                             .flex.items-center
                               icon(
                                 v-show='column.order'
-                                :icon='{ asc: "tabler:arrow-up", desc: "tabler:arrow-down"}[column.order]'
+                                :icon='getColumnOrderIcon(column.order)'
                                 height='16'
                               )
 
@@ -125,7 +125,7 @@
                     div(v-else-if='!selectedRow.$isSaved() && canCreate') Создание
                     div(v-else) Просмотр
 
-        el-scrollbar.pr-4
+        el-scrollbar.pr-4(v-if='selectedRow')
             record-form(
                 v-model='selectedRow'
                 :can-create='canCreate'
@@ -138,27 +138,34 @@
     el-dialog(
         v-model='historyDialog'
         title='История изменений'
+        width='70vw'
     )
         history-table(
-            v-if='contextRow.$getKey()'
+            v-if='contextRow?.$getKey()'
             :reference='reference'
             :id='contextRow.$getKey()'
         )
 </template>
 
-<script>
-import { ref, toRef, computed } from 'vue';
+<script setup lang="ts">
+import type { Model } from 'pinia-orm';
+import type { VxeTableDefines, VxeTableInstance } from 'vxe-table';
+
+import { ref, toRef, computed, reactive, onMounted, nextTick, provide } from 'vue';
 import { useRoute } from 'vue-router';
 import merge from 'lodash/merge';
 import cloneDeep from 'lodash/cloneDeep';
+import { ElMessage, ElMessageBox } from 'element-plus';
+
+import type { TableProps } from './tableProps';
 
 import { useRepos } from '../../store/repository';
 import { snake } from '../../utils/stringsUtils';
 import { raiseErrorMessage } from '../../utils/exceptions';
 
-import tableSorts from './mixins/tableSorts';
-import tableFilters from './mixins/tableFilters';
-import tableContextMenu from './mixins/tableContextMenu';
+import { useTableSorts } from './mixins/tableSorts';
+import { useTableFilter } from './mixins/tableFilters';
+import { useTableContextMenu } from './mixins/tableContextMenu';
 
 import { useProfilesSettingsStore } from '../../store/modules';
 
@@ -166,373 +173,411 @@ import TableFilter from './TableFilter.vue';
 import TableColumnsSettings from './TableColumnsSettings.vue';
 import TableExportSettings from './TableExportSettings.vue';
 
-import './renderers';
+import type { 
+    ModelSchema,
+    ErrorResponse, 
+    FetchQueryDownloadOptions, 
+    FetchQueryParams, 
+    TableColumnOptions
+} from '@/types';
 
-import { ElMessage, ElMessageBox } from 'element-plus';
+interface CellDblclickEventParams extends VxeTableDefines.CellDblclickEventParams {
+    row: Model;
+};
 
-export default {
-    name: 'ItTable',
-    components: {
-        TableFilter,
-        TableColumnsSettings,
-        TableExportSettings
-    },
-    mixins: [tableSorts, tableFilters, tableContextMenu],
-    provide() {
-        return {
-            TableInstance: this
-        }
-    },
-    props: {
-        id: {
-            type: String,
-            default: Math.random().toString(36).substring(7)
-        },
-        reference: {
-            type: String,
-            default: null
-        },
-        columns: {
-            type: Array,
-            default: () => ([])
-        },
-        items: {
-            type: Array,
-            default: () => null
-        },
-        context: {
-            type: Object,
-            default: null,
-        },
-        canLoad: {
-            type: Boolean,
-            default: true,
-        },
-        canCreate: {
-            type: Boolean,
-            default: true
-        },
-        canUpdate: {
-            type: Boolean,
-            default: true
-        },
-        canDelete: {
-            type: Boolean,
-            default: true
-        }
-    },
-    setup(props) {
-        const errors = ref([]);
-        const id = toRef(props, 'id');
-        const reference = toRef(props, 'reference');
-        const columns = toRef(props, 'columns');
+const emit = defineEmits<{ (event: string, ...args: any[]): void }>();
 
-        const route = useRoute();
-        const tableId = [route.name, snake(reference.value || id.value)].join('_');
+const props = withDefaults(defineProps<TableProps>(), {
+    id: Math.random().toString(36).substring(7),
+    columns: () => [],
+    canLoad: true,
+    canCreate: true,
+    canUpdate: true,
+    canDelete: true
+});
 
-        const repository = useRepos()[reference.value];
+const errors = ref<string[]>([]);
+const id = toRef(props, 'id');
+const reference = toRef(props, 'reference');
+const columns = toRef(props, 'columns');
 
-        // User profile settings
-        const profilesSettings = useProfilesSettingsStore();
-        const drawerComponent = computed(() => profilesSettings.formDisplayType === 'modal'
-            ? 'el-dialog'
-            : 'el-drawer'
-        );
+const route = useRoute();
+const tableId = [route.name, snake(reference.value || id.value)].join('_');
 
-        const visibleColumns = ref(columns.value);
-        const hasVisibleColumns = computed(() => visibleColumns.value?.length > 0);
+const repository = reference.value ? useRepos()[reference.value] : undefined;
 
-        // Get model fields schema
-        const fields = ref();
-        if (repository) {
-            repository.getFieldsSchema().then((schema) => {
-                fields.value = schema;
-            });
-        } else if (columns.value) {
-            // fields.value = columns.value.reduce((cur, acc) => {
-            //   acc[cur.field] = { label: cur.label };
-            //
-            //   return acc;
-            // }, {});
-        } else {
-            errors.value.push('Не задана модель данных Pinia. Без схемы полей данных дальнейшая работа невозможна');
-        }
+// User profile settings
+const profilesSettings = useProfilesSettingsStore();
+const drawerComponent = computed(() => profilesSettings.formDisplayType === 'modal'
+    ? 'el-dialog'
+    : 'el-drawer'
+);
 
-        return {
-            errors,
+const visibleColumns = ref(columns.value);
+const hasVisibleColumns = computed(() => visibleColumns.value?.length > 0);
 
-            tableId,
-            repository,
+// Get model fields schema
+const fields = ref<ModelSchema>();
+if (repository) {
+    repository.getFieldsSchema().then((schema) => {
+        fields.value = schema;
+    });
+} else if (columns.value) {
+    // fields.value = columns.value.reduce((cur, acc) => {
+    //   acc[cur.field] = { label: cur.label };
+    //
+    //   return acc;
+    // }, {});
+} else {
+    errors.value.push('Не задана модель данных Pinia. Без схемы полей данных дальнейшая работа невозможна');
+}
 
-            fields,
+const vxe = ref<VxeTableInstance>();
+const data = ref<any[]>([]);
 
-            visibleColumns,
-            hasVisibleColumns,
+const pagination = reactive({
+    page: 1,
+    pageSize: 100,
+    total: 0
+});
 
-            drawerComponent
-        };
-    },
-    data: function () {
-        return {
-            data: [],
+const selectedRow = ref<Model>();
+const contextRow = ref<Model>();
 
-            pagination: {
-                page: 1,
-                pageSize: 100,
-                total: 0
-            },
+const drawer = ref(false);
+const historyDialog = ref(false);
+const loading = ref(false);
 
-            selectedRow: null,
-            contextRow: null,
+const loadingConfig = {
+    text: 'Собираем данные'
+};
 
-            drawer: false,
-            historyDialog: false,
+const rowConfig = {
+    useKey: true,
+    keyField: repository?.model.$getKeyName()
+};
 
-            loading: false,
-
-            loadingConfig: {
-                text: 'Собираем данные'
-            },
-            rowConfig: {
-                useKey: true,
-                keyField: this.repository?.model.$getKeyName()
-            }
-        }
-    },
-    computed: {
-        verifiedData() {
-            if (!this.visibleColumns.length) {
-                return [{}];
-            }
-
-            return this.data;
-        }
-    },
-    mounted() {
-        if (this.items) {
-            this.data = this.items;
-        } else {
-            this.load();
-        }
-    },
-    methods: {
-        load() {
-            if (this.repository) {
-                this.repository.fetchRelatedModels()
-                    .then(() => {
-                        this.loadPages();
-                    })
-                    .catch((response) => {
-                        let message;
-
-                        if (response.constructor?.name === 'Error') {
-                            message = response.message;
-                        } else {
-                            message = `(${response.status}) ${response.statusText}`;
-                        }
-
-                        raiseErrorMessage(message, 'Ошибка загрузки связанных записей');
-                    });
-            }
-        },
-
-        getQueryParams() {
-            const query = {
-                filters: cloneDeep(this.context || {})
-            };
-
-            if (this.pagination.page) {
-                query.page = this.pagination.page;
-            }
-
-            if (this.pagination.pageSize) {
-                query.perPage = this.pagination.pageSize;
-            }
-
-            if (Object.keys(this.filterStore.filters || {}).length) {
-                merge(query.filters, this.getFiltersForRequest());
-            }
-
-            if (Object.keys(this.sortsStore || {}).length) {
-                query.order = this.sortsStore;
-            }
-
-            return query;
-        },
-
-        loadPages() {
-            this.loading = true;
-
-            const query = this.getQueryParams();
-
-            return this.repository.fetch(query)
-                .then(({ response, items }) => {
-                    const { status, total } = response.data;
-
-                    if (status) {
-                        const eagerLoad = this.repository.getEagerLoad();
-
-                        if (eagerLoad && eagerLoad.length) {
-                            let query = this.repository;
-
-                            for (const eager of eagerLoad) {
-                                query = query.with(eager);
-                            }
-
-                            query.load(items);
-                        }
-
-                        this.data = items;
-                        this.pagination.total = total;
-                    }
-                })
-                .catch((response) => {
-                    const message = `(${response.status}) ${response.statusText}`;
-                    raiseErrorMessage(message);
-                })
-                .finally(() => {
-                    this.$nextTick(() => {
-                        this.loading = false;
-                    });
-                });
-        },
-
-        download(options) {
-            this.loading = true;
-
-            const query = this.getQueryParams();
-            query.columns = this.visibleColumns.map((column) => column.field);
-            query.options = options;
-
-            return this.repository
-                .export(query)
-                .catch((response) => {
-                    const message = `(${response.status}) ${response.statusText}`;
-                    raiseErrorMessage(message);
-                })
-                .finally(() => {
-                    this.$nextTick(() => {
-                        this.loading = false;
-                    });
-                });
-        },
-
-        create() {
-            const record = this.repository.make();
-
-            this.selectedRow = this.repository.make(record);
-            this.drawer = true;
-        },
-
-        save({ original, saved }) {
-            if (saved) {
-                this.repository.withAll().load([saved]);
-
-                const key = original.$getKey();
-
-                // find record in table to update it
-                const record = this.$refs.vxe.getRowById(key);
-
-                if (record) {
-                    // update if found
-                    Object.assign(record, saved);
-                } else {
-                    // create new row if no record exists
-                    this.$refs.vxe.insertAt(saved, 0);
-                    this.data.unshift(saved);
-                }
-
-                this.selectedRow = saved;
-
-                ElMessage({
-                    type: 'success',
-                    message: 'Сохранение завершено'
-                });
-            }
-        },
-
-        remove(removed) {
-            if (removed) {
-                for (const key of removed) {
-                    const row = this.$refs.vxe.getRowById(key);
-
-                    if (row) {
-                        this.$refs.vxe.remove(row);
-                    }
-                }
-
-                ElMessage({
-                    type: 'success',
-                    message: 'Удаление завершено'
-                });
-            }
-
-            this.closeDrawer();
-        },
-
-        confirmRowRemoving(row) {
-          ElMessageBox.confirm(
-              'Запись будет удалена. Продолжить?',
-              'Внимание!',
-              {
-                confirmButtonText: 'Да, удалить',
-                cancelButtonText: 'Нет',
-                confirmButtonClass: 'el-button--danger',
-                type: 'warning'
-              }
-          ).then(() => {
-            this.repository.remove(row.$getKey()).then((removed) => {
-              this.remove(removed);
-            });
-          }).catch(() => {
-            // chill
-          });
-        },
-
-        handlePageChange() {
-            this.load();
-        },
-
-        handleFilter(field, value, type) {
-            this.saveFilter({
-                tableId: this.tableId,
-                field,
-                type,
-                value
-            });
-
-            this.load();
-        },
-
-        handleResetFilters() {
-          this.resetSavedFilters();
-
-          this.load();
-        },
-
-        handleRowDblClick({ row }) {
-            this.selectedRow = this.repository.make(row);
-            this.drawer = true;
-        },
-
-        onContextRowOpen(row) {
-            this.selectedRow = this.repository.make(row);
-            this.drawer = true;
-        },
-
-        onContextRowRemove(row) {
-            this.confirmRowRemoving(row);
-        },
-
-        onContextRowHistory(row) {
-            this.contextRow = row;
-            this.historyDialog = true;
-        },
-
-        closeDrawer() {
-            this.selectedRow = null;
-            this.drawer = false;
-        }
+const verifiedData = computed(() => {
+    if (!visibleColumns.value.length) {
+        return [{}];
     }
+
+    return data.value;
+});
+
+const {
+    filterStore,
+
+    hasActiveFilters,
+
+    loadFilters,
+    saveFilter,
+    resetFilters,
+    resetSavedFilters,
+    getFiltersForRequest
+} = useTableFilter(tableId, { props, emit });
+
+const {
+    menuConfig,
+    setContextMenuAction,
+    onContextMenuClick
+} = useTableContextMenu(tableId, { props });
+
+setContextMenuAction('onContextRowOpen', onContextRowOpen);
+setContextMenuAction('onContextRowRemove', onContextRowRemove);
+setContextMenuAction('onContextRowHistory', onContextRowHistory);
+
+const {
+    sortsStore,
+    sortConfig,
+    toggleColumnSort,
+    handleSortChange
+} = useTableSorts(tableId, { repository, vxe, load });
+
+onMounted(() => {
+    if (props.items) {
+        data.value = props.items;
+    } else {
+        load();
+    }
+});
+
+function load() {
+    if (repository) {
+        repository
+            .fetchRelatedModels()
+            .then(() => {
+                loadPages();
+            })
+            .catch((response: Error | ErrorResponse) => {
+                let message;
+
+                if (response instanceof Error) {
+                    message = response.message;
+                } else {
+                    message = `(${response.status}) ${response.statusText}`;
+                }
+
+                raiseErrorMessage(message, 'Ошибка загрузки связанных записей');
+
+                console.error(response);
+            });
+    }
+}
+
+function getQueryParams(): FetchQueryParams {
+    const query: FetchQueryParams = {
+        filters: cloneDeep(props.context || {})
+    };
+
+    if (pagination.page) {
+        query.page = pagination.page;
+    }
+
+    if (pagination.pageSize) {
+        query.perPage = pagination.pageSize;
+    }
+
+    if (Object.keys(filterStore.filters || {}).length) {
+        merge(query.filters, getFiltersForRequest());
+    }
+
+    if (Object.keys(sortsStore || {}).length) {
+        query.order = sortsStore;
+    }
+
+    return query;
+}
+
+function loadPages() {
+    if (!repository) {
+        return;
+    }
+
+    loading.value = true;
+
+    const query = getQueryParams();
+
+    return repository
+        .fetch(query)
+        .then(({ response, items }) => {
+            const { status, total } = response.data;
+
+            if (status && items) {
+                const eagerLoad = repository.getEagerLoad();
+
+                if (eagerLoad && eagerLoad.length) {
+                    let query = repository.query();
+
+                    for (const eager of eagerLoad) {
+                        query = query.with(eager);
+                    }
+
+                    query.load(items);
+                }
+
+                data.value = items;
+                pagination.total = total;
+            }
+        })
+        .catch((response) => {
+            const message = `(${response.status}) ${response.statusText}`;
+            raiseErrorMessage(message);
+        })
+        .finally(() => {
+            nextTick(() => {
+                loading.value = false;
+            });
+        });
+}
+
+function download(options: FetchQueryDownloadOptions) {
+    if (!repository) {
+        return;
+    }
+
+    loading.value = true;
+
+    const query = getQueryParams();
+    query.columns = visibleColumns.value.map((column) => column.field);
+    query.options = options;
+
+    return repository
+        .export(query)
+        .catch((response: ErrorResponse) => {
+            const message = `(${response.status}) ${response.statusText}`;
+            raiseErrorMessage(message);
+        })
+        .finally(() => {
+            nextTick(() => {
+                loading.value = false;
+            });
+        });
+}
+
+function create() {
+    if (!repository) {
+        return;
+    }
+
+    const record = repository?.make();
+
+    selectedRow.value = repository.make(record);
+    drawer.value = true;
+}
+
+function save({ original, saved }: { original: Model, saved: Model }) {
+    if (repository && saved) {
+        repository.withAll().load([saved]);
+
+        const key = original.$getKey();
+
+        // find record in table to update it
+        const record = vxe.value?.getRowById(key);
+
+        if (record) {
+            // update if found
+            Object.assign(record, saved);
+        } else {
+            // create new row if no record exists
+            vxe.value?.insertAt(saved, 0);
+            data.value.unshift(saved);
+        }
+
+        selectedRow.value = saved;
+
+        ElMessage({
+            type: 'success',
+            message: 'Сохранение завершено'
+        });
+    }
+}
+
+function remove(removed: number[]) {
+    if (removed) {
+        for (const key of removed) {
+            const row = vxe.value?.getRowById(key);
+
+            if (row) {
+                vxe.value?.remove(row);
+            }
+        }
+
+        ElMessage({
+            type: 'success',
+            message: 'Удаление завершено'
+        });
+    }
+
+    closeDrawer();
+}
+
+function confirmRowRemoving(row: Model) {
+    if (!repository) {
+        return;
+    }
+
+    ElMessageBox.confirm(
+        'Запись будет удалена. Продолжить?',
+        'Внимание!',
+        {
+        confirmButtonText: 'Да, удалить',
+        cancelButtonText: 'Нет',
+        confirmButtonClass: 'el-button--danger',
+        type: 'warning'
+        }
+    ).then(() => {
+        repository
+            .remove(row.$getKey())
+            .then((removed) => {
+                if (removed) {
+                    remove(removed);
+                }
+            });
+    }).catch(() => {
+        // chill
+    });
+}
+
+function handlePageChange() {
+    load();
+}
+
+function handleFilter(field: string, value: any, type: string) {
+    saveFilter({
+        tableId,
+        field,
+        type,
+        value
+    });
+
+    load();
+}
+
+function handleResetFilters() {
+    resetSavedFilters();
+
+    load();
+}
+
+function handleRowDblClick({ row }: CellDblclickEventParams) {
+    if (repository) {
+        selectedRow.value = repository.make(row);
+        drawer.value = true;
+    }
+}
+
+function setVisibleColumns(columns: TableColumnOptions[]) {
+    visibleColumns.value = columns;
+}
+
+function onContextRowOpen(row: Model) {
+    selectedRow.value = repository?.make(row);
+    drawer.value = true;
+}
+
+function onContextRowRemove(row: Model) {
+    confirmRowRemoving(row);
+}
+
+function onContextRowHistory(row: Model) {
+    contextRow.value = row;
+    historyDialog.value = true;
+}
+
+function closeDrawer() {
+    selectedRow.value = undefined;
+    drawer.value = false;
+}
+
+function getColumnOrderIcon(order?: string): string | undefined {
+    switch (order) {
+        case 'asc':
+            return 'tabler:arrow-up';
+        case 'desc':
+            return 'tabler:arrow-down';
+        default:
+            return undefined;
+    }
+}
+
+provide('TableInstance', {
+    tableId,
+    vxe,
+
+    fields,
+
+    filterStore,
+
+    columns,
+    visibleColumns,
+
+    setVisibleColumns
+});
+</script>
+
+<script lang="ts">
+export default {
+    name: 'ItTable'
 }
 </script>

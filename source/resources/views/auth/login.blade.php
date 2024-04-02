@@ -7,7 +7,7 @@
 
         <title>{{ config('app.name') }}</title>
 
-        @vite(['resources/js/auth.js'])
+        @vite(['resources/js/auth.ts'])
 
         <script lang='text/javascript'>
             window.localStorage.setItem('domains', '{!! base64_encode(json_encode($domains)) !!}');

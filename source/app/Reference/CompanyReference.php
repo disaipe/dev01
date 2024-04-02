@@ -2,6 +2,7 @@
 
 namespace App\Reference;
 
+use App\Core\Reference\PiniaStore\PiniaAttribute;
 use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceModel;
@@ -11,8 +12,6 @@ use App\Models\Company;
 class CompanyReference extends ReferenceEntry
 {
     protected string|ReferenceModel $model = Company::class;
-
-    protected bool $piniaBindings = false;
 
     protected ?string $primaryDisplayField = 'name';
 
@@ -29,24 +28,29 @@ class CompanyReference extends ReferenceEntry
                 ->label(__('admin.code'))
                 ->required()
                 ->max(16)
-                ->visible())
+                ->visible()
+                ->pinia(PiniaAttribute::string()))
 
             ->addField('name', ReferenceFieldSchema::make()
                 ->label(__('admin.name'))
                 ->required()
-                ->visible())
+                ->visible()
+                ->pinia(PiniaAttribute::string()))
 
             ->addField('fullname', ReferenceFieldSchema::make()
                 ->label(__('reference.$company.fullname.label'))
-                ->max(512))
+                ->max(512)
+                ->pinia(PiniaAttribute::string()))
 
             ->addField('identity', ReferenceFieldSchema::make()
                 ->label(__('reference.$company.identity.label'))
                 ->max(32)
-                ->visible())
+                ->visible()
+                ->pinia(PiniaAttribute::string()))
 
             ->addField('description', ReferenceFieldSchema::make()
-                ->label(__('reference.$company.description.label')))
+                ->label(__('reference.$company.description.label'))
+                ->pinia(PiniaAttribute::string()))
 
             ->toArray();
     }

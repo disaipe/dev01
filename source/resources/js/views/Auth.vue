@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 .page
     .flex.flex-col
         .text-center.pb-4
@@ -10,7 +10,7 @@
 
                 .flex.items-center.justify-between
                     div
-                        div(v-show='domains')
+                        .w-32(v-show='domains')
                             el-select(v-model='domain' clearable)
                                 el-option(
                                     v-for='(name, id) of domains'
@@ -21,108 +21,96 @@
                     el-button(type='primary' @click='doLogin') Войти
 </template>
 
-<script>
+<script setup lang="ts">
 import { ref, getCurrentInstance } from 'vue';
+import { ElMessageBox } from 'element-plus';
 
+import type { ResponseBase } from '@/types';
 import { baseClient } from '../utils/axiosClient';
 
-export default {
-    name: 'AuthPage',
-    setup() {
-        const app = getCurrentInstance();
-        const { $alert } = app.appContext.config.globalProperties;
+const email = ref();
+const password = ref();
+const domain = ref();
+const domains = ref();
 
-        const email = ref();
-        const password = ref();
-        const domain = ref();
-        const domains = ref();
+const { appContext } = getCurrentInstance()!;
 
-        const storeCredentials = (email, domain) => {
-            window.localStorage.setItem('q_auth', btoa(JSON.stringify({
-                e: email,
-                d: domain
-            })));
-        };
+const storeCredentials = (email: string, domain?: string) => {
+    window.localStorage.setItem('q_auth', btoa(JSON.stringify({
+        e: email,
+        d: domain
+    })));
+};
 
-        const getCredentials = () => {
-            const data = window.localStorage.getItem('q_auth');
+const getCredentials = () => {
+    const data = window.localStorage.getItem('q_auth');
 
-            if (data) {
-                try {
-                    const { e, d } = JSON.parse(atob(data));
-                    email.value = e;
-                    domain.value = d;
-                } catch (error) {
-                }
-            }
-        };
-
-        const getDomains = () => {
-            const data = window.localStorage.getItem('domains');
-
-            if (data) {
-                try {
-                    const d = JSON.parse(atob(data));
-
-                    if (typeof(d) === 'object' && Object.keys(d).length) {
-                        domains.value = d;
-                    }
-                } catch (error) {
-                }
-            }
+    if (data) {
+        try {
+            const { e, d } = JSON.parse(atob(data));
+            email.value = e;
+            domain.value = d;
+        } catch (error) {
         }
+    }
+};
 
-        const doLogin = () => {
-            baseClient.post('/login', {
-                email: email.value,
-                password: password.value,
-                domain: domain.value
-            }, {
-                headers: {
-                    'Accept': 'application/json'
-                }
-            }).then((response) => {
-                if (response.ok) {
-                    const { status, redirect, message } = response.data;
+const getDomains = () => {
+    const data = window.localStorage.getItem('domains');
 
-                    if (status && redirect) {
-                        storeCredentials(email.value, domain.value);
-                        window.location.href = redirect;
-                    }
+    if (data) {
+        try {
+            const d = JSON.parse(atob(data));
 
-                    if (!status && message) {
-                        $alert(message, 'Ошибка', { type: 'error' });
-                    }
-                }
-            }).catch((response) => {
-                const { data } = response;
-
-                if (data) {
-                    const { message } = data;
-
-                    if (message) {
-                        $alert(message, 'Ошибка', { type: 'error' });
-                    }
-                }
-            });
+            if (typeof(d) === 'object' && Object.keys(d).length) {
+                domains.value = d;
+            }
+        } catch (error) {
         }
-
-        getCredentials();
-        getDomains();
-
-        return {
-            email,
-            password,
-            domain,
-            domains,
-
-            doLogin
-        };
     }
 }
+
+const doLogin = () => {
+    baseClient.post('/login', {
+        email: email.value,
+        password: password.value,
+        domain: domain.value
+    }, {
+        headers: {
+            'Accept': 'application/json'
+        }
+    }).then((response: ResponseBase<{ redirect: string, message: string }>) => {
+        if (response.status === 200) {
+            const { status, data: { redirect, message } } = response.data;
+
+            if (status && redirect) {
+                
+                storeCredentials(email.value, domain.value);
+                window.location.href = redirect;
+            }
+
+            if (!status && message) {
+                ElMessageBox.alert(message, 'Ошибка', { type: 'error' }, appContext);
+            }
+        }
+    }).catch((response) => {
+        const { data } = response;
+
+        if (data) {
+            const { message } = data;
+
+            if (message) {
+                ElMessageBox.alert(message, 'Ошибка', { type: 'error' });
+            }
+        }
+    });
+}
+
+getCredentials();
+getDomains();
 </script>
 
-<style lang='postcss' scoped>
+<style lang="postcss" scoped>
 .page {
     @apply relative h-screen flex justify-center items-center overflow-hidden;
 
