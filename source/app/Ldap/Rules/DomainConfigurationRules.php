@@ -4,16 +4,18 @@ namespace App\Ldap\Rules;
 
 use App\Models\Domain;
 use Illuminate\Support\Arr;
+use Illuminate\Database\Eloquent\Model as Eloquent;
 use LdapRecord\Laravel\Auth\Rule;
+use LdapRecord\Models\Model as LdapRecord;
 
-class DomainConfigurationRules extends Rule
+class DomainConfigurationRules implements Rule
 {
     /**
      * Check if the rule passes validation.
      */
-    public function isValid(): bool
+    public function passes(LdapRecord $user, Eloquent $model = null): bool
     {
-        $connectionName = $this->user->getConnectionName();
+        $connectionName = $user->getConnectionName();
 
         /** @var ?Domain $domain */
         $domain = Domain::query()->firstWhere('code', '=', $connectionName);
@@ -24,10 +26,10 @@ class DomainConfigurationRules extends Rule
                 ->filter();
 
             if ($filters->count()) {
-                return $this->user->rawFilter($filters->toArray())->exists();
+                return $user->rawFilter($filters->toArray())->exists();
             }
         }
 
-        return $this->user->exists();
+        return $user->exists();
     }
 }

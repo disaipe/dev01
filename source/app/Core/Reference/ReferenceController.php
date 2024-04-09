@@ -69,7 +69,7 @@ class ReferenceController extends BaseController
         }
 
         if ($filters) {
-            $query->filter();
+            $query->filter($filters);
         }
 
         if ($sorts) {
@@ -173,7 +173,7 @@ class ReferenceController extends BaseController
         }
 
         if ($filters) {
-            $query->filter();
+            $query->filter($filters);
         }
 
         if ($sorts) {

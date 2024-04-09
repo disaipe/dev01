@@ -27,7 +27,7 @@ class ADSyncComputersJob extends ModuleScheduledJob
         /** @var Domain $domain */
         $domain = Domain::query()->find($domainId);
         LdapService::addDomainConnection($domain);
-        Container::setDefault($domain->code);
+        Container::getInstance()->setDefaultConnection($domain->code);
 
         $baseDN = $module->getConfig('computers.base_dn') ?? $domain->base_dn;
         $baseOUs = DomainUtils::parseOUs($baseDN);

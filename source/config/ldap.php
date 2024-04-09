@@ -52,7 +52,9 @@ return [
     |
     */
 
-    'logging' => env('LDAP_LOGGING', false),
+    'logging' => [
+        'enabled' => env('LDAP_LOGGING', false),
+    ],
 
     /*
     |--------------------------------------------------------------------------

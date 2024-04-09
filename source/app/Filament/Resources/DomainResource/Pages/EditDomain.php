@@ -43,10 +43,10 @@ class EditDomain extends EditRecord
         $domain = $this->record;
 
         LdapService::addDomainConnection($domain);
-        Container::setDefault($domain->code);
+        Container::getInstance()->setDefaultConnection($domain->code);
 
         try {
-            Container::getDefaultConnection()->connect();
+            Container::getInstance()->getDefaultConnection()->connect();
         } catch (\Exception $e) {
             Notification::make()
                 ->title(__('admin.error'))

@@ -8,7 +8,9 @@ use App\Core\Indicator\IndicatorManager;
 use App\Core\Reference\ReferenceManager;
 use App\Core\Report\Expression\ExpressionManager;
 use App\Directives;
+use App\Filament\LogoutResponse;
 use App\Services\DashboardMenuService;
+use Filament\Http\Responses\Auth\Contracts\LogoutResponse as LogoutResponseContract;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
         $this->registerDirectives();
         $this->registerSingletons();
         $this->registerFixedSqlServerConnector();
+
+        $this->app->bind(LogoutResponseContract::class, LogoutResponse::class);
     }
 
     /**

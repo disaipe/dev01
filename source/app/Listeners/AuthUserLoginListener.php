@@ -31,7 +31,7 @@ class AuthUserLoginListener
 
             if ($domain) {
                 LdapService::addDomainConnection($domain);
-                Container::setDefault($domain->code);
+                Container::getInstance()->setDefaultConnection($domain->code);
 
                 try {
                     $entry = Entry::query()->select('photo')->where('mail', '=', $email)->first();

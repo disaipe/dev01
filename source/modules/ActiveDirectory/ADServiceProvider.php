@@ -196,7 +196,7 @@ class ADServiceProvider extends ModuleBaseServiceProvider
             /** @var Domain $domain */
             $domain = Domain::query()->find($domainId);
             LdapService::addDomainConnection($domain);
-            Container::setDefault($domain->code);
+            Container::getInstance()->setDefaultConnection($domain->code);
 
             $baseDN = Arr::get($config, 'base_dn', $domain->base_dn);
             $baseOUs = DomainUtils::parseOUs($baseDN);
