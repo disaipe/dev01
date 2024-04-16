@@ -319,7 +319,13 @@ defineExpose({
     instance,
 
     loadFromBase64,
-    loadFromBuffer
+    loadFromBuffer,
+
+    createWorkSheet,
+    openWorkSheet,
+    setWorkSheetData,
+    getWorkSheets,
+    fitWorksheetColumnsWidthToContent
 });
 </script>
 

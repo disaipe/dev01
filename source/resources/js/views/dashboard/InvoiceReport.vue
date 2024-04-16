@@ -93,7 +93,6 @@ import { ref, computed, nextTick, watch } from 'vue';
 import { ElMessageBox } from 'element-plus'
 import dayjs from 'dayjs';
 import orderBy from 'lodash/orderBy';
-import { useElementSize } from '@vueuse/core';
 
 import type { InvoiceResponse, SpreadSheetCell } from '@/types';
 import { useReportSettingsStore } from '../../store/modules';
@@ -101,7 +100,6 @@ import { useRepos } from '../../store/repository';
 import { useApi } from '../../utils/axiosClient';
 import batchApi from '../../utils/batchApi';
 import { applyBindings } from '../../components/spreadsheet/utils';
-import ItTable from '../../components/table/Table.vue';
 
 const report = ref();
 const toolbar = ref();
@@ -109,10 +107,6 @@ const spread = ref();
 const loading = ref(false);
 const loaded = ref(false);
 const showErrorsDialog = ref(false);
-
-const reportSize = useElementSize(report);
-const toolbarSize = useElementSize(toolbar);
-const spreadHeight = computed(() => reportSize.height.value - toolbarSize.height.value);
 
 const savedSettings = useReportSettingsStore();
 
@@ -137,7 +131,7 @@ const api = useApi();
 let bindings = {};
 
 batchApi.batch('ServiceProvider,Company,ReportTemplate,Indicator').then((result) => {
-    companies.value = orderBy(result._company, 'name');
+    companies.value = orderBy(result.Company, 'name');
     providers.value = ServiceProvider.query().whereHas('report_templates').with('report_templates').get();
 });
 
@@ -220,7 +214,7 @@ const fetchReport = () => {
 
                         return;
                     }
-                } 
+                }
             }
 
             ElMessageBox.alert(
