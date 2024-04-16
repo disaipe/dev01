@@ -71,7 +71,13 @@ class Config
 
     public static function get(string $key, $default = null)
     {
-        return config($key, $default);
+        $value = config($key, $default);
+
+        if (Str::isJson($value)) {
+            return json_decode($value, true);
+        }
+
+        return $value;
     }
 
     /**
