@@ -111,13 +111,17 @@ class Indicator
     {
         $result = $this->type->calculate($this);
 
-        if (isset($this->mutator)) {
-            $mutatorSchema = Arr::get($this->schema, 'mutator');
+        return $this->mutateValue($result);
+    }
 
-            $result = call_user_func($this->mutator, $result, $mutatorSchema, $this->context());
+    public function mutateValue(float $value) {
+        if (! isset($this->mutator)) {
+            return $value;
         }
 
-        return $result;
+        $mutatorSchema = Arr::get($this->schema, 'mutator');
+
+        return call_user_func($this->mutator, $value, $mutatorSchema, $this->context());
     }
 
     public function debug(): array

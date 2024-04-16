@@ -52,7 +52,7 @@ return [
     'or' => 'Или',
     'and' => 'И',
 
-    'field' => 'Поле',
+    'field' => 'Поле|Поля',
     'condition' => 'Условие',
     'value' => 'Значение',
     'values' => 'Значения',
@@ -61,12 +61,14 @@ return [
     'company code' => 'Код организации',
 
     'add' => 'Добавить',
+    'save' => 'Сохранить',
 
     'menu' => [
         'access' => 'Доступ',
         'links' => 'Ссылки',
         'common' => 'Общее',
         'debug' => 'Отладка',
+        'report' => 'Отчёт',
 
         'portal' => 'Перейти на портал',
     ],
@@ -167,6 +169,23 @@ return [
             'attempts' => 'Попытка',
             'available at' => 'Создано',
             'reserved at' => 'Запланировано',
+        ],
+    ],
+
+    '$report' => [
+        'report details' => 'Детализация отчета',
+
+        '$settings' => [
+            'title' => 'Настройки',
+
+            '$detailed' => [
+                'excluded fields' => 'Скрытые поля',
+                'excluded fields help' => 'Настройте поля справочников, которые не должны быть отображены в'
+                    . ' детализации отчета.',
+                'common excluded fields help' => 'Укажите заколовки или имена полей, которые будут исключены из'
+                    . ' <span class="underline">всех типов справочников</span>.',
+                'excluded fields by reference' => 'Скрытые поля в справочниках',
+            ],
         ],
     ],
 ];

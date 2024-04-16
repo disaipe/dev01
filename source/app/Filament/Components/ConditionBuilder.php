@@ -111,7 +111,7 @@ class ConditionBuilder extends Builder
         }
 
         return $component
-            ->label(__('admin.field'))
+            ->label(trans_choice('admin.field', 1))
             ->required()
             ->reactive()
             ->afterStateUpdated(fn () => $this->callAfterStateUpdated());

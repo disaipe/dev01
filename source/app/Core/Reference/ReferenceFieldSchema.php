@@ -99,6 +99,16 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
     }
 
     /**
+     * Get field is hidden
+     *
+     * @return bool
+     */
+    public function isHidden(): bool
+    {
+        return Arr::get($this->attributes, 'hidden') === true;
+    }
+
+    /**
      * Set field`s pinia definition
      *
      * @return $this

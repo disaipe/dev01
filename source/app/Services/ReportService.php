@@ -7,6 +7,7 @@ use App\Core\Indicator\Indicator;
 use App\Core\Indicator\IndicatorManager;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceManager;
+use App\Facades\Config;
 use App\Models\Company;
 use App\Models\Contract;
 use App\Models\PriceList;
@@ -51,6 +52,12 @@ class ReportService
 
     protected Collection $values;
 
+    protected array $config;
+
+    protected array $commonExcludedFields = [];
+
+    protected array $excludedFieldsByReference = [];
+
     protected IndicatorManager $indicatorManager;
 
     public function __construct()
@@ -59,6 +66,8 @@ class ReportService
         $this->indicatorManager = app('indicators');
 
         $this->indicators = collect([]);
+
+        $this->config = Config::get('report');
     }
 
     public function make(string $companyCode, string $period = null): self
@@ -101,6 +110,8 @@ class ReportService
     public function extended(bool $extend = true): self
     {
         $this->extended = $extend;
+
+        $this->prepareDetailedReportExcludedFields();
 
         return $this;
     }
@@ -157,38 +168,10 @@ class ReportService
         ];
 
         if ($this->extended) {
-            $result['debug'] = $this->values->mapWithKeys(function ($item) {
-                /** @var ?Collection $data */
-                $data = Arr::get($item, 'debug.data');
-                $columns = Arr::get($item, 'debug.columns', []);
-                $refName = Arr::get($item, 'debug.reference');
-
-                if (! count($columns) && $refName) {
-                    $schema = $this->referenceManager->getByName($refName)?->getSchema();
-
-                    if ($schema) {
-                        $columns = Arr::where($schema, fn (ReferenceFieldSchema $item) => $item->isVisible());
-
-                        if (! count($columns)) {
-                            $columns = $schema;
-                        }
-
-                        $columns = Arr::map($columns, fn (ReferenceFieldSchema $col) => $col->getLabel());
-
-                        $keys = array_keys($columns);
-                        $data = $data->map(fn (Model $row) => $row->only($keys));
-                    }
-                }
-
-                return [$item['service']->getKey() => [
-                    'service' => [
-                        'id' => Arr::get($item, 'service.id'),
-                        'name' => Arr::get($item, 'service.name')
-                    ],
-                    'columns' => $columns,
-                    'rows' => $data,
-                ]];
-            });
+            $result['debug'] = $this->values
+                // debug only items with not-null value
+                ->filter(fn ($item) => Arr::get($item, 'value'))
+                ->mapWithKeys($this->makeDebugRowsForService(...));
         }
 
         return $result;
@@ -241,6 +224,14 @@ class ReportService
         return $indicatorInstance
             ->setContext($this->getContext())
             ->debug();
+    }
+
+    protected function prepareDetailedReportExcludedFields(): void
+    {
+        $this->commonExcludedFields = Arr::get($this->config, 'fields.exclude') ?? [];
+
+        $excludedFieldsInReferences = Arr::get($this->config, 'fields.references.exclude') ?? [];
+        $this->excludedFieldsByReference = Arr::pluck($excludedFieldsInReferences, 'fields', 'reference');
     }
 
     /**
@@ -432,6 +423,80 @@ class ReportService
             ReportContextConstant::CONTRACT_NUMBER->name => $contract?->number ?? '',
             ReportContextConstant::CONTRACT_DATE->name => $contract?->date?->toDateString() ?? '',
         ];
+    }
+
+    protected function makeDebugRowsForService(array $item): array
+    {
+        /** @var ?Collection $data */
+        $data = Arr::get($item, 'debug.data');
+        $columns = Arr::get($item, 'debug.columns', []);
+
+        /** @var ?string $refName */
+        $refName = Arr::get($item, 'debug.reference');
+
+        /** @var ?Indicator $indicator */
+        $indicator = Arr::get($item, 'indicator');
+
+        // hide reference columns what is not visible
+        if (! count($columns) && $refName) {
+            $schema = $this->referenceManager->getByName($refName)?->getSchema();
+
+            if ($schema) {
+                $columns = Arr::where(
+                    $schema,
+                    fn (ReferenceFieldSchema $field, string $name) => ! $this->isReferenceFieldExcluded($refName, $name, $field)
+                );
+
+                if (! count($columns)) {
+                    $columns = $schema;
+                }
+
+                $columns = Arr::map($columns, fn (ReferenceFieldSchema $col) => $col->getLabel());
+
+                $keys = array_keys($columns);
+                $data = $data->map(fn (Model $row) => $row->only($keys));
+            }
+        }
+
+        // apply expression column mutator
+        if ($indicator->mutator) {
+            $columnOption = $indicator->expression->getOptions('column');
+
+            if ($columnOption) {
+                $data = $data->map(function ($row) use ($indicator, $columnOption) {
+                    if (isset($row[$columnOption])) {
+                        $row[$columnOption] = $indicator->mutateValue($row[$columnOption]);
+                    }
+                    return $row;
+                });
+            }
+        }
+
+        return [$item['service']->getKey() => [
+            'service' => [
+                'id' => Arr::get($item, 'service.id'),
+                'name' => Arr::get($item, 'service.name')
+            ],
+            'columns' => $columns,
+            'rows' => $data,
+        ]];
+    }
+
+    protected function isReferenceFieldExcluded(string $reference, string $name, ReferenceFieldSchema $field): bool {
+        if (! $field->isVisible()) {
+            return true;
+        }
+
+        $excluded = array_merge(
+            $this->commonExcludedFields,
+            Arr::get($this->excludedFieldsByReference, $reference) ?? []
+        );
+
+        if (in_array($name, $excluded) || in_array($field->getLabel(), $excluded)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
