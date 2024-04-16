@@ -4,7 +4,6 @@ namespace App\Core\Report\ExpressionType;
 
 use App\Core\Enums\ReportContextConstant;
 use App\Core\Indicator\Indicator;
-use App\Core\Reference\ReferenceEntry;
 use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceManager;
 use App\Core\Report\Expression\ExpressionManager;
@@ -12,6 +11,7 @@ use App\Core\Report\IExpression;
 use App\Core\Report\IExpressionType;
 use App\Core\Utils\QueryConditionsBuilder;
 use App\Filament\Components\ConditionBuilder;
+use App\Filament\Components\ReferenceSelect;
 use App\Forms\Components\RawHtmlContent;
 use Carbon\Carbon;
 use Exception;
@@ -90,16 +90,12 @@ class QueryExpressionType implements IExpressionType
 
     public static function form(): array
     {
-        $referencesOptions = static::getReferencesOptions();
-
         /** @var ExpressionManager $expressions */
         $expressionsManager = app('expressions');
         $expressions = $expressionsManager->getExpressions();
 
         return [
-            Components\Select::make('schema.reference')
-                ->label(trans_choice('admin.reference', 1))
-                ->options($referencesOptions)
+            ReferenceSelect::make('schema.reference')
                 ->columnSpanFull()
                 ->required()
                 ->reactive()
@@ -197,22 +193,6 @@ class QueryExpressionType implements IExpressionType
         }
 
         return null;
-    }
-
-    protected static function getReferencesOptions(): array
-    {
-        $references = app('references')->getReferences();
-
-        $referencesOptions = [];
-
-        foreach ($references as $reference) {
-            /** @var ReferenceEntry $reference */
-            if ($reference->canAttachIndicators()) {
-                $referencesOptions[$reference->getName()] = $reference->getLabel();
-            }
-        }
-
-        return Arr::sort($referencesOptions);
     }
 
     protected static function updateReferenceFields($state, $set): void
