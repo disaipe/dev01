@@ -293,6 +293,8 @@ const {
     worksheets,
     history,
 
+    download,
+
     createWorkSheet,
     openWorkSheet,
     setWorkSheetData,
@@ -320,6 +322,8 @@ defineExpose({
 
     loadFromBase64,
     loadFromBuffer,
+
+    download,
 
     createWorkSheet,
     openWorkSheet,

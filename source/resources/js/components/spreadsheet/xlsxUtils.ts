@@ -446,8 +446,8 @@ export function openWorkSheet(idOrName: string | number) {
     // set cells
     const data = makeMatrix(Math.max(50, worksheet.rowCount + 10), Math.max(30, worksheet.columnCount));
 
-    // for (let row = 0; row < worksheet.rowCount; row++) {
-    for (let row = 0; row < worksheet.actualRowCount + 1; row++) {
+    for (let row = 0; row < worksheet.rowCount; row++) {
+    // for (let row = 0; row < worksheet.actualRowCount + 1; row++) {
         // for (let col = 0; col < worksheet.columnCount; col++) {
         for (let col = 0; col < worksheet.actualColumnCount + 1; col++) {
             const cell = worksheet.getCell(row + 1, col + 1);
@@ -544,7 +544,6 @@ export function download() {
     });
 }
 
-// ((TD: HTMLTableCellElement, row: number, column: number, prop: (string | number), value: any, cellProperties: Handsontable.CellProperties) => void) | undefined
 export function defaultRenderer(td: HTMLTableCellElement, row: number, column: number, prop: string | number, value: any, cellProperties: Handsontable.CellProperties) {
     if (!store.value.worksheet) {
         return;
@@ -767,6 +766,8 @@ export function useHotTable(container: Ref<any>, { cellModifier, defaultSheetNam
         worksheets: computed(() => worksheets.value),
 
         history: computed(() => instance.value.getPlugin('UndoRedo')),
+
+        download,
 
         createWorkSheet,
         openWorkSheet,
