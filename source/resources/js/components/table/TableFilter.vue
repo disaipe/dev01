@@ -47,7 +47,7 @@ el-popover(
                         el-checkbox(
                             v-for='relatedOption of filteredRelatedOptions'
                             size='small'
-                            :label='relatedOption[schema.relation.ownerKey]'
+                            :value='relatedOption[schema.relation.ownerKey]'
                         ) {{ relatedOption.$getName() }}
 
             //- BOOLEAN INPUT
@@ -56,8 +56,8 @@ el-popover(
                 v-model='filterStore.inputs[remoteField]'
                 :max='1'
             )
-                el-checkbox(:label='true') Да
-                el-checkbox(:label='false') Нет
+                el-checkbox(:value='true') Да
+                el-checkbox(:value='false') Нет
 
             //- PLAIN INPUT
             el-input(
