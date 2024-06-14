@@ -9,6 +9,7 @@ use App\Core\Reference\ReferenceManager;
 use App\Core\Report\Expression\ExpressionManager;
 use App\Directives;
 use App\Filament\LogoutResponse;
+use App\Reference\IndicatorReference;
 use App\Services\DashboardMenuService;
 use Filament\Http\Responses\Auth\Contracts\LogoutResponse as LogoutResponseContract;
 use Illuminate\Support\Facades\Blade;
@@ -34,7 +35,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        /** @var ReferenceManager $references */
+        $references = $this->app->make('references');
+
+        $references->register(IndicatorReference::class);
     }
 
     private function registerMacros(): void

@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use App\Core\Indicator\IndicatorManager;
+use App\Core\Reference\ReferenceModel;
+use App\Core\Traits\WithoutSoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
@@ -19,8 +20,10 @@ use Illuminate\Support\Str;
  * @property ?IndicatorGroup group
  * @property Service[] services
  */
-class Indicator extends Model
+class Indicator extends ReferenceModel
 {
+    use WithoutSoftDeletes;
+
     protected $fillable = [
         'code',
         'type',
