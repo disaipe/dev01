@@ -18,20 +18,17 @@ class ReferenceManager
 
     public function addReference(ReferenceEntry $reference): void
     {
-        $this->references[] = $reference;
+        $this->references[$reference->getName()] = $reference;
     }
 
     public function getReferences(): array
     {
-        return $this->references;
+        return array_values($this->references);
     }
 
     public function getByName(string $name): ?ReferenceEntry
     {
-        return Arr::first(
-            $this->references,
-            fn (ReferenceEntry $entry) => $entry->getName() === $name
-        );
+        return Arr::get($this->references, $name);
     }
 
     public function getByTableName(string $table): ?ReferenceEntry

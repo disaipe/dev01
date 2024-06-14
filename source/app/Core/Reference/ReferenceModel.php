@@ -18,6 +18,11 @@ class ReferenceModel extends Model
         'deleted_at',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+    ];
+
     protected array $sortable = [
         // Specify additional column names here to be able to sort by them.
         // Сan be used in complex models with joins or complex queries

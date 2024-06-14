@@ -15,6 +15,7 @@ use App\Models\ReportTemplate;
 use App\Models\Service;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -427,7 +428,7 @@ class ReportService
 
     protected function makeDebugRowsForService(array $item): array
     {
-        /** @var ?Collection $data */
+        /** @var ?EloquentCollection $data */
         $data = Arr::get($item, 'debug.data');
         $columns = Arr::get($item, 'debug.columns', []);
 
@@ -437,11 +438,15 @@ class ReportService
         /** @var ?Indicator $indicator */
         $indicator = Arr::get($item, 'indicator');
 
-        // hide reference columns what is not visible
-        if (! count($columns) && $refName) {
-            $schema = $this->referenceManager->getByName($refName)?->getSchema();
+        $mutators = [];
 
-            if ($schema) {
+        // hide reference columns what is not visible
+        if ($refName) {
+            $reference = $this->referenceManager->getByName($refName);
+
+            if (! count($columns) && $reference) {
+                $schema = $reference->getSchema();
+
                 $columns = Arr::where(
                     $schema,
                     fn (ReferenceFieldSchema $field, string $name) => ! $this->isReferenceFieldExcluded($refName, $name, $field)
@@ -452,24 +457,51 @@ class ReportService
                 }
 
                 $columns = Arr::map($columns, fn (ReferenceFieldSchema $col) => $col->getLabel());
+            }
 
-                $keys = array_keys($columns);
-                $data = $data->map(fn (Model $row) => $row->only($keys));
+            $relations = $reference?->getModelInstance()->listRelations() ?? [];
+            $includedRelations = array_keys(array_intersect_key($relations, $columns));
+
+            // load required relations
+            $data->load($includedRelations);
+
+            // map model records to only needed keys
+            $data = $data->map(fn (Model $row) => $row->toArray());
+
+            // mutate related records to display them as string
+            foreach ($includedRelations as $relationName) {
+                $relationModelClass = $reference->getModelInstance()->$relationName()->getModel();
+                $relationRef = $this->referenceManager->getByName(class_basename($relationModelClass));
+                $relationDisplayField = $relationRef?->getPrimaryDisplayField() ?? 'name';
+
+                if ($relationDisplayField) {
+                    $mutators [] = fn (array &$row) => $row[$relationName] = @$row[$relationName][$relationDisplayField];
+                }
             }
         }
 
-        // apply expression column mutator
+        // append expression column mutator
         if ($indicator->mutator) {
             $columnOption = $indicator->expression->getOptions('column');
 
             if ($columnOption) {
-                $data = $data->map(function ($row) use ($indicator, $columnOption) {
+                $mutators []= function (array &$row) use ($indicator, $columnOption) {
                     if (isset($row[$columnOption])) {
                         $row[$columnOption] = $indicator->mutateValue($row[$columnOption]);
                     }
-                    return $row;
-                });
+                };
             }
+        }
+
+        // apply mutators
+        if (count($mutators)) {
+            $data = $data->map(function(array $row) use ($mutators) {
+                foreach ($mutators as $mutator) {
+                    $mutator($row);
+                }
+
+                return $row;
+            });
         }
 
         return [$item['service']->getKey() => [
@@ -477,13 +509,13 @@ class ReportService
                 'id' => Arr::get($item, 'service.id'),
                 'name' => Arr::get($item, 'service.name')
             ],
-            'columns' => $columns,
-            'rows' => $data,
+            'columns' => array_values($columns),
+            'rows' => $data->select(array_keys($columns))->map(fn ($row) => array_values($row))->toArray(),
         ]];
     }
 
     protected function isReferenceFieldExcluded(string $reference, string $name, ReferenceFieldSchema $field): bool {
-        if (! $field->isVisible()) {
+        if ($field->isHidden()) {
             return true;
         }
 
