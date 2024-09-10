@@ -3,8 +3,11 @@
 namespace App\Services;
 
 use App\Core\Enums\CustomReferenceContextType;
+use App\Database\PDO\MySqlDriver;
 use App\Models\CustomReference;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Table;
+use Illuminate\Database\MySqlConnection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -17,7 +20,18 @@ class CustomReferenceTableService
     {
         $tableName = self::getTableName($reference->name);
 
-        $schemaManager = DB::getDoctrineSchemaManager();
+        $connectionName = DB::getDefaultConnection();
+        /** @var MySqlConnection $connection */
+        $connection = DB::getConnections()[$connectionName];
+
+        $doctrineConnection = new Connection(array_filter([
+            'pdo' => $connection->getPdo(),
+            'dbname' => $connection->getDatabaseName(),
+            'driver' => $connection->getDriverName(),
+            'serverVersion' => $connection->getServerVersion(),
+        ]), new MySqlDriver());
+
+        $schemaManager = $doctrineConnection->createSchemaManager();
         $comparator = $schemaManager->createComparator();
 
         $table = new Table($tableName);
