@@ -320,6 +320,8 @@ const hotSettings = configure({
 defineExpose({
     instance,
 
+    store,
+
     loadFromBase64,
     loadFromBuffer,
 
