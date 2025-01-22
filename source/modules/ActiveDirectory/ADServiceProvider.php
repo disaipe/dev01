@@ -213,15 +213,15 @@ class ADServiceProvider extends ModuleBaseServiceProvider
                 LdapQueryConditionsBuilder::applyToQuery($query, $filters);
             }
 
-            $results = [];
+            $results = collect();
 
             foreach ($baseOUs as $ou) {
                 $query->in($ou);
 
-                $results = array_merge($results, $query->get()->toArray());
+                $results = $results->merge($query->get());
             }
 
-            $uniques = collect($results)->unique(fn (Entry $entry) => $entry->getDn());
+            $uniques = $results->unique(fn (Entry $entry) => $entry->getDn());
             $count = $uniques->count();
 
             if ($count) {
