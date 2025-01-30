@@ -1,6 +1,18 @@
-version: '3.0'
-
 services:
+  traefik:
+    image: "traefik:v3.3"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.web.address=:80"
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    #  - "8080:8080" # traefik dashboard
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   nginx:
     image: nginx
@@ -11,8 +23,10 @@ services:
       - ./docker/nginx/includes:/etc/nginx/includes
       - ./docker/nginx/templates:/etc/nginx/templates
       - ./source:/var/www/html
-    ports:
-      - "${DOCKER_HTTP_PORT}:8080"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.$COMPOSE_PROJECT_NAME-nginx.rule=Host(`$DOMAIN_NAME`)"
+      - "traefik.http.services.$COMPOSE_PROJECT_NAME-nginx.loadbalancer.server.port=8080"
 
   php:
     build:

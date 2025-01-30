@@ -6,64 +6,71 @@
             .font-bold {{ record?.name }}
             .text-sm {{ serviceProvider?.name }}
 
-    spreadsheet(
-        ref='spread'
-        :settings='settings'
-        :cell-modifier='cellModifier'
-        default-sheet-name='Отчет'
-        fit='.spreadsheet-page'
-    )
-        template(#actions-menu-items)
-            el-dropdown-item(@click='load') Обновить
-            el-dropdown-item(@click='save') Сохранить
+    template(v-if='docConfigWithToken')
+        DocumentEditor(
+            id='docEditor'
+            documentServerUrl='http://office.dev01.docker.localhost'
+            :config='docConfigWithToken'
+        )
 
-        template(#toolbar-actions)
-            el-dropdown(trigger='click')
-                el-button(type='primary') Вставить
-                template(#dropdown)
-                    el-dropdown-menu
-                        el-dropdown-item(disabled) Данные услуг
+    //- spreadsheet(
+    //-     ref='spread'
+    //-     :settings='settings'
+    //-     :cell-modifier='cellModifier'
+    //-     default-sheet-name='Отчет'
+    //-     fit='.spreadsheet-page'
+    //- )
+    //-     template(#actions-menu-items)
+    //-         el-dropdown-item(@click='load') Обновить
+    //-         el-dropdown-item(@click='save') Сохранить
 
-                        el-dropdown-item(@click='formatCell("serviceName")')
-                            .flex.items-center.space-x-2
-                                .helper.cell-service-name
-                                div Наименование услуги
+    //-     template(#toolbar-actions)
+    //-         el-dropdown(trigger='click')
+    //-             el-button(type='primary') Вставить
+    //-             template(#dropdown)
+    //-                 el-dropdown-menu
+    //-                     el-dropdown-item(disabled) Данные услуг
 
-                        el-dropdown-item(@click='formatCell("serviceCount")')
-                            .flex.items-center.space-x-2
-                                .helper.cell-service-count
-                                div Количество оказанной услуги
+    //-                     el-dropdown-item(@click='formatCell("serviceName")')
+    //-                         .flex.items-center.space-x-2
+    //-                             .helper.cell-service-name
+    //-                             div Наименование услуги
 
-                        el-dropdown-item(@click='formatCell("servicePrice")')
-                            .flex.items-center.space-x-2
-                                .helper.cell-service-price
-                                div Стоимость услуги
+    //-                     el-dropdown-item(@click='formatCell("serviceCount")')
+    //-                         .flex.items-center.space-x-2
+    //-                             .helper.cell-service-count
+    //-                             div Количество оказанной услуги
 
-                        el-dropdown-item(divided disabled) Данные договора
-                        el-dropdown-item(@click='append("{CONTRACT_NUMBER}")') Номер договора
-                        el-dropdown-item(@click='append("{CONTRACT_DATE}")') Дата договора
+    //-                     el-dropdown-item(@click='formatCell("servicePrice")')
+    //-                         .flex.items-center.space-x-2
+    //-                             .helper.cell-service-price
+    //-                             div Стоимость услуги
 
-                        el-dropdown-item(divided disabled) Итоговые суммы
-                        el-dropdown-item(@click='append("{TOTAL}")') Итого
-                        el-dropdown-item(@click='append("{TOTAL_VAT}")') Итого НДС
-                        el-dropdown-item(@click='append("{TOTAL_WITH_VAT}")') Итого с НДС
+    //-                     el-dropdown-item(divided disabled) Данные договора
+    //-                     el-dropdown-item(@click='append("{CONTRACT_NUMBER}")') Номер договора
+    //-                     el-dropdown-item(@click='append("{CONTRACT_DATE}")') Дата договора
 
-                        el-dropdown-item(divided disabled) Разное
-                        el-dropdown-item(@click='append("{PERIOD_YEAR}")') Год
-                        el-dropdown-item(@click='append("{PERIOD_MONTH}")') Месяц (номер)
-                        el-dropdown-item(@click='append("{PERIOD_MONTH_NAME}")') Месяц (наименование)
-                        el-dropdown-item(@click='append("{COMPANY_CODE}")') Код организации
-                        el-dropdown-item(@click='append("{COMPANY_NAME}")') Наименование организации
-                        el-dropdown-item(@click='append("{COMPANY_NAME_FULL}")') Наименование организации (полное)
+    //-                     el-dropdown-item(divided disabled) Итоговые суммы
+    //-                     el-dropdown-item(@click='append("{TOTAL}")') Итого
+    //-                     el-dropdown-item(@click='append("{TOTAL_VAT}")') Итого НДС
+    //-                     el-dropdown-item(@click='append("{TOTAL_WITH_VAT}")') Итого с НДС
 
-                        el-dropdown-item(divided @click='resetCellFormat')
-                            icon.mr-1(icon='tabler:circle-off')
-                            span Сбросить
+    //-                     el-dropdown-item(divided disabled) Разное
+    //-                     el-dropdown-item(@click='append("{PERIOD_YEAR}")') Год
+    //-                     el-dropdown-item(@click='append("{PERIOD_MONTH}")') Месяц (номер)
+    //-                     el-dropdown-item(@click='append("{PERIOD_MONTH_NAME}")') Месяц (наименование)
+    //-                     el-dropdown-item(@click='append("{COMPANY_CODE}")') Код организации
+    //-                     el-dropdown-item(@click='append("{COMPANY_NAME}")') Наименование организации
+    //-                     el-dropdown-item(@click='append("{COMPANY_NAME_FULL}")') Наименование организации (полное)
 
-        template(#toolbar-extra-actions)
-            el-button(:loading='data.saving' @click='save')
-                icon.text-lg(icon='material-symbols:save-outline')
-                .ml-1 Сохранить
+    //-                     el-dropdown-item(divided @click='resetCellFormat')
+    //-                         icon.mr-1(icon='tabler:circle-off')
+    //-                         span Сбросить
+
+    //-     template(#toolbar-extra-actions)
+    //-         el-button(:loading='data.saving' @click='save')
+    //-             icon.text-lg(icon='material-symbols:save-outline')
+    //-             .ml-1 Сохранить
 </template>
 
 <script setup lang="ts">
@@ -73,21 +80,44 @@ import { ref, reactive, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
 
+import { DocumentEditor, type IConfig } from "@onlyoffice/document-editor-vue";
+
 import type { SpreadSheetCell } from '@/types';
 import { useRepos } from '@/store/repository';
 import { loadFromBase64 } from '@/components/spreadsheet/xlsxUtils';
 import { cellFormatter, setCellFormat } from '@/components/spreadsheet/cellFormatter';
 import { bufferToBase64 } from '@/utils/base64';
 import batchApi from '../../../utils/batchApi';
+import { useApi } from '../../../utils/axiosClient';
 
 const route = useRoute();
 const { id } = route.params;
+
+const docConfig: Partial<IConfig> = {
+    height: '550px',
+    width: '100%',
+};
+
+const docConfigWithToken = ref();
+
+useApi().post(`/office/info?id=${id}`, docConfig).then((response) => {
+    if (response.status === 200) {
+        const { status, data, payload } = response.data;
+
+        if (status) {
+            docConfigWithToken.value = payload;
+            return;
+        }
+    }
+
+    docConfigWithToken.value = undefined;
+});
 
 const { ReportTemplate } = useRepos();
 
 const record = ref<Model>();
 const spread = ref();
-const instance = computed(() => spread.value.instance);
+const instance = computed(() => spread.value?.instance);
 const data = reactive({
     loading: false,
     saving: false

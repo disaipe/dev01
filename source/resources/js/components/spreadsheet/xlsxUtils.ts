@@ -431,6 +431,11 @@ export function setWorkSheetData(idOrName: string, data: any) {
 }
 
 export function openWorkSheet(idOrName: string | number) {
+    if (!instance.value) {
+        console.error('[XLSX] Spreadsheet instance does not exists');
+        return;
+    }
+
     const worksheet = store.value.workbook?.getWorksheet(escapeWorksheetName(idOrName));
 
     if (!worksheet) {

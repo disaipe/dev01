@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers;
+use App\Http\Middleware\VerifyCsrfToken;
 use App\Reference;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Route;
 
 Route::reference(Reference\CompanyReference::class);
@@ -30,4 +32,14 @@ Route::prefix('report')
     ->controller(Controllers\ReportController::class)
     ->group(function () {
         Route::match(['GET', 'POST'], '', 'makeReport');
+    });
+
+Route::prefix('office')
+    ->withoutMiddleware(VerifyCsrfToken::class)
+    ->controller(Controllers\OnlyOfficeController::class)
+    ->group(function () {
+        Route::get('download', 'getFileContent');
+        Route::post('info', 'getFileInfo');
+
+        Route::match(['GET', 'POST'], 'cb', 'callbackAction');
     });
