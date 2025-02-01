@@ -1,11 +1,6 @@
 #!/bin/sh
 
-dc=docker-compose
-
-if ! command -v "$dc" &> /dev/null
-then
-  dc="docker compose"
-fi
+dc="docker compose"
 
 if [ "$#" -eq 0 ]; then
   $dc exec -u www-data php /bin/bash

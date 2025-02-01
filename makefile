@@ -1,8 +1,4 @@
-dc=docker-compose
-
-ifeq (, $(shell which $(dc) 2> /dev/null))
-	dc=docker compose
-endif
+dc=docker compose
 
 all:
 	@echo Usage:

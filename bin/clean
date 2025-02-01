@@ -1,10 +1,5 @@
 #!/bin/sh
 
-dc=docker-compose
-
-if ! command -v "$dc" &> /dev/null
-then
-  dc="docker compose"
-fi
+dc="docker compose"
 
 $dc down --volumes --rmi local
