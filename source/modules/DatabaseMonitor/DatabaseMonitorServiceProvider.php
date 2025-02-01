@@ -21,6 +21,7 @@ use App\Modules\DatabaseMonitor\References\DatabaseReference;
 use App\Modules\DatabaseMonitor\References\DatabaseServerReference;
 use App\Services\DashboardMenuService;
 use App\Support\DashboardMenuItem;
+use App\Utils\Size;
 use Cron\CronExpression;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Tabs;
@@ -56,7 +57,7 @@ class DatabaseMonitorServiceProvider extends ModuleBaseServiceProvider
                 'options' => [
                     'model' => Database::class,
                 ],
-                'mutator' => fn ($value) => round($value / 1024 / 1024, 2),
+                'mutator' => fn ($value) => Size::KBToGB($value),
             ]),
         ]);
 

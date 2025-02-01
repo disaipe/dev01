@@ -33,7 +33,8 @@ class MSExchangeMailboxStatReference extends ReferenceEntry
             ->addField('total_item_size', ReferenceFieldSchema::make()
                 ->label('Размер')
                 ->readonly()
-                ->pinia(PiniaAttribute::number()))
+                ->pinia(PiniaAttribute::number())
+                ->displayFilter('formatKBytes'))
 
             ->addField('total_item_count', ReferenceFieldSchema::make()
                 ->label('Количество элементов')

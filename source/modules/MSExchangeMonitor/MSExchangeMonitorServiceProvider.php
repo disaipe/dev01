@@ -59,7 +59,7 @@ class MSExchangeMonitorServiceProvider extends ModuleBaseServiceProvider
                 'options' => [
                     'model' => MSExchangeMailboxStat::class,
                 ],
-                'mutator' => fn ($value) => Size::ToGigabytes($value),
+                'mutator' => fn ($value) => Size::BToGB($value),
             ]),
             Indicator::fromArray([
                 'module' => $this->getKey(),
