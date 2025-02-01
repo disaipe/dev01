@@ -32,7 +32,7 @@ class ReportController extends Controller
         } catch (\Exception|\Error $e) {
             return new JsonResponse([
                 'status' => false,
-                'data' => $e->getLine() . ': ' . $e->getMessage(),
+                'data' => $e->getFile() . '('. $e->getLine() . '): ' . $e->getMessage(),
             ]);
         }
     }
