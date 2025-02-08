@@ -1,5 +1,3 @@
-import { ElAlert } from 'element-plus';
-
 declare module '@vue/runtime-core' {
     interface ComponentCustomProperties {
         // add custom components here

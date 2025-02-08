@@ -1,5 +1,4 @@
 import ElementPlus from 'element-plus';
-import * as ElementPlusIcons from '@element-plus/icons-vue';
 
 /** @ts-ignore */
 import elementLang from 'element-plus/dist/locale/ru.mjs';
@@ -43,9 +42,5 @@ const app = createApp(App)
     .use(dynamicModels)
     .use(filters)
     .use(components);
-
-for (const [key, component] of Object.entries(ElementPlusIcons)) {
-    app.component(key, component);
-}
 
 app.mount('#app');
