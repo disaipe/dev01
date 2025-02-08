@@ -47,7 +47,7 @@ export default {
                 useApi()
                     .post(`price_list/${id}/copy`)
                     .then((response) => {
-                      if (response.ok) {
+                      if (response.status === 200) {
                           table.value?.load();
                       } else {
                           raiseErrorMessage('При копировании прайс-листа произошла ошибка');

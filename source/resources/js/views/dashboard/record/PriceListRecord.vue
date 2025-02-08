@@ -129,7 +129,7 @@ const load = () => {
 };
 
 const parseDataResponse = (response) => {
-    if (response.ok) {
+    if (response.status === 200) {
         const { status, data } = response.data;
 
         if (status) {

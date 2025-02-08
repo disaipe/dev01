@@ -1,9 +1,9 @@
-import axios, { type RequestHeaders } from 'redaxios';
+import axios, { type RawAxiosRequestHeaders } from 'axios';
 
 const csrfTokenMeta = document.querySelector('meta[name=csrf_token]');
 export const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : null;
 
-const headers: RequestHeaders = {
+const headers: RawAxiosRequestHeaders = {
     'X-CSRF-TOKEN': csrfToken || ''
 };
 

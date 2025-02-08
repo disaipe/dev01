@@ -1,5 +1,5 @@
 import type { Element, Model } from 'pinia-orm';
-import type { Response } from 'redaxios';
+import type { AxiosResponse as Response } from 'axios';
 import type { ModelKey, SortStore } from './index';
 
 export type ApiResponseBody<T, A = {}> = {
