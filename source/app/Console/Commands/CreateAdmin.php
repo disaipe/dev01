@@ -3,9 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Models\User;
+use Database\Seeders\PermissionsSeeder;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Permission;
 
 class CreateAdmin extends Command
 {
@@ -29,6 +31,10 @@ class CreateAdmin extends Command
     public function handle(): void
     {
         $this->comment('Super admin user will be created');
+
+        if (Permission::query()->count() === 0) {
+            (new PermissionsSeeder)->run();
+        }
 
         $name = $this->askName();
         $email = $this->askEmail();
