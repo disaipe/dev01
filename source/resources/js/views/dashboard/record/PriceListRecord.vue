@@ -47,8 +47,8 @@
 
     //- Mass change dialog
     mass-change-dialog(
-      v-model='massChangeDialogVisible'
-      @change='massChange'
+        v-model='massChangeDialogVisible'
+        @change='massChange'
     )
 </template>
 
@@ -178,7 +178,7 @@ const fillSpreadsheet = () => {
 
     priceListData.data = rows;
 
-  updateSpreadsheetData(priceListData.data);
+    updateSpreadsheetData(priceListData.data);
 };
 
 const updateSpreadsheetData = (data) => {

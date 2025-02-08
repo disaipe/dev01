@@ -1,12 +1,11 @@
-import { Repository, type Model } from 'pinia-orm';
-
+import type { Model } from 'pinia-orm';
 import type { ModelSchema, HistoryRecord, ResponseBase, FetchQueryParams, FetchModelResponse, ModelKey, RelatedModelsResponse, FetchModelResult } from '@/types';
+
+import Repository from './repository';;
 
 import { useRepos } from './index.js';
 
-export default class Api extends Repository {
-    declare model: Model;
-
+export class RepositoryApi<M extends Model = Model> extends Repository<M> {
     api() {
         return this.model.api();
     }
@@ -15,11 +14,11 @@ export default class Api extends Repository {
         return this.model.baseURL();
     }
 
-    fetch(params?: FetchQueryParams): Promise<FetchModelResult> {
+    fetch(params?: FetchQueryParams): Promise<FetchModelResult<M>> {
         return this.api()
             .post(this.baseURL(), params)
             .then((response: FetchModelResponse) => {
-                let items: Model[] | undefined;
+                let items: M[] | undefined;
 
                 if (response.status === 200) {
                     const { status, data } = response.data;
@@ -63,12 +62,12 @@ export default class Api extends Repository {
             });
     }
 
-    push(record: Model) {
+    push(record: M) {
         const body = record.$getAttributes();
 
         const key = record.$getKey();
         if (!Number.isInteger(key)) {
-            const keyName = record.$getKeyName();
+            const keyName = record.$getSingleKeyName();
             delete body[keyName];     
         }
 
@@ -141,7 +140,7 @@ export default class Api extends Repository {
     fetchRelatedModels() {
         return this.getRelatedModels().then((models: string[]) => {
             if (!models.length) {
-                return models;
+                return Promise.resolve();
             }
 
             return this.api()
@@ -152,6 +151,7 @@ export default class Api extends Repository {
 
                         if (status) {
                             for (const [model, items] of Object.entries(data)) {
+                                // @ts-ignore
                                 useRepos()[model].save(items);
                             }
                         }
@@ -160,3 +160,5 @@ export default class Api extends Repository {
         });
     }
 }
+
+export default RepositoryApi;

@@ -391,6 +391,7 @@ export function loadFromFile(file: File) {
 
 export function loadFromBase64(base64string: string) {
     return base64ToBuffer(base64string).then((buffer) => {
+        // @ts-ignore
         return loadFromBuffer(buffer);
     });
 }

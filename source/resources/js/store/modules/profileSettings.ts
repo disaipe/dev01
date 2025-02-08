@@ -40,7 +40,7 @@ export const useProfilesSettingsStore = defineStore('profileSettings', {
     },
     
     persist: {
-        afterRestore({ store }) {
+        afterHydrate({ store }) {
             setNumberFormatLanguage(store.numberFormatLocale);
         }
     }

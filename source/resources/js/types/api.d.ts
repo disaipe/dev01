@@ -42,9 +42,9 @@ export type FetchQueryParams = {
     options?: FetchQueryDownloadOptions;
 };
 export type FetchModelResponse = ResponseBase<Model[], { total?: number }>;
-export type FetchModelResult = {
+export type FetchModelResult<M extends Model = Model> = {
     response: FetchModelResponse;
-    items?: Model[];
+    items?: M[];
 };
 
 export type HistoryRecord = {

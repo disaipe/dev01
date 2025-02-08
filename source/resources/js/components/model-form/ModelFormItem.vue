@@ -72,12 +72,12 @@ el-form-item(
         )
 
     //- RELATION INPUT
-    template(v-else-if='field.type === "relation"')
+    template(v-else-if='field.type === "relation" && field.relation?.key')
         el-select.w-full(
             :model-value='model[field.relation.key]'
             :disabled='field.readonly'
             :clearable='!field.required'
-            :multiple='field.relation.multiple'
+            :multiple='field.relation?.multiple'
             filterable
             @change='onRelatedChange'
         )
@@ -128,6 +128,8 @@ el-form-item(
 </template>
 
 <script setup lang="ts">
+import type { ModelFieldSchema } from '../../types';
+
 import { toRef, inject, computed } from 'vue';
 import { useRepos } from '../../store/repository';
 
@@ -135,43 +137,34 @@ const model = inject<Record<string, any>>('modelForm');
 
 const emit = defineEmits(['update:model-value']);
 
-const props = defineProps({
-    modelValue: {
-        type: [String, Number, Array, Object, Boolean],
-        default: null
-    },
-    field: {
-        type: Object,
-        required: true
-    },
-    prop: {
-        type: String,
-        default: null
-    }
-});
+const props = defineProps<{
+    modelValue?: String|Number|Object|Boolean|Array<any>,
+    field: ModelFieldSchema,
+    prop?: String
+}>();
 
 const field = toRef(props, 'field');
 
 const relatedOptions = computed(() => {
-    if (field.value.type !== 'relation') {
+    if (field.value.type !== 'relation' || !field.value.relation) {
         return [];
     }
 
     const { ownerKey, model } = field.value.relation;
 
     const repo = useRepos()[model];
-    const valueKey = ownerKey || repo.getModel().$getKeyName();
+    const valueKey = ownerKey || repo.getModel().$getSingleKeyName();
 
     return repo.all().map((item) => {
         return {
-            value: item[valueKey],
+            value: item[valueKey] || item.$getKey(),
             label: item.$getName()
         };
     });
 });
 
 function onRelatedChange(value: any) {
-    if (model) {
+    if (model && field.value.relation?.key) {
         model.value[field.value.relation.key] = value;
         emit('update:model-value', value);
     }

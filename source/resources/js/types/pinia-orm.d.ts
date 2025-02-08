@@ -1,14 +1,20 @@
-import * as pinia from 'pinia-orm';
+import * as piniaORM from 'pinia-orm';
+import type { AxiosInstance } from 'axios';
 import type { ModelSchema } from './model';
 import type Date from '@/store/model/attributes/date';
 import type Datetime from '@/store/model/attributes/datetime';
 
+import CommonModel from '@/store/model/model';
+import CommonRepository from '@/store/repository';
+
 declare module 'pinia-orm' {    
-    export interface Attribute extends pinia.Attribute {
+    export interface Attribute extends piniaORM.Attribute {
         name?: string
     }
 
-    declare class Model extends pinia.Model {
+    export interface Model {
+        [s: keyof piniaORM.ModelFields]: any;
+
         eagerLoad?: string;
 
         static labels(): Record<string, string>;
@@ -17,12 +23,22 @@ declare module 'pinia-orm' {
         static datetime(value: string): Datetime;
         static date(value: string): Date;
 
-        $getKey(): ModelKey;
-        $getKeyName(): string;
+        api(): AxiosInstance;
+        baseURL(): string;
+
+        $self(): Model;
+        $isSaved(): boolean;
+        $getSingleKey(): ModelKey | undefined;
+        $getSingleKeyName(): string;
+        $getName(): string;
     }
 
-    declare class Repository extends pinia.Repository {
-        static fieldsSchema: Record<string, ModelSchema>;
+    export interface Query<M extends CommonModel = CommonModel> extends piniaORM.Query<M> {}
+    
+    export interface Repository<M extends CommonModel = CommonModel> {
+        $self(): typeof CommonRepository<M>;
+
+        schema(): Promise<ModelSchema>;
     }
 }
 

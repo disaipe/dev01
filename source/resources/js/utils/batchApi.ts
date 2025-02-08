@@ -1,4 +1,5 @@
-import type { Element, Model } from 'pinia-orm';
+import type { Element } from 'pinia-orm';
+import type { Model } from 'pinia-orm';
 
 import type { ResponseBase } from '@/types';
 
@@ -27,6 +28,7 @@ export default {
                             const repo = useRepos()[key];
 
                             if (repo) {
+                                // @ts-ignore
                                 result[key] = repo.save(value);
                             }
                         }

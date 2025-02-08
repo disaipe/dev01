@@ -244,6 +244,8 @@ const pagination = reactive({
 const selectedRow = ref<Model>();
 const contextRow = ref<Model>();
 
+selectedRow.value?.$getLocalKey
+
 const drawer = ref(false);
 const historyDialog = ref(false);
 const loading = ref(false);
@@ -252,9 +254,9 @@ const loadingConfig = {
     text: 'Собираем данные'
 };
 
-const rowConfig = {
+const rowConfig  = {
     useKey: true,
-    keyField: repository?.model.$getKeyName()
+    keyField: repository?.getModel().$getSingleKeyName()
 };
 
 const verifiedData = computed(() => {
@@ -430,7 +432,7 @@ function save({ original, saved }: { original: Model, saved: Model }) {
     if (repository && saved) {
         repository.withAll().load([saved]);
 
-        const key = original.$getKey();
+        const key = original.$getSingleKey();
 
         // find record in table to update it
         const record = vxe.value?.getRowById(key);
@@ -488,7 +490,7 @@ function confirmRowRemoving(row: Model) {
         }
     ).then(() => {
         repository
-            .remove(row.$getKey())
+            .remove(row.$getSingleKey())
             .then((removed) => {
                 if (removed) {
                     remove(removed);

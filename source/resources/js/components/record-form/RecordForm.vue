@@ -31,7 +31,7 @@ template(v-if='modelValue')
 <script setup lang="ts">
 import type { Model } from 'pinia-orm';
 
-import { computed, ref, toRef } from 'vue';
+import { computed, ref, toRefs } from 'vue';
 import pickBy from 'lodash/pickBy';
 
 import { useRepos } from '@/store/repository';
@@ -54,7 +54,7 @@ const props = withDefaults(defineProps<ModelFormProps & RecordFormPermissions>()
 
 const emit = defineEmits(['saved', 'removed']);
 
-const modelValue = toRef(props, 'modelValue');
+const { modelValue } = toRefs(props);
 const reference = modelValue.value.$self().name;
 
 const repository = useRepos()[reference];
@@ -81,7 +81,7 @@ function save(form: ModelForm) {
 
             repository
                 .push(props.modelValue)
-                .then((savedRecord: Model) => {
+                .then((savedRecord: Model|Model[]) => {
                     emit('saved', {
                         original: props.modelValue,
                         saved: savedRecord
@@ -97,7 +97,7 @@ function save(form: ModelForm) {
 function remove() {
     removing.value = true;
 
-    const key = modelValue.value.$getKey();
+    const key = modelValue.value.$getSingleKey();
 
     if (key) {
         repository

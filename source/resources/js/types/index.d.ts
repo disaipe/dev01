@@ -13,15 +13,6 @@ export interface IModelOptions {
     fields: Record<string, string[]>;
 }
 
-export type ModelFieldRelation = {
-    type: string;
-    key: PrimaryKey;
-    ownerKey?: PrimaryKey;
-    model: string;
-    multiple: boolean;
-    pivot: Model;
-}
-
 export type SortOrder = 'asc' | 'desc' | '' | null;
 export type SortStore = Record<string, SortOrder>;
 

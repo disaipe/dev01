@@ -1,12 +1,14 @@
-import { Model } from 'pinia-orm';
+import type { AxiosInstance } from 'axios';
+
+import { Model as CoreModel } from 'pinia-orm';
 
 import { useApi } from '../../utils/axiosClient';
 import { snake } from '../../utils/stringsUtils';
 
 const axios = useApi();
 
-export default class ApiModel extends Model {
-    api() {
+export class ModelApi extends CoreModel {
+    api(): AxiosInstance {
         return axios;
     }
 
@@ -14,3 +16,5 @@ export default class ApiModel extends Model {
         return snake(this.constructor.name);
     }
 }
+
+export default ModelApi;

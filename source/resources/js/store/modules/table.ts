@@ -152,6 +152,6 @@ export const useTableStore = defineStore('table', {
     },
 
     persist: {
-        paths: ['filters', 'sorts', 'columns']
+        pick: ['filters', 'sorts', 'columns']
     }
 });

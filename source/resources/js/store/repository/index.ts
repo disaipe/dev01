@@ -1,9 +1,8 @@
-import type { Repository as PiniaRepository } from 'pinia-orm';
+import { Model } from '../model';
 
-import { useRepo, Model } from 'pinia-orm';
-import Repository from './repository';
+import { useRepo as useCoreRepo } from 'pinia-orm';
+import Repository from './api';
 import Models from '../models';
-import CoreModel from '../model';
 import { snake } from '../../utils/stringsUtils';
 import type { IModelOptions } from '@/types';
 
@@ -16,7 +15,7 @@ interface PivotOptions {
 
 export function defineModel(name: string, options: IModelOptions): any {
     return ({
-        [name]: class extends CoreModel {
+        [name]: class extends Model {
             static name = name;
             static entity = options.entity || name;
 
@@ -47,7 +46,8 @@ export function definePivot(name: string, options: PivotOptions) {
 }
 
 export function defineRepo(model: any) {
-    const repo = useRepo(Repository);
+    Repository.useModel = model;
+    const repo = useCoreRepo(Repository);
     repo.initialize(model);
     repo.database.register(repo.getModel());
     repos[model.name] = repo;

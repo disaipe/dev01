@@ -1,10 +1,12 @@
+import type { Model } from 'pinia-orm';
+
+import { Repository as CoreRepository } from 'pinia-orm';
 import defaultsDeep from 'lodash/defaultsDeep';
 
-import RepositoryApi from './api.js';
 import { parseRules } from '../../utils/formUtils';
 import type { ModelSchema } from '@/types';
 
-export default class Repository extends RepositoryApi {
+export class Repository<M extends Model = Model> extends CoreRepository<M> {
     static fieldsSchema: Record<string, ModelSchema> = {};
 
     get name() {
@@ -65,3 +67,5 @@ export default class Repository extends RepositoryApi {
         });
     }
 }
+
+export default Repository;
