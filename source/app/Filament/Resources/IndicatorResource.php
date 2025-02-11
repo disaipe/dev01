@@ -148,16 +148,23 @@ class IndicatorResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('#')
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('admin.name'))
+                    ->wrap()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('code')
                     ->label(__('admin.code'))
+                    ->wrap()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('module')
-                    ->label(trans_choice('admin.module', 1)),
+                    ->label(trans_choice('admin.module', 1))
+                    ->wrap(),
 
                 Tables\Columns\ToggleColumn::make('published')
                     ->label(__('admin.enabled'))
