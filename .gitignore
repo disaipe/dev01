@@ -1,5 +1,7 @@
 .env
 .idea
-.vscode
+.vscode/*
+!/.vscode/settings.json
+!.vscode/extensions.json
 
 docker-compose.override.yml

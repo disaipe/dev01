@@ -25,29 +25,29 @@ template(v-if='children.length')
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const props = defineProps({
-    route: {
-        type: Object,
-    },
-    icon: {
-        type: String,
-        default: null
-    },
-    label: {
-        type: String,
-        default: null
-    },
-    index: {
-        type: String,
-        default: null,
-    },
-    children: {
-        type: Array,
-        default: () => ([])
-    }
+  route: {
+    type: Object,
+  },
+  icon: {
+    type: String,
+    default: null,
+  },
+  label: {
+    type: String,
+    default: null,
+  },
+  index: {
+    type: String,
+    default: null,
+  },
+  children: {
+    type: Array,
+    default: () => ([]),
+  },
 });
 
 const router = useRouter();
@@ -55,17 +55,17 @@ const router = useRouter();
 const subMenuOpen = ref(false);
 
 const subMenuClasses = computed(() => {
-    return subMenuOpen.value
-        ? 'grid-rows-[1fr] opacity-100'
-        : 'grid-rows-[0fr] opacity-0 !mt-0';
+  return subMenuOpen.value
+    ? 'grid-rows-[1fr] opacity-100'
+    : 'grid-rows-[0fr] opacity-0 !mt-0';
 });
 
 const isActive = computed(() => {
-   return router.currentRoute.value.name === props.route?.name;
+  return router.currentRoute.value.name === props.route?.name;
 });
 
 function toggleSubMenu() {
-    subMenuOpen.value = !subMenuOpen.value;
+  subMenuOpen.value = !subMenuOpen.value;
 }
 </script>
 

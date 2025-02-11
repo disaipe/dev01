@@ -1,17 +1,17 @@
-import type { TableColumnOptions } from '@/types'; 
+import type { TableColumnOptions } from '@/types';
 
-export type TableFilterProps = {
-    filters?: Object
+export interface TableFilterProps {
+  filters?: object;
 }
 
 export type TableProps = {
-    id?: string,
-    reference?: string,
-    columns?: TableColumnOptions[],
-    items?: any[],
-    context?: Object,
-    canLoad?: boolean,
-    canCreate?: boolean,
-    canUpdate?: boolean,
-    canDelete?: boolean
-} & TableFilterProps
+  id?: string;
+  reference?: string;
+  columns?: TableColumnOptions[];
+  items?: any[];
+  context?: object;
+  canLoad?: boolean;
+  canCreate?: boolean;
+  canUpdate?: boolean;
+  canDelete?: boolean;
+} & TableFilterProps;

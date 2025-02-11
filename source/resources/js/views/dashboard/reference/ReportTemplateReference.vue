@@ -16,18 +16,18 @@
 import { useRouter } from 'vue-router';
 
 export default {
-    name: 'ReportTemplateReference',
-    setup() {
-        const router = useRouter();
+  name: 'ReportTemplateReference',
+  setup() {
+    const router = useRouter();
 
-        const editRecord = (id) => {
-            router.push({ name: 'ReportTemplateRecord', params: { id } });
-        };
+    const editRecord = (id) => {
+      router.push({ name: 'ReportTemplateRecord', params: { id } });
+    };
 
-        return {
-            reference: 'ReportTemplate',
-            editRecord
-        };
-    }
-}
+    return {
+      reference: 'ReportTemplate',
+      editRecord,
+    };
+  },
+};
 </script>

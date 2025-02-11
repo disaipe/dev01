@@ -1,13 +1,14 @@
-import type { Model } from 'pinia-orm';
-import { ElForm, type FormProps } from 'element-plus';
+import type { Model } from '@/store';
+import type { FormProps } from 'element-plus';
+import { ElForm } from 'element-plus';
 
 export type ModelFormProps = FormProps & { modelValue: Model };
 
 export default {
-    ...ElForm.props,
+  ...ElForm.props,
 
-    modelValue: {
-        type: Object,
-        default: () => ({}),
-    }
+  modelValue: {
+    type: Object,
+    default: () => ({}),
+  },
 } as ModelFormProps;

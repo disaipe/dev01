@@ -3,9 +3,9 @@ import { createApp as vueCreateApp } from 'vue';
 
 import { decrypt } from './crypt';
 
-type PageEncryptedProps = {
-    k: string;
-    v: string;
+interface PageEncryptedProps {
+  k: string;
+  v: string;
 }
 
 type PageProps = Record<string, any>;
@@ -17,21 +17,21 @@ let page: PageEncryptedProps;
 let pageProps: PageProps;
 
 if (el && el.dataset.page) {
-    page = JSON.parse(el.dataset.page) as PageEncryptedProps;
+  page = JSON.parse(el.dataset.page) as PageEncryptedProps;
 
-    const data = decrypt(page.v, page.k);
+  const data = decrypt(page.v, page.k);
 
-    if (data) {
-        delete el.dataset.page;
-        pageProps = JSON.parse(data);
-        Object.freeze(pageProps);
-    }
+  if (data) {
+    delete el.dataset.page;
+    pageProps = JSON.parse(data);
+    Object.freeze(pageProps);
+  }
 }
 
 export function createApp(rootComponent: Component<any, any, any, ComputedOptions, MethodOptions>, rootProps = {}) {
-    const app = vueCreateApp(rootComponent, rootProps);
+  const app = vueCreateApp(rootComponent, rootProps);
 
-    app.config.globalProperties.$page = pageProps;
+  app.config.globalProperties.$page = pageProps;
 
-    return app;
+  return app;
 }

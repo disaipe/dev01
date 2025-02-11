@@ -13,24 +13,24 @@
 </template>
 
 <script setup>
-import { getCurrentInstance } from 'vue';
-import { useRouter } from 'vue-router';
 import groupBy from 'lodash/groupBy';
 import orderBy from 'lodash/orderBy';
+import { getCurrentInstance } from 'vue';
+import { useRouter } from 'vue-router';
 
 import SideBarMenuItem from './SideBarMenuItem.vue';
 
 function makeMenuTree(data) {
-    const grouped = groupBy(data, (item) => item.parent || null);
+  const grouped = groupBy(data, item => item.parent || null);
 
-    function childrenOf(parentId) {
-        const arr = (grouped[parentId] || [])
-            .map((item) => ({ ...item, children: childrenOf(item.name) }));
+  function childrenOf(parentId) {
+    const arr = (grouped[parentId] || [])
+      .map(item => ({ ...item, children: childrenOf(item.name) }));
 
-        return orderBy(arr, ['order', 'label']);
-    }
+    return orderBy(arr, ['order', 'label']);
+  }
 
-    return childrenOf(null);
+  return childrenOf(null);
 }
 
 const app = getCurrentInstance();
@@ -39,28 +39,30 @@ const router = useRouter();
 // get routes with sidebar menu item
 const menuRoutes = [];
 for (const route of router.getRoutes()) {
-    if (route.meta?.isReference) {
-        menuRoutes.push(route);
-    } else if (route.meta?.isRecord) {
-        //
-    } else if (route.meta?.view) {
-        menuRoutes.push(route);
-    }
+  if (route.meta?.isReference) {
+    menuRoutes.push(route);
+  }
+  else if (route.meta?.isRecord) {
+    //
+  }
+  else if (route.meta?.view) {
+    menuRoutes.push(route);
+  }
 }
 
 const menu = app.appContext.config.globalProperties.$page.menu || [];
 
 const flatRoutes = [
-    ...menu,
+  ...menu,
 
-    ...menuRoutes.map((r) => ({
-        name: r.name,
-        label: r.meta.title,
-        icon: r.meta.icon,
-        order: r.meta.order,
-        parent: r.meta.menuParent,
-        route: { name: r.name }
-    }))
+  ...menuRoutes.map(r => ({
+    name: r.name,
+    label: r.meta.title,
+    icon: r.meta.icon,
+    order: r.meta.order,
+    parent: r.meta.menuParent,
+    route: { name: r.name },
+  })),
 ];
 
 const routes = makeMenuTree(flatRoutes);

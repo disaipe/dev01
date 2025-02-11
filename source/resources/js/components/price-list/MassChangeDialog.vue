@@ -30,7 +30,7 @@ el-dialog(
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { computed, ref } from 'vue';
 
 const emit = defineEmits(['change', 'update:model-value']);
 
@@ -40,16 +40,16 @@ const value = ref();
 const canApply = computed(() => changeType.value && value.value);
 
 function close() {
-    emit('update:model-value', false);
+  emit('update:model-value', false);
 }
 
 function apply() {
-    emit('change', {
-        target: target.value,
-        type: changeType.value,
-        value: value.value
-    });
+  emit('change', {
+    target: target.value,
+    type: changeType.value,
+    value: value.value,
+  });
 
-    close();
+  close();
 }
 </script>

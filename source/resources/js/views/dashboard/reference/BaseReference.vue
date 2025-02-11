@@ -25,13 +25,13 @@ const canUpdate = route.meta?.permissions?.update;
 const canDelete = route.meta?.permissions?.delete;
 const hasRecordView = !!route.meta?.recordView;
 
-const editRecord = (id) => {
-    router.push({ name: route.meta?.recordView, params: { id } });
-};
+function editRecord(id) {
+  router.push({ name: route.meta?.recordView, params: { id } });
+}
 </script>
 
 <script>
 export default {
-    name: 'BaseReference'
-}
+  name: 'BaseReference',
+};
 </script>

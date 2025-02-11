@@ -1,17 +1,29 @@
 {
-    "extends": "@vue/tsconfig/tsconfig.json",
-    "include": ["resources/js/**/*.ts", "resources/js/**/*.vue"],
-    "compilerOptions": {
-        "allowJs": true,
-        "paths": {
-            "@/*": ["./resources/js/*"]
-        },
-        "types": ["vue", "vite/client"],
+  "extends": "@vue/tsconfig/tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@/*": [
+        "./resources/js/*"
+      ]
     },
-    "vueCompilerOptions": {
-        "plugins": [
-            "@vue/language-plugin-pug"
-        ]
-    },
-    "references": [{ "path": "./tsconfig.node.json" }]
+    "types": [
+      "vue",
+      "vite/client"
+    ],
+    "allowJs": true
+  },
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
+  "include": [
+    "resources/js/**/*.ts",
+    "resources/js/**/*.vue"
+  ],
+  "vueCompilerOptions": {
+    "plugins": [
+      "@vue/language-plugin-pug"
+    ]
+  }
 }

@@ -22,10 +22,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, getCurrentInstance } from 'vue';
+import type { ResponseBase } from '@/types';
 import { ElMessageBox } from 'element-plus';
 
-import type { ResponseBase } from '@/types';
+import { getCurrentInstance, ref } from 'vue';
 import { baseClient } from '../utils/axiosClient';
 
 const email = ref();
@@ -35,75 +35,76 @@ const domains = ref();
 
 const { appContext } = getCurrentInstance()!;
 
-const storeCredentials = (email: string, domain?: string) => {
-    window.localStorage.setItem('q_auth', btoa(JSON.stringify({
-        e: email,
-        d: domain
-    })));
-};
-
-const getCredentials = () => {
-    const data = window.localStorage.getItem('q_auth');
-
-    if (data) {
-        try {
-            const { e, d } = JSON.parse(atob(data));
-            email.value = e;
-            domain.value = d;
-        } catch (error) {
-        }
-    }
-};
-
-const getDomains = () => {
-    const data = window.localStorage.getItem('domains');
-
-    if (data) {
-        try {
-            const d = JSON.parse(atob(data));
-
-            if (typeof(d) === 'object' && Object.keys(d).length) {
-                domains.value = d;
-            }
-        } catch (error) {
-        }
-    }
+function storeCredentials(email: string, domain?: string) {
+  window.localStorage.setItem('q_auth', btoa(JSON.stringify({
+    e: email,
+    d: domain,
+  })));
 }
 
-const doLogin = () => {
-    baseClient.post('/login', {
-        email: email.value,
-        password: password.value,
-        domain: domain.value
-    }, {
-        headers: {
-            'Accept': 'application/json'
-        }
-    }).then((response: ResponseBase<{ redirect: string, message: string }>) => {
-        if (response.status === 200) {
-            const { status, data: { redirect, message } } = response.data;
+function getCredentials() {
+  const data = window.localStorage.getItem('q_auth');
 
-            if (status && redirect) {
-                
-                storeCredentials(email.value, domain.value);
-                window.location.href = redirect;
-            }
+  if (data) {
+    try {
+      const { e, d } = JSON.parse(atob(data));
+      email.value = e;
+      domain.value = d;
+    }
+    catch (error) {
+    }
+  }
+}
 
-            if (!status && message) {
-                ElMessageBox.alert(message, 'Ошибка', { type: 'error' }, appContext);
-            }
-        }
-    }).catch((response) => {
-        const { data } = response;
+function getDomains() {
+  const data = window.localStorage.getItem('domains');
 
-        if (data) {
-            const { message } = data;
+  if (data) {
+    try {
+      const d = JSON.parse(atob(data));
 
-            if (message) {
-                ElMessageBox.alert(message, 'Ошибка', { type: 'error' });
-            }
-        }
-    });
+      if (typeof (d) === 'object' && Object.keys(d).length) {
+        domains.value = d;
+      }
+    }
+    catch (error) {
+    }
+  }
+}
+
+function doLogin() {
+  baseClient.post('/login', {
+    email: email.value,
+    password: password.value,
+    domain: domain.value,
+  }, {
+    headers: {
+      Accept: 'application/json',
+    },
+  }).then((response: ResponseBase<{ redirect: string; message: string }>) => {
+    if (response.status === 200) {
+      const { status, data: { redirect, message } } = response.data;
+
+      if (status && redirect) {
+        storeCredentials(email.value, domain.value);
+        window.location.href = redirect;
+      }
+
+      if (!status && message) {
+        ElMessageBox.alert(message, 'Ошибка', { type: 'error' }, appContext);
+      }
+    }
+  }).catch((response) => {
+    const { data } = response;
+
+    if (data) {
+      const { message } = data;
+
+      if (message) {
+        ElMessageBox.alert(message, 'Ошибка', { type: 'error' });
+      }
+    }
+  });
 }
 
 getCredentials();

@@ -20,57 +20,57 @@ el-dropdown(
 </template>
 
 <script setup>
-import { ref, inject, onMounted, nextTick, watch } from 'vue';
 import Sortable from 'sortablejs';
+import { inject, nextTick, onMounted, ref, watch } from 'vue';
 
 import { useTableColumns } from './mixins/tableColumns';
 
-const { 
-    tableId, 
-    fields, 
-    columns, 
-    vxe, 
-    setVisibleColumns
+const {
+  tableId,
+  fields,
+  columns,
+  vxe,
+  setVisibleColumns,
 } = inject('TableInstance');
 
 const sortable = ref();
 const sortables = ref();
 
 const {
-    columnStore,
+  columnStore,
 
-    allowedColumns,
-    visibleColumns,
+  allowedColumns,
+  visibleColumns,
 
-    loadColumns,
-    saveColumnVisibility,
-    saveColumnOrder,
+  loadColumns,
+  saveColumnVisibility,
+  saveColumnOrder,
 
-    handleColumnVisible
+  handleColumnVisible,
 } = useTableColumns(tableId, { fields, columns });
 
 watch(() => visibleColumns.value, () => {
-    setVisibleColumns(visibleColumns.value);
+  setVisibleColumns(visibleColumns.value);
 });
 
 onMounted(() => {
-    sortable.value = new Sortable(sortables.value, {
-        onEnd: () => {
-            const order = sortable.value.toArray();
+  sortable.value = new Sortable(sortables.value, {
+    onEnd: () => {
+      const order = sortable.value.toArray();
 
-            saveColumnOrder({ tableId, order });
+      saveColumnOrder({ tableId, order });
 
-            nextTick(() => {
-                sortable.value.sort(order);
-                vxe.value?.updateData();
-            });
-        }
-    });
+      nextTick(() => {
+        sortable.value.sort(order);
+        vxe.value?.updateData();
+      });
+    },
+  });
 });
 </script>
 
 <script>
 export default {
-    name: 'TableColumnsSettings'
-}
+  name: 'TableColumnsSettings',
+};
 </script>

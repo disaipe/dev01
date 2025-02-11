@@ -4,6 +4,6 @@ div
 
 <script lang="ts">
 export default {
-    name: 'DashboardIndex'
-}
+  name: 'DashboardIndex',
+};
 </script>

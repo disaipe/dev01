@@ -9,9 +9,9 @@ el-form(
 </template>
 
 <script setup lang="ts">
-import { ref, toRef, provide } from 'vue';
-import { type FormValidateCallback } from 'element-plus';
-import { type ModelFormProps } from './modelFormProps';
+import type { FormValidateCallback } from 'element-plus';
+import type { ModelFormProps } from './modelFormProps';
+import { provide, ref, toRef } from 'vue';
 
 const props = defineProps<ModelFormProps>();
 
@@ -21,16 +21,16 @@ const modelForm = toRef(props, 'modelValue');
 provide('modelForm', modelForm);
 
 function validate(callback: FormValidateCallback) {
-    form.value?.validate(callback);
+  form.value?.validate(callback);
 }
 
 defineExpose({
-    validate
+  validate,
 });
 </script>
 
 <script lang="ts">
 export default {
-    name: 'ModelForm'
-}
+  name: 'ModelForm',
+};
 </script>

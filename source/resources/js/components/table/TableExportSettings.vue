@@ -29,18 +29,17 @@ el-dropdown(
 <script setup lang="ts">
 import { ref } from 'vue';
 
+const emit = defineEmits(['onExport']);
 const dropdown = ref();
-const format = ref('xlsx')
+const format = ref('xlsx');
 const type = ref('page');
 
-const emit = defineEmits(['on-export']);
-
 function makeExport() {
-    emit('on-export', {
-        format: format.value,
-        one_page: type.value === 'page'
-    });
+  emit('onExport', {
+    format: format.value,
+    one_page: type.value === 'page',
+  });
 
-    dropdown.value?.handleClose();
+  dropdown.value?.handleClose();
 }
 </script>

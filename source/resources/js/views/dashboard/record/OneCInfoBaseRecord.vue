@@ -9,22 +9,22 @@
 import { useRoute } from 'vue-router';
 
 export default {
-    name: 'OneCInfoBaseRecord',
-    setup() {
-        const route = useRoute();
-        const recordId = parseInt(route.params?.id, 10);
+  name: 'OneCInfoBaseRecord',
+  setup() {
+    const route = useRoute();
+    const recordId = Number.parseInt(route.params?.id, 10);
 
-        return {
-            tableProps: {
-                reference: 'OneCInfoBaseUser',
-                context: {
-                    one_c_info_base_id: { $eq: recordId }
-                },
-                canCreate: false,
-                canUpdate: false,
-                canDelete: false
-            }
-        };
-    }
-}
+    return {
+      tableProps: {
+        reference: 'OneCInfoBaseUser',
+        context: {
+          one_c_info_base_id: { $eq: recordId },
+        },
+        canCreate: false,
+        canUpdate: false,
+        canDelete: false,
+      },
+    };
+  },
+};
 </script>

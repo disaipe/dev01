@@ -17,58 +17,59 @@
 </template>
 
 <script>
+import { ElMessageBox } from 'element-plus';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { ElMessageBox } from 'element-plus';
 
 import { useApi } from '../../../utils/axiosClient';
-import { raiseErrorMessage } from "../../../utils/exceptions";
+import { raiseErrorMessage } from '../../../utils/exceptions';
 
 export default {
-    name: 'PriceListReference',
-    setup() {
-        const router = useRouter();
-        const table = ref();
+  name: 'PriceListReference',
+  setup() {
+    const router = useRouter();
+    const table = ref();
 
-        const editRecord = (id) => {
-            router.push({ name: 'PriceListRecord', params: { id } });
-        };
+    const editRecord = (id) => {
+      router.push({ name: 'PriceListRecord', params: { id } });
+    };
 
-        const copyRecord = (id) => {
-            ElMessageBox.confirm(
-                'Прайс-лист и цены на услуги будут копированы в новую запись. Продолжить?',
-                'Создать копию?',
-                {
-                    confirmButtonText: 'Да, копировать',
-                    cancelButtonText: 'Нет',
-                    type: 'warning'
-                }
-            ).then(() => {
-                useApi()
-                    .post(`price_list/${id}/copy`)
-                    .then((response) => {
-                      if (response.status === 200) {
-                          table.value?.load();
-                      } else {
-                          raiseErrorMessage('При копировании прайс-листа произошла ошибка');
-                      }
-                    })
-                    .catch(() => {
-                      raiseErrorMessage('Ошибка выполнения запроса на копирование прайс-листа');
-                    })
-            }).catch(() => {
-                // chill
-            });
-        };
+    const copyRecord = (id) => {
+      ElMessageBox.confirm(
+        'Прайс-лист и цены на услуги будут копированы в новую запись. Продолжить?',
+        'Создать копию?',
+        {
+          confirmButtonText: 'Да, копировать',
+          cancelButtonText: 'Нет',
+          type: 'warning',
+        },
+      ).then(() => {
+        useApi()
+          .post(`price_list/${id}/copy`)
+          .then((response) => {
+            if (response.status === 200) {
+              table.value?.load();
+            }
+            else {
+              raiseErrorMessage('При копировании прайс-листа произошла ошибка');
+            }
+          })
+          .catch(() => {
+            raiseErrorMessage('Ошибка выполнения запроса на копирование прайс-листа');
+          });
+      }).catch(() => {
+        // chill
+      });
+    };
 
-        return {
-            reference: 'PriceList',
+    return {
+      reference: 'PriceList',
 
-            table,
+      table,
 
-            editRecord,
-            copyRecord
-        };
-    }
-}
+      editRecord,
+      copyRecord,
+    };
+  },
+};
 </script>

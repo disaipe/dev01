@@ -7,10 +7,10 @@
 <script setup>
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useRepos} from '../../store/repository';
+import { useRepos } from '../../store';
 
 const route = useRoute();
-const recordId = parseInt(route.params?.id, 10);
+const recordId = Number.parseInt(route.params?.id, 10);
 
 const record = ref(null);
 const referenceTitle = ref();
@@ -24,7 +24,8 @@ if (model) {
 
   if (storedRecord) {
     record.value = storedRecord;
-  } else {
+  }
+  else {
     reference.load(recordId).then(({ items }) => {
       if (items && items.length) {
         record.value = items[0];
@@ -36,6 +37,6 @@ if (model) {
 
 <script>
 export default {
-  name: 'RecordPageHeader'
-}
+  name: 'RecordPageHeader',
+};
 </script>

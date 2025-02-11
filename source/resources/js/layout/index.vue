@@ -61,8 +61,8 @@
                                     el-dropdown-item
                                         el-popconfirm(
                                             title='Завершить сеанс?'
-                                            @confirm='logout'
                                             width='200'
+                                            @confirm='logout'
                                         )
                                             template(#reference)
                                                 .flex.items-center.space-x-1
@@ -106,19 +106,19 @@
                                     )
 
                                 .text-xs.text-gray-400.
-                                    Разделитель дробной части "{{currentNumberFormatOptions.decimal}}".
+                                    Разделитель дробной части "{{ currentNumberFormatOptions.decimal }}".
                                     Пример отформатированного числа: {{ toFixed(1234.56) }}
             //- el-footer Footer
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { useProfilesSettingsStore } from '../store/modules';
-import usePage from '../utils/usePage';
-import { getCountryCodes, getNumberSeparators, toFixed } from '../utils/localeUtils';
 import BreadCrumbs from '../components/breadcrumbs/BreadCrumbs.vue';
+import { useProfilesSettingsStore } from '../store/modules';
+import { getCountryCodes, getNumberSeparators, toFixed } from '../utils/localeUtils';
+import usePage from '../utils/usePage';
 import SideBarMenu from './components/SideBarMenu.vue';
 
 const profileSettings = useProfilesSettingsStore();
@@ -132,9 +132,9 @@ const { user } = usePage();
 
 const countryCodes = getCountryCodes();
 
-if (profileSettings.companyContext && ! Object.hasOwn(user.companies, profileSettings.companyContext)) {
-    company.value = Object.values(user.companies)[0];
-    profileSettings.setCompanyContext(company.value);
+if (profileSettings.companyContext && !Object.hasOwn(user.companies, profileSettings.companyContext)) {
+  company.value = Object.values(user.companies)[0];
+  profileSettings.setCompanyContext(company.value);
 }
 
 const isRouteScroll = computed(() => router.currentRoute.value.meta?.scroll !== false);
