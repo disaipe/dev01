@@ -19,7 +19,7 @@
     "calebporzio/sushi": "^2.4",
     "directorytree/ldaprecord-laravel": "^3.3.0",
     "doctrine/dbal": "^3.6",
-    "filament/filament": "^3.0",
+    "filament/filament": "^3.2",
     "guzzlehttp/guzzle": "^7.2",
     "kirschbaum-development/eloquent-power-joins": "^3.5",
     "laravel/framework": "^11.0",
