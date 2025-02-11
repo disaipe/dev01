@@ -12,7 +12,7 @@ class ModuleManager
     /**
      * Register module with given options
      *
-     * @param  string  $key module unique key
+     * @param  string  $key  module unique key
      */
     public function register(ModuleBaseServiceProvider $provider, string $key): Module
     {
@@ -40,7 +40,7 @@ class ModuleManager
     /**
      * Get module by given key
      *
-     * @param  string  $key module unique key
+     * @param  string  $key  module unique key
      * @return ?Module
      */
     public function getByKey(string $key): ?Module
@@ -64,7 +64,7 @@ class ModuleManager
     /**
      * Get module by given slug
      *
-     * @param  string  $slug module slug
+     * @param  string  $slug  module slug
      * @return ?Module
      */
     public function getBySlug(string $slug): ?Module

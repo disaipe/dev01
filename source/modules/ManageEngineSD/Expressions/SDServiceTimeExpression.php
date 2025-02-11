@@ -11,6 +11,7 @@ class SDServiceTimeExpression extends SDServiceExpression implements IQueryExpre
     public function exec(Builder $query): float
     {
         $timespent = $query->sum('timespent');
+
         return round($timespent / 1000 / 60 / 60, 2);
     }
 

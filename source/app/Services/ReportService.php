@@ -71,7 +71,7 @@ class ReportService
         $this->config = Config::get('report');
     }
 
-    public function make(string $companyCode, string $period = null): self
+    public function make(string $companyCode, ?string $period = null): self
     {
         $this->companyCode = $companyCode;
         $this->period = $period ?? Carbon::today()->format('Y-m');
@@ -214,7 +214,7 @@ class ReportService
 
         if (is_string($indicator)) {
             $indicatorInstance = $this->indicatorManager->getByCode($indicator);
-        } else if (get_class($indicator) === Indicator::class) {
+        } elseif (get_class($indicator) === Indicator::class) {
             $indicatorInstance = $indicator;
         }
 
@@ -475,7 +475,7 @@ class ReportService
                 $relationDisplayField = $relationRef?->getPrimaryDisplayField() ?? 'name';
 
                 if ($relationDisplayField) {
-                    $mutators [] = fn (array &$row) => $row[$relationName] = @$row[$relationName][$relationDisplayField];
+                    $mutators[] = fn (array &$row) => $row[$relationName] = @$row[$relationName][$relationDisplayField];
                 }
             }
         }
@@ -485,7 +485,7 @@ class ReportService
             $columnOption = $indicator->expression->getOptions('column');
 
             if ($columnOption) {
-                $mutators []= function (array &$row) use ($indicator, $columnOption) {
+                $mutators[] = function (array &$row) use ($indicator, $columnOption) {
                     if (isset($row[$columnOption])) {
                         $row[$columnOption] = $indicator->mutateValue($row[$columnOption]);
                     }
@@ -495,7 +495,7 @@ class ReportService
 
         // apply mutators
         if (count($mutators)) {
-            $data = $data->map(function(array $row) use ($mutators) {
+            $data = $data->map(function (array $row) use ($mutators) {
                 foreach ($mutators as $mutator) {
                     $mutator($row);
                 }
@@ -507,14 +507,15 @@ class ReportService
         return [$item['service']->getKey() => [
             'service' => [
                 'id' => Arr::get($item, 'service.id'),
-                'name' => Arr::get($item, 'service.name')
+                'name' => Arr::get($item, 'service.name'),
             ],
             'columns' => array_values($columns),
             'rows' => $data->select(array_keys($columns))->map(fn ($row) => array_values($row))->toArray(),
         ]];
     }
 
-    protected function isReferenceFieldExcluded(string $reference, string $name, ReferenceFieldSchema $field): bool {
+    protected function isReferenceFieldExcluded(string $reference, string $name, ReferenceFieldSchema $field): bool
+    {
         if ($field->isHidden()) {
             return true;
         }

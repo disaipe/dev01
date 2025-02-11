@@ -74,7 +74,7 @@ class ServiceReference extends ReferenceEntry
             ->toArray();
     }
 
-    public function canRead(User $user = null): bool
+    public function canRead(?User $user = null): bool
     {
         return ! $user?->isClient();
     }

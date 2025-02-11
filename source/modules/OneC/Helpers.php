@@ -7,7 +7,8 @@ use Illuminate\Support\Str;
 
 class Helpers
 {
-    public static function decryptData(string $data): string|false {
+    public static function decryptData(string $data): string|false
+    {
         $j = 1;
         $result = '';
 
@@ -22,7 +23,7 @@ class Helpers
 
         $clean = preg_replace('/[^[:print:]]/', '', $result);
 
-        return Str::startsWith($clean,'{') ? $clean : false;
+        return Str::startsWith($clean, '{') ? $clean : false;
     }
 
     public static function extractUserData(string $data): ?array
@@ -41,7 +42,7 @@ class Helpers
             return null;
         }
 
-        return Arr::where($matches, fn ($value, $key) => !is_int($key));
+        return Arr::where($matches, fn ($value, $key) => ! is_int($key));
     }
 
     public static function decryptUserData(string $data): ?array

@@ -15,7 +15,7 @@ class MarkdownContent extends Component
 
     public string|Htmlable|Closure $content;
 
-    public function __construct(string|Htmlable|Closure $content = null)
+    public function __construct(string|Htmlable|Closure|null $content = null)
     {
         $this->setContent($content);
     }
@@ -28,7 +28,7 @@ class MarkdownContent extends Component
         return $static;
     }
 
-    public function setContent(string|Htmlable|Closure $content = null): static
+    public function setContent(string|Htmlable|Closure|null $content = null): static
     {
         if ($content && (is_string($content) || $content instanceof Htmlable)) {
             $parse = new GithubFlavoredMarkdownConverter([

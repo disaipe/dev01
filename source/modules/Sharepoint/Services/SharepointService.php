@@ -20,7 +20,7 @@ class SharepointService
         $this->connection = $this->getConnection();
     }
 
-    public function getList(string $name, string $site = null): ?SharepointList
+    public function getList(string $name, ?string $site = null): ?SharepointList
     {
         $site = $site ?? '';
 

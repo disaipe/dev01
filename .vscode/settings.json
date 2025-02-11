@@ -4,6 +4,9 @@
   "editor.formatOnSave": true,
   "editor.detectIndentation": false,
   "editor.tabSize": 2,
+  "[php]": {
+    "editor.tabSize": 4
+  },
   // Auto fix
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",

@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string username
  * @property string login
  * @property string domain
- * @property boolean allow_login
+ * @property bool allow_login
  * @property string company_prefix
  * @property ADUserEntry ad_user
  */

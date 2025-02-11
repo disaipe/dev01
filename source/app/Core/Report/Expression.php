@@ -15,11 +15,8 @@ class Expression
 
     /**
      * Get expression options or option by key using "dot" notation
-     *
-     * @param string|null $key
-     * @return mixed
      */
-    public function getOptions(string $key = null): mixed
+    public function getOptions(?string $key = null): mixed
     {
         if ($key) {
             return Arr::get($this->options, $key);

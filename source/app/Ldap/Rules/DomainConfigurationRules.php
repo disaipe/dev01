@@ -3,8 +3,8 @@
 namespace App\Ldap\Rules;
 
 use App\Models\Domain;
-use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model as Eloquent;
+use Illuminate\Support\Arr;
 use LdapRecord\Laravel\Auth\Rule;
 use LdapRecord\Models\Model as LdapRecord;
 
@@ -13,7 +13,7 @@ class DomainConfigurationRules implements Rule
     /**
      * Check if the rule passes validation.
      */
-    public function passes(LdapRecord $user, Eloquent $model = null): bool
+    public function passes(LdapRecord $user, ?Eloquent $model = null): bool
     {
         $connectionName = $user->getConnectionName();
 

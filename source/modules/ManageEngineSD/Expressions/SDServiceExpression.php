@@ -13,7 +13,7 @@ use Kirschbaum\PowerJoins\PowerJoinClause;
 
 class SDServiceExpression extends Expression
 {
-    public static function getServices(string $search = null): array
+    public static function getServices(?string $search = null): array
     {
         try {
             return SDServiceDefinition::query()

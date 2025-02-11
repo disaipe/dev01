@@ -67,8 +67,6 @@ class VueAppService
 
     /**
      * Returns false if impersonating is off or url to leave this mode
-     *
-     * @return string|false
      */
     private function getIsImpersonating(): string|false
     {

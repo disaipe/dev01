@@ -149,7 +149,7 @@ class SyncOneCServerUsers extends ModuleScheduledJob
                     'username' => Arr::get($user, 'Name'),
                     'login' => $username,
                     'domain' => $domain,
-                    'allow_login' => Arr::get($userData, 'allow_login') === "1",
+                    'allow_login' => Arr::get($userData, 'allow_login') === '1',
                     'deleted_at' => null,
                 ];
 

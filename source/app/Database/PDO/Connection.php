@@ -17,15 +17,12 @@ class Connection implements ServerInfoAwareConnection
 {
     /**
      * The underlying PDO connection.
-     *
-     * @var PDO
      */
     protected PDO $connection;
 
     /**
      * Create a new PDO connection instance.
      *
-     * @param PDO $connection
      * @return void
      */
     public function __construct(PDO $connection)
@@ -35,9 +32,6 @@ class Connection implements ServerInfoAwareConnection
 
     /**
      * Execute an SQL statement.
-     *
-     * @param  string  $sql
-     * @return int
      */
     public function exec(string $sql): int
     {
@@ -55,8 +49,6 @@ class Connection implements ServerInfoAwareConnection
     /**
      * Prepare a new SQL statement.
      *
-     * @param  string  $sql
-     * @return \Doctrine\DBAL\Driver\Statement
      *
      * @throws \Doctrine\DBAL\Driver\PDO\Exception
      */
@@ -73,9 +65,6 @@ class Connection implements ServerInfoAwareConnection
 
     /**
      * Execute a new query against the connection.
-     *
-     * @param  string  $sql
-     * @return \Doctrine\DBAL\Driver\Result
      */
     public function query(string $sql): ResultInterface
     {
@@ -113,9 +102,6 @@ class Connection implements ServerInfoAwareConnection
 
     /**
      * Create a new statement instance.
-     *
-     * @param  \PDOStatement  $stmt
-     * @return \Doctrine\DBAL\Driver\PDO\Statement
      */
     protected function createStatement(PDOStatement $stmt): Statement
     {
@@ -176,8 +162,6 @@ class Connection implements ServerInfoAwareConnection
 
     /**
      * Get the wrapped PDO connection.
-     *
-     * @return PDO
      */
     public function getWrappedConnection(): PDO
     {

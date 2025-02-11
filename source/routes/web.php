@@ -30,8 +30,8 @@ Route::middleware('auth')->get('/dashboard/{url?}', function () {
     return VueAppService::render('dashboard');
 })->where('url', '.*')->name('dashboard');
 
-Route::get('impersonate/leave', function() {
-    if(! app(ImpersonateManager::class)->isImpersonating()) {
+Route::get('impersonate/leave', function () {
+    if (! app(ImpersonateManager::class)->isImpersonating()) {
         return redirect('/');
     }
 

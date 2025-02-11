@@ -39,7 +39,7 @@ class WorkorderReference extends ReferenceEntry
             'hours' => ReferenceFieldSchema::make()
                 ->label('Затрачено времени')
                 ->visible()
-                ->pinia(PiniaAttribute::number())
+                ->pinia(PiniaAttribute::number()),
         ];
     }
 }

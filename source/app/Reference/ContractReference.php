@@ -65,7 +65,7 @@ class ContractReference extends ReferenceEntry
             ->toArray();
     }
 
-    public function canUpdate(User $user = null): bool
+    public function canUpdate(?User $user = null): bool
     {
         return ! $user?->isClient();
     }

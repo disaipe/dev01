@@ -21,14 +21,14 @@ class FileImportService
 
     protected int $headersRowIndex = 1;
 
-    public function __construct(string $path = null)
+    public function __construct(?string $path = null)
     {
         if ($path) {
             $this->load($this->preparePath($path));
         }
     }
 
-    public static function make(string $path = null): static
+    public static function make(?string $path = null): static
     {
         return new static($path);
     }
@@ -141,7 +141,7 @@ class FileImportService
         return $data;
     }
 
-    public function getFilteredRows(array $columns = null, array $mapping = []): array
+    public function getFilteredRows(?array $columns = null, array $mapping = []): array
     {
         $headers = $this->getHeaders(true);
 

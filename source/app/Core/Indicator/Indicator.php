@@ -114,7 +114,8 @@ class Indicator
         return $this->mutateValue($result);
     }
 
-    public function mutateValue(float $value) {
+    public function mutateValue(float $value)
+    {
         if (! isset($this->mutator)) {
             return $value;
         }

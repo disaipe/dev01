@@ -75,7 +75,7 @@ class CompanyResource extends Resource
                     ->label(trans_choice('admin.user', 2))
                     ->state(function (Company $company) {
                         return $company->users()->count();
-                    })
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

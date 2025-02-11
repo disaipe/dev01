@@ -48,7 +48,7 @@ class SharepointListResource extends Resource
 
         return $form
             ->schema([
-                RawHtmlContent::make(function (SharepointList $record = null) {
+                RawHtmlContent::make(function (?SharepointList $record = null) {
                     if (! $record) {
                         return '';
                     }

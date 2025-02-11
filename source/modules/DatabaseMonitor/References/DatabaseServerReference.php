@@ -107,9 +107,9 @@ class DatabaseServerReference extends ReferenceEntry
             ->toArray();
     }
 
-    public function canRead(User $user = null): bool
+    public function canRead(?User $user = null): bool
     {
-        return !$user->isClient();
+        return ! $user->isClient();
     }
 
     protected function getLabelKey(): string

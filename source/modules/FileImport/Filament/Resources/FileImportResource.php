@@ -35,7 +35,7 @@ class FileImportResource extends Resource
     {
         return $form
             ->schema([
-                RawHtmlContent::make(function (FileImport $record = null) {
+                RawHtmlContent::make(function (?FileImport $record = null) {
                     if (! $record) {
                         return '';
                     }

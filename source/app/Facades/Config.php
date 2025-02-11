@@ -23,9 +23,9 @@ class Config
     /**
      * Update config value and store it in database
      *
-     * @param  string  $key config item name
-     * @param  mixed|null  $value new item value
-     * @param  bool  $encrypt encrypt value
+     * @param  string  $key  config item name
+     * @param  mixed|null  $value  new item value
+     * @param  bool  $encrypt  encrypt value
      */
     public static function set(string $key, mixed $value = null, bool $encrypt = false): void
     {

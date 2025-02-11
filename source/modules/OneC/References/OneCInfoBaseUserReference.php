@@ -61,17 +61,17 @@ class OneCInfoBaseUserReference extends ReferenceEntry
         ];
     }
 
-    public function canCreate(User $user = null): bool
+    public function canCreate(?User $user = null): bool
     {
         return false;
     }
 
-    public function canUpdate(User $user = null): bool
+    public function canUpdate(?User $user = null): bool
     {
         return false;
     }
 
-    public function canDelete(User $user = null): bool
+    public function canDelete(?User $user = null): bool
     {
         return false;
     }

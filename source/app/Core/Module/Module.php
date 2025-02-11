@@ -29,8 +29,8 @@ class Module
     /**
      * Create module instance
      *
-     * @param  string  $key unuqie key
-     * @param  array  $options options array
+     * @param  string  $key  unuqie key
+     * @param  array  $options  options array
      */
     public function __construct(ModuleBaseServiceProvider $provider, string $key, array $options = [])
     {

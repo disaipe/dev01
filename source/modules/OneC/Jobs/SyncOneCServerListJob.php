@@ -30,7 +30,7 @@ class SyncOneCServerListJob extends ModuleScheduledJob
         preg_match('/(?<host>.+?)(?:-(?<srv>\d{4,}))?:?(?<port>\d{4,})?$/', $this->server, $parts);
 
         $host = Arr::get($parts, 'host');
-        $srv = Arr::get($parts, 'srv', );
+        $srv = Arr::get($parts, 'srv');
         $port = intval(Arr::get($parts, 'port', '1541'));
 
         if (! $srv && $port !== 1541) {

@@ -8,7 +8,7 @@ use Filament\Forms\Components\TextInput;
 
 class SqlConnectionSettingsForm
 {
-    public static function make(string $prefix = '', \Closure $afterUpdate = null): array
+    public static function make(string $prefix = '', ?\Closure $afterUpdate = null): array
     {
         return [
             Select::make("{$prefix}db_driver")

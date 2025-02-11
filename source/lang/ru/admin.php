@@ -181,9 +181,9 @@ return [
             '$detailed' => [
                 'excluded fields' => 'Скрытые поля',
                 'excluded fields help' => 'Настройте поля справочников, которые не должны быть отображены в'
-                    . ' детализации отчета.',
+                    .' детализации отчета.',
                 'common excluded fields help' => 'Укажите заколовки или имена полей, которые будут исключены из'
-                    . ' <span class="underline">всех типов справочников</span>.',
+                    .' <span class="underline">всех типов справочников</span>.',
                 'excluded fields by reference' => 'Скрытые поля в справочниках',
             ],
         ],

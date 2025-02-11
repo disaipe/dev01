@@ -87,17 +87,17 @@ class FileStorageReference extends ReferenceEntry
         return 'fsmonitor::messages.file storage';
     }
 
-    public function canCreate(User $user = null): bool
+    public function canCreate(?User $user = null): bool
     {
         return ! $user->isClient();
     }
 
-    public function canUpdate(User $user = null): bool
+    public function canUpdate(?User $user = null): bool
     {
         return ! $user->isClient();
     }
 
-    public function canDelete(User $user = null): bool
+    public function canDelete(?User $user = null): bool
     {
         return ! $user->isClient();
     }

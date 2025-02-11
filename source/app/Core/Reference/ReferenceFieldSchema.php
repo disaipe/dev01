@@ -33,7 +33,7 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
     /**
      * Set field label
      *
-     * @param  string  $label string to display
+     * @param  string  $label  string to display
      * @return $this
      */
     public function label(string $label): static
@@ -54,7 +54,7 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
     /**
      * Set field description
      *
-     * @param  string  $description helper text to display near the field
+     * @param  string  $description  helper text to display near the field
      * @return $this
      */
     public function description(string $description): static
@@ -78,8 +78,6 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
 
     /**
      * Get field is visible
-     *
-     * @return bool
      */
     public function isVisible(): bool
     {
@@ -100,8 +98,6 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
 
     /**
      * Get field is hidden
-     *
-     * @return bool
      */
     public function isHidden(): bool
     {
@@ -181,11 +177,11 @@ class ReferenceFieldSchema implements Arrayable, Jsonable, JsonSerializable
     /**
      * Set field display filter
      *
-     * @param  string  $name filter name
-     * @param  array|null  $args filter additional arguments
+     * @param  string  $name  filter name
+     * @param  array|null  $args  filter additional arguments
      * @return $this
      */
-    public function displayFilter(string $name, array $args = null): static
+    public function displayFilter(string $name, ?array $args = null): static
     {
         Arr::set($this->attributes, 'filter', [$name, $args]);
 

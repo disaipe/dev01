@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Config;
 class SqlServerConnection
 {
     /**
-     * @param  string  $name connection name
+     * @param  string  $name  connection name
      * @param array{
      *     db_driver?: string,
      *     db_host: string,

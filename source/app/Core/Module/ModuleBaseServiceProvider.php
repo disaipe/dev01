@@ -59,7 +59,7 @@ class ModuleBaseServiceProvider extends ServiceProvider
     /**
      * Set module options
      *
-     * @param  array  $options module options to set
+     * @param  array  $options  module options to set
      */
     protected function setOptions(array $options): void
     {
@@ -138,7 +138,7 @@ class ModuleBaseServiceProvider extends ServiceProvider
         return $this->options ?? [];
     }
 
-    protected function scheduleJob(Schedule $schedule, ModuleScheduledJob $job, string $jobName = null): ?CallbackEvent
+    protected function scheduleJob(Schedule $schedule, ModuleScheduledJob $job, ?string $jobName = null): ?CallbackEvent
     {
         $enabled = (bool) $this->module->getConfig("$jobName.enabled");
 

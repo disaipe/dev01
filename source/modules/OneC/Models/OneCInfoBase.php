@@ -24,7 +24,6 @@ use Illuminate\Support\Facades\DB;
  * @property string db_server
  * @property string db_base
  * @property string folder
- *
  * @property Database database
  */
 class OneCInfoBase extends ReferenceModel

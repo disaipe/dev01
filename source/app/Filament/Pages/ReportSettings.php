@@ -124,7 +124,7 @@ class ReportSettings extends Page implements HasForms
                                     ->mapWithKeys(fn (ReferenceFieldSchema $field, string $key) => [$key => $field->getLabel()])
                                     ->toArray();
                             }),
-                    ])
+                    ]),
             ]);
     }
 

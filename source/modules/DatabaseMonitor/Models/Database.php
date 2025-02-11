@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string name
  * @property int size size in bytes
  * @property string company_code
- *
  * @property DatabaseServer database_server
  * @property Company company
  */

@@ -353,7 +353,7 @@ class ReferenceEntry
     /**
      * Determine the user can access references records
      */
-    public function canRead(User $user = null): bool
+    public function canRead(?User $user = null): bool
     {
         return true;
     }
@@ -361,7 +361,7 @@ class ReferenceEntry
     /**
      * Determine the user can create new record
      */
-    public function canCreate(User $user = null): bool
+    public function canCreate(?User $user = null): bool
     {
         return true;
     }
@@ -369,7 +369,7 @@ class ReferenceEntry
     /**
      * Determine the user can update records
      */
-    public function canUpdate(User $user = null): bool
+    public function canUpdate(?User $user = null): bool
     {
         return true;
     }
@@ -377,7 +377,7 @@ class ReferenceEntry
     /**
      * Determine the user can remove records
      */
-    public function canDelete(User $user = null): bool
+    public function canDelete(?User $user = null): bool
     {
         return true;
     }

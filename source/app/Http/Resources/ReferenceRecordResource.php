@@ -14,7 +14,7 @@ class ReferenceRecordResource extends JsonResource
 {
     protected array $relations;
 
-    public function __construct($resource, array $relations = null)
+    public function __construct($resource, ?array $relations = null)
     {
         parent::__construct($resource);
 
