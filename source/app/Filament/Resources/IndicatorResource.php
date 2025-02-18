@@ -33,6 +33,9 @@ class IndicatorResource extends Resource
 
         return $form
             ->schema([
+                /**
+                 * SECTION "COMMON"
+                 */
                 Forms\Components\Section::make(__('admin.$indicator.common'))
                     ->icon('heroicon-o-bars-3')
                     ->columns()
@@ -74,9 +77,13 @@ class IndicatorResource extends Resource
                             ->label(__('admin.enabled')),
                     ]),
 
+                /**
+                 * SECTION "SCHEMA"
+                 */
                 Forms\Components\Section::make(__('admin.$indicator.schema'))
                     ->icon('heroicon-o-cog-6-tooth')
                     ->collapsible()
+                    ->persistCollapsed()
                     ->schema(function (Get $get) {
                         $type = $get('type');
 
@@ -88,6 +95,9 @@ class IndicatorResource extends Resource
                     })
                     ->visible(fn ($get) => $get('type') !== null),
 
+                /**
+                 * SECTION "MUTATOR"
+                 */
                 Forms\Components\Section::make(function (Get $get) {
                     $headerParts = [__('admin.$indicator.mutator')];
 
@@ -101,6 +111,7 @@ class IndicatorResource extends Resource
                     ->statePath('schema.mutator')
                     ->collapsible()
                     ->collapsed()
+                    ->persistCollapsed()
                     ->schema([
                         Forms\Components\Select::make('type')
                             ->label(__('admin.type'))

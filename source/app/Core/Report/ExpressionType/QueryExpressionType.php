@@ -124,6 +124,7 @@ class QueryExpressionType implements IExpressionType
             Components\Section::make(__('admin.$indicator.conditions'))
                 ->icon('heroicon-o-funnel')
                 ->collapsed()
+                ->persistCollapsed()
                 ->schema([
                     RawHtmlContent::make(__('admin.$indicator.conditions helper')),
 
@@ -134,6 +135,7 @@ class QueryExpressionType implements IExpressionType
 
                     Components\Section::make(__('admin.$indicator.placeholders'))
                         ->collapsed()
+                        ->persistCollapsed()
                         ->schema([
                             Components\ViewField::make('placeholdersHelp')
                                 ->view('admin.help.indicatorPlaceholders'),
