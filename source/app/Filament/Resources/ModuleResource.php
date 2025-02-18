@@ -46,7 +46,7 @@ class ModuleResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin.menu.common');
+        return __('admin.menu.system');
     }
 
     public static function getModelLabel(): string
