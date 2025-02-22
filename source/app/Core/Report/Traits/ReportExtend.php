@@ -15,9 +15,6 @@ trait ReportExtend
 
     /**
      * Make description for the service
-     *
-     * @param int|string $serviceId
-     * @return array
      */
     public function debugService(int|string $serviceId): array
     {
@@ -31,9 +28,6 @@ trait ReportExtend
 
     /**
      * Make description for the indicator
-     *
-     * @param Indicator|string $indicator
-     * @return array|null
      */
     public function debugIndicator(Indicator|string $indicator): ?array
     {
@@ -45,7 +39,7 @@ trait ReportExtend
             $indicatorInstance = $indicator;
         }
 
-        if (!$indicatorInstance) {
+        if (! $indicatorInstance) {
             return null;
         }
 
@@ -84,8 +78,7 @@ trait ReportExtend
 
                 $columns = Arr::where(
                     $schema,
-                    fn(ReferenceFieldSchema $field, string $name) =>
-                        ! $this->isReferenceFieldExcludedGlobally($refName, $name, $field)
+                    fn (ReferenceFieldSchema $field, string $name) => ! $this->isReferenceFieldExcludedGlobally($refName, $name, $field)
                         && $this->isServiceReferenceFieldVisible($service, $name)
                 );
 
@@ -93,7 +86,7 @@ trait ReportExtend
                     $columns = $schema;
                 }
 
-                $columns = Arr::map($columns, fn(ReferenceFieldSchema $col) => $col->getLabel());
+                $columns = Arr::map($columns, fn (ReferenceFieldSchema $col) => $col->getLabel());
             }
 
             $relations = $reference?->getModelInstance()->listRelations() ?? [];
@@ -103,7 +96,7 @@ trait ReportExtend
             $data->load($includedRelations);
 
             // map model records to only needed keys
-            $data = $data->map(fn(Model $row) => $row->toArray());
+            $data = $data->map(fn (Model $row) => $row->toArray());
 
             // mutate related records to display them as string
             foreach ($includedRelations as $relationName) {
@@ -112,7 +105,7 @@ trait ReportExtend
                 $relationDisplayField = $relationRef?->getPrimaryDisplayField() ?? 'name';
 
                 if ($relationDisplayField) {
-                    $mutators[] = fn(array &$row) => $row[$relationName] = @$row[$relationName][$relationDisplayField];
+                    $mutators[] = fn (array &$row) => $row[$relationName] = @$row[$relationName][$relationDisplayField];
                 }
             }
         }
@@ -147,7 +140,7 @@ trait ReportExtend
                 'name' => Arr::get($item, 'page_name') ?? Arr::get($item, 'service.name'),
             ],
             'columns' => array_values($columns),
-            'rows' => $data->select(array_keys($columns))->map(fn($row) => array_values($row))->toArray(),
+            'rows' => $data->select(array_keys($columns))->map(fn ($row) => array_values($row))->toArray(),
         ]];
     }
 }

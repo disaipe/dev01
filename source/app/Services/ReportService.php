@@ -165,7 +165,7 @@ class ReportService
 
             $result['debug'] = $values
                 // debug only items with not-null value
-                ->filter(fn($item) => Arr::get($item, 'value'))
+                ->filter(fn ($item) => Arr::get($item, 'value'))
                 ->mapWithKeys($this->makeDebugRowsForService(...));
         }
 

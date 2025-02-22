@@ -84,7 +84,7 @@ class ReportSettings extends Page implements HasForms
                 ]),
 
                 Tabs\Tab::make(__('admin.$report.merging'))->schema([
-                   $this->getMergingSection(),
+                    $this->getMergingSection(),
                 ]),
             ]),
         ];

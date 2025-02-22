@@ -129,7 +129,7 @@ class ServiceResource extends Resource
                                         ->default(true),
                                 ]),
                         ])
-                            ->visible(fn (Get $get) => $get('enabled') !== false)
+                            ->visible(fn (Get $get) => $get('enabled') !== false),
 
                     ]),
             ]);

@@ -58,6 +58,7 @@ trait ReportGlobalSettings
                 if (is_array($services) && in_array($key, $services)) {
                     if ($key === $services[0]) {
                         $item['page_name'] = $group['merged_name'];
+
                         return $item;
                     } else {
                         return null;
