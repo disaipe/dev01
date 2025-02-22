@@ -5,9 +5,8 @@ namespace App\Services;
 use App\Core\Enums\ReportContextConstant;
 use App\Core\Indicator\Indicator;
 use App\Core\Indicator\IndicatorManager;
-use App\Core\Reference\ReferenceFieldSchema;
 use App\Core\Reference\ReferenceManager;
-use App\Facades\Config;
+use App\Core\Report\Traits\ReportExtend;
 use App\Models\Company;
 use App\Models\Contract;
 use App\Models\PriceList;
@@ -15,8 +14,6 @@ use App\Models\ReportTemplate;
 use App\Models\Service;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -27,6 +24,8 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWriter;
 
 class ReportService
 {
+    use ReportExtend;
+
     protected bool $extended = false;
 
     protected string $companyCode;
@@ -53,12 +52,6 @@ class ReportService
 
     protected Collection $values;
 
-    protected array $config;
-
-    protected array $commonExcludedFields = [];
-
-    protected array $excludedFieldsByReference = [];
-
     protected IndicatorManager $indicatorManager;
 
     public function __construct()
@@ -67,8 +60,6 @@ class ReportService
         $this->indicatorManager = app('indicators');
 
         $this->indicators = collect([]);
-
-        $this->config = Config::get('report');
     }
 
     public function make(string $companyCode, ?string $period = null): self
@@ -169,9 +160,12 @@ class ReportService
         ];
 
         if ($this->extended) {
-            $result['debug'] = $this->values
+            // make report services merging (global report settings)
+            $values = $this->mergeServices($this->values);
+
+            $result['debug'] = $values
                 // debug only items with not-null value
-                ->filter(fn ($item) => Arr::get($item, 'value'))
+                ->filter(fn($item) => Arr::get($item, 'value'))
                 ->mapWithKeys($this->makeDebugRowsForService(...));
         }
 
@@ -196,43 +190,6 @@ class ReportService
         $this->addPrices($this->values);
 
         return $this;
-    }
-
-    public function debugService(int|string $serviceId): array
-    {
-        $service = $this->services->get($serviceId);
-
-        /** @var Indicator $indicator */
-        $indicator = $this->getServiceIndicators($service)[$serviceId];
-
-        return $this->debugIndicator($indicator);
-    }
-
-    public function debugIndicator(Indicator|string $indicator): ?array
-    {
-        $indicatorInstance = null;
-
-        if (is_string($indicator)) {
-            $indicatorInstance = $this->indicatorManager->getByCode($indicator);
-        } elseif (get_class($indicator) === Indicator::class) {
-            $indicatorInstance = $indicator;
-        }
-
-        if (! $indicatorInstance) {
-            return null;
-        }
-
-        return $indicatorInstance
-            ->setContext($this->getContext())
-            ->debug();
-    }
-
-    protected function prepareDetailedReportExcludedFields(): void
-    {
-        $this->commonExcludedFields = Arr::get($this->config, 'fields.exclude') ?? [];
-
-        $excludedFieldsInReferences = Arr::get($this->config, 'fields.references.exclude') ?? [];
-        $this->excludedFieldsByReference = Arr::pluck($excludedFieldsInReferences, 'fields', 'reference');
     }
 
     /**
@@ -424,112 +381,6 @@ class ReportService
             ReportContextConstant::CONTRACT_NUMBER->name => $contract?->number ?? '',
             ReportContextConstant::CONTRACT_DATE->name => $contract?->date?->toDateString() ?? '',
         ];
-    }
-
-    protected function makeDebugRowsForService(array $item): array
-    {
-        /** @var ?EloquentCollection $data */
-        $data = Arr::get($item, 'debug.data');
-        $columns = Arr::get($item, 'debug.columns', []);
-
-        /** @var ?string $refName */
-        $refName = Arr::get($item, 'debug.reference');
-
-        /** @var ?Indicator $indicator */
-        $indicator = Arr::get($item, 'indicator');
-
-        $mutators = [];
-
-        // hide reference columns what is not visible
-        if ($refName) {
-            $reference = $this->referenceManager->getByName($refName);
-
-            if (! count($columns) && $reference) {
-                $schema = $reference->getSchema();
-
-                $columns = Arr::where(
-                    $schema,
-                    fn (ReferenceFieldSchema $field, string $name) => ! $this->isReferenceFieldExcluded($refName, $name, $field)
-                );
-
-                if (! count($columns)) {
-                    $columns = $schema;
-                }
-
-                $columns = Arr::map($columns, fn (ReferenceFieldSchema $col) => $col->getLabel());
-            }
-
-            $relations = $reference?->getModelInstance()->listRelations() ?? [];
-            $includedRelations = array_keys(array_intersect_key($relations, $columns));
-
-            // load required relations
-            $data->load($includedRelations);
-
-            // map model records to only needed keys
-            $data = $data->map(fn (Model $row) => $row->toArray());
-
-            // mutate related records to display them as string
-            foreach ($includedRelations as $relationName) {
-                $relationModelClass = $reference->getModelInstance()->$relationName()->getModel();
-                $relationRef = $this->referenceManager->getByName(class_basename($relationModelClass));
-                $relationDisplayField = $relationRef?->getPrimaryDisplayField() ?? 'name';
-
-                if ($relationDisplayField) {
-                    $mutators[] = fn (array &$row) => $row[$relationName] = @$row[$relationName][$relationDisplayField];
-                }
-            }
-        }
-
-        // append expression column mutator
-        if ($indicator->mutator) {
-            $columnOption = $indicator->expression->getOptions('column');
-
-            if ($columnOption) {
-                $mutators[] = function (array &$row) use ($indicator, $columnOption) {
-                    if (isset($row[$columnOption])) {
-                        $row[$columnOption] = $indicator->mutateValue($row[$columnOption]);
-                    }
-                };
-            }
-        }
-
-        // apply mutators
-        if (count($mutators)) {
-            $data = $data->map(function (array $row) use ($mutators) {
-                foreach ($mutators as $mutator) {
-                    $mutator($row);
-                }
-
-                return $row;
-            });
-        }
-
-        return [$item['service']->getKey() => [
-            'service' => [
-                'id' => Arr::get($item, 'service.id'),
-                'name' => Arr::get($item, 'service.name'),
-            ],
-            'columns' => array_values($columns),
-            'rows' => $data->select(array_keys($columns))->map(fn ($row) => array_values($row))->toArray(),
-        ]];
-    }
-
-    protected function isReferenceFieldExcluded(string $reference, string $name, ReferenceFieldSchema $field): bool
-    {
-        if ($field->isHidden()) {
-            return true;
-        }
-
-        $excluded = array_merge(
-            $this->commonExcludedFields,
-            Arr::get($this->excludedFieldsByReference, $reference) ?? []
-        );
-
-        if (in_array($name, $excluded) || in_array($field->getLabel(), $excluded)) {
-            return true;
-        }
-
-        return false;
     }
 
     /**

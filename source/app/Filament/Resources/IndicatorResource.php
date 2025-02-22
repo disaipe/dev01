@@ -200,7 +200,7 @@ class IndicatorResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin.menu.common');
+        return __('admin.menu.report');
     }
 
     public static function getModelLabel(): string

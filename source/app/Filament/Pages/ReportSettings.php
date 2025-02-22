@@ -2,16 +2,18 @@
 
 namespace App\Filament\Pages;
 
-use App\Core\Reference\ReferenceFieldSchema;
-use App\Core\Reference\ReferenceManager;
 use App\Facades\Config;
 use App\Filament\Components\ReferenceSelect;
+use App\Forms\Components\RawHtmlContent;
+use App\Models\Service;
+use App\Utils\ReferenceUtils;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Get;
@@ -23,9 +25,9 @@ class ReportSettings extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
-
     protected static string $view = 'filament.pages.report-settings';
+
+    protected static ?int $navigationSort = PHP_INT_MAX;
 
     public ?array $data;
 
@@ -80,6 +82,10 @@ class ReportSettings extends Page implements HasForms
                 Tabs\Tab::make(__('admin.$report.report details'))->schema([
                     $this->getColumnExcludeSection(),
                 ]),
+
+                Tabs\Tab::make(__('admin.$report.merging'))->schema([
+                   $this->getMergingSection(),
+                ]),
             ]),
         ];
     }
@@ -89,43 +95,88 @@ class ReportSettings extends Page implements HasForms
         return Section::make(__('admin.$report.$settings.$detailed.excluded fields'))
             ->description(__('admin.$report.$settings.$detailed.excluded fields help'))
             ->schema([
-                Repeater::make('fields.exclude')
-                    ->label(__('admin.common'))
-                    ->helperText(new HtmlString(__('admin.$report.$settings.$detailed.common excluded fields help')))
-                    ->addActionLabel(__('admin.add'))
-                    ->reorderable(false)
-                    ->simple(TextInput::make('value')->required()),
-
-                Repeater::make('fields.references.exclude')
-                    ->label(__('admin.$report.$settings.$detailed.excluded fields by reference'))
-                    ->addActionLabel(__('admin.add'))
-                    ->collapsible(false)
-                    ->columns()
+                Section::make(__('admin.$report.$settings.$detailed.global header'))
+                    ->icon('heroicon-o-globe-alt')
                     ->schema([
-                        ReferenceSelect::make('reference')
-                            ->reactive(),
+                        RawHtmlContent::make(new HtmlString(__(
+                            'admin.$report.$settings.$detailed.common excluded fields help'
+                        ))),
 
-                        Select::make('fields')
-                            ->label(trans_choice('admin.field', 2))
-                            ->multiple()
-                            ->options(function (Get $get) {
-                                $referenceName = $get('reference');
+                        Repeater::make('fields.exclude')
+                            ->hiddenLabel()
+                            ->addActionLabel(__('admin.add'))
+                            ->reorderable(false)
+                            ->simple(TextInput::make('value')->required()),
+                    ]),
 
-                                if (! $referenceName) {
-                                    return [];
-                                }
+                Section::make(__('admin.$report.$settings.$detailed.by reference header'))
+                    ->icon('heroicon-o-document-check')
+                    ->schema([
+                        RawHtmlContent::make(new HtmlString(__(
+                            'admin.$report.$settings.$detailed.excluded fields by reference'
+                        ))),
 
-                                /** @var ReferenceManager $references */
-                                $references = app('references');
-                                $reference = $references->getByName($referenceName);
+                        Repeater::make('fields.references.exclude')
+                            ->hiddenLabel()
+                            ->addActionLabel(__('admin.add'))
+                            ->collapsible(false)
+                            ->columns()
+                            ->schema([
+                                ReferenceSelect::make('reference')
+                                    ->reactive(),
 
-                                return collect($reference->getSchema())
-                                    ->filter(fn (ReferenceFieldSchema $field) => ! $field->isHidden())
-                                    ->mapWithKeys(fn (ReferenceFieldSchema $field, string $key) => [$key => $field->getLabel()])
-                                    ->toArray();
-                            }),
+                                Select::make('fields')
+                                    ->label(trans_choice('admin.field', 2))
+                                    ->multiple()
+                                    ->options(function (Get $get) {
+                                        $referenceName = $get('reference');
+
+                                        if ($referenceName) {
+                                            return ReferenceUtils::getReferenceFieldsOptions($referenceName);
+                                        }
+
+                                        return [];
+                                    }),
+                            ]),
                     ]),
             ]);
+    }
+
+    protected function getMergingSection(): Section
+    {
+        $serviceOptions = Service::all()->pluck('name', 'id');
+
+        return Section::make(__(''))
+            ->statePath('merging')
+            ->schema(([
+                Toggle::make('enabled')
+                    ->label(__('admin.$report.$merging.merge label'))
+                    ->helperText(__('admin.$report.$merging.merge help'))
+                    ->afterStateHydrated(function (Toggle $comp) {
+                        if ($comp->getState() === null) {
+                            $comp->state(true);
+                        }
+                    })
+                    ->default(true),
+
+                Repeater::make('groups')
+                    ->label(__('admin.$report.$merging.merging groups label'))
+                    ->addActionLabel(__('admin.$report.$merging.merging groups add label'))
+                    ->persistCollapsed()
+
+                    ->schema([
+                        Select::make('service')
+                            ->label(trans_choice('reference.Service', 2))
+                            ->options($serviceOptions)
+                            ->searchable()
+                            ->multiple(),
+
+                        TextInput::make('merged_name')
+                            ->label(__('admin.$report.$merging.merged name label'))
+                            ->helperText(__('admin.$report.$merging.merged name help'))
+                            ->required(),
+                    ]),
+            ]));
     }
 
     protected function getHeaderActions(): array

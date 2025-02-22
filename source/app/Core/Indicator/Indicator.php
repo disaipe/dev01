@@ -87,6 +87,11 @@ class Indicator
         return $instance;
     }
 
+    public function getType(): IExpressionType
+    {
+        return $this->type;
+    }
+
     public function setContext(array $context): self
     {
         $this->context = $context;
