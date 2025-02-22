@@ -15,6 +15,12 @@ class ADEntryCountExpression extends CountExpression
 {
     public function exec(Builder $query): float
     {
+        return $query->count($this->column);
+    }
+
+    public function beforeExec(Builder $query): void
+    {
+        // apply OU filters from options
         $baseDns = Arr::get($this->options, 'base_dn');
 
         if ($baseDns) {
@@ -28,8 +34,6 @@ class ADEntryCountExpression extends CountExpression
                 });
             }
         }
-
-        return $query->count($this->column);
     }
 
     public static function label(): string
