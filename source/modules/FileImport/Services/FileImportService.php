@@ -71,6 +71,9 @@ class FileImportService
                         break;
                 }
             }
+
+            // set creation time manually
+            $row['created_at'] = Carbon::now();
         }
 
         $reference = ReferenceService::getModelFromCustom($customReference);

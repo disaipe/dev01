@@ -6,10 +6,12 @@ use App\Filament\Components\CronExpressionInput;
 use App\Forms\Components\RawHtmlContent;
 use App\Models\CustomReference;
 use App\Modules\FileImport\Filament\Resources\FileImportResource\Pages;
+use App\Modules\FileImport\Jobs\FileImportJob;
 use App\Modules\FileImport\Models\FileImport;
 use Cron\CronExpression;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -180,6 +182,12 @@ class FileImportResource extends Resource
     public static function getNavigationGroup(): ?string
     {
         return __('admin.menu.common');
+    }
+
+    protected static function importFile(FileImport $record): void
+    {
+        FileImportJob::dispatch($record->getKey());
+        Notification::make()->success()->title(__('fileimport::messages.action.file import.success'))->send();
     }
 
     protected static function getCustomReference($state, $set): void

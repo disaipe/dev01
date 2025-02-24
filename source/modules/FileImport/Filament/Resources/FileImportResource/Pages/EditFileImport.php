@@ -6,6 +6,7 @@ use App\Modules\FileImport\Filament\Resources\FileImportResource;
 use App\Modules\FileImport\Jobs\FileImportJob;
 use App\Modules\FileImport\Jobs\UserFileImportJob;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
@@ -30,28 +31,45 @@ class EditFileImport extends EditRecord
     protected function getActions(): array
     {
         return [
-            Action::make('import')
-                ->label(__('fileimport::messages.action.file import.title'))
-                ->tooltip(__('fileimport::messages.action.file import.tooltip'))
-                ->action('importFile'),
+            Action::make('save')
+                ->label(__('admin.save'))
+                ->action('save'),
 
-            Action::make('selectAndImportFile')
-                ->label(__('fileimport::messages.action.import from.title'))
-                ->tooltip(__('fileimport::messages.action.import from.tooltip'))
-                ->action('selectAndImportFile')
-                ->form(function () {
-                    $basePath = dirname($this->getRecord()->path);
-                    $files = glob($basePath.'/*.{csv,xls,xlsx}', GLOB_BRACE);
+            ActionGroup::make([
+                Action::make('import')
+                    ->label(__('fileimport::messages.action.file import.title'))
+                    ->tooltip(__('fileimport::messages.action.file import.tooltip'))
+                    ->icon('heroicon-o-play')
+                    ->action('importFile'),
 
-                    $options = Arr::mapWithKeys($files, fn ($v) => [$v => basename($v)]);
+                Action::make('selectAndImportFile')
+                    ->label(__('fileimport::messages.action.import from.title'))
+                    ->tooltip(__('fileimport::messages.action.import from.tooltip'))
+                    ->icon('heroicon-o-folder-open')
+                    ->form(function () {
+                        $basePath = dirname($this->getRecord()->path);
+                        $files = glob($basePath.'/*.{csv,xls,xlsx}', GLOB_BRACE);
 
-                    return [
-                        Select::make('path')
-                            ->label(__('fileimport::messages.file'))
-                            ->options($options)
-                            ->required(),
-                    ];
-                }),
+                        $options = Arr::mapWithKeys($files, fn ($v) => [$v => basename($v)]);
+
+                        return [
+                            Select::make('path')
+                                ->label(__('fileimport::messages.file'))
+                                ->options($options)
+                                ->required(),
+                        ];
+                    })
+                    ->action(function (array $data) {
+                        $path = Arr::get($data, 'path');
+
+                        if ($path) {
+                            UserFileImportJob::dispatch($this->getRecord()->getKey(), $path);
+                            Notification::make()->success()->title(__('fileimport::messages.action.import from.success'))->send();
+                        }
+                    }),
+            ])
+                ->label(__('fileimport::messages.action.import.title'))
+                ->button(),
 
             DeleteAction::make(),
         ];
@@ -61,15 +79,5 @@ class EditFileImport extends EditRecord
     {
         FileImportJob::dispatch($this->getRecord()->getKey());
         Notification::make()->success()->title(__('fileimport::messages.action.file import.success'))->send();
-    }
-
-    public function selectAndImportFile($data): void
-    {
-        $path = Arr::get($data, 'path');
-
-        if ($path) {
-            UserFileImportJob::dispatch($this->getRecord()->getKey(), $path);
-            Notification::make()->success()->title(__('fileimport::messages.action.import from.success'))->send();
-        }
     }
 }
