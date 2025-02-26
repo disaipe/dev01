@@ -1,15 +1,9 @@
 import type { App } from 'vue';
-import type { RouteRecordRaw } from 'vue-router';
 
+import type { RouteMeta, RouteRecordRaw } from 'vue-router';
 import { defineComponent } from 'vue';
 import Record from '../../views/dashboard/record/BaseRecord.vue';
 import Reference from '../../views/dashboard/reference/BaseReference.vue';
-
-interface RouteMeta {
-  isReference: boolean;
-  isRecord: boolean;
-  view: string;
-}
 
 declare type Route = RouteRecordRaw & { meta: RouteMeta };
 
@@ -38,13 +32,13 @@ export default {
       if (Array.isArray(route.children)) {
         for (const childRoute of route.children) {
           if (childRoute.meta?.isReference) {
-            childRoute.component = () => referenceComponent(childRoute);
+            childRoute.component = () => referenceComponent(childRoute as Route);
           }
           else if (childRoute.meta?.isRecord) {
-            childRoute.component = () => recordComponent(childRoute);
+            childRoute.component = () => recordComponent(childRoute as Route);
           }
           else if (childRoute.meta?.view) {
-            childRoute.component = () => import(`../../views/dashboard/${childRoute.meta.view}.vue`);
+            childRoute.component = () => import(`../../views/dashboard/${(childRoute as Route).meta.view}.vue`);
           }
         }
       }

@@ -1,5 +1,5 @@
 import type { IModelOptions } from '@/types';
-import type { Attribute, Constructor, ModelFields } from 'pinia-orm';
+import type { Attribute, ModelFields } from 'pinia-orm';
 import type { App } from 'vue';
 import type { Model } from '../../store';
 import keyBy from 'lodash/keyBy';

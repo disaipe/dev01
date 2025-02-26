@@ -1,7 +1,9 @@
+import type { PageStruct } from './utils/usePage';
+
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
-    // add custom components here
+    $page: PageStruct;
   }
 }
 
-export {};
+export { };
