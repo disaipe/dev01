@@ -4,4 +4,6 @@
 !/.vscode/settings.json
 !.vscode/extensions.json
 
+docker/nginx/ssl
+
 docker-compose.override.yml
