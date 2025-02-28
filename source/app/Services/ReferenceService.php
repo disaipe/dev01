@@ -78,6 +78,7 @@ class ReferenceService
                     'eagerLoad' => array_keys($eagerLoad),
                     'entity' => Str::kebab(Str::plural($entry->getName())),
                     'fields' => $fields,
+                    'apiPrefix' => $entry->getPrefix(),
                 ];
             })
             ->values()

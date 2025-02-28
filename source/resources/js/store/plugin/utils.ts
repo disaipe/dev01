@@ -18,6 +18,7 @@ export function defineModel(name: string, options: IModelOptions): typeof Model 
       static name = name;
       static entity = options.entity || name;
 
+      apiPrefix = options.apiPrefix;
       eagerLoad = options.eagerLoad;
 
       $getDisplayField() {

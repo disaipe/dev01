@@ -13,7 +13,7 @@ export class ModelApi extends CoreModel {
   }
 
   baseURL(): string {
-    return snake(this.constructor.name);
+    return this.apiPrefix || snake(this.constructor.name);
   }
 }
 

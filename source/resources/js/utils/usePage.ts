@@ -40,6 +40,8 @@ export interface ModelItem {
   eagerLoad: string[];
   /** Fields definition */
   fields: Record<string, string[]>;
+  /** API path prefix */
+  apiPrefix: string;
 }
 
 export interface User {
